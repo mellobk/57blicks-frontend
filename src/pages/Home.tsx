@@ -1,10 +1,11 @@
 import type { FunctionComponent } from "../common/types";
+import { Button } from 'primereact/button';
 
 const Home = (): FunctionComponent => {
 	return (
-		<div className="bg-blue-300  font-bold w-screen h-screen flex flex-col justify-center items-center ">
-			<p className="text-white text-6xl">Hello, world!</p>
-		</div>
+		<div className="card flex justify-content-center">
+            <Button label="Check" icon="pi pi-check" />
+        </div>
 	);
 };
 
