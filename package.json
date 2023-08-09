@@ -1,7 +1,7 @@
 {
-	"name": "vite-react-boilerplate",
-	"author": "Ricardo Valdovinos <ricardovaldovinos1996@gmail.com>",
-	"description": "A production ready, batteries included starter template for Vite + React projects",
+	"name": "DKC-Lending-ReactJS",
+	"author": "RevStar",
+	"description": "Frontend project for the DKC-Lending-",
 	"keywords": [
 		"vite",
 		"react",
@@ -9,12 +9,8 @@
 		"starter",
 		"template"
 	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/RicardoValdovinos/vite-react-boilerplate"
-	},
 	"license": "MIT",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"scripts": {
 		"setup": "git init && husky install && npx playwright install",
 		"format": "prettier src/**/*.{ts,tsx} --write",
