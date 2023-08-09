@@ -308,13 +308,6 @@ A simplified list can be found in the [Overview](#overview) section.
 - [React Hook Form](https://react-hook-form.com)
 - [Zod](https://zod.dev)
 
-### Data Visualization
-
-- [Nivo](https://nivo.rocks)
-  - [Line](https://nivo.rocks/line/)
-  - [Bar](https://nivo.rocks/bar/)
-  - [Pie](https://nivo.rocks/pie/)
-
 ### Testing
 
 - [Vitest](https://vitest.dev)
