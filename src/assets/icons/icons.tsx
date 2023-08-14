@@ -1,4 +1,3 @@
-import React from 'react';
 import IconItems from './icon-dictionary';
 
 type Props = {

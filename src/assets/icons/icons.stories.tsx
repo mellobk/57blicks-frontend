@@ -1,8 +1,6 @@
-import React from 'react';
 import IconTemplate from './icons';
-import { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import IconList from './icon-list';
-import { Icon } from '@/presentation/components';
 
 const meta: Meta<typeof IconTemplate> = {
   component: IconTemplate
@@ -20,5 +18,5 @@ export const IconItem: Story = {
 };
 
 export const IconLists: Story = {
-  render: args => <IconList />
+  render: () => <IconList />
 };
