@@ -1,9 +1,9 @@
 import { Route } from "@tanstack/router";
-import Home from "../pages/Home";
+import {LoginLayout} from "../components/layout/Login/Login";
 import { rootRoute } from "./RootRoute";
 
 export const IndexRoute = new Route({
 	getParentRoute: (): typeof rootRoute => rootRoute,
 	path: "/",
-	component: Home,
+	component: LoginLayout,
 });
