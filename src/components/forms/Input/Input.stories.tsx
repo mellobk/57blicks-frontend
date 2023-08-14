@@ -45,9 +45,9 @@ export const IconInput: Story = {
     args: {
       label: 'Username',
       placeHolder: 'Placeholder',
-      required: false,
+      required: true,
       iconName: '',
-      error: 'Error message',
+      error: '',
     }
   };
   
