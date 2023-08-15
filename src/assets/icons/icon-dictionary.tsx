@@ -1,9 +1,10 @@
-import * as React from 'react';
 import SearchIcon from './components/search-icon';
 import UserIcon from './components/user-icon';
 import DateIcon from './components/date-icon';
 import ClockIcon from './components/clock-icon';
 import StarIcon from './components/star-icon';
+import CloseEyeIcon from './components/close-eye';
+import OpenEyeIcon from './components/open-eye';
 
 type Props = {
   name: string;
@@ -32,12 +33,21 @@ const IconItems: any = ({ name, width, color }: Props) => {
     star: {
       name: 'star',
       Icon: <StarIcon width={width} color={color} />
-    }
+    },
+    closeEye:{
+      name: 'closeEye',
+      Icon: <CloseEyeIcon width={width} color={color} />
+    },     
+      openEye:{
+        name: 'openEye',
+        Icon: <OpenEyeIcon width={width} color={color} />
+      },
+   
   };
 
   return icons[name]?.Icon || null;
 };
 // export icons to storybook mapping
-export const storyBooksIconsNames: string[] = ['search', 'clock', 'user', 'date', 'star'];
+export const storyBooksIconsNames: Array<string> = ['search', 'clock', 'user', 'date', 'star', 'closeEye', 'openEye'];
 
 export default IconItems;

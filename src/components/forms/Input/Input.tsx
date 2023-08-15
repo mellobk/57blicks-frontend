@@ -1,8 +1,8 @@
 import IconTemplate from "../../../assets/icons/icons";
 import "./Input.css";
-import type { UseFormRegister, FieldValues } from "react-hook-form";
+import type { UseFormRegister, FieldValues } from 'react-hook-form';
 
-type Props = {
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 	placeHolder?: string;
 	required?: boolean;
@@ -11,14 +11,14 @@ type Props = {
 	register?: UseFormRegister<FieldValues>;
 };
 
-export const Input: React.FC<Props> = ({
+export const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 	label,
 	placeHolder,
 	error,
 	register,
 	iconName,
     required,
-}: Props) => {
+} ) => {
 
 	return (
 		<div className="input-container">
@@ -53,3 +53,4 @@ export const Input: React.FC<Props> = ({
 		</div>
 	);
 };
+
