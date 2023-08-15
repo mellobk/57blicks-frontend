@@ -23,7 +23,7 @@ export const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps>
 	return (
 		<div className="input-container">
 			<div className="input-label">
-				{label} {required && <span className="input-required">*</span>}
+				<div>{label} {required && <span className="input-required">*</span>}</div>
 			</div>
 			<div className="input-field">
 				{iconName && (
