@@ -1,29 +1,27 @@
+import { classNames } from "primereact/utils";
 import IconTemplate from "../../../assets/icons/icons";
 import "./Input.css";
-import type { UseFormRegister, FieldValues } from 'react-hook-form';
+import type { UseFormRegister, FieldValues } from "react-hook-form";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 	placeHolder?: string;
 	required?: boolean;
-    error?: string;
+	error?: string;
 	iconName?: string;
 	register?: UseFormRegister<FieldValues>;
-};
+}
 
-export const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
-	label,
-	placeHolder,
-	error,
-	register,
-	iconName,
-    required,
-} ) => {
-
+export const Input: React.ForwardRefRenderFunction<
+	HTMLInputElement,
+	InputProps
+> = ({ label, placeHolder, error, register, iconName, required }) => {
 	return (
 		<div className="input-container">
-			<div className="input-label">
-				<div>{label} {required && <span className="input-required">*</span>}</div>
+		<div className={classNames("input-label", 'text-gray-600')}>
+				<div>
+					{label} {required && <span className="text-red-ERROR">*</span>}
+				</div>
 			</div>
 			<div className="input-field">
 				{iconName && (
@@ -36,7 +34,9 @@ export const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps>
 					</div>
 				)}
 				<input
-					className={ error ? 'input-error' : ''}
+					className={classNames(
+						error ? "text-red-ERROR bg-gray-100 " : "bg-gray-200"
+					)}
 					data-testid="input"
 					data-test-label={label}
 					data-test-placeholder={placeHolder}
@@ -47,10 +47,8 @@ export const Input: React.ForwardRefRenderFunction<HTMLInputElement, InputProps>
 					placeholder={placeHolder}
 					{...register}
 				/>
-                
 			</div>
-            {error &&  <div className="input-error-message">{error}</div>}
+			{error && <div className={classNames("input-error-message", 'text-red-ERROR')}>{error}</div>}
 		</div>
 	);
 };
-

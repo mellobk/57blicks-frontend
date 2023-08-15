@@ -2,6 +2,7 @@ import { useState } from "react";
 import IconTemplate from "../../../assets/icons/icons";
 import "./PasswordInput.css";
 import type { UseFormRegister, FieldValues } from "react-hook-form";
+import { classNames } from "primereact/utils";
 
 interface PasswordValidations {
 	message?: string;
@@ -47,22 +48,22 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 				<div
 					className={`${
 						complete
-							? "input-error-circle-complete"
-							: "input-error-circle-incomplete"
+							? "input-error-circle-complete bg-red-ERROR"
+							: "input-error-circle-incomplete bg-red-ERROR"
 					}`}
 				>
 					{" "}
 				</div>{" "}
-				{message && <div className="input-strengh-text">{message}</div>}
+				{message && <div className={classNames("input-strengh-text", 'text-gray-600')}>{message}</div>}
 			</div>
 		);
 	};
 
 	return (
 		<div className="input-container">
-			<div className="input-label">
+			<div className={classNames("input-label", 'text-gray-600')}>
 				<div>
-					{label} {required && <span className="input-required">*</span>}
+					{label} {required && <span className='text-red-ERROR'>*</span>}
 				</div>
 				<div className="input-strength-header-container">
 					Bad{" "}
@@ -80,7 +81,7 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 					</div>
 				)}
 				<input
-					className={error ? "input-error" : ""}
+					className={classNames(error ? "text-red-ERROR bg-gray-100" : "bg-gray-200", )}
 					data-testid="input"
 					data-test-label={label}
 					data-test-placeholder={placeHolder}
@@ -98,7 +99,7 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 					return renderPasswordsValidations(data.message || "", data.complete || false);
 				})}
 			</div>
-			{error && <div className="input-error-message">{error}</div>}
+			{error && <div className={classNames("input-error-message", 'text-red-ERROR')}>{error}</div>}
 		</div>
 	);
 };

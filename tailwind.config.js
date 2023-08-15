@@ -23,6 +23,7 @@ export default {
 					300: "#F04A4A",
 					400: "#FE1F4C",
 					500: "#FF0033",
+					 ERROR: "#f03",
 					default: "#FF0033",
 				},
 				green: {
@@ -44,6 +45,7 @@ export default {
 					700: "#45464B",
 					800: "#31424F",
 					900: "#2E2F33",
+					1000: "#b0b4ba",
 					DEFAULT: "#2E2F33",
 				},
 				purple: {
@@ -57,6 +59,10 @@ export default {
 				yellow: {
 					500: "#FAB400",
 					DEFAULT: "#FAB400",
+				},
+				white: {
+					
+					DEFAULT: "#fbfeff",
 				},
 			},
 		},

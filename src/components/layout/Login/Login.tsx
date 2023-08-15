@@ -1,3 +1,4 @@
+import { classNames } from "primereact/utils";
 import "./Login.css";
 
 type Props = {
@@ -6,9 +7,9 @@ type Props = {
 
 export const LoginLayout: React.FC<Props> = ({ children }: Props) => {
 	return (
-		<div className="Login-layout-container">
-			<div className="Login-layout-content-container">{children}</div>
-            <div className="Login-layout-footer-container">All right reserved / © DKC Lending</div>
+		<div className={classNames("Login-layout-container", `bg-blue`)}>
+			<div className={classNames("Login-layout-content-container", `bg-white`)}>{children}</div>
+            <div className={classNames("Login-layout-footer-container", `text-white`)}>All right reserved / © DKC Lending</div>
 		</div>
 	);
 };

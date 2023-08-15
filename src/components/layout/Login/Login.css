@@ -21,12 +21,9 @@
 	align-items: center;
 	gap: 1.5rem;
 	border-radius: 1.5rem;
-	background: var(--white, #fbfeff);
 }
 
 .Login-layout-footer-container{
     display: flex;
-    align-items: flex-end;
-    color: white;
-    
+    align-items: flex-end;    
 }
