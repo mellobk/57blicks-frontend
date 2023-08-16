@@ -1,6 +1,5 @@
 import { classNames } from "primereact/utils";
 import IconTemplate from "../../../assets/icons/icons";
-import "./Input.css";
 import type { UseFormRegister, FieldValues } from "react-hook-form";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -17,15 +16,15 @@ export const Input: React.ForwardRefRenderFunction<
 	InputProps
 > = ({ label, placeHolder, error, register, iconName, required }) => {
 	return (
-		<div className="input-container">
-		<div className={classNames("input-label", 'text-gray-600')}>
+		<div className="flex flex-col gap-2">
+			<div className="font-semibold text-gray-600 ">
 				<div>
 					{label} {required && <span className="text-red-ERROR">*</span>}
 				</div>
 			</div>
-			<div className="input-field">
+			<div className="relative">
 				{iconName && (
-					<div className="input-icon">
+					<div className="absolute top-0 right-2 bottom-0 flex items-center justify-center">
 						<IconTemplate
 							name={iconName || "search"}
 							width="20"
@@ -35,7 +34,10 @@ export const Input: React.ForwardRefRenderFunction<
 				)}
 				<input
 					className={classNames(
-						error ? "text-red-ERROR bg-gray-100 " : "bg-gray-200"
+						error
+							? "text-red-ERROR bg-gray-100 "
+							: "bg-gray-200", "focus:outline-none",
+							"placeholder-gray-400 font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md"
 					)}
 					data-testid="input"
 					data-test-label={label}
@@ -48,7 +50,11 @@ export const Input: React.ForwardRefRenderFunction<
 					{...register}
 				/>
 			</div>
-			{error && <div className={classNames("input-error-message", 'text-red-ERROR')}>{error}</div>}
+			{error && (
+				<div className={classNames("font-weight-400", "text-red-ERROR", "font-normal font-weight-400 leading-normal tracking-tight")}>
+					{error}
+				</div>
+			)}
 		</div>
 	);
 };

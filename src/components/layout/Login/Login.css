@@ -1,29 +1,6 @@
 .Login-layout-container {
-    display: flex;
-	justify-content: space-between;
 	background-image: url("../../../assets/images/png/loginBg.png");
 	background-size: cover;
 	background-repeat: no-repeat; 
 	background-position: center center;
-    width: 100vw;
-    height: 100vh;
-    box-sizing: border-box; 
-    padding: 24px; 
-    overflow: auto; 
-}
-
-.Login-layout-content-container {
-	display: flex;
-	width: 21.875rem;
-	padding: 1.5rem;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	gap: 1.5rem;
-	border-radius: 1.5rem;
-}
-
-.Login-layout-footer-container{
-    display: flex;
-    align-items: flex-end;    
 }
