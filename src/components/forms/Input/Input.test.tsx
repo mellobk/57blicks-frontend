@@ -1,71 +1,86 @@
-
 import { render, screen } from '@testing-library/react';
-import { useForm } from 'react-hook-form';
 import { Input } from './Input';
 
 describe('Input component', () => {
-  it('renders input with label and placeholder', () => {
-    const { register } = useForm();
-
-    render(
-      <Input
-        label="Username"
-        placeHolder="Enter your username"
-        register={register}
-      />
-    );
-
-    const inputElement = screen.getByTestId('input');
-    expect(inputElement).toBeInTheDocument();
-    expect(inputElement).toHaveAttribute('data-test-label', 'Username');
-    expect(inputElement).toHaveAttribute('data-test-placeholder', 'Enter your username');
-  });
-
-  it('renders an icon when iconName is provided', () => {
-    const { register } = useForm();
-
+  it('renders label, placeholder, and icon when provided', () => {
     render(
       <Input
         label="Username"
         placeHolder="Enter your username"
         iconName="search"
-        register={register}
+        register={jest.fn()} // Mock register function
       />
     );
 
-    const iconElement = screen.getByTestId('input-icon');
+    const labelElement = screen.getByText('Username');
+    const placeholderElement = screen.getByPlaceholderText('Enter your username');
+    const iconElement = screen.getByTestId('icon');
+
+    expect(labelElement).toBeInTheDocument();
+    expect(placeholderElement).toBeInTheDocument();
     expect(iconElement).toBeInTheDocument();
   });
 
-  it('renders a required indicator when required prop is true', () => {
-    const { register } = useForm();
-
+  it('renders required indicator when required prop is true', () => {
     render(
       <Input
         label="Username"
         placeHolder="Enter your username"
         required={true}
-        register={register}
+        register={jest.fn()} // Mock register function
       />
     );
 
-    const requiredIndicator = screen.getByTestId('input-required');
+    const requiredIndicator = screen.getByText('*');
     expect(requiredIndicator).toBeInTheDocument();
   });
 
-  it('renders an error message when error is provided', () => {
-    const { register } = useForm();
-
+  it('renders error message when error is provided', () => {
     render(
       <Input
         label="Username"
         placeHolder="Enter your username"
         error="Username is required"
-        register={register}
+        register={jest.fn()} // Mock register function
       />
     );
 
     const errorMessage = screen.getByText('Username is required');
     expect(errorMessage).toBeInTheDocument();
   });
+
+  it('does not render icon when iconName is not provided', () => {
+    render(
+      <Input
+        label="Username"
+        placeHolder="Enter your username"
+        register={jest.fn()} // Mock register function
+      />
+    );
+
+    const iconElement = screen.queryByText('Mocked Icon'); // Use "queryByText" since the icon might not always be present
+    expect(iconElement).toBeNull();
+  });
+
+  it('renders without error and icon when no iconName, required, or error is provided', () => {
+    render(
+      <Input
+        label="Username"
+        placeHolder="Enter your username"
+        register={jest.fn()} // Mock register function
+      />
+    );
+
+    const labelElement = screen.getByText('Username');
+    const placeholderElement = screen.getByPlaceholderText('Enter your username');
+    const iconElement = screen.queryByText('Mocked Icon'); // Use "queryByText" since the icon might not always be present
+    const requiredIndicator = screen.queryByText('*'); // Use "queryByText" since the indicator might not always be present
+
+    expect(labelElement).toBeInTheDocument();
+    expect(placeholderElement).toBeInTheDocument();
+    expect(iconElement).toBeNull();
+    expect(requiredIndicator).toBeNull();
+  });
+
+  // Add more test cases as needed...
 });

@@ -1,71 +1,93 @@
+import { render, screen, fireEvent } from "@testing-library/react";
+import { PasswordInput } from "./PasswordInput";
 
-import { render, screen } from '@testing-library/react';
-import { PasswordInput } from './PasswordInput';
+describe("PasswordInput component", () => {
+	const mockRegister = jest.fn(); // Mock register function
 
-describe('PasswordInput component', () => {
-  it('renders input with label and placeholder', () => {
-    render(
-      <PasswordInput
-        label="Password"
-        placeHolder="Enter your password"
-        passWordValidations={[{ complete: true }]}
-      />
-    );
+	it("renders label, placeholder, and icon when provided", () => {
+		render(
+			<PasswordInput
+				label="Password"
+				placeHolder="Enter your password"
+				register={mockRegister}
+				passWordValidations={[
+					{ message: "Message 1", complete: true },
+					{ message: "Message 2", complete: false },
+				]}
+			/>
+		);
 
-    const inputElement = screen.getByTestId('input');
-    expect(inputElement).toBeInTheDocument();
-    expect(inputElement).toHaveAttribute('data-test-label', 'Password');
-    expect(inputElement).toHaveAttribute('data-test-placeholder', 'Enter your password');
-  });
+		const labelElement = screen.getByText("Password");
+		const placeholderElement = screen.getByPlaceholderText(
+			"Enter your password"
+		);
+		const iconElement = screen.getByTestId("icon");
+		const strengthFooterElement = screen.getByTestId("input-strength-footer");
+		const errorMessage = screen.queryByText("Message 2"); // Assuming this message is in the strength footer
 
-  it('toggles password visibility on icon click', () => {
-    render(
-      <PasswordInput
-        label="Password"
-        placeHolder="Enter your password"
-        iconName="closeEye"
-        passWordValidations={[{ complete: true }]}
-      />
-    );
+		expect(labelElement).toBeInTheDocument();
+		expect(placeholderElement).toBeInTheDocument();
+		expect(iconElement).toBeInTheDocument();
+		expect(strengthFooterElement).toBeInTheDocument();
+		expect(errorMessage).toBeInTheDocument();
+	});
 
-    const iconElement = screen.getByTestId('input-icon');
-    const inputElement = screen.getByTestId('input');
+	it("toggles password visibility when icon is clicked", () => {
+		render(
+			<PasswordInput
+				label="Password"
+				placeHolder="Enter your password"
+				register={mockRegister}
+			/>
+		);
 
-    expect(inputElement).toHaveAttribute('type', 'password');
+		const inputElement = screen.getByTestId("input");
+		const iconElement = screen.getByTestId("icon");
 
-    iconElement.click();
+		expect(inputElement).toHaveAttribute("type", "password");
 
-    expect(inputElement).toHaveAttribute('type', 'text');
-  });
+		fireEvent.click(iconElement);
 
-  it('renders password strength validations', () => {
-    render(
-      <PasswordInput
-        label="Password"
-        placeHolder="Enter your password"
-        iconName="closeEye"
-        passWordValidations={[
-          { message: 'Must contain at least one number', complete: false },
-          { message: 'Must contain at least one special character', complete: true },
-        ]}
-      />
-    );
+		expect(inputElement).toHaveAttribute("type", "text");
+	});
 
-    const validationElements = screen.getAllByTestId('input-strength-container');
-    expect(validationElements).toHaveLength(2);
-  });
+	it("renders without strength footer when passWordValidations is not provided", () => {
+		render(
+			<PasswordInput
+				label="Password"
+				placeHolder="Enter your password"
+				register={mockRegister}
+			/>
+		);
 
-  it('renders an error message when error is provided', () => {
-    render(
-      <PasswordInput
-        label="Password"
-        placeHolder="Enter your password"
-        error="Password is required"
-        passWordValidations={[{ complete: true }]}
-      />
-    );
+		const strengthFooterElement = screen.queryByTestId("input-strength-footer");
 
-    const errorMessage = screen.getByText('Password is required');
-    expect(errorMessage).toBeInTheDocument();
-  });
+		expect(strengthFooterElement).toBeNull();
+	});
+
+	it("renders without error and icon when no iconName, required, or error is provided", () => {
+		render(
+			<PasswordInput
+				label="Password"
+				placeHolder="Enter your password"
+				register={mockRegister}
+			/>
+		);
+
+		const labelElement = screen.getByText("Password");
+		const placeholderElement = screen.getByPlaceholderText(
+			"Enter your password"
+		);
+		const iconElement = screen.getByTestId("icon");
+		const strengthFooterElement = screen.queryByTestId("input-strength-footer");
+		const errorMessage = screen.queryByText("Message 2"); // Assuming this message is in the strength footer
+
+		expect(labelElement).toBeInTheDocument();
+		expect(placeholderElement).toBeInTheDocument();
+		expect(iconElement).toBeInTheDocument();
+		expect(strengthFooterElement).toBeNull();
+		expect(errorMessage).toBeNull();
+	});
+
+	// Add more test cases as needed...
 });

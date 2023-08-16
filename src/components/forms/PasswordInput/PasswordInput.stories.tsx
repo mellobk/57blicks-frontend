@@ -16,7 +16,6 @@ export const IconPasswordInput: Story = {
 		label: "Username",
 		placeHolder: "Placeholder",
 		required: false,
-		iconName: "closeEye",
 		passWordValidations: [
 			{ message: "Must be at least 8 characters", complete: true },
 			{ message: "Must be at least 8 characters", complete: false },
@@ -31,7 +30,6 @@ export const ErrorPasswordInput: Story = {
 		label: "Username",
 		placeHolder: "Placeholder",
 		required: false,
-		iconName: "closeEye",
 		passWordValidations: [
 			{ message: "Must be at least 8 characters", complete: true },
 			{ message: "Must be at least 8 characters", complete: false },
@@ -46,7 +44,6 @@ export const RequiredPasswordInput: Story = {
 		label: "Username",
 		placeHolder: "Placeholder",
 		required: true,
-		iconName: "closeEye",
 		passWordValidations: [
 			{ message: "Must be at least 8 characters", complete: true },
 			{ message: "Must be at least 8 characters", complete: false },

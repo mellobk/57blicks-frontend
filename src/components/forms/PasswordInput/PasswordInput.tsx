@@ -13,7 +13,6 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	placeHolder?: string;
 	required?: boolean;
 	error?: string;
-	iconName?: string;
 	register?: UseFormRegister<FieldValues>;
 	passWordValidations?: Array<PasswordValidations>;
 }
@@ -26,7 +25,6 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 	placeHolder,
 	error,
 	register,
-	iconName,
 	required,
 	passWordValidations,
 }) => {
@@ -43,7 +41,7 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 		complete: boolean
 	): JSX.Element => {
 		return (
-			<div className="flex gap-1 items-center">
+			<div className="flex gap-1 items-center" >
 				<div
 					className={` w-2 h-2 rounded-full ${
 						complete ? " bg-red-ERROR" : " opacity-10 bg-red-ERROR"
@@ -76,14 +74,13 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 				</div>
 			</div>
 			<div className="relative">
-				{iconName && (
-					<div
+			<div
 						className="absolute top-0 right-2 bottom-0 flex items-center justify-center"
 						onClick={changeTypeHandler}
+						data-testid="icon"
 					>
 						<IconTemplate name={changeIcon} width="20" color={"#000"} />
 					</div>
-				)}
 				<input
 					className={classNames(
 						error ? "text-red-ERROR bg-gray-100 " : "bg-gray-200",
@@ -102,14 +99,14 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 				/>
 			</div>
 
-			<div className="input-strength-footer">
+			{ passWordValidations?.length && <div data-testid="input-strength-footer">
 				{passWordValidations?.map((data) => {
 					return renderPasswordsValidations(
 						data.message || "",
 						data.complete || false
 					);
 				})}
-			</div>
+			</div>}
 			{error && (
 				<div className={classNames("font-weight-400", "text-red-ERROR")}>
 					{error}

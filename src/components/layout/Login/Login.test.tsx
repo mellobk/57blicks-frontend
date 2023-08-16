@@ -1,22 +1,37 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { LoginLayout } from './Login';
 
 
-describe('LoginLayout', () => {
-  it('renders children', () => {
-    const { getByText } = render(
+describe('LoginLayout component', () => {
+  it('renders children and copyright text', () => {
+    render(
       <LoginLayout>
-        <div>Test Content</div>
+        <div data-testid="child-element">Child Content</div>
       </LoginLayout>
     );
 
-    const contentElement = getByText('Test Content');
-    expect(contentElement).toBeInTheDocument();
+    const childElement = screen.getByTestId('child-element');
+    const copyrightText = screen.getByText(/All right reserved \/ © DKC Lending/);
+
+    expect(childElement).toBeInTheDocument();
+    expect(copyrightText).toBeInTheDocument();
   });
 
-  it('renders footer text', () => {
-    const { getByText } = render(<LoginLayout />);
-    const footerElement = getByText('All right reserved / © DKC Lending');
-    expect(footerElement).toBeInTheDocument();
+  it('applies proper styles to the layout container', () => {
+    render(
+      <LoginLayout>
+        <div>Child Content</div>
+      </LoginLayout>
+    );
+
+    const layoutContainer = screen.getByTestId('login-layout-container');
+
+    expect(layoutContainer).toHaveClass('bg-cover');
+    expect(layoutContainer).toHaveClass('bg-center');
+    expect(layoutContainer).toHaveClass('w-screen');
+    expect(layoutContainer).toHaveClass('h-screen');
+    expect(layoutContainer).toHaveClass('box-border');
+    expect(layoutContainer).toHaveClass('p-6');
+    expect(layoutContainer).toHaveClass('overflow-auto');
   });
 });
