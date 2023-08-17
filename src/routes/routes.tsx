@@ -11,8 +11,8 @@ interface Props {
     layout: React.ComponentType | any;
 }
 
-const UnauthenticatedRoute  = (indexRoutes: Array<Props>): any => {
-    return  indexRoutes.map(({ page: C, layout: Layout, path }) => {
+const UnauthenticatedRoute  = (Routes: Array<Props>): any => {
+    return  Routes.map(({ page: C, layout: Layout, path }) => {
         return new Route({
             getParentRoute: (): typeof rootRoute => rootRoute,
             path: path || "/",
