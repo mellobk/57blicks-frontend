@@ -104,6 +104,7 @@
 				},
 				"ignore": ["semVer", "SemVer"]
 			}
-		]
+		],
+		"comma-dangle": ["error", "always"]
 	}
 }
