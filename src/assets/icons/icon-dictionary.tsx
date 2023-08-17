@@ -5,6 +5,8 @@ import ClockIcon from "./components/clock-icon";
 import StarIcon from "./components/star-icon";
 import CloseEyeIcon from "./components/close-eye";
 import OpenEyeIcon from "./components/open-eye";
+import CloseEyes from "./components/closes-eyes-icon";
+import LoadingIcon from "./components/loading-icon";
 
 type Props = {
 	name: string;
@@ -42,6 +44,14 @@ const IconItems: any = ({ name, width, color }: Props) => {
 			name: "openEye",
 			Icon: <OpenEyeIcon width={width} color={color} />,
 		},
+		closesEyes:{
+			name: "closesEyes",
+			Icon: <CloseEyes width={width} color={color} />
+		},
+		loader:{
+			name:"loadingIcon",
+			Icon: <LoadingIcon  width={width} color={color} />
+		}
 	};
 
 	return icons[name]?.Icon || null;
@@ -55,6 +65,8 @@ export const storyBooksIconsNames: Array<string> = [
 	"star",
 	"closeEye",
 	"openEye",
+	"closesEyes",
+	"loader"
 ];
 
 export default IconItems;

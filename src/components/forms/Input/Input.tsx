@@ -9,12 +9,13 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	error?: string;
 	iconName?: string;
 	register?: UseFormRegister<FieldValues>;
+	disabled?: boolean;
 }
 
 export const Input: React.ForwardRefRenderFunction<
 	HTMLInputElement,
 	InputProps
-> = ({ label, placeHolder, error, register, iconName, required }) => {
+> = ({ label, placeHolder, error, register, iconName, required, disabled = false }) => {
 	return (
 		<div className="flex flex-col gap-2">
 			<div className="font-semibold text-gray-600 ">
@@ -41,6 +42,7 @@ export const Input: React.ForwardRefRenderFunction<
 					)}
 					type="text"
 					placeholder={placeHolder}
+					disabled={disabled}
 					{...register}
 				/>
 			</div>

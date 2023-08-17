@@ -1,6 +1,6 @@
 import {Avatar as PrimeReactAvatar} from 'primereact/avatar';
 import IconTemplate from "../../../assets/icons/icons.tsx";
-
+import '../../utils/StoryBookCssExport.tsx'
 interface AvatarProps {
     image?: string;
     name?: string | null;

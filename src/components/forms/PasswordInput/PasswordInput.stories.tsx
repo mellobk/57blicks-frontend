@@ -25,6 +25,34 @@ export const IconPasswordInput: Story = {
 	},
 };
 
+export const IconPasswordInputGood: Story = {
+	args: {
+		label: "Username",
+		placeHolder: "Placeholder",
+		required: false,
+		passWordValidations: [
+			{ message: "Must be at least 8 characters", complete: true },
+			{ message: "Must be at least 8 characters", complete: true },
+			{ message: "Must be at least 8 characters", complete: false },
+		],
+		error: "",
+	},
+};
+
+export const IconPasswordInputGreat: Story = {
+	args: {
+		label: "Username",
+		placeHolder: "Placeholder",
+		required: false,
+		passWordValidations: [
+			{ message: "Must be at least 8 characters", complete: true },
+			{ message: "Must be at least 8 characters", complete: true },
+			{ message: "Must be at least 8 characters", complete: true },
+		],
+		error: "",
+	},
+};
+
 export const ErrorPasswordInput: Story = {
 	args: {
 		label: "Username",
