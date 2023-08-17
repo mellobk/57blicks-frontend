@@ -7,6 +7,7 @@ interface Props {
     path?: string;
     page?: React.ComponentType; 
     routeComponent?: any;
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     layout: React.ComponentType | any;
 }
 
