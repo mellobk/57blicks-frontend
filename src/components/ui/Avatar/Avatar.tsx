@@ -1,4 +1,3 @@
-import React from 'react';
 import {Avatar as PrimeReactAvatar} from 'primereact/avatar';
 import IconTemplate from "../../../assets/icons/icons.tsx";
 
