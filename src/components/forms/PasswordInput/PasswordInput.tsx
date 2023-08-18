@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, } from "react";
 import IconTemplate from "../../../assets/icons/icons";
-import type { UseFormRegister, FieldValues } from "react-hook-form";
-import { classNames } from "primereact/utils";
+import type { UseFormRegister, FieldValues, } from "react-hook-form";
+import { classNames, } from "primereact/utils";
 
 interface PasswordValidations {
 	message?: string;
@@ -9,8 +9,8 @@ interface PasswordValidations {
 }
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-	label?: string;
-	placeHolder?: string;
+	title?: string;
+	placeholder?: string;
 	required?: boolean;
 	error?: string;
 	register?: UseFormRegister<FieldValues>;
@@ -22,47 +22,48 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 	HTMLInputElement,
 	InputProps
 > = ({
-	label,
-	placeHolder,
+	title,
+	placeholder,
 	error,
 	register,
 	required,
 	passWordValidations,
 	disabled= false,
-}) => {
-	const [changeType, setChangeType] = useState<string>("password");
-	const [changeIcon, setChangeIcon] = useState<string>("closeEye");
-	const [statusLabel, setStatusLabel] = useState<string>("Bad");
-	const [statusColor, setStatusColor] = useState<string>("bg-red-ERROR");
+},) => {
+	const [changeType, setChangeType,] = useState<string>("password",);
+	const [changeIcon, setChangeIcon,] = useState<string>("closeEye",);
+	const [statusLabel, setStatusLabel,] = useState<string>("Bad",);
+	const [statusColor, setStatusColor,] = useState<string>("bg-red-ERROR",);
 
 	const changeTypeHandler = (): void => {
-		setChangeType(changeType === "password" ? "text" : "password");
-		setChangeIcon(changeIcon === "closeEye" ? "openEye" : "closeEye");
+		setChangeType(changeType === "password" ? "text" : "password",);
+		setChangeIcon(changeIcon === "closeEye" ? "openEye" : "closeEye",);
 	};
 
 	useEffect(() => {
-		const validations  = passWordValidations?.filter((data)=> data.complete ===true) || []
+		const validations  = passWordValidations?.filter((data,)=> data.complete ===true,) || []
 
 		if(validations?.length <= 1 ){
-			setStatusLabel("Bad")
-			setStatusColor("bg-red-ERROR")
+			setStatusLabel("Bad",)
+			setStatusColor("bg-red-ERROR",)
 		}else if(validations?.length === 2){
-			setStatusLabel("Good")
-			setStatusColor("bg-gold-500")
+			setStatusLabel("Good",)
+			setStatusColor("bg-gold-500",)
 		}else{
-			setStatusLabel("Great")
-			setStatusColor("bg-green-500")
+			setStatusLabel("Great",)
+			setStatusColor("bg-green-500",)
 		}
 
-	},[passWordValidations])
+	},[passWordValidations,],)
 
 
 	const renderPasswordsValidations = (
 		message: string,
-		complete: boolean
+		complete: boolean,
+		key: number,
 	): JSX.Element => {
 		return (
-			<div className="flex gap-1 items-center" >
+			<div className="flex gap-1 items-center" key={key}>
 				<div
 					className={` w-2 h-2 rounded-full ${
 						complete ? `${statusColor}` : `opacity-10 ${statusColor}`
@@ -71,7 +72,7 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 					{" "}
 				</div>{" "}
 				{message && (
-					<div className={classNames("font-weight-600", "text-gray-600")}>
+					<div className={classNames("font-weight-600", "text-gray-600",)}>
 						{message}
 					</div>
 				)}
@@ -83,14 +84,14 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 		<div className="flex flex-col gap-2">
 			<div className="flex justify-between font-semibold text-gray-600 ">
 				<div>
-					{label} {required && <span className="text-red-ERROR">*</span>}
+					{title} {required && <span className="text-red-ERROR">*</span>}
 				</div>
 				<div className="flex gap-1 items-center">
 					{statusLabel}
 					<div className="flex gap-1 items-center">
-						{passWordValidations?.map((data) => {
-							return renderPasswordsValidations("", data.complete || false);
-						})}
+						{passWordValidations?.map((data, key) => {
+							return renderPasswordsValidations("", data.complete || false,key);
+						},)}
 					</div>
 				</div>
 			</div>
@@ -106,31 +107,26 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 					className={classNames(
 						error ? "text-red-ERROR bg-gray-100 " : "bg-gray-200",
 						"focus:outline-none",
-						"placeholder-gray-400 font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md"
+						"placeholder-gray-400 font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md",
 					)}
-					data-testid="input"
-					data-test-label={label}
-					data-test-placeholder={placeHolder}
-					data-test-error={error}
-					data-test-register={register}
-					data-test-input-type="password"
 					disabled={disabled}
 					type={changeType}
-					placeholder={placeHolder}
+					placeholder={placeholder}
 					{...register}
 				/>
 			</div>
 
 			{ passWordValidations?.length && <div data-testid="input-strength-footer">
-				{passWordValidations?.map((data) => {
+				{passWordValidations?.map((data, key) => {
 					return renderPasswordsValidations(
 						data.message || "",
-						data.complete || false
+						data.complete || false,
+						key,
 					);
-				})}
+				},)}
 			</div>}
 			{error && (
-				<div className={classNames("font-weight-400", "text-red-ERROR")}>
+				<div className={classNames("font-weight-400", "text-red-ERROR",)}>
 					{error}
 				</div>
 			)}

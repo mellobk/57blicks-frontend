@@ -43,9 +43,9 @@ const LoadingIcon: React.FC<Props> = ({
 					y2="20.6852"
 					gradientUnits="userSpaceOnUse"
 				>
-					<stop stop-color={color} />
-					<stop offset="0.755208" stop-color={color} stop-opacity="0.01" />
-					<stop offset="1" stop-color={color} stop-opacity="0" />
+					<stop stopColor={color} />
+					<stop offset="0.755208" stopColor={color} stop-opacity="0.01" />
+					<stop offset="1" stopColor={color} stop-opacity="0" />
 				</linearGradient>
 			</defs>
 		</svg>

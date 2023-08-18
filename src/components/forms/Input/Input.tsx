@@ -3,8 +3,8 @@ import IconTemplate from "../../../assets/icons/icons";
 import type { UseFormRegister, FieldValues } from "react-hook-form";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-	label?: string;
-	placeHolder?: string;
+	title?: string;
+	placeholder?: string;
 	required?: boolean;
 	error?: string;
 	iconName?: string;
@@ -15,12 +15,12 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export const Input: React.ForwardRefRenderFunction<
 	HTMLInputElement,
 	InputProps
-> = ({ label, placeHolder, error, register, iconName, required, disabled = false }) => {
+> = ({ title, placeholder, error, register, iconName, required, disabled = false }) => {
 	return (
 		<div className="flex flex-col gap-2">
 			<div className="font-semibold text-gray-600 ">
 				<div>
-					{label} {required && <span className="text-red-ERROR">*</span>}
+					{title} {required && <span className="text-red-ERROR">*</span>}
 				</div>
 			</div>
 			<div className="relative">
@@ -33,6 +33,8 @@ export const Input: React.ForwardRefRenderFunction<
 						/>
 					</div>
 				)}
+
+				
 				<input
 					className={classNames(
 						error
@@ -41,7 +43,7 @@ export const Input: React.ForwardRefRenderFunction<
 							"placeholder-gray-400 font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md"
 					)}
 					type="text"
-					placeholder={placeHolder}
+					placeholder={placeholder}
 					disabled={disabled}
 					{...register}
 				/>
