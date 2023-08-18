@@ -1,6 +1,7 @@
 
 import { render } from '@testing-library/react';
-import Avatar from './Avatar';
+import { Avatar } from './Avatar';
+
 
 describe('Avatar component', () => {
   it('renders without crashing', () => {

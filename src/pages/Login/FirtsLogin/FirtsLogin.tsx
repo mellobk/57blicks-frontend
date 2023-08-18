@@ -1,8 +1,15 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+
+import { Mfa } from "@/features/Login/components/Mfa";
 
 export const FirtsLogin: React.FC = () => {
 	return (
-		<div className="flex justify-between bg-cover bg-center w-screen h-screen box-border p-6 overflow-auto Login-layout-container">
-	       hi
+		<div className="flex flex-col items-center  gap-3 h-full">
+			<Mfa
+				title="Welcome to DKC!"
+				subTitle="We’ve sent a 6 digit code to your registered phone number."
+				buttonText="Continue"
+			/>
 		</div>
 	);
 };

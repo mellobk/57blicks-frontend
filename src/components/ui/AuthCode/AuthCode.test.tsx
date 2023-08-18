@@ -1,6 +1,6 @@
 
 import { render, fireEvent, } from '@testing-library/react';
-import {Button} from './Button'; // Assuming the Button component is in a file named Button.js
+import Button from './AuthCode'; // Assuming the Button component is in a file named Button.js
 
 describe('Button Component', () => {
   test('renders correctly with text', () => {

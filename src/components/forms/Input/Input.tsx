@@ -1,6 +1,6 @@
 import { classNames } from "primereact/utils";
 import IconTemplate from "../../../assets/icons/icons";
-import type { UseFormRegister, FieldValues } from "react-hook-form";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	title?: string;
@@ -8,14 +8,15 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	required?: boolean;
 	error?: string;
 	iconName?: string;
-	register?: UseFormRegister<FieldValues>;
+	register?: UseFormRegisterReturn<any>;
 	disabled?: boolean;
+	defaultValue?: string;
 }
 
 export const Input: React.ForwardRefRenderFunction<
 	HTMLInputElement,
 	InputProps
-> = ({ title, placeholder, error, register, iconName, required, disabled = false }) => {
+> = ({ title, placeholder, error, register, iconName, required, disabled = false, defaultValue }) => {
 	return (
 		<div className="flex flex-col gap-2">
 			<div className="font-semibold text-gray-600 ">
@@ -43,6 +44,7 @@ export const Input: React.ForwardRefRenderFunction<
 							"placeholder-gray-400 font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md"
 					)}
 					type="text"
+					defaultValue={defaultValue}
 					placeholder={placeholder}
 					disabled={disabled}
 					{...register}

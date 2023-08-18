@@ -1,6 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/react';
-import Button from './Button';
 import '../../utils/StoryBookCssExport.tsx'
+import { Button } from './Button.tsx';
 
 const meta: Meta<typeof Button> = {
     component: Button,
@@ -16,7 +16,7 @@ export const ButtonStandar: Story = {
         iconName:'user',
         text: 'Button Primary',
         disabled: false,
-        className: 'w-full'
+        className: 'bg-primary-500',
     }
 };
 

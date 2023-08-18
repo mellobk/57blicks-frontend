@@ -6,12 +6,12 @@ type Props = {
 	children?: React.ReactNode;
 };
 
-export const LoginLayout: React.FC<Props> = ({ children }: Props) => {
+ export const LoginLayout: React.FC<Props> = ({ children }: Props) => {
 	return (
 		<div className="flex justify-between bg-cover bg-center w-screen h-screen box-border p-6 overflow-auto Login-layout-container"
 		data-testid="login-layout-container">
-			<div className="flex flex-col justify-center items-center gap-7 w-56 p-6 rounded-lg bg-white" style={{width: '21.875rem'}}>
-				 <div className="flex w-full flex-col items-center">
+			<div className="flex flex-col  items-center gap-7 p-6 rounded-lg bg-white" style={{width: '23.3rem'}}>
+				 <div className="flex w-full flex-col items-center mt-[1.5rem]">
 					<img className="w-1/2" src={Logo} alt="" />
 				 </div>
 				 <hr className=" w-full"/>

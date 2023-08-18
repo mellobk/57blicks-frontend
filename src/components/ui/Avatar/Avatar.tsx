@@ -6,7 +6,7 @@ interface AvatarProps {
     name?: string | null;
 }
 
-const Avatar: React.FC<AvatarProps> = ({image, name = null}) => {
+export const Avatar: React.FC<AvatarProps> = ({image, name = null}) => {
     const getLabel = () => {
         if (!name) return "";
 
@@ -24,4 +24,3 @@ const Avatar: React.FC<AvatarProps> = ({image, name = null}) => {
     />
 }
 
-export default Avatar;
