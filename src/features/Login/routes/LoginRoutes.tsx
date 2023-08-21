@@ -1,6 +1,6 @@
 import { LoginLayout } from "@/components/layout/Login";
 import { CreatePassWord } from "@/pages/Login/CreatePassword/CreatePassword";
-import { FirtsLogin } from "@/pages/Login/FirtsLogin";
+import { FirstLogin } from "@/pages/Login/FirstLogin";
 import { Login } from "@/pages/Login/Login";
 import { LoginMfa } from "@/pages/Login/LoginMfa";
 import { ResetCreatePassWord } from "@/pages/Login/ResetCreatePassword";
@@ -13,7 +13,7 @@ import UnauthenticatedRoute from "@/routes/routes";
 const LoginRoutes = [
 	{
 		path: "/",
-		page: FirtsLogin,
+		page: FirstLogin,
 		routeComponent: null,
 		layout: LoginLayout,
 	},
