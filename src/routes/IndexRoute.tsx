@@ -4,7 +4,7 @@ import Home from "@/pages/Home";
 
 const indexRoutes = [
 	{
-		path: "/",
+		path: "/Home",
 		page: Home,
 		routeComponent: null,
 		layout: null,

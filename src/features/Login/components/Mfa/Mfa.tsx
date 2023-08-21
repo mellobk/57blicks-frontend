@@ -4,6 +4,8 @@ import { Input } from "@/components/forms/Input";
 import { AuthenticateCode } from "@/components/ui/AuthCode";
 import { Button } from "@/components/ui/Button";
 import { LoginTitle } from "../LoginTitle";
+import { ToastMfa } from "../ToastMfa";
+import { useState } from "react";
 
 interface MfaProps {
 	title?: string;
@@ -13,12 +15,23 @@ interface MfaProps {
 }
 
 export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
+	const [resentMessage, sendResentMessage] = useState<boolean>();
+	const [codeMfa, sendCodeMfa] = useState<string>("");
 	const handleOnChange = (result: string): string => {
-		return result;
+		if (result.length === 6) {
+			sendCodeMfa(result);
+		} else {
+			sendCodeMfa("");
+		}
+		return "";
 	};
 
 	const handleSendCode = (): void => {
-		console.log("data");
+		sendResentMessage(!resentMessage);
+	};
+
+	const closeResentMessage = (): void => {
+		sendResentMessage(!resentMessage);
 	};
 
 	return (
@@ -41,6 +54,9 @@ export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 						</div>
 
 						<div>
+							{resentMessage && <ToastMfa onClose={closeResentMessage} />}
+						</div>
+						<div>
 							<AuthenticateCode
 								handleOnChange={handleOnChange}
 								title="Confirmation Code"
@@ -50,7 +66,11 @@ export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 					</div>
 
 					<div className="flex flex-col gap-1">
-						<Button text={buttonText} className="bg-gray-300" />
+						<Button
+							text={buttonText}
+							className={`${codeMfa ? "bg-primary-500" : "bg-gray-300"}`}
+							disabled={codeMfa ? false : true}
+						/>
 						<Button text="Back" className="bg-transparent text-black" />
 					</div>
 				</div>

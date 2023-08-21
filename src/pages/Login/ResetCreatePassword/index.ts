@@ -1,0 +1,1 @@
+export { ResetCreatePassWord } from "./ResetCreatePassword";

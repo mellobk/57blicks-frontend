@@ -4,7 +4,7 @@ export default {
 	important: true,
 	theme: {
 		fontFamily: {
-			inter: ['Inter'],
+			inter: ["Inter"],
 		},
 		extend: {
 			colors: {
@@ -27,12 +27,16 @@ export default {
 					300: "#F04A4A",
 					400: "#FE1F4C",
 					500: "#FF0033",
-					 ERROR: "#f03",
+					ERROR: "#f03",
 					default: "#FF0033",
 				},
 				green: {
+					100: "#f3fcf9",
+					200: "#e5f8ed",
+					300: "#dfede6",
 					400: "#62C202",
 					500: "#00BA35",
+					600: "#c9f0d6",
 					DEFAULT: "#00BA35",
 				},
 				blue: {
@@ -65,7 +69,6 @@ export default {
 					DEFAULT: "#FAB400",
 				},
 				white: {
-					
 					DEFAULT: "#fbfeff",
 				},
 			},

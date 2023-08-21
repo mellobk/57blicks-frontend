@@ -1,7 +1,6 @@
 import { IconTemplate } from "@/assets/icons";
 import { Button as PrimeReactButton } from "primereact/button";
 
-
 interface AvatarProps {
 	loading?: boolean;
 	disabled?: boolean;

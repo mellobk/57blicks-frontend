@@ -14,7 +14,7 @@ export const Dropdown = ({ ...props }: DropdownProps) => {
 				list: { className: 'p-0' },
 				item: { className: 'text-[13px] bg-gray-200 text-black hover:bg-gray-300' },
 			}}
-      dropdownIcon={<IconTemplate name="arrowDown" />}
+      dropdownIcon={<IconTemplate name="arrowDown" width="10"/>}
 		/>
 	);
 };

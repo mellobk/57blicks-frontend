@@ -1,54 +1,51 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Input } from './Input';
-import '../../utils/StoryBookCssExport.tsx'
+import type { Meta, StoryObj } from "@storybook/react";
+import { Input } from "./Input";
+import "../../utils/StoryBookCssExport.tsx";
 
 const meta: Meta<typeof Input> = {
-  component: Input,
-  tags: ['autodocs']
+	component: Input,
+	tags: ["autodocs"],
 };
 
 export default meta;
 type Story = StoryObj<typeof Input>;
 
 export const NormalInput: Story = {
-  args: {
-    title: 'Username',
-    placeholder: 'Placeholder',
-    required: false,
-    iconName: '',
-    error: '',
-  }
+	args: {
+		title: "Username",
+		placeholder: "Placeholder",
+		required: false,
+		iconName: "",
+		error: "",
+	},
 };
 
 export const IconInput: Story = {
-    args: {
-      title: 'Username',
-      placeholder: 'Placeholder',
-      required: false,
-      iconName: 'search',
-      error: '',
-    }
-  };
-  
-  export const ErrorInput: Story = {
-    args: {
-      title: 'Username',
-      placeholder: 'Placeholder',
-      required: false,
-      iconName: '',
-      error: 'Error message',
-    }
-  };
-  
+	args: {
+		title: "Username",
+		placeholder: "Placeholder",
+		required: false,
+		iconName: "search",
+		error: "",
+	},
+};
 
-  export const RequiredInput: Story = {
-    args: {
-      title: 'Username',
-      placeholder: 'Placeholder',
-      required: true,
-      iconName: '',
-      error: '',
-    }
-  };
-  
+export const ErrorInput: Story = {
+	args: {
+		title: "Username",
+		placeholder: "Placeholder",
+		required: false,
+		iconName: "",
+		error: "Error message",
+	},
+};
 
+export const RequiredInput: Story = {
+	args: {
+		title: "Username",
+		placeholder: "Placeholder",
+		required: true,
+		iconName: "",
+		error: "",
+	},
+};

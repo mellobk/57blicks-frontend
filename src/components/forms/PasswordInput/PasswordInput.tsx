@@ -1,21 +1,19 @@
-import { useEffect, useState, } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { useEffect, useState } from "react";
 import IconTemplate from "../../../assets/icons/icons";
-import type { UseFormRegister, FieldValues, } from "react-hook-form";
-import { classNames, } from "primereact/utils";
-
-interface PasswordValidations {
-	message?: string;
-	complete?: boolean;
-}
+import type { UseFormRegisterReturn } from "react-hook-form";
+import { classNames } from "primereact/utils";
+import type { PasswordValidations } from "@/features/Login/types/validations";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	title?: string;
 	placeholder?: string;
 	required?: boolean;
 	error?: string;
-	register?: UseFormRegister<FieldValues>;
+	register?: UseFormRegisterReturn<any>;
 	passWordValidations?: Array<PasswordValidations>;
 	disabled?: boolean;
+	defaultValue?: string;
 }
 
 export const PasswordInput: React.ForwardRefRenderFunction<
@@ -28,39 +26,39 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 	register,
 	required,
 	passWordValidations,
-	disabled= false,
-},) => {
-	const [changeType, setChangeType,] = useState<string>("password",);
-	const [changeIcon, setChangeIcon,] = useState<string>("closeEye",);
-	const [statusLabel, setStatusLabel,] = useState<string>("Bad",);
-	const [statusColor, setStatusColor,] = useState<string>("bg-red-ERROR",);
+	disabled = false,
+	defaultValue,
+}) => {
+	const [changeType, setChangeType] = useState<string>("password");
+	const [changeIcon, setChangeIcon] = useState<string>("closeEye");
+	const [statusLabel, setStatusLabel] = useState<string>("Bad");
+	const [statusColor, setStatusColor] = useState<string>("bg-red-ERROR");
 
 	const changeTypeHandler = (): void => {
-		setChangeType(changeType === "password" ? "text" : "password",);
-		setChangeIcon(changeIcon === "closeEye" ? "openEye" : "closeEye",);
+		setChangeType(changeType === "password" ? "text" : "password");
+		setChangeIcon(changeIcon === "closeEye" ? "openEye" : "closeEye");
 	};
 
 	useEffect(() => {
-		const validations  = passWordValidations?.filter((data,)=> data.complete ===true,) || []
+		const validations =
+			passWordValidations?.filter((data) => data.complete === true) || [];
 
-		if(validations?.length <= 1 ){
-			setStatusLabel("Bad",)
-			setStatusColor("bg-red-ERROR",)
-		}else if(validations?.length === 2){
-			setStatusLabel("Good",)
-			setStatusColor("bg-gold-500",)
-		}else{
-			setStatusLabel("Great",)
-			setStatusColor("bg-green-500",)
+		if (validations?.length <= 1) {
+			setStatusLabel("Bad");
+			setStatusColor("bg-red-ERROR");
+		} else if (validations?.length === 2) {
+			setStatusLabel("Good");
+			setStatusColor("bg-gold-500");
+		} else {
+			setStatusLabel("Great");
+			setStatusColor("bg-green-500");
 		}
-
-	},[passWordValidations,],)
-
+	}, [passWordValidations]);
 
 	const renderPasswordsValidations = (
 		message: string,
 		complete: boolean,
-		key: number,
+		key: number
 	): JSX.Element => {
 		return (
 			<div className="flex gap-1 items-center" key={key}>
@@ -72,7 +70,7 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 					{" "}
 				</div>{" "}
 				{message && (
-					<div className={classNames("font-weight-600", "text-gray-600",)}>
+					<div className={classNames("font-weight-600", "text-gray-600")}>
 						{message}
 					</div>
 				)}
@@ -86,28 +84,35 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 				<div>
 					{title} {required && <span className="text-red-ERROR">*</span>}
 				</div>
-				<div className="flex gap-1 items-center">
-					{statusLabel}
+				{passWordValidations?.length ? (
 					<div className="flex gap-1 items-center">
-						{passWordValidations?.map((data, key) => {
-							return renderPasswordsValidations("", data.complete || false,key);
-						},)}
+						{passWordValidations?.length && <div> {statusLabel} </div>}
+						<div className="flex gap-1 items-center">
+							{passWordValidations?.map((data, key) => {
+								return renderPasswordsValidations(
+									"",
+									data.complete || false,
+									key
+								);
+							})}
+						</div>
 					</div>
-				</div>
+				) : null}
 			</div>
 			<div className="relative">
-			<div
-						className="absolute top-0 right-2 bottom-0 flex items-center justify-center"
-						onClick={changeTypeHandler}
-						data-testid="icon"
-					>
-						<IconTemplate name={changeIcon} width="20" color={"#000"} />
-					</div>
+				<div
+					className="absolute top-0 right-2 bottom-0 flex items-center justify-center"
+					onClick={changeTypeHandler}
+					data-testid="icon"
+				>
+					<IconTemplate name={changeIcon} width="20" color={"#000"} />
+				</div>
 				<input
+					defaultValue={defaultValue}
 					className={classNames(
 						error ? "text-red-ERROR bg-gray-100 " : "bg-gray-200",
 						"focus:outline-none",
-						"placeholder-gray-400 font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md",
+						"placeholder-gray-400 font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md"
 					)}
 					disabled={disabled}
 					type={changeType}
@@ -116,17 +121,19 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 				/>
 			</div>
 
-			{ passWordValidations?.length && <div data-testid="input-strength-footer">
-				{passWordValidations?.map((data, key) => {
-					return renderPasswordsValidations(
-						data.message || "",
-						data.complete || false,
-						key,
-					);
-				},)}
-			</div>}
+			{passWordValidations?.length ? (
+				<div data-testid="input-strength-footer">
+					{passWordValidations?.map((data, key) => {
+						return renderPasswordsValidations(
+							data.message || "",
+							data.complete || false,
+							key
+						);
+					})}
+				</div>
+			) : null}
 			{error && (
-				<div className={classNames("font-weight-400", "text-red-ERROR",)}>
+				<div className={classNames("font-weight-400", "text-red-ERROR")}>
 					{error}
 				</div>
 			)}
