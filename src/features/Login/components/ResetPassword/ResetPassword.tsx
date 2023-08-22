@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { LoginTitle } from "../LoginTitle";
@@ -13,12 +13,13 @@ export const ResetPassword: React.FC = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isValid },
-	} = useForm<any>({
+		formState: { isValid },
+	} = useForm<FieldValues>({
 		resolver: zodResolver(ResetPasswordSchemas),
 	});
 
-	const onSubmit: SubmitHandler<any> = (data) => {
+	// eslint-disable-next-line unicorn/consistent-function-scoping
+	const onSubmit: SubmitHandler<FieldValues> = (data) => {
 		console.log(data);
 	};
 

@@ -1,14 +1,13 @@
 type Props = {
 	color?: string;
 	fill?: string;
-	width?: number;
+	width?: string;
 	height?: number;
 };
 
 const OpenEyeIcon: React.FC<Props> = ({
 	color = "#BBBBBB",
-	fill = "none",
-	width = 48,
+	width = "48",
 }: Props) => {
 	return (
 		<svg
