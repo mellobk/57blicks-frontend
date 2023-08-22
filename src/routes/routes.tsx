@@ -1,13 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Route } from "@tanstack/router";
 import { rootRoute } from "./RootRoute";
 
 interface Props {
     path?: string;
-    page?: React.ComponentType; 
+    page?: React.ComponentType;
     routeComponent?: any;
-    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     layout: React.ComponentType | any;
 }
 
@@ -16,7 +13,7 @@ const UnauthenticatedRoute  = (Routes: Array<Props>): any => {
         return new Route({
             getParentRoute: (): typeof rootRoute => rootRoute,
             path: path || "/",
-         
+
             component: (): JSX.Element => {
                 return Layout ? (
                     <Layout>

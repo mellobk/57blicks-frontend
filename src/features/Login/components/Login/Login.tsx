@@ -1,22 +1,18 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import type { PasswordValidations } from "../../types/validations";
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { LoginTitle } from "../LoginTitle";
 import { PasswordInput } from "@/components/forms/PasswordInput";
 import { loginFields } from "../../utils/inputFields";
-import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/forms/Input";
 import { LoginSchema } from "../../utils/Schemas/LoginSchemas";
 
-export const LoginForm: React.FC = () => {
+export const LoginForm: FC = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isValid },
+		formState: { isValid },
 	} = useForm<any>({
 		resolver: zodResolver(LoginSchema),
 	});
@@ -61,7 +57,7 @@ export const LoginForm: React.FC = () => {
 											className={`${
 												isValid ? "bg-primary-500" : "bg-gray-300"
 											}`}
-											disabled={isValid ? false : true}
+											disabled={!isValid}
 										/>
 									</div>
 								</form>

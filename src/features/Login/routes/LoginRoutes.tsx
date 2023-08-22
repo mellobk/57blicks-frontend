@@ -17,7 +17,6 @@ const LoginRoutes = [
 		routeComponent: null,
 		layout: LoginLayout,
 	},
-
 	{
 		path: "/create-password",
 		page: CreatePassWord,
@@ -36,35 +35,30 @@ const LoginRoutes = [
 		routeComponent: null,
 		layout: LoginLayout,
 	},
-
 	{
 		path: "/login-mfa",
 		page: LoginMfa,
 		routeComponent: null,
 		layout: LoginLayout,
 	},
-
 	{
 		path: "/reset-password",
 		page: ResetPassword,
 		routeComponent: null,
 		layout: LoginLayout,
 	},
-
 	{
 		path: "/reset-password-mfa",
 		page: ResetPasswordMfa,
 		routeComponent: null,
 		layout: LoginLayout,
 	},
-
 	{
 		path: "/reset-create-password",
 		page: ResetCreatePassWord,
 		routeComponent: null,
 		layout: LoginLayout,
 	},
-
 	{
 		path: "/success-reset-password",
 		page: SuccessResetPassword,
@@ -73,7 +67,6 @@ const LoginRoutes = [
 	},
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const LoginRouter = UnauthenticatedRoute(LoginRoutes);
 
 export default LoginRouter;

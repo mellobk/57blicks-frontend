@@ -3,12 +3,16 @@ import { useRef } from "react";
 import AuthCode, { AuthCodeRef } from "react-auth-code-input";
 
 interface AuthenticateProps {
-	handleOnChange?: (result: string) => string ;
+	handleOnChange: (result: string) => string;
 	required?: boolean;
 	title?: string;
 }
 
-export const AuthenticateCode: React.FC<AuthenticateProps> = ({ handleOnChange, required, title}) => {
+export const AuthenticateCode: React.FC<AuthenticateProps> = ({
+	handleOnChange,
+	required,
+	title,
+}) => {
 	const AuthInputRef = useRef<AuthCodeRef>(null);
 	return (
 		<div className="flex flex-col gap-2">

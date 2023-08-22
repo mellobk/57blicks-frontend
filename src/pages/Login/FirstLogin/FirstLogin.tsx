@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 import { Mfa } from "@/features/Login/components/Mfa";
 
 export const FirstLogin: React.FC = () => {

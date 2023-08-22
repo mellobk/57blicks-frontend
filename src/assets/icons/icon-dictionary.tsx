@@ -11,6 +11,7 @@ import LoadingIcon from "./components/loading-icon";
 import Ok from "./components/ok-arrow-icon";
 import Wrong from "./components/wrong-icon";
 import ShieldIcon from "./components/shield-icon";
+import Notification from "./components/notification";
 
 type Props = {
 	name: string;
@@ -71,6 +72,10 @@ const IconItems: any = ({ name, width, color }: Props) => {
 		shield: {
 			name: "shield",
 			Icon: <ShieldIcon width={width} color={color} />,
+		},
+    notification: {
+			name: "notification",
+			Icon: <Notification width={width} color={color} />,
 		},
 	};
 
