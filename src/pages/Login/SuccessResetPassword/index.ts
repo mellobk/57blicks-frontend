@@ -1,0 +1,1 @@
+export { SuccessResetPassword } from "./SuccessResetPassword";
