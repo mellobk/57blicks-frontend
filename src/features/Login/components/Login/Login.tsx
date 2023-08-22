@@ -1,14 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import type { PasswordValidations } from "../../types/validations";
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { LoginTitle } from "../LoginTitle";
 import { PasswordInput } from "@/components/forms/PasswordInput";
 import { loginFields } from "../../utils/inputFields";
-import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/forms/Input";
 import { LoginSchema } from "../../utils/Schemas/LoginSchemas";
 
@@ -16,12 +15,13 @@ export const LoginForm: React.FC = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isValid },
-	} = useForm<any>({
+		formState: { isValid },
+	} = useForm<FieldValues>({
 		resolver: zodResolver(LoginSchema),
 	});
 
-	const onSubmit: SubmitHandler<any> = (data) => {
+	// eslint-disable-next-line unicorn/consistent-function-scoping
+	const onSubmit: SubmitHandler<FieldValues> = (data): void => {
 		console.log(data);
 	};
 

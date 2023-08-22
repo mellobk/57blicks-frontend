@@ -12,14 +12,23 @@ import Ok from "./components/ok-arrow-icon";
 import Wrong from "./components/wrong-icon";
 import ShieldIcon from "./components/shield-icon";
 
-type Props = {
+interface Props {
 	name: string;
-	width?: number;
+	width?: string | undefined;
 	color?: string;
-};
+}
 
-const IconItems: any = ({ name, width, color }: Props) => {
-	const icons = {
+interface IconData {
+	name: string;
+	Icon: JSX.Element; // Or another appropriate type for your icons
+}
+
+interface IconMap {
+	[key: string]: IconData;
+}
+
+const IconItems = ({ name, width, color }: Props): JSX.Element => {
+	const icons: IconMap = {
 		search: {
 			name: "search",
 			Icon: <SearchIcon width={width} color={color} />,
@@ -73,8 +82,8 @@ const IconItems: any = ({ name, width, color }: Props) => {
 			Icon: <ShieldIcon width={width} color={color} />,
 		},
 	};
-
-	return icons[name]?.Icon || null;
+	const Icon = icons[name]?.Icon;
+	return Icon || <></>;
 };
 // export icons to storybook mapping
 export const storyBooksIconsNames: Array<string> = [

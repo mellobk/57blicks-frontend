@@ -17,13 +17,12 @@ interface MfaProps {
 export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 	const [resentMessage, sendResentMessage] = useState<boolean>();
 	const [codeMfa, sendCodeMfa] = useState<string>("");
-	const handleOnChange = (result: string): string => {
+	const handleAuthCodeChange = (result: string): void => {
 		if (result.length === 6) {
 			sendCodeMfa(result);
 		} else {
 			sendCodeMfa("");
 		}
-		return "";
 	};
 
 	const handleSendCode = (): void => {
@@ -58,7 +57,7 @@ export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 						</div>
 						<div>
 							<AuthenticateCode
-								handleOnChange={handleOnChange}
+								handleOnChange={handleAuthCodeChange}
 								title="Confirmation Code"
 								required
 							/>

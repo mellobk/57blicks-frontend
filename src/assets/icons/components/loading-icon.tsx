@@ -1,17 +1,17 @@
 type Props = {
 	color?: string;
 	fill?: string;
-	width?: number;
+	width?: string;
 	height?: number;
 };
 
 const LoadingIcon: React.FC<Props> = ({
 	color = "#BBBBBB",
-	width = 48,
+	width = "48",
 }: Props) => {
 	return (
 		<svg
-		    className="animate-spin "
+			className="animate-spin "
 			width={width}
 			height={width}
 			viewBox={`0 0 64 64`}

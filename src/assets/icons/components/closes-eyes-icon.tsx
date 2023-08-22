@@ -1,13 +1,13 @@
 type Props = {
 	color?: string;
 	fill?: string;
-	width?: number;
+	width?: string;
 	height?: number;
 };
 
 const CloseEyes: React.FC<Props> = ({
 	color = "#BBBBBB",
-	width = 48,
+	width = "48",
 }: Props) => {
 	return (
 		<svg

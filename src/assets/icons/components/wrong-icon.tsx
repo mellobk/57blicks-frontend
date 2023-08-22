@@ -1,14 +1,10 @@
 type Props = {
 	color?: string;
 	fill?: string;
-	width?: number;
+	width?: string;
 };
 
-const Wrong: React.FC<Props> = ({
-	color = "#BBBBBB",
-	fill = "none",
-	width = 48,
-}: Props) => {
+const Wrong: React.FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			width={width}
