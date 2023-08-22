@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import Logo from "@/assets/images/png/Logo.png";
 import "./Login.css";
 

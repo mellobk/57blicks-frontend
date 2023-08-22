@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { Link } from "@tanstack/router";
 import IconTemplate from "@/assets/icons/icons.tsx";
 import LogoGold from "@/assets/images/png/LogoGold.png";

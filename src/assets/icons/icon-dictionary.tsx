@@ -19,7 +19,7 @@ type Props = {
 	color?: string;
 };
 
-const IconItems: any = ({ name, width, color }: Props) => {
+const IconItems = ({ name, width, color }: Props) => {
 	const icons = {
 		search: {
 			name: "search",
@@ -81,6 +81,7 @@ const IconItems: any = ({ name, width, color }: Props) => {
 
 	return icons[name]?.Icon || null;
 };
+
 // export icons to storybook mapping
 export const storyBooksIconsNames: Array<string> = [
 	"search",

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 import { Success } from "@/features/Login/components/Success";
 
 export const SuccessResetPassword: React.FC = () => {

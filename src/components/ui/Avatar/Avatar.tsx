@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { Avatar as PrimeReactAvatar } from "primereact/avatar";
 import IconTemplate from "@/assets/icons/icons.tsx";
 import "./Avatar.css";
@@ -16,7 +16,7 @@ export const Avatar: FC<AvatarProps> = ({ image, name = null }) => {
 			.split(" ")
 			.map((part) => part.charAt(0).toUpperCase())
 			.join("");
-		return initials.length > 2 ? initials.substring(0, 2) : initials;
+		return initials.length > 2 ? initials.slice(0, 2) : initials;
 	};
 
 	return (

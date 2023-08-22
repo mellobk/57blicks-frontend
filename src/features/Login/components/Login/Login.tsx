@@ -1,10 +1,11 @@
-import { FC } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import type { FC } from "react";
+import type { SubmitHandler} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { LoginTitle } from "../LoginTitle";
 import { PasswordInput } from "@/components/forms/PasswordInput";
-import { loginFields } from "../../utils/inputFields";
+import { loginFields } from "../../utils/input-fields";
 import { Input } from "@/components/forms/Input";
 import { LoginSchema } from "../../utils/Schemas/LoginSchemas";
 
@@ -13,7 +14,7 @@ export const LoginForm: FC = () => {
 		register,
 		handleSubmit,
 		formState: { isValid },
-	} = useForm<any>({
+	} = useForm({
 		resolver: zodResolver(LoginSchema),
 	});
 
@@ -29,7 +30,7 @@ export const LoginForm: FC = () => {
 						<div className="flex justify-between gap-2 w-full h-full ">
 							<div className="w-full h-full">
 								<form
-									onSubmit={handleSubmit(onSubmit)}
+									onSubmit={() => handleSubmit(onSubmit)}
 									className="w-full h-full flex flex-col justify-between"
 								>
 									<div className="flex  flex-col justify-between w-full  gap-8">
