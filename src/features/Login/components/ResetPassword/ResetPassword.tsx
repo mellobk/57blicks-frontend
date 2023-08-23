@@ -45,7 +45,7 @@ export const ResetPassword: React.FC = () => {
 											className={`${
 												isValid ? "bg-primary-500" : "bg-gray-300"
 											}`}
-											disabled={isValid ? false : true}
+											disabled={!isValid}
 										/>
 										<Button text="Back" className="bg-transparent text-black" />
 									</div>

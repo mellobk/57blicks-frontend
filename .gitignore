@@ -32,4 +32,3 @@ storybook-static
 
 # tests
 /coverage/
-node_modules

@@ -66,7 +66,7 @@ export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 						<Button
 							text={buttonText}
 							className={`${codeMfa ? "bg-primary-500" : "bg-gray-300"}`}
-							disabled={codeMfa ? false : true}
+							disabled={!codeMfa}
 						/>
 						<Button text="Back" className="bg-transparent text-black" />
 					</div>
