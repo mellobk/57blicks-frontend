@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 import { CreatePassword } from "@/features/Login/components/CreatePassWord/CreatePassWord";
 
 export const ResetCreatePassWord: React.FC = () => {

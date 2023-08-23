@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 interface LoginTitleProps {
 	title?: string;
 	subTitle?: string;

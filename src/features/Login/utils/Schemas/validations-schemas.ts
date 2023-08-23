@@ -1,6 +1,5 @@
-// eslint-disable-next-line unicorn/filename-case
 import * as z from "zod";
-import createPassWordFields from "../inputFields";
+import createPassWordFields from "../input-fields";
 
 export const createPasswordSchema = z.object({
 	[createPassWordFields?.password]: z
@@ -9,7 +8,7 @@ export const createPasswordSchema = z.object({
 		.regex(new RegExp(".*[A-Z].*"), {
 			message: "",
 		})
-		.regex(new RegExp(`.*[!@#$%^&*()\\-_=+[\\]{}|;:\'",.<>/?].*`), {
+		.regex(new RegExp(`.*[!@#$%^&*()\\-_=+[\\]{}|;:'",.<>/?].*`), {
 			message: "",
 		}),
 });

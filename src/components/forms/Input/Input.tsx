@@ -1,19 +1,20 @@
+import type {ForwardRefRenderFunction, InputHTMLAttributes} from "react";
 import { classNames } from "primereact/utils";
-import IconTemplate from "../../../assets/icons/icons";
 import type { UseFormRegisterReturn } from "react-hook-form";
+import IconTemplate from "@/assets/icons/icons";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	title?: string;
 	placeholder?: string;
 	required?: boolean;
 	error?: string;
 	iconName?: string;
-	register?: UseFormRegisterReturn<any>;
+	register?: UseFormRegisterReturn;
 	disabled?: boolean;
 	defaultValue?: string;
 }
 
-export const Input: React.ForwardRefRenderFunction<
+export const Input: ForwardRefRenderFunction<
 	HTMLInputElement,
 	InputProps
 > = ({

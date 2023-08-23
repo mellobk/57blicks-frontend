@@ -20,6 +20,7 @@ export default {
 				gold: {
 					400: "#D4B68A",
 					500: "#C79E63",
+					600: "#C7A06D",
 					DEFAULT: "#C79E63",
 				},
 				red: {
@@ -53,7 +54,7 @@ export default {
 					700: "#45464B",
 					800: "#31424F",
 					900: "#2E2F33",
-					1000: "#b0b4ba",
+					1000: "#B0B4BA",
 					DEFAULT: "#2E2F33",
 				},
 				purple: {
@@ -69,7 +70,7 @@ export default {
 					DEFAULT: "#FAB400",
 				},
 				white: {
-					DEFAULT: "#fbfeff",
+					DEFAULT: "#FBFEFF",
 				},
 			},
 		},

@@ -1,13 +1,13 @@
+import type * as React from "react";
+
 type Props = {
 	color?: string;
-	fill?: string;
-	width?: string;
-	height?: number;
+	width?: number;
 };
 
 const ClockIcon: React.FC<Props> = ({
 	color = "#BBBBBB",
-	width = "48",
+	width = 48,
 }: Props) => {
 	return (
 		<svg

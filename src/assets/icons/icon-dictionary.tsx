@@ -11,10 +11,11 @@ import LoadingIcon from "./components/loading-icon";
 import Ok from "./components/ok-arrow-icon";
 import Wrong from "./components/wrong-icon";
 import ShieldIcon from "./components/shield-icon";
+import Notification from "./components/notification";
 
 interface Props {
 	name: string;
-	width?: string | undefined;
+	width?: number;
 	color?: string;
 }
 
@@ -81,10 +82,15 @@ const IconItems = ({ name, width, color }: Props): JSX.Element => {
 			name: "shield",
 			Icon: <ShieldIcon width={width} color={color} />,
 		},
+    notification: {
+			name: "notification",
+			Icon: <Notification width={width} color={color} />,
+		},
 	};
 	const Icon = icons[name]?.Icon;
 	return Icon || <></>;
 };
+
 // export icons to storybook mapping
 export const storyBooksIconsNames: Array<string> = [
 	"search",

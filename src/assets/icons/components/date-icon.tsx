@@ -1,14 +1,11 @@
+import type { FC } from "react";
+
 type Props = {
 	color?: string;
-	fill?: string;
-	width?: string;
-	height?: number;
+	width?: number;
 };
 
-const DateIcon: React.FC<Props> = ({
-	color = "#BBBBBB",
-	width = "48",
-}: Props) => {
+const DateIcon: FC<Props> = ({ color = "#BBBBBB", width = 48 }: Props) => {
 	return (
 		<svg
 			fill={color}

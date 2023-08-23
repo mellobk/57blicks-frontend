@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 import { LoginForm } from "@/features/Login/components/Login";
 
 export const Login: React.FC = () => {

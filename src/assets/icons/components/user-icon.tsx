@@ -1,13 +1,13 @@
-import * as React from "react";
+import type * as React from "react";
 
 type Props = {
 	color?: string;
-	width?: string;
+	width?: number;
 };
 
 const UserIcon: React.FC<Props> = ({
 	color = "#BBBBBB",
-	width = "48",
+	width = 48,
 }: Props) => {
 	return (
 		<svg
