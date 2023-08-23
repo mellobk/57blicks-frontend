@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import SearchIcon from "./components/search-icon";
 import UserIcon from "./components/user-icon";
 import DateIcon from "./components/date-icon";
@@ -21,14 +22,14 @@ interface Props {
 
 interface IconData {
 	name: string;
-	Icon: JSX.Element; // Or another appropriate type for your icons
+	Icon: ReactElement;
 }
 
 interface IconMap {
 	[key: string]: IconData;
 }
 
-const IconItems = ({ name, width, color }: Props): JSX.Element => {
+const IconItems = ({ name, width, color }: Props): ReactElement => {
 	const icons: IconMap = {
 		search: {
 			name: "search",
@@ -82,7 +83,7 @@ const IconItems = ({ name, width, color }: Props): JSX.Element => {
 			name: "shield",
 			Icon: <ShieldIcon width={width} color={color} />,
 		},
-    notification: {
+		notification: {
 			name: "notification",
 			Icon: <Notification width={width} color={color} />,
 		},

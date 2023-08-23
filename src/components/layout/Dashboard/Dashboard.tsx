@@ -11,6 +11,8 @@ type Props = {
 };
 
 export const DashboardLayout: React.FC<Props> = ({ children }: Props) => {
+	const createLoanTo: string = "/creat-loan";
+
 	return (
 		<div className="flex flex-col h-screen bg-gradient-to-b from-primary to-gold-600">
 			<div className="flex items-center justify-between px-12 py-4">
@@ -33,7 +35,7 @@ export const DashboardLayout: React.FC<Props> = ({ children }: Props) => {
 				<div className="flex space-x-2 items-center">
 					<Link
 						className="button-text px-4 py-2 rounded-2xl bg-white"
-						to="/creat-loan"
+						to={createLoanTo}
 						params={{}}
 						search={{}}
 					>
