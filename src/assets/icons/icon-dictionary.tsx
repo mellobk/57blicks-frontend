@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import SearchIcon from "./components/search-icon";
 import UserIcon from "./components/user-icon";
 import DateIcon from "./components/date-icon";
@@ -16,7 +16,7 @@ import Notification from "./components/notification";
 
 interface Props {
 	name: string;
-	width?: number;
+	width?: string;
 	color?: string;
 }
 

@@ -2,10 +2,10 @@ import type { FC } from "react";
 
 type Props = {
 	color?: string;
-	width?: number;
+	width?: string;
 };
 
-const ShieldIcon: FC<Props> = ({ color = "#BBBBBB", width = 48 }: Props) => {
+const ShieldIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			width={width}

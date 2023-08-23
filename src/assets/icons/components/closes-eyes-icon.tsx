@@ -2,10 +2,10 @@ import type { FC } from "react";
 
 type Props = {
 	color?: string;
-	width?: number;
+	width?: string;
 };
 
-const CloseEyes: FC<Props> = ({ color = "#BBBBBB", width = 48 }: Props) => {
+const CloseEyes: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			width={width}

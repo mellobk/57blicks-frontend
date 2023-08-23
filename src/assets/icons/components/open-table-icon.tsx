@@ -1,7 +1,7 @@
 import type React from "react";
 
 interface Props {
-	width?: number;
+	width?: string;
 	height?: number;
 	primary?: string;
 	secondary?: string;

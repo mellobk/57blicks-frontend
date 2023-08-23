@@ -10,64 +10,64 @@ import { Support } from "@/pages/Dashboard/Support/Support.tsx";
 import UnauthenticatedRoute from "@/routes/routes";
 
 export const NavbarRoutes = [
-  {
-    path: "/reporting",
-    page: Reporting,
-    routeComponent: null,
-    layout: DashboardLayout,
-    name: "Reporting",
-  },
-  {
-    path: "/loan-overview",
-    page: LoanOverview,
-    routeComponent: null,
-    layout: DashboardLayout,
-    name: "Loan Overview",
-  },
-  {
-    path: "/servicing",
-    page: Servicing,
-    routeComponent: null,
-    layout: DashboardLayout,
-    name: "Servicing",
-  },
+	{
+		path: "/reporting",
+		page: Reporting,
+		routeComponent: null,
+		layout: DashboardLayout,
+		name: "Reporting",
+	},
+	{
+		path: "/loan-overview",
+		page: LoanOverview,
+		routeComponent: null,
+		layout: DashboardLayout,
+		name: "Loan Overview",
+	},
+	{
+		path: "/servicing",
+		page: Servicing,
+		routeComponent: null,
+		layout: DashboardLayout,
+		name: "Servicing",
+	},
 	{
 		path: "/investor-portals",
 		page: InvestorPortals,
 		routeComponent: null,
 		layout: DashboardLayout,
-    name: "Investor Portals",
+		name: "Investor Portals",
 	},
-  {
-    path: "/opportunities",
-    page: Opportunities,
-    routeComponent: null,
-    layout: DashboardLayout,
-    name: "Opportunities",
-  },
+	{
+		path: "/opportunities",
+		page: Opportunities,
+		routeComponent: null,
+		layout: DashboardLayout,
+		name: "Opportunities",
+	},
 	{
 		path: "/manage-users",
 		page: ManageUsers,
 		routeComponent: null,
 		layout: DashboardLayout,
-    name: "Manage Users",
+		name: "Manage Users",
 	},
 	{
 		path: "/support",
 		page: Support,
 		routeComponent: null,
 		layout: DashboardLayout,
-    name: "Support",
+		name: "Support",
 	},
 ];
 
 const OtherRoutes = [
-  {
-    path: "/create-loan",
-    page: CreateLoan,
-    routeComponent: null,
-    layout: DashboardLayout,
-  },
+	{
+		path: "/create-loan",
+		page: CreateLoan,
+		routeComponent: null,
+		layout: DashboardLayout,
+	},
 ];
 
 const DashboardRouter = UnauthenticatedRoute([...NavbarRoutes, ...OtherRoutes]);

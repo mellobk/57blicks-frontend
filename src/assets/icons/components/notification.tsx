@@ -2,12 +2,12 @@ import type * as React from "react";
 
 type Props = {
 	color?: string;
-	width?: number;
+	width?: string;
 };
 
 const Notification: React.FC<Props> = ({
 	color = "#BBBBBB",
-	width = 48,
+	width = "48",
 }: Props) => {
 	return (
 		<svg

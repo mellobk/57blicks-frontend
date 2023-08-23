@@ -2,10 +2,10 @@ import type { FC } from "react";
 
 type Props = {
 	color?: string;
-	width?: number;
+	width?: string;
 };
 
-const LoadingIcon: FC<Props> = ({ color = "#BBBBBB", width = 48 }: Props) => {
+const LoadingIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			className="animate-spin "
