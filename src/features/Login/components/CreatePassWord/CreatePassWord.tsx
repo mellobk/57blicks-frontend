@@ -1,5 +1,5 @@
-import type { PasswordValidations } from "../../types/validations";
-import type { SubmitHandler} from "react-hook-form";
+import { FC, useEffect, useRef, useState } from "react";
+import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
@@ -7,9 +7,9 @@ import { LoginTitle } from "../LoginTitle";
 import { PasswordInput } from "@/components/forms/PasswordInput";
 import createPassWordFields from "../../utils/input-fields";
 import { createPasswordSchema } from "../../utils/Schemas/validations-schemas.ts";
-import { useEffect, useRef, useState } from "react";
 import { passwordInitialsValidations } from "../../utils/constants";
 import { validPasswordRules } from "../../utils/functions";
+import type { PasswordValidations } from "../../types/validations";
 
 interface MfaProps {
 	title?: string;
@@ -18,7 +18,7 @@ interface MfaProps {
 	buttonText?: string;
 }
 
-export const CreatePassword: React.FC<MfaProps> = ({
+export const CreatePassword: FC<MfaProps> = ({
 	title,
 	subTitle,
 	buttonText,
