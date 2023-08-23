@@ -1,21 +1,29 @@
+import { render, screen, fireEvent } from "@testing-library/react";
+import { AuthenticateCode } from "./AuthCode"; // Update the import path accordingly
 
-import { render, fireEvent, } from '@testing-library/react';
-import Button from './AuthCode'; // Assuming the Button component is in a file named Button.js
+describe("AuthenticateCode", () => {
+	test("calls handleOnChange when input changes", () => {
+		const handleOnChangeMock = jest.fn();
+		const title = "Authentication Code";
+		const required = true;
 
-describe('Button Component', () => {
-  test('renders correctly with text', () => {
-    const onClickMock = jest.fn();
+		render(
+			<AuthenticateCode
+				handleOnChange={handleOnChangeMock}
+				title={title}
+				required={required}
+			/>
+		);
 
-    const { getByText, } = render(
-      <Button text="Click Me" onClick={onClickMock} />,
-    );
+		// Find the input element
+		const inputElement = screen.getByRole("textbox");
 
-    const buttonElement = getByText('Click Me',);
-    fireEvent.click(buttonElement,);
+		// Simulate input change
+		fireEvent.change(inputElement, { target: { value: "123456" } });
 
-    expect(buttonElement,).toBeInTheDocument();
-    expect(onClickMock,).toHaveBeenCalledTimes(1,);
-  },);
+		// Expect handleOnChange to be called with the input value
+		expect(handleOnChangeMock).toHaveBeenCalledWith("123456");
+	});
 
-  // Add more test cases for different scenarios if needed
-},);
+	// You can add more test cases here
+});

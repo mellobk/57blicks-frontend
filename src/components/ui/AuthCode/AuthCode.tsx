@@ -3,7 +3,7 @@ import { useRef } from "react";
 import AuthCode, { AuthCodeRef } from "react-auth-code-input";
 
 interface AuthenticateProps {
-	handleOnChange: (result: string) => string;
+	handleOnChange?: (result: string) => void | undefined;
 	required?: boolean;
 	title?: string;
 }
@@ -23,7 +23,11 @@ export const AuthenticateCode: React.FC<AuthenticateProps> = ({
 			</div>
 			<AuthCode
 				ref={AuthInputRef}
-				onChange={(result): string => handleOnChange(result)}
+				onChange={(result: string): void => {
+					if (handleOnChange) {
+						handleOnChange(result);
+					}
+				}}
 				containerClassName="flex gap-2 justify-between"
 				inputClassName="w-10 h-10 text-24 text-center  border bg-gray-200 rounded-[0.3125rem]"
 			/>

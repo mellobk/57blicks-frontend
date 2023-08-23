@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import type { SubmitHandler} from "react-hook-form";
+import type { FieldValues, SubmitHandler} from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
@@ -14,11 +14,12 @@ export const LoginForm: FC = () => {
 		register,
 		handleSubmit,
 		formState: { isValid },
-	} = useForm({
+	} = useForm<FieldValues>({
 		resolver: zodResolver(LoginSchema),
 	});
 
-	const onSubmit: SubmitHandler<any> = (data) => {
+	// eslint-disable-next-line unicorn/consistent-function-scoping
+	const onSubmit: SubmitHandler<FieldValues> = (data): void => {
 		console.log(data);
 	};
 

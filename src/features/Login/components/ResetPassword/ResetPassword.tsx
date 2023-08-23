@@ -1,5 +1,4 @@
-import type { SubmitHandler} from "react-hook-form";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { LoginTitle } from "../LoginTitle";
@@ -12,11 +11,11 @@ export const ResetPassword: React.FC = () => {
 		register,
 		handleSubmit,
 		formState: { isValid },
-	} = useForm({
+	} = useForm<FieldValues>({
 		resolver: zodResolver(ResetPasswordSchemas),
 	});
 
-	const onSubmit: SubmitHandler<any> = (data) => {
+	const onSubmit: SubmitHandler<FieldValues> = (data) => {
 		console.log(data);
 	};
 
