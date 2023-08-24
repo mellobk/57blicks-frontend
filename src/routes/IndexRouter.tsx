@@ -5,7 +5,6 @@ const indexRoutes = [
 	{
 		path: "/Home",
 		page: Home,
-		routeComponent: null,
 		layout: null,
 	},
 ];

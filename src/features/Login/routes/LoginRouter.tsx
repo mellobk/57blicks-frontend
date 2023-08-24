@@ -14,55 +14,46 @@ const LoginRoutes = [
 	{
 		path: "/",
 		page: FirstLogin,
-		routeComponent: null,
 		layout: LoginLayout,
 	},
 	{
 		path: "/create-password",
 		page: CreatePassWord,
-		routeComponent: null,
 		layout: LoginLayout,
 	},
 	{
 		path: "/success-first-login",
 		page: SuccessFirstLogin,
-		routeComponent: null,
 		layout: LoginLayout,
 	},
 	{
 		path: "/login",
 		page: Login,
-		routeComponent: null,
 		layout: LoginLayout,
 	},
 	{
 		path: "/login-mfa",
 		page: LoginMfa,
-		routeComponent: null,
 		layout: LoginLayout,
 	},
 	{
 		path: "/reset-password",
 		page: ResetPassword,
-		routeComponent: null,
 		layout: LoginLayout,
 	},
 	{
 		path: "/reset-password-mfa",
 		page: ResetPasswordMfa,
-		routeComponent: null,
 		layout: LoginLayout,
 	},
 	{
 		path: "/reset-create-password",
 		page: ResetCreatePassWord,
-		routeComponent: null,
 		layout: LoginLayout,
 	},
 	{
 		path: "/success-reset-password",
 		page: SuccessResetPassword,
-		routeComponent: null,
 		layout: LoginLayout,
 	},
 ];

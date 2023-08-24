@@ -5,7 +5,6 @@ import { rootRoute } from "./RootRoute";
 interface Props {
 	path?: string;
 	page?: ComponentType;
-	routeComponent?: any;
 	layout: ComponentType | any;
 }
 
