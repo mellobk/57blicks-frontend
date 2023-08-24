@@ -1,3 +1,4 @@
+import type { FC } from "react";
 import IconItems from "./icon-dictionary";
 
 type Props = {
@@ -6,7 +7,7 @@ type Props = {
 	color?: string;
 };
 
-const IconTemplate: React.FC<Props> = ({ name, width, color }: Props) => {
+const IconTemplate: FC<Props> = ({ name, width, color }: Props) => {
 	return <IconItems name={name} width={width} color={color} />;
 };
 

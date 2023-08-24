@@ -3,7 +3,7 @@ import { Link } from "@tanstack/router";
 import IconTemplate from "@/assets/icons/icons.tsx";
 import LogoGold from "@/assets/images/png/LogoGold.png";
 import { Avatar } from "@/components/ui/Avatar";
-import { NavbarRoutes } from "@/features/Dashboard/routes/NavbarRoutes.tsx";
+import { NavbarRoutes } from "@/features/Dashboard/routes/DashboardRouter.tsx";
 import "./Dashboard.css";
 
 type Props = {
