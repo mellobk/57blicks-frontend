@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const DashboardLayout: React.FC<Props> = ({ children }: Props) => {
-	const createLoanTo: string = "/creat-loan";
+	const createLoanTo: string = "/create-loan";
 
 	return (
 		<div className="flex flex-col h-screen bg-gradient-to-b from-primary to-gold-600">

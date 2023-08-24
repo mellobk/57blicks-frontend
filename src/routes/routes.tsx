@@ -3,22 +3,23 @@ import { Route } from "@tanstack/router";
 import { rootRoute } from "./RootRoute";
 
 interface Props {
-	path?: string;
-	page?: ComponentType;
-	layout: ComponentType | any;
+	path: string;
+	page: ComponentType;
+	layout?: ComponentType | any;
 }
 
-const UnauthenticatedRoute = (Routes: Array<Props>) => {
-	return Routes.map(({ page: C, layout: Layout, path }) => {
+const UnauthenticatedRoute = (routes: Array<Props>) => {
+	return routes.map(({ page: Page, layout: Layout, path }) => {
 		return new Route({
-			getParentRoute: (): typeof rootRoute => rootRoute,
-			path: path || "/",
-
+      path,
+      getParentRoute: (): typeof rootRoute => rootRoute,
 			component: (): ReactElement => {
 				return Layout ? (
-					<Layout>{C ? <C /> : null}</Layout>
+					<Layout>
+						<Page />
+					</Layout>
 				) : (
-					<div>{C ? <C /> : null}</div>
+					<Page />
 				);
 			},
 		});
