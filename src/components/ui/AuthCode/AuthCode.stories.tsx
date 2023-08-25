@@ -15,7 +15,7 @@ export const Standard: Story = {
 		handleOnChange: () => {
 			return;
 		},
-		title: "Authenticate Code",
+		label: "Authenticate Code",
 		required: true,
 	},
 };

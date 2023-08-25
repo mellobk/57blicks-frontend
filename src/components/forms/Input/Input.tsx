@@ -1,24 +1,19 @@
-import type {ForwardRefRenderFunction, InputHTMLAttributes} from "react";
+import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
 import { classNames } from "primereact/utils";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import IconTemplate from "@/assets/icons/icons";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-	title?: string;
+	label?: string;
 	placeholder?: string;
-	required?: boolean;
 	error?: string;
 	iconName?: string;
 	register?: UseFormRegisterReturn;
-	disabled?: boolean;
 	defaultValue?: string;
 }
 
-export const Input: ForwardRefRenderFunction<
-	HTMLInputElement,
-	InputProps
-> = ({
-	title,
+export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
+	label,
 	placeholder,
 	error,
 	register,
@@ -26,12 +21,13 @@ export const Input: ForwardRefRenderFunction<
 	required,
 	disabled = false,
 	defaultValue,
+	...props
 }) => {
 	return (
-		<div className="flex flex-col gap-2">
+		<div className="flex flex-col gap-2 pt-6">
 			<div className="font-semibold text-gray-600 ">
 				<div>
-					{title} {required && <span className="text-red-ERROR">*</span>}
+					{label} {required && <span className="text-red-ERROR">*</span>}
 				</div>
 			</div>
 			<div className="relative">
@@ -52,21 +48,22 @@ export const Input: ForwardRefRenderFunction<
 					className={classNames(
 						error ? "text-red-ERROR bg-gray-100 " : "bg-gray-200",
 						"focus:outline-none",
-						"placeholder-gray-400 font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md"
+						"text-gray-400 font-inter leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md"
 					)}
 					type="text"
 					defaultValue={defaultValue}
 					placeholder={placeholder}
 					disabled={disabled}
+					required={required}
 					{...register}
+					{...props}
 				/>
 			</div>
 			{error && (
 				<div
 					className={classNames(
-						"font-weight-400",
 						"text-red-ERROR",
-						"font-normal font-weight-400 leading-normal tracking-tight"
+						"leading-normal tracking-tight"
 					)}
 				>
 					{error}

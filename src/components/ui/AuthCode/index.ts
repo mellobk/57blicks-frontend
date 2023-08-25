@@ -1,1 +1,1 @@
-export {AuthenticateCode} from "./AuthCode";
+export { AuthenticateCode } from "./AuthCode";

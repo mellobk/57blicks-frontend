@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Input } from "./Input";
+import { Select } from "./Select.tsx";
 import "../../utils/StoryBookCssExport.tsx";
 
-const meta: Meta<typeof Input> = {
-	component: Input,
+const meta: Meta<typeof Select> = {
+	component: Select,
 	tags: ["autodocs"],
 };
 
 export default meta;
-type Story = StoryObj<typeof Input>;
+type Story = StoryObj<typeof Select>;
 
 export const NormalInput: Story = {
 	args: {

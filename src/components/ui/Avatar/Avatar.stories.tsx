@@ -1,8 +1,8 @@
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.min.css';
 import type {Meta, StoryObj} from '@storybook/react';
 import { Avatar } from './Avatar';
 import '../../../styles/tailwind.css';
-import 'primereact/resources/themes/lara-light-indigo/theme.css';
-import 'primereact/resources/primereact.min.css';
 
 const meta: Meta<typeof Avatar> = {
     component: Avatar,

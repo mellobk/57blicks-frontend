@@ -33,7 +33,7 @@ export const ResetPassword: React.FC = () => {
 								>
 									<div className="flex  flex-col justify-between w-full  gap-8">
 										<Input
-											title="Email"
+											label="Email"
 											placeholder="Enter Email"
 											required
 											register={register(loginFields?.email)}

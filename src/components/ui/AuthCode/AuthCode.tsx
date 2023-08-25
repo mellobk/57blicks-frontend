@@ -1,24 +1,23 @@
 import { useRef } from "react";
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import AuthCode, { AuthCodeRef } from "react-auth-code-input";
 
 interface AuthenticateProps {
 	handleOnChange?: (result: string) => void | undefined;
 	required?: boolean;
-	title?: string;
+	label?: string;
 }
 
 export const AuthenticateCode: React.FC<AuthenticateProps> = ({
 	handleOnChange,
 	required,
-	title,
+	label,
 }) => {
 	const AuthInputRef = useRef<AuthCodeRef>(null);
 	return (
 		<div className="flex flex-col gap-2">
 			<div className="font-semibold text-gray-600 ">
 				<div>
-					{title} {required && <span className="text-red-ERROR">*</span>}
+					{label} {required && <span className="text-red-ERROR">*</span>}
 				</div>
 			</div>
 			<AuthCode

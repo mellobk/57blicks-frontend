@@ -1,16 +1,16 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { AuthenticateCode } from "./AuthCode"; // Update the import path accordingly
+import { AuthenticateCode } from "./AuthCode";
 
 describe("AuthenticateCode", () => {
 	test("calls handleOnChange when input changes", () => {
 		const handleOnChangeMock = jest.fn();
-		const title = "Authentication Code";
+		const label = "Authentication Code";
 		const required = true;
 
 		render(
 			<AuthenticateCode
 				handleOnChange={handleOnChangeMock}
-				title={title}
+				label={label}
 				required={required}
 			/>
 		);

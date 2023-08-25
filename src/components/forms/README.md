@@ -8,6 +8,6 @@ Example:
 
 - forms/Input
   - Input.tsx
-  - Input.stories.tsx
+  - Select.stories.tsx
   - Input.test.tsx
   - index.ts

@@ -25,7 +25,7 @@ export const LoginForm: FC = () => {
 
 	return (
 		<div className="flex flex-col items-center  gap-3 h-full w-full">
-			<LoginTitle title={"Welcome Back!"}>
+			<LoginTitle title="Welcome Back!">
 				<div className="flex  flex-col justify-between w-full h-full gap-5">
 					<div className="flex flex-col gap-5 w-full h-full">
 						<div className="flex justify-between gap-2 w-full h-full ">
@@ -36,13 +36,13 @@ export const LoginForm: FC = () => {
 								>
 									<div className="flex  flex-col justify-between w-full  gap-8">
 										<Input
-											title="Email"
+											label="Email"
 											placeholder="Enter Email"
 											required
 											register={register(loginFields?.email)}
 										/>
 										<PasswordInput
-											title="Password"
+											label="Password"
 											placeholder="Enter Password"
 											required
 											register={register(loginFields?.password)}

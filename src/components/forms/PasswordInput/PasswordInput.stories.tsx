@@ -11,7 +11,7 @@ type Story = StoryObj<typeof PasswordInput>;
 
 export const IconPasswordInput: Story = {
 	args: {
-		title: "Username",
+		label: "Username",
 		placeholder: "Placeholder",
 		required: false,
 		passWordValidations: [],
@@ -21,7 +21,7 @@ export const IconPasswordInput: Story = {
 
 export const IconPasswordInputGood: Story = {
 	args: {
-		title: "Username",
+		label: "Username",
 		placeholder: "Placeholder",
 		required: false,
 		passWordValidations: [
@@ -35,7 +35,7 @@ export const IconPasswordInputGood: Story = {
 
 export const IconPasswordInputGreat: Story = {
 	args: {
-		title: "Username",
+		label: "Username",
 		placeholder: "Placeholder",
 		required: false,
 		passWordValidations: [
@@ -49,7 +49,7 @@ export const IconPasswordInputGreat: Story = {
 
 export const ErrorPasswordInput: Story = {
 	args: {
-		title: "Username",
+		label: "Username",
 		placeholder: "Placeholder",
 		required: false,
 		passWordValidations: [
@@ -63,7 +63,7 @@ export const ErrorPasswordInput: Story = {
 
 export const RequiredPasswordInput: Story = {
 	args: {
-		title: "Username",
+		label: "Username",
 		placeholder: "Placeholder",
 		required: true,
 		passWordValidations: [

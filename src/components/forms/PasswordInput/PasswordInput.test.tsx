@@ -5,7 +5,7 @@ describe("PasswordInput component", () => {
 	it("renders label, placeholder, and icon when provided", () => {
 		render(
 			<PasswordInput
-				title="Password"
+				label="Password"
 				placeholder="Enter your password"
 				error="Message 2"
 			/>
@@ -26,7 +26,7 @@ describe("PasswordInput component", () => {
 
 	it("renders without error and icon when no iconName, required, or error is provided", () => {
 		render(
-			<PasswordInput title="Password" placeholder="Enter your password" />
+			<PasswordInput label="Password" placeholder="Enter your password" />
 		);
 
 		const labelElement = screen.getByText("Password");

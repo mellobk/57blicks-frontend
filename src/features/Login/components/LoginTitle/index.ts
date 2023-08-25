@@ -1,1 +1,1 @@
-export {LoginTitle} from './LoginTitle';
+export { LoginTitle } from "./LoginTitle";

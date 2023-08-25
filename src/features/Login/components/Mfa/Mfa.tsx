@@ -41,7 +41,7 @@ export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 								<Input
 									disabled
 									defaultValue={"XXXX-XXXX-5555"}
-									title="Phone Number"
+									label="Phone Number"
 									required
 								/>
 							</div>
@@ -56,7 +56,7 @@ export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 						<div>
 							<AuthenticateCode
 								handleOnChange={handleAuthCodeChange}
-								title="Confirmation Code"
+								label="Confirmation Code"
 								required
 							/>
 						</div>

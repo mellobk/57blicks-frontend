@@ -71,7 +71,7 @@ export const CreatePassword: FC<MfaProps> = ({
 									className="w-full h-full flex flex-col justify-between"
 								>
 									<PasswordInput
-										title="Create Password"
+										label="Create Password"
 										placeholder="Enter Password"
 										required
 										register={register(createPassWordFields?.password)}
