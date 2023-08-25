@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const ShieldIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const Shield: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			width={width}
@@ -22,4 +22,4 @@ const ShieldIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	);
 };
 
-export default ShieldIcon;
+export default Shield;

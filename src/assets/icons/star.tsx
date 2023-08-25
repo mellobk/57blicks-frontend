@@ -1,14 +1,11 @@
-import type * as React from "react";
+import type { FC } from "react";
 
 type Props = {
 	color?: string;
 	width?: string;
 };
 
-const StarIcon: React.FC<Props> = ({
-	color = "#BBBBBB",
-	width = "48",
-}: Props) => {
+const Star: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			width={width}
@@ -28,4 +25,4 @@ const StarIcon: React.FC<Props> = ({
 	);
 };
 
-export default StarIcon;
+export default Star;

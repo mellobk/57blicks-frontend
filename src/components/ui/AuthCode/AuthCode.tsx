@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import AuthCode, { AuthCodeRef } from "react-auth-code-input";
+import { type FC, useRef } from "react";
+import AuthCode, { type AuthCodeRef } from "react-auth-code-input";
 
 interface AuthenticateProps {
 	handleOnChange?: (result: string) => void | undefined;
@@ -7,7 +7,7 @@ interface AuthenticateProps {
 	label?: string;
 }
 
-export const AuthenticateCode: React.FC<AuthenticateProps> = ({
+export const AuthenticateCode: FC<AuthenticateProps> = ({
 	handleOnChange,
 	required,
 	label,

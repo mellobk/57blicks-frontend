@@ -1,13 +1,13 @@
 import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
-import { classNames } from "primereact/utils";
 import type { UseFormRegisterReturn } from "react-hook-form";
-import IconTemplate from "@/assets/icons/icons";
+import { classNames } from "primereact/utils";
+import { Icon, IconNames } from "@/components/ui/Icon";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 	placeholder?: string;
 	error?: string;
-	iconName?: string;
+	iconName?: typeof IconNames[number];
 	register?: UseFormRegisterReturn;
 	defaultValue?: string;
 }
@@ -36,11 +36,7 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 						className="absolute top-0 right-2 bottom-0 flex items-center justify-center"
 						data-testid="icon"
 					>
-						<IconTemplate
-							name={iconName || "search"}
-							width="20"
-							color={"#000"}
-						/>
+						<Icon name={iconName || "search"} width="20" color={"#000"} />
 					</div>
 				)}
 

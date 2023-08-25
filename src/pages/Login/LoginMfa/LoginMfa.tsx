@@ -1,6 +1,7 @@
+import type { FC } from "react";
 import { Mfa } from "@/features/Login/components/Mfa";
 
-export const LoginMfa: React.FC = () => {
+export const LoginMfa: FC = () => {
 	return (
 		<div className="flex flex-col items-center  gap-3 h-full">
 			<Mfa

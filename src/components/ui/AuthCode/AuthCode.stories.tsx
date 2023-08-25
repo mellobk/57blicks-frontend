@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { AuthenticateCode } from "./AuthCode.tsx";
-import "../../utils/StoryBookCssExport.tsx";
+import "@/utils/StoryBookCssExport.tsx";
 
 const meta: Meta<typeof AuthenticateCode> = {
 	component: AuthenticateCode,

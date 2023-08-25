@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { Avatar as PrimeReactAvatar } from "primereact/avatar";
-import IconTemplate from "@/assets/icons/icons.tsx";
+import { Icon } from "@/components/ui/Icon";
 import "./Avatar.css";
 
 interface AvatarProps {
@@ -9,7 +9,7 @@ interface AvatarProps {
 }
 
 export const Avatar: FC<AvatarProps> = ({ image, name = null }) => {
-	const getLabel = () => {
+	const getLabel = (): string => {
 		if (!name) return "";
 
 		const initials = name
@@ -23,9 +23,9 @@ export const Avatar: FC<AvatarProps> = ({ image, name = null }) => {
 		<PrimeReactAvatar
 			image={image}
 			label={getLabel()}
-			icon={<IconTemplate name="user" color="white" />}
+			icon={<Icon name="user" color="white" />}
 			shape="circle"
-      className={!image && !name ? 'avatar-icon bg-opacity-20 p-2 ': ''}
+			className={!image && !name ? "avatar-icon bg-opacity-20 p-2 " : ""}
 		/>
 	);
 };

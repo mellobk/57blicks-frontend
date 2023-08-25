@@ -1,13 +1,12 @@
 import type { FC } from "react";
-import type { FieldValues, SubmitHandler} from "react-hook-form";
-import { useForm } from "react-hook-form";
+import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
-import { LoginTitle } from "../LoginTitle";
 import { PasswordInput } from "@/components/forms/PasswordInput";
-import { loginFields } from "../../utils/input-fields";
 import { Input } from "@/components/forms/Input";
-import { LoginSchema } from "../../utils/Schemas/LoginSchemas";
+import { loginFields } from "@/features/Login/utils/input-fields";
+import { LoginSchema } from "@/features/Login/utils/Schemas/LoginSchemas";
+import { LoginTitle } from "../LoginTitle";
 
 export const LoginForm: FC = () => {
 	const {
@@ -31,7 +30,7 @@ export const LoginForm: FC = () => {
 						<div className="flex justify-between gap-2 w-full h-full ">
 							<div className="w-full h-full">
 								<form
-									onSubmit={() => handleSubmit(onSubmit)}
+									onSubmit={handleSubmit(onSubmit)}
 									className="w-full h-full flex flex-col justify-between"
 								>
 									<div className="flex  flex-col justify-between w-full  gap-8">

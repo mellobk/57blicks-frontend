@@ -1,7 +1,8 @@
-import { IconTemplate } from "@/assets/icons";
+import type { FC } from "react";
 import { Button as PrimeReactButton } from "primereact/button";
+import { Icon } from "@/components/ui/Icon";
 
-interface AvatarProps {
+interface ButtonProps {
 	loading?: boolean;
 	disabled?: boolean;
 	iconName?: string;
@@ -12,7 +13,7 @@ interface AvatarProps {
 	textColor?: string;
 }
 
-export const Button: React.FC<AvatarProps> = ({
+export const Button: FC<ButtonProps> = ({
 	loading,
 	disabled,
 	iconName = "",
@@ -28,13 +29,11 @@ export const Button: React.FC<AvatarProps> = ({
 		>
 			<div className="w-full flex flex-row items-center justify-center gap-2">
 				{loading ? (
-					<IconTemplate name="loader" width="20" color="white" />
+					<Icon name="loader" width="20" color="white" />
 				) : (
 					<>
 						<div>
-							{iconName && (
-								<IconTemplate name={iconName} width="25" color="white" />
-							)}
+							{iconName && <Icon name={iconName} width="25" color="white" />}
 						</div>
 						{text}
 					</>

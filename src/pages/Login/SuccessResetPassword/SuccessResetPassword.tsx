@@ -1,6 +1,7 @@
+import type { FC } from "react";
 import { Success } from "@/features/Login/components/Success";
 
-export const SuccessResetPassword: React.FC = () => {
+export const SuccessResetPassword: FC = () => {
 	return (
 		<div className="flex flex-col items-center  gap-3 h-full">
 			<Success

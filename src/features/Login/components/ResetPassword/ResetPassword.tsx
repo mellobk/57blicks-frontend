@@ -1,13 +1,13 @@
-import type { FieldValues, SubmitHandler} from "react-hook-form";
-import { useForm } from "react-hook-form";
+import type { FC } from "react";
+import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
-import { LoginTitle } from "../LoginTitle";
-import { loginFields } from "../../utils/input-fields";
 import { Input } from "@/components/forms/Input";
-import { ResetPasswordSchemas } from "../../utils/Schemas/ResetPasswordSchemas";
+import { loginFields } from "@/features/Login/utils/input-fields";
+import { ResetPasswordSchemas } from "@/features/Login/utils/Schemas/ResetPasswordSchemas";
+import { LoginTitle } from "../LoginTitle";
 
-export const ResetPassword: React.FC = () => {
+export const ResetPassword: FC = () => {
 	const {
 		register,
 		handleSubmit,
@@ -16,7 +16,7 @@ export const ResetPassword: React.FC = () => {
 		resolver: zodResolver(ResetPasswordSchemas),
 	});
 
-	const onSubmit: SubmitHandler<FieldValues> = (data) => {
+	const onSubmit: SubmitHandler<FieldValues> = (data): void => {
 		console.log(data);
 	};
 
@@ -28,7 +28,7 @@ export const ResetPassword: React.FC = () => {
 						<div className="flex justify-between gap-2 w-full h-full ">
 							<div className="w-full h-full">
 								<form
-									onSubmit={() => handleSubmit(onSubmit)}
+									onSubmit={handleSubmit(onSubmit)}
 									className="w-full h-full flex flex-col justify-between"
 								>
 									<div className="flex  flex-col justify-between w-full  gap-8">

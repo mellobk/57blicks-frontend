@@ -1,21 +1,26 @@
-import { useEffect, useState } from "react";
-import IconTemplate from "../../../assets/icons/icons";
+import {
+	type ForwardRefRenderFunction,
+	type InputHTMLAttributes,
+	useEffect,
+	useState,
+} from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { classNames } from "primereact/utils";
+import { Icon } from "@/components/ui/Icon";
 import type { PasswordValidations } from "@/features/Login/types/validations";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 	placeholder?: string;
 	required?: boolean;
 	error?: string;
-	register?: UseFormRegisterReturn<any>;
+	register?: UseFormRegisterReturn;
 	passWordValidations?: Array<PasswordValidations>;
 	disabled?: boolean;
 	defaultValue?: string;
 }
 
-export const PasswordInput: React.ForwardRefRenderFunction<
+export const PasswordInput: ForwardRefRenderFunction<
 	HTMLInputElement,
 	InputProps
 > = ({
@@ -102,7 +107,7 @@ export const PasswordInput: React.ForwardRefRenderFunction<
 					onClick={changeTypeHandler}
 					data-testid="icon"
 				>
-					<IconTemplate name={changeIcon} width="20" color={"#000"} />
+					<Icon name={changeIcon} width="20" color={"#000"} />
 				</div>
 				<input
 					defaultValue={defaultValue}

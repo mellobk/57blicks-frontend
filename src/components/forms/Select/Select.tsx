@@ -1,9 +1,8 @@
 import type { ForwardRefRenderFunction } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
-import type { DropdownProps } from "primereact/dropdown";
-import { Dropdown } from "primereact/dropdown";
+import { Dropdown, type DropdownProps } from "primereact/dropdown";
 import { classNames } from "primereact/utils";
-import IconTemplate from "@/assets/icons/icons";
+import { Icon } from "@/components/ui/Icon";
 
 interface SelectProps extends DropdownProps {
 	error?: string;
@@ -30,7 +29,7 @@ export const Select: ForwardRefRenderFunction<
 						className="absolute top-0 right-2 bottom-0 flex items-center justify-center"
 						data-testid="icon"
 					>
-						<IconTemplate name={iconName} width="20" color={"#000"} />
+						<Icon name={iconName} width="20" color={"#000"} />
 					</div>
 				)}
 
@@ -42,7 +41,8 @@ export const Select: ForwardRefRenderFunction<
 					)}
 					pt={{
 						input: {
-							className: "p-0 font-inter font-normal leading-none text-sm text-gray-400",
+							className:
+								"p-0 font-inter font-normal leading-none text-sm text-gray-400",
 						},
 						wrapper: { className: "bg-gray-200 rounded-b-lg p-0" },
 						trigger: { className: "w-auto" },
@@ -52,7 +52,7 @@ export const Select: ForwardRefRenderFunction<
 								"text-[13px] bg-gray-200 text-primary-300 hover:bg-gray-300",
 						},
 					}}
-					dropdownIcon={<IconTemplate name="arrowDown" width="10" />}
+					dropdownIcon={<Icon name="arrowDown" width="10" />}
 					{...register}
 					{...props}
 				/>

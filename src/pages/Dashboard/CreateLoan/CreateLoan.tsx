@@ -69,12 +69,12 @@ export const CreateLoan: FC = () => {
 	const { handleSubmit, register, watch } = useForm<FormData>();
 	const loanType = watch("loanType");
 
-	const onSubmit = (data: FormData) => {
+	const onSubmit = (data: FormData): void => {
 		console.log(data);
 	};
 
 	return (
-		<form className="" onSubmit={handleSubmit(onSubmit)}>
+		<form onSubmit={handleSubmit(onSubmit)}>
 			<div className="grid grid-rows-2 gap-6 divide-y divide-gray-200 w-screen m-6">
 				<div className="grid grid-cols-3 gap-6 divide-x divide-gray-200">
 					<div>

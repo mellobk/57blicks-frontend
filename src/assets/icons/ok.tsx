@@ -17,9 +17,9 @@ const Ok: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 			<path
 				d="M11.5 0.890625L4.28125 8.10938L1 4.82812"
 				stroke={color}
-				stroke-width="1.125"
-				stroke-linecap="round"
-				stroke-linejoin="round"
+				strokeWidth="1.125"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			/>
 		</svg>
 	);

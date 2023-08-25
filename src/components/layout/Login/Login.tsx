@@ -1,12 +1,12 @@
-import type React from "react";
+import type { FC, ReactNode } from "react";
 import Logo from "@/assets/images/png/Logo.png";
 import "./Login.css";
 
 type Props = {
-	children?: React.ReactNode;
+	children?: ReactNode;
 };
 
-export const LoginLayout: React.FC<Props> = ({ children }: Props) => {
+export const LoginLayout: FC<Props> = ({ children }: Props) => {
 	return (
 		<div
 			className="flex justify-between bg-cover bg-center w-screen h-screen box-border p-6 overflow-auto Login-layout-container"

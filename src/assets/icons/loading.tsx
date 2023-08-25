@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const LoadingIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const Loading: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			className="animate-spin "
@@ -21,15 +21,15 @@ const LoadingIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 				rx="23.0659"
 				ry="23.392"
 				stroke={color}
-				stroke-opacity="0.25"
-				stroke-width="5.74359"
+				strokeOpacity="0.25"
+				strokeWidth="5.74359"
 			/>
 			<path
 				d="M31.3939 8.60852C37.5112 8.56556 43.3948 10.9888 47.7503 15.3452C52.1058 19.7016 54.5766 25.6342 54.6189 31.838"
 				stroke="url(#paint0_linear_3468_9118)"
-				stroke-width="5.74359"
-				stroke-linecap="round"
-				stroke-dasharray="1.64 1.64"
+				strokeWidth="5.74359"
+				strokeLinecap="round"
+				strokeDasharray="1.64 1.64"
 			/>
 			<defs>
 				<linearGradient
@@ -41,12 +41,12 @@ const LoadingIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 					gradientUnits="userSpaceOnUse"
 				>
 					<stop stopColor={color} />
-					<stop offset="0.755208" stopColor={color} stop-opacity="0.01" />
-					<stop offset="1" stopColor={color} stop-opacity="0" />
+					<stop offset="0.755208" stopColor={color} stopOpacity="0.01" />
+					<stop offset="1" stopColor={color} stopOpacity="0" />
 				</linearGradient>
 			</defs>
 		</svg>
 	);
 };
 
-export default LoadingIcon;
+export default Loading;

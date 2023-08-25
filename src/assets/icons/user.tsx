@@ -1,14 +1,11 @@
-import type * as React from "react";
+import type { FC } from "react";
 
 type Props = {
 	color?: string;
 	width?: string;
 };
 
-const UserIcon: React.FC<Props> = ({
-	color = "#BBBBBB",
-	width = "48",
-}: Props) => {
+const User: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			width={width}
@@ -29,4 +26,4 @@ const UserIcon: React.FC<Props> = ({
 	);
 };
 
-export default UserIcon;
+export default User;

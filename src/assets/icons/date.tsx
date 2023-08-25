@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const DateIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const Date: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			fill={color}
@@ -19,4 +19,4 @@ const DateIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	);
 };
 
-export default DateIcon;
+export default Date;

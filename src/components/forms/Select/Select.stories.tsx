@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Select } from "./Select.tsx";
-import "../../utils/StoryBookCssExport.tsx";
+import "@/utils/StoryBookCssExport.tsx";
 
 const meta: Meta<typeof Select> = {
 	component: Select,

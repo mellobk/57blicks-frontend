@@ -1,15 +1,14 @@
-import { FC, useEffect, useRef, useState } from "react";
-import type { SubmitHandler } from "react-hook-form";
-import { useForm } from "react-hook-form";
+import { type FC, useEffect, useRef, useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
-import { LoginTitle } from "../LoginTitle";
 import { PasswordInput } from "@/components/forms/PasswordInput";
-import createPassWordFields from "../../utils/input-fields";
-import { createPasswordSchema } from "../../utils/Schemas/validations-schemas.ts";
-import { passwordInitialsValidations } from "../../utils/constants";
-import { validPasswordRules } from "../../utils/functions";
-import type { PasswordValidations } from "../../types/validations";
+import createPassWordFields from "@/features/Login/utils/input-fields";
+import { createPasswordSchema } from "@/features/Login/utils/Schemas/validations-schemas.ts";
+import { passwordInitialsValidations } from "@/features/Login/utils/constants";
+import { validPasswordRules } from "@/features/Login/utils/functions";
+import type { PasswordValidations } from "@/features/Login/types/validations";
+import { LoginTitle } from "../LoginTitle";
 
 interface MfaProps {
 	title?: string;
@@ -33,7 +32,7 @@ export const CreatePassword: FC<MfaProps> = ({
 		watch,
 		trigger,
 		formState: { errors },
-	} = useForm<any>({
+	} = useForm({
 		resolver: zodResolver(createPasswordSchema),
 	});
 	const passwordText = watch(createPassWordFields.password) as string;
@@ -67,7 +66,7 @@ export const CreatePassword: FC<MfaProps> = ({
 						<div className="flex justify-between gap-2w-full h-full ">
 							<div className="w-full h-full">
 								<form
-									onSubmit={() => handleSubmit(onSubmit)}
+									onSubmit={handleSubmit(onSubmit)}
 									className="w-full h-full flex flex-col justify-between"
 								>
 									<PasswordInput

@@ -1,16 +1,16 @@
-import type React from "react";
+import type { FC, ReactNode } from "react";
 import { Link } from "@tanstack/router";
-import IconTemplate from "@/assets/icons/icons.tsx";
+import { Icon } from "@/components/ui/Icon";
 import LogoGold from "@/assets/images/png/LogoGold.png";
 import { Avatar } from "@/components/ui/Avatar";
 import { NavbarRoutes } from "@/features/Dashboard/routes/DashboardRouter.tsx";
 import "./Dashboard.css";
 
 type Props = {
-	children?: React.ReactNode;
+	children?: ReactNode;
 };
 
-export const DashboardLayout: React.FC<Props> = ({ children }: Props) => {
+export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 	const createLoanTo: string = "/create-loan";
 
 	return (
@@ -41,7 +41,7 @@ export const DashboardLayout: React.FC<Props> = ({ children }: Props) => {
 					>
 						Create Loan
 					</Link>
-					<IconTemplate
+					<Icon
 						name="notification"
 						color={"rgba(251, 254, 255, 0.35)"}
 						width="20"

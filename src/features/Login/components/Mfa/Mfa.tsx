@@ -1,9 +1,9 @@
+import { type FC, useState } from "react";
 import { Input } from "@/components/forms/Input";
 import { AuthenticateCode } from "@/components/ui/AuthCode";
 import { Button } from "@/components/ui/Button";
 import { LoginTitle } from "../LoginTitle";
 import { ToastMfa } from "../ToastMfa";
-import { useState } from "react";
 
 interface MfaProps {
 	title?: string;
@@ -12,7 +12,7 @@ interface MfaProps {
 	buttonText?: string;
 }
 
-export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
+export const Mfa: FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 	const [resentMessage, sendResentMessage] = useState<boolean>();
 	const [codeMfa, sendCodeMfa] = useState<string>("");
 	const handleAuthCodeChange = (result: string): void => {

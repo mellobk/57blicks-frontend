@@ -1,10 +1,12 @@
+import type { FC, ReactNode } from "react";
+
 interface LoginTitleProps {
 	title?: string;
 	subTitle?: string;
-	children?: React.ReactNode;
+	children?: ReactNode;
 }
 
-export const LoginTitle: React.FC<LoginTitleProps> = ({
+export const LoginTitle: FC<LoginTitleProps> = ({
 	title,
 	subTitle,
 	children,

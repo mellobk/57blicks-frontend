@@ -1,11 +1,11 @@
-import type * as React from "react";
+import type { FC } from "react";
 
 type Props = {
 	color?: string;
 	width?: string;
 };
 
-const Notification: React.FC<Props> = ({
+const Notification: FC<Props> = ({
 	color = "#BBBBBB",
 	width = "48",
 }: Props) => {

@@ -1,6 +1,7 @@
+import type { FC } from "react";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { LoginTitle } from "../LoginTitle";
-import { IconTemplate } from "@/assets/icons";
 
 interface SuccessProps {
 	title?: string;
@@ -10,7 +11,7 @@ interface SuccessProps {
 	iconName?: string;
 }
 
-export const Success: React.FC<SuccessProps> = ({
+export const Success: FC<SuccessProps> = ({
 	title,
 	subTitle,
 	buttonText,
@@ -26,7 +27,7 @@ export const Success: React.FC<SuccessProps> = ({
 								<div className="flex w-[18.75rem] h-[18.75rem] items-center justify-center rounded-full bg-green-100">
 									<div className="flex w-[12.5rem] h-[12.5rem] items-center justify-center rounded-full bg-green-200">
 										<div className="flex w-[8rem] h-[8rem] items-center justify-center rounded-full bg-green-600">
-											<IconTemplate name={iconName} color="#00ba35" />
+											<Icon name={iconName} color="#00ba35" />
 										</div>
 									</div>
 								</div>

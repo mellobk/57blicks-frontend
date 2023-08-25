@@ -1,6 +1,7 @@
+import type { FC } from "react";
 import { LoginForm } from "@/features/Login/components/Login";
 
-export const Login: React.FC = () => {
+export const Login: FC = () => {
 	return (
 		<div className="flex flex-col items-center  gap-3 h-full w-full">
 			<LoginForm />
