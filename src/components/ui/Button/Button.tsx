@@ -1,41 +1,43 @@
 import type { FC } from "react";
-import { Button as PrimeReactButton } from "primereact/button";
+import { Button as PrimeReactButton, ButtonProps } from "primereact/button";
 import { Icon } from "@/components/ui/Icon";
 
-interface ButtonProps {
+interface Props extends ButtonProps {
 	loading?: boolean;
 	disabled?: boolean;
 	iconName?: string;
-	text?: string;
+	buttonText?: string;
 	onClick?: () => void;
 	className?: string;
-	bgColor?: string;
-	textColor?: string;
 }
 
-export const Button: FC<ButtonProps> = ({
+export const Button: FC<Props> = ({
 	loading,
 	disabled,
-	iconName = "",
-	text,
+	iconName,
+	buttonText,
 	onClick,
-	className = "bg-primary-500",
+	className,
+	...props
 }) => {
 	return (
 		<PrimeReactButton
 			onClick={onClick}
 			disabled={loading || disabled}
-			className={` w-full h-10  border-none ${className}`}
+			className={`${className} border-none bg-primary-500`}
+			{...props}
 		>
 			<div className="w-full flex flex-row items-center justify-center gap-2">
 				{loading ? (
 					<Icon name="loader" width="20" color="white" />
 				) : (
 					<>
-						<div>
-							{iconName && <Icon name={iconName} width="25" color="white" />}
-						</div>
-						{text}
+						{iconName && (
+							<div>
+								<Icon name={iconName} width="25" color="white" />
+							</div>
+						)}
+						{buttonText}
 					</>
 				)}
 			</div>

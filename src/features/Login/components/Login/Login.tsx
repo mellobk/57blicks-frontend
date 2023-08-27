@@ -54,7 +54,7 @@ export const LoginForm: FC = () => {
 
 									<div className="flex flex-col gap-1">
 										<Button
-											text="Login"
+											buttonText="Login"
 											className={`${
 												isValid ? "bg-primary-500" : "bg-gray-300"
 											}`}

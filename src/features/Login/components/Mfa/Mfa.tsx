@@ -46,7 +46,7 @@ export const Mfa: FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 								/>
 							</div>
 							<div className="flex self-end">
-								<Button text="Resend Code" onClick={handleSendCode} />
+								<Button buttonText="Resend Code" onClick={handleSendCode} />
 							</div>
 						</div>
 
@@ -64,11 +64,11 @@ export const Mfa: FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 
 					<div className="flex flex-col gap-1">
 						<Button
-							text={buttonText}
+							buttonText={buttonText}
 							className={`${codeMfa ? "bg-primary-500" : "bg-gray-300"}`}
 							disabled={!codeMfa}
 						/>
-						<Button text="Back" className="bg-transparent text-black" />
+						<Button buttonText="Back" className="bg-transparent text-black" />
 					</div>
 				</div>
 			</LoginTitle>

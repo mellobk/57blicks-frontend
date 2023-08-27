@@ -42,13 +42,16 @@ export const ResetPassword: FC = () => {
 
 									<div className="flex flex-col gap-1">
 										<Button
-											text="Continue"
+											buttonText="Continue"
 											className={`${
 												isValid ? "bg-primary-500" : "bg-gray-300"
 											}`}
 											disabled={!isValid}
 										/>
-										<Button text="Back" className="bg-transparent text-black" />
+										<Button
+											buttonText="Back"
+											className="bg-transparent text-black"
+										/>
 									</div>
 								</form>
 							</div>
