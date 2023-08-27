@@ -1,4 +1,4 @@
-export const IconNames: Array<string> = [
+const IconNames: Array<string> = [
 	"arrowDown",
 	"clock",
 	"closeEye",
@@ -8,9 +8,12 @@ export const IconNames: Array<string> = [
 	"notification",
 	"ok",
 	"openEye",
+	"plus",
 	"search",
 	"shield",
 	"star",
 	"user",
 	"wrong",
 ];
+
+export default IconNames;

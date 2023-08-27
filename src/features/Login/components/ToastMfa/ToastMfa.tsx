@@ -12,7 +12,7 @@ export const ToastMfa: FC<LoginTitleProps> = ({ onClose }) => {
 				<Icon name="ok" width="12" color="#00BA35" /> Code Resent!
 			</div>
 			<div className="text-center text-gray-1000" onClick={onClose}>
-				{<Icon name="wrong" width="10" color="#00BA35" />}
+				<Icon name="wrong" width="10" color="#00BA35" />
 			</div>
 		</div>
 	);

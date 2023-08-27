@@ -8,12 +8,13 @@ import Loading from "@/assets/icons/loading.tsx";
 import Notification from "@/assets/icons/notification.tsx";
 import Ok from "@/assets/icons/ok.tsx";
 import OpenEye from "@/assets/icons/open-eye.tsx";
+import Plus from "@/assets/icons/plus.tsx";
 import Search from "@/assets/icons/search.tsx";
 import Shield from "@/assets/icons/shield.tsx";
 import Star from "@/assets/icons/star.tsx";
 import User from "@/assets/icons/user.tsx";
 import Wrong from "@/assets/icons/wrong.tsx";
-import { IconNames } from "./icon-dictionary.tsx";
+import IconNames from "./IconNames.tsx";
 
 interface Props {
   name: typeof IconNames[number];
@@ -30,7 +31,7 @@ interface IconMap {
   [key: string]: IconProps;
 }
 
-export const Icon = ({ name, width, color }: Props): ReactElement => {
+const Icon = ({ name, width, color }: Props): ReactElement => {
   const icons: IconMap = {
     arrowDown: {
       name: "arrowDown",
@@ -68,6 +69,10 @@ export const Icon = ({ name, width, color }: Props): ReactElement => {
       name: "openEye",
       icon: <OpenEye width={width} color={color} />,
     },
+    plus: {
+      name: "plus",
+      icon: <Plus width={width} color={color} />,
+    },
     search: {
       name: "search",
       icon: <Search width={width} color={color} />,
@@ -91,3 +96,5 @@ export const Icon = ({ name, width, color }: Props): ReactElement => {
   };
   return icons[name]?.icon || <></>;
 };
+
+export default Icon;

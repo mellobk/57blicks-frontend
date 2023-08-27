@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const OpenEyeIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const OpenEye: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			width={width}
@@ -27,4 +27,4 @@ const OpenEyeIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	);
 };
 
-export default OpenEyeIcon;
+export default OpenEye;
