@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Input } from "./Input";
-import "@/utils/StoryBookCssExport.tsx";
+import "../../../styles/tailwind.css";
 
 const meta: Meta<typeof Input> = {
 	component: Input,
@@ -17,6 +17,11 @@ export const NormalInput: Story = {
 		required: false,
 		iconName: "",
 		error: "",
+		defaultValue: "",
+		className:
+			"placeholder-gray-400 focus:outline-none bg-gray-200 font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md",
+		onChange: () => {},
+		iconColor: "#000",
 	},
 };
 
@@ -27,6 +32,11 @@ export const IconInput: Story = {
 		required: false,
 		iconName: "search",
 		error: "",
+		defaultValue: "",
+		className:
+			"placeholder-gray-400 focus:outline-none bg-gray-200 font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md",
+		onChange: () => {},
+		iconColor: "#000",
 	},
 };
 

@@ -1,13 +1,14 @@
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import { CreateLoan } from "@/pages/Dashboard/CreateLoan/CreateLoan.tsx";
-import { InvestorPortals } from "@/pages/Dashboard/InvestorPortals/InvestorPortals.tsx";
-import { LoanOverview } from "@/pages/Dashboard/LoanOverview/LoanOverview.tsx";
-import { ManageUsers } from "@/pages/Dashboard/ManageUsers/ManageUsers.tsx";
-import { Opportunities } from "@/pages/Dashboard/Opportunities/Opportunities.tsx";
-import { Reporting } from "@/pages/Dashboard/Reporting/Reporting.tsx";
-import { Servicing } from "@/pages/Dashboard/Servicing/Servicing.tsx";
-import { Support } from "@/pages/Dashboard/Support/Support.tsx";
+import { CreateLoan } from "@/features/Dashboard/pages/CreateLoan/CreateLoan";
+
 import UnauthenticatedRoute from "@/routes/routes";
+import { Reporting } from "../pages/Reporting/Reporting";
+import { LoanOverview } from "../pages/LoanOverview/LoanOverview";
+import { Servicing } from "../pages/Servicing/Servicing";
+import { InvestorPortals } from "../pages/InvestorPortals/InvestorPortals";
+import { Opportunities } from "../pages/Opportunities/Opportunities";
+import { Support } from "../pages/Support/Support";
+import { Admin } from "@/features/ManageUser/pages/Admin/Admin";
 
 export const NavbarRoutes = [
 	{
@@ -41,8 +42,9 @@ export const NavbarRoutes = [
 		name: "Opportunities",
 	},
 	{
-		path: "/manage-users",
-		page: ManageUsers,
+		path: "/manage-users/admins",
+		page: Admin,
+		routeComponent: null,
 		layout: DashboardLayout,
 		name: "Manage Users",
 	},

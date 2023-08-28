@@ -13,4 +13,10 @@ export const IconNames: Array<string> = [
 	"star",
 	"user",
 	"wrong",
+	"column",
+	"menuTable",
+	"trash",
+	"deleteBack",
+	"bank",
+	"arrowLeft",
 ];

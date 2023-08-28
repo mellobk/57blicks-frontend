@@ -1,14 +1,15 @@
 import { LoginLayout } from "@/components/layout/Login";
-import { CreatePassWord } from "@/pages/Login/CreatePassword/CreatePassword";
-import { FirstLogin } from "@/pages/Login/FirstLogin";
-import { Login } from "@/pages/Login/Login";
-import { LoginMfa } from "@/pages/Login/LoginMfa";
-import { ResetCreatePassWord } from "@/pages/Login/ResetCreatePassword";
-import { ResetPassword } from "@/pages/Login/ResetPassword";
-import { ResetPasswordMfa } from "@/pages/Login/ResetPasswordMfa";
-import { SuccessFirstLogin } from "@/pages/Login/SuccessFirstLogin";
-import { SuccessResetPassword } from "@/pages/Login/SuccessResetPassword";
+import { CreatePassWord } from "@/features/auth/pages/CreatePassword/CreatePassword";
+
 import UnauthenticatedRoute from "@/routes/routes";
+import { FirstLogin } from "../pages/FirstLogin";
+import { SuccessFirstLogin } from "../pages/SuccessFirstLogin";
+import { Login } from "../pages/Login";
+import { LoginMfa } from "../pages/LoginMfa";
+import { ResetPassword } from "../pages/ResetPassword";
+import { ResetPasswordMfa } from "../pages/ResetPasswordMfa";
+import { ResetCreatePassWord } from "../pages/ResetCreatePassword";
+import { SuccessResetPassword } from "../pages/SuccessResetPassword";
 
 const LoginRoutes = [
 	{

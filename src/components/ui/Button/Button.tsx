@@ -11,7 +11,8 @@ interface ButtonProps {
 	className?: string;
 	bgColor?: string;
 	textColor?: string;
-	type?: "submit" | "button" | "reset";
+	deepClassName?: string;
+	type?: "submit" | "reset" | "button" | undefined;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -20,17 +21,18 @@ export const Button: FC<ButtonProps> = ({
 	iconName = "",
 	text,
 	onClick,
-	className = "bg-primary-500",
-	type = "button",
+	type,
+	className = "bg-primary-500 w-full h-10  border-none ",
+	deepClassName = "w-full flex flex-row items-center justify-center gap-1",
 }) => {
 	return (
 		<PrimeReactButton
 			onClick={onClick}
 			disabled={loading || disabled}
-			className={` w-full h-10  border-none ${className}`}
+			className={` ${className}`}
 			type={type}
 		>
-			<div className="w-full flex flex-row items-center justify-center gap-2">
+			<div className={deepClassName}>
 				{loading ? (
 					<Icon name="loader" width="20" color="white" />
 				) : (

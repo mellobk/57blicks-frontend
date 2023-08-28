@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Select } from "./Select.tsx";
-import "@/utils/StoryBookCssExport.tsx";
+import "../../../utils/StoryBookCssExport.tsx";
+import "../../../styles/tailwind.css";
 
 const meta: Meta<typeof Select> = {
 	component: Select,
@@ -10,42 +11,13 @@ const meta: Meta<typeof Select> = {
 export default meta;
 type Story = StoryObj<typeof Select>;
 
-export const NormalInput: Story = {
-	args: {
-		label: "Username",
-		placeholder: "Placeholder",
-		required: false,
-		iconName: "",
-		error: "",
-	},
-};
+const OPTIONS = [
+	{ name: "Saving", code: "Saving" },
+	{ name: "Checking", code: "Checking" },
+];
 
-export const IconInput: Story = {
+export const NormalSelect: Story = {
 	args: {
-		label: "Username",
-		placeholder: "Placeholder",
-		required: false,
-		iconName: "search",
-		error: "",
-	},
-};
-
-export const ErrorInput: Story = {
-	args: {
-		label: "Username",
-		placeholder: "Placeholder",
-		required: false,
-		iconName: "",
-		error: "Error message",
-	},
-};
-
-export const RequiredInput: Story = {
-	args: {
-		label: "Username",
-		placeholder: "Placeholder",
-		required: true,
-		iconName: "",
-		error: "",
+		options: OPTIONS,
 	},
 };
