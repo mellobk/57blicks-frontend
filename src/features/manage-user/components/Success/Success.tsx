@@ -35,7 +35,7 @@ export const Success: FC<SuccessProps> = ({
 						<div>{subTitle}</div>
 						<div className="w-full">
 							<Button
-								text={buttonText}
+								buttonText={buttonText}
 								className="bg-primary-500 w-full"
 								onClick={handleClick}
 							/>

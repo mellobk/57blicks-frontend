@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const CloseEyeIcon: FC<Props> = ({
+const CloseEye: FC<Props> = ({
 	color = "#BBBBBB",
 	width = "48",
 }: Props) => {
@@ -41,4 +41,4 @@ const CloseEyeIcon: FC<Props> = ({
 	);
 };
 
-export default CloseEyeIcon;
+export default CloseEye;

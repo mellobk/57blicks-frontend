@@ -1,10 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/consistent-type-imports */
-/* eslint-disable no-duplicate-imports */
-import { FC, useEffect, useRef, useState } from "react";
-import type { SubmitHandler } from "react-hook-form";
-import { useForm } from "react-hook-form";
+import { type FC, useEffect, useRef, useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
@@ -84,16 +79,16 @@ export const CreatePassword: FC<MfaProps> = ({
 
 									<div className="flex flex-col gap-1" ref={buttonContainer}>
 										<Button
-											text={buttonText}
+											buttonText={buttonText}
 											className={`${
 												errorPassword ? "bg-gray-300" : "bg-primary-500"
 											}`}
 											disabled={!!errorPassword}
 										/>
 										<Button
-											text="Back"
+											buttonText="Back"
 											className="bg-transparent text-black"
-											type="submit"
+                      type="submit"
 										/>
 									</div>
 								</form>

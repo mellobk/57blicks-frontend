@@ -1,2 +1,4 @@
-export { Icon } from "./Icon";
-export { IconNames } from "./icon-dictionary.tsx";
+import Icon from "./Icon.tsx";
+import IconNames from "./IconNames.tsx";
+
+export { Icon, IconNames };

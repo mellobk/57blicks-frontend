@@ -142,7 +142,7 @@ export const InvestorInfo: React.FC<InvestorInfoProps> = ({
 								</div>
 								<div className="flex flex-col gap-1">
 									<Button
-										text="Enter Banking Details"
+										buttonText="Enter Banking Details"
 										className={`bg-primary-500`}
 									/>
 								</div>

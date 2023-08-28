@@ -97,7 +97,7 @@ export const AddAdmin: React.FC = () => {
 									}
 								/>
 								<div className="flex flex-col gap-1">
-									<Button text="Send Invite" className={`bg-primary-500`} />
+									<Button buttonText="Send Invite" className={`bg-primary-500`} />
 								</div>
 							</div>
 						</form>

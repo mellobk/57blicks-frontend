@@ -174,10 +174,10 @@ export const Table: FC<TableProps> = ({
 
 					<div className="">
 						<Button
-							onClick={onClickButton}
-							text={buttonText}
+							buttonText={buttonText}
 							className="text-primary-500 w-[100%]  bg-white h-8 p-2 border-none flex justify-center items-center rounded-[16px] text-12 font-bold"
 							deepClassName=" w-full flex flex-row items-center justify-center  text-[13px] text-center"
+							onClick={onClickButton}
 						/>
 					</div>
 				</div>

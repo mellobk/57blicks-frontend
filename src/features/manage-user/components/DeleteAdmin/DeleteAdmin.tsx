@@ -15,7 +15,7 @@ export const DeleteAdmin: React.FC<DeleteAdminProps> = ({ id = 0 }) => {
 				<div className="font-bold text-red-500">delete</div> this user?
 			</div>
 			<Button
-				text="Delete"
+        buttonText="Delete"
 				onClick={(): void => {
 					handleDeleteAdmin(id);
 				}}

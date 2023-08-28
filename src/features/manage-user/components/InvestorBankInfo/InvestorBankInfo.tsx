@@ -101,7 +101,10 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 									value={data?.accountType}
 								/>
 								<div className="flex flex-col gap-1">
-									<Button text={buttonText} className={`bg-primary-500`} />
+									<Button
+										buttonText={buttonText}
+										className={`bg-primary-500`}
+									/>
 								</div>
 							</div>
 						</form>

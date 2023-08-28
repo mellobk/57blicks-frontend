@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const OpenEyeIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const OpenEye: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			width={width}
@@ -19,8 +19,8 @@ const OpenEyeIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 				fill={color}
 			/>
 			<path
-				fill-rule="evenodd"
-				clip-rule="evenodd"
+				fillRule="evenodd"
+				clipRule="evenodd"
 				d="M0.333374 5.99996C0.333374 7.09288 0.616684 7.46094 1.1833 8.19707C2.31468 9.66692 4.21212 11.3333 7.00004 11.3333C9.78797 11.3333 11.6854 9.66692 12.8168 8.19707C13.3834 7.46094 13.6667 7.09288 13.6667 5.99996C13.6667 4.90704 13.3834 4.53898 12.8168 3.80285C11.6854 2.333 9.78796 0.666626 7.00004 0.666626C4.21212 0.666626 2.31468 2.333 1.1833 3.80285C0.616684 4.53898 0.333374 4.90704 0.333374 5.99996ZM7.00004 3.49996C5.61933 3.49996 4.50004 4.61925 4.50004 5.99996C4.50004 7.38067 5.61933 8.49996 7.00004 8.49996C8.38075 8.49996 9.50004 7.38067 9.50004 5.99996C9.50004 4.61925 8.38075 3.49996 7.00004 3.49996Z"
 				fill={color}
 			/>
@@ -28,4 +28,4 @@ const OpenEyeIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	);
 };
 
-export default OpenEyeIcon;
+export default OpenEye;

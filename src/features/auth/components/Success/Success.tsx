@@ -33,7 +33,7 @@ export const Success: FC<SuccessProps> = ({
 								</div>
 							</div>
 							<div className="w-full">
-								<Button text={buttonText} className="bg-primary-500" />
+								<Button buttonText={buttonText} className="bg-primary-500" />
 							</div>
 						</div>
 					</div>

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Table } from "@/components/forms/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
 import { Icon } from "@/components/ui/Icon";

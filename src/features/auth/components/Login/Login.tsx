@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, type FC } from "react";
-import type { FieldValues, SubmitHandler } from "react-hook-form";
+import { type FC, useState } from "react";
 import { LoginSchema } from "../../utils/Schemas/LoginSchemas";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
@@ -63,7 +63,11 @@ export const LoginForm: FC = () => {
 						</div>
 					</div>
 					<div className="flex flex-col gap-1">
-						<Button type="submit" text="Login" className="bg-primary-500" />
+						<Button
+							type="submit"
+							buttonText="Login"
+							className="bg-primary-500"
+						/>
 					</div>
 				</form>
 			</LoginTitle>
