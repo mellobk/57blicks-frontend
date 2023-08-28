@@ -5,10 +5,10 @@ import "./Avatar.css";
 
 interface AvatarProps {
 	image?: string;
-	name?: string | null;
+	name?: string;
 }
 
-export const Avatar: FC<AvatarProps> = ({ image, name = null }) => {
+export const Avatar: FC<AvatarProps> = ({ image, name }) => {
 	const getLabel = (): string => {
 		if (!name) return "";
 
@@ -25,7 +25,7 @@ export const Avatar: FC<AvatarProps> = ({ image, name = null }) => {
 			label={getLabel()}
 			icon={<Icon name="user" color="white" />}
 			shape="circle"
-			className={!image && !name ? "avatar-icon bg-opacity-20 p-2 " : ""}
+			className={!image && !name ? "avatar-icon bg-opacity-20 p-2" : ""}
 		/>
 	);
 };

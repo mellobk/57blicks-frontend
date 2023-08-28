@@ -11,7 +11,7 @@ const Plus: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 			width={width}
 			height={width}
 			viewBox="0 0 13 12"
-			fill="none"
+			fill={color}
 			xmlns="http://www.w3.org/2000/svg"
 		>
 			<path

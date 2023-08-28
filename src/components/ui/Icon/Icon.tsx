@@ -12,89 +12,95 @@ import Plus from "@/assets/icons/plus.tsx";
 import Search from "@/assets/icons/search.tsx";
 import Shield from "@/assets/icons/shield.tsx";
 import Star from "@/assets/icons/star.tsx";
+import TrashBin from "@/assets/icons/trash-bin.tsx";
 import User from "@/assets/icons/user.tsx";
 import Wrong from "@/assets/icons/wrong.tsx";
 import IconNames from "./IconNames.tsx";
 
 interface Props {
-  name: typeof IconNames[number];
-  width?: string;
-  color?: string;
+	name: (typeof IconNames)[number];
+	width?: string;
+	color?: string;
 }
 
 interface IconProps {
-  name: string;
-  icon: ReactElement;
+	name: string;
+	icon: ReactElement;
 }
 
 interface IconMap {
-  [key: string]: IconProps;
+	[key: string]: IconProps;
 }
 
 const Icon = ({ name, width, color }: Props): ReactElement => {
-  const icons: IconMap = {
-    arrowDown: {
-      name: "arrowDown",
-      icon: <ArrowDown width={width} color={color} />,
-    },
-    clock: {
-      name: "clock",
-      icon: <Clock width={width} color={color} />,
-    },
-    closeEye: {
-      name: "closeEye",
-      icon: <CloseEye width={width} color={color} />,
-    },
-    closesEyes: {
-      name: "closesEyes",
-      icon: <CloseEyes width={width} color={color} />,
-    },
-    date: {
-      name: "date",
-      icon: <Date width={width} color={color} />,
-    },
-    loading: {
-      name: "loading",
-      icon: <Loading width={width} color={color} />,
-    },
-    notification: {
-      name: "notification",
-      icon: <Notification width={width} color={color} />,
-    },
-    ok: {
-      name: "ok",
-      icon: <Ok width={width} color={color} />,
-    },
-    openEye: {
-      name: "openEye",
-      icon: <OpenEye width={width} color={color} />,
-    },
-    plus: {
-      name: "plus",
-      icon: <Plus width={width} color={color} />,
-    },
-    search: {
-      name: "search",
-      icon: <Search width={width} color={color} />,
-    },
-    shield: {
-      name: "shield",
-      icon: <Shield width={width} color={color} />,
-    },
-    star: {
-      name: "star",
-      icon: <Star width={width} color={color} />,
-    },
-    user: {
-      name: "user",
-      icon: <User width={width} color={color} />,
-    },
-    wrong: {
-      name: "wrong",
-      icon: <Wrong width={width} color={color} />,
-    },
-  };
-  return icons[name]?.icon || <></>;
+	const icons: IconMap = {
+		arrowDown: {
+			name: "arrowDown",
+			icon: <ArrowDown width={width} color={color} />,
+		},
+		clock: {
+			name: "clock",
+			icon: <Clock width={width} color={color} />,
+		},
+		closeEye: {
+			name: "closeEye",
+			icon: <CloseEye width={width} color={color} />,
+		},
+		closesEyes: {
+			name: "closesEyes",
+			icon: <CloseEyes width={width} color={color} />,
+		},
+		date: {
+			name: "date",
+			icon: <Date width={width} color={color} />,
+		},
+		loading: {
+			name: "loading",
+			icon: <Loading width={width} color={color} />,
+		},
+		notification: {
+			name: "notification",
+			icon: <Notification width={width} color={color} />,
+		},
+		ok: {
+			name: "ok",
+			icon: <Ok width={width} color={color} />,
+		},
+		openEye: {
+			name: "openEye",
+			icon: <OpenEye width={width} color={color} />,
+		},
+		plus: {
+			name: "plus",
+			icon: <Plus width={width} color={color} />,
+		},
+		search: {
+			name: "search",
+			icon: <Search width={width} color={color} />,
+		},
+		shield: {
+			name: "shield",
+			icon: <Shield width={width} color={color} />,
+		},
+		star: {
+			name: "star",
+			icon: <Star width={width} color={color} />,
+		},
+		trashBin: {
+			name: "trashBin",
+			icon: <TrashBin width={width} color={color} />,
+		},
+		user: {
+			name: "user",
+			icon: <User width={width} color={color} />,
+		},
+		wrong: {
+			name: "wrong",
+			icon: <Wrong width={width} color={color} />,
+		},
+	};
+
+	return icons[name]?.icon || <></>;
 };
 
 export default Icon;

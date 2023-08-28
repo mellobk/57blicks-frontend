@@ -1,7 +1,25 @@
 import type { FC } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { Select } from "@/components/forms/Select";
+import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
+
+const ASSET_TYPES = [
+	{ value: "sfr", label: "SFR" },
+	{ value: "mf_4_less", label: "MF (4 or less)" },
+	{ value: "mf_more_4", label: "MF (+4)" },
+	{ value: "duplex", label: "Duplex" },
+	{ value: "triplex", label: "Triplex" },
+	{ value: "comm_office", label: "Commercial Office" },
+	{ value: "vacant_land", label: "Vacant Land" },
+	{ value: "manufactured_mh", label: "Manufactured/MH" },
+	{ value: "condo", label: "Condo" },
+	{ value: "townhome", label: "Townhome" },
+	{ value: "villa", label: "Villa" },
+	{ value: "comm_warehouse", label: "Commercial-Warehouse" },
+	{ value: "comm_other", label: "Commercial-Other" },
+];
 
 const LOAN_TYPES = [
 	{
@@ -42,12 +60,25 @@ const LOAN_TYPES = [
 	},
 ];
 
+const PREPAYMENT_PENALTY = [
+	{ value: "90_days_2%", label: "90 - Days - 2%" },
+	{ value: "mf_4_less", label: "MF (4 or less)" },
+];
+
+type Collateral = {
+	assetType: string;
+	collateralAddress: string;
+	insuranceExpirationDate: string;
+	taxUrl: string;
+};
+
 type FormData = {
 	amountDrawn: string;
-	assetClass: string;
+	assetType: string;
 	borrowerEmailAddress: string;
 	borrowerLlc: string;
 	borrowerPhoneNumber: string;
+	collateral: Collateral[];
 	collateralAddress: string;
 	collateralLink: string;
 	constructionHoldback: string;
@@ -65,191 +96,249 @@ type FormData = {
 	totalLoanAmount: string;
 };
 
+const Title: FC<{ text: string }> = ({ text }) => (
+	<h1 className="font-inter text-[28px] text-primary-300 leading-[34px] tracking-[-1.4px]">
+		{text}
+	</h1>
+);
+
 export const CreateLoan: FC = () => {
-	const { handleSubmit, register, watch } = useForm<FormData>();
-	const loanType = watch("loanType");
+	const { control, handleSubmit, register } = useForm<FormData>();
+	const { fields, append, remove } = useFieldArray({
+		control,
+		name: "collaterals",
+	});
 
 	const onSubmit = (data: FormData): void => {
 		console.log(data);
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<div className="grid grid-rows-2 gap-6 divide-y divide-gray-200 w-screen m-6">
-				<div className="grid grid-cols-3 gap-6 divide-x divide-gray-200">
-					<div>
-						<h1 className="font-inter text-3xl leading-9">Loan Information</h1>
+		<form
+			className="flex flex-col gap-6 divide-y divide-gray-200 w-screen p-6 h-full overflow-y-auto"
+			onSubmit={handleSubmit(onSubmit)}
+		>
+			<div className="grid grid-cols-3 gap-6 divide-x divide-gray-200">
+				<div>
+					<Title text="Loan Information" />
+					<Select
+						label="Loan Type"
+						options={LOAN_TYPES}
+						placeholder="Select Loan Type"
+						register={register("loanType")}
+						required
+					/>
+					<Input
+						label="Collateral Address"
+						placeholder="Enter Collateral Address"
+						register={register("collateralAddress")}
+						required
+					/>
+					<div className="grid grid-cols-2 gap-6">
+						<Input
+							label="Total Loan Amount"
+							placeholder="$0.00"
+							register={register("totalLoanAmount")}
+							required
+						/>
+						<Input
+							label="Interest Rate"
+							placeholder="0%"
+							register={register("interestRate")}
+							required
+						/>
+					</div>
+					<div className="grid grid-cols-2 gap-6">
+						<Input
+							label="Origination Date"
+							placeholder="MM-DD-YYYY"
+							register={register("originationDate")}
+							required
+						/>
+						<Input
+							label="Maturity Date"
+							placeholder="MM-DD-YYYY"
+							register={register("maturityDate")}
+							required
+						/>
+					</div>
+					<div className="grid grid-cols-2 gap-6">
+						<Input
+							label="Construction Holdback"
+							placeholder="$0.00"
+							register={register("constructionHoldback")}
+							required
+						/>
+						<Input
+							label="Amount Drawn"
+							placeholder="$0.00"
+							register={register("amountDrawn")}
+							required
+						/>
+					</div>
+					<div className="grid grid-cols-2 gap-6">
+						<Input
+							label="Insurance Expiration Date"
+							placeholder="MM-DD-YYYY"
+							register={register("insuranceExpirationDate")}
+							required
+						/>
 						<Select
-							{...register("loanType")}
-							label="Loan Type"
-							placeholder="Select Loan Type"
-							options={LOAN_TYPES}
-							required
-						/>
-						<Input
-							{...register("collateralAddress")}
-							label="Collateral Address"
-							placeholder="Enter Collateral Address"
-							disabled={!!loanType}
-							required
-						/>
-						<div className="grid grid-cols-2 gap-6">
-							<Input
-								{...register("totalLoanAmount")}
-								label="Total Loan Amount"
-								placeholder="$0.00"
-								disabled={!!loanType}
-								required
-							/>
-							<Input
-								{...register("interestRate")}
-								label="Interest Rate"
-								placeholder="0%"
-								disabled={!!loanType}
-								required
-							/>
-						</div>
-						<div className="grid grid-cols-2 gap-6">
-							<Input
-								{...register("originationDate")}
-								label="Origination Date"
-								placeholder="MM-DD-YYYY"
-								disabled={!!loanType}
-								required
-							/>
-							<Input
-								{...register("maturityDate")}
-								label="Maturity Date"
-								placeholder="MM-DD-YYYY"
-								disabled={!!loanType}
-								required
-							/>
-						</div>
-						<div className="grid grid-cols-2 gap-6">
-							<Input
-								{...register("constructionHoldback")}
-								label="Construction Holdback"
-								placeholder="$0.00"
-								disabled={!!loanType}
-								required
-							/>
-							<Input
-								{...register("amountDrawn")}
-								label="Amount Drawn"
-								placeholder="$0.00"
-								disabled={!!loanType}
-								required
-							/>
-						</div>
-						<div className="grid grid-cols-2 gap-6">
-							<Input
-								{...register("insuranceExpirationDate")}
-								label="Insurance Expiration Date"
-								placeholder="MM-DD-YYYY"
-								disabled={!!loanType}
-								required
-							/>
-							<Input
-								{...register("prepaymentPenalty")}
-								label="Prepayment Penalty"
-								placeholder="0%, (90 Days)"
-								disabled={!!loanType}
-								required
-							/>
-						</div>
-						<Input
-							{...register("taxUrl")}
-							label="Tax URL"
-							placeholder="Enter Tax URL"
-							disabled={!!loanType}
-							required
-						/>
-						<Input
-							{...register("collateralLink")}
-							label="Collateral Link (Google Drive)"
-							placeholder="Enter Collateral Link"
-							disabled={!!loanType}
-							required
-						/>
-						<Input
-							{...register("assetClass")}
-							label="Asset Class"
-							placeholder="Filled"
-							disabled={!!loanType}
+							label="Prepayment Penalty"
+							options={PREPAYMENT_PENALTY}
+							placeholder="0%, (90 Days)"
+							register={register("prepaymentPenalty")}
 							required
 						/>
 					</div>
-
-					<div className="pl-6">
-						<h1 className="font-inter text-3xl leading-9">
-							Borrower Information
-						</h1>
-						<Input
-							{...register("borrowerLlc")}
-							label="Borrower LLC"
-							placeholder="Enter Borrower LLC"
-							disabled={!!loanType}
-							required
-						/>
-						<div className="grid grid-cols-2 gap-6">
-							<Input
-								{...register("firstName")}
-								label="First Name"
-								placeholder="Enter First Name"
-								disabled={!!loanType}
-								required
-							/>
-							<Input
-								{...register("lastName")}
-								label="Last Name"
-								placeholder="Enter Last Name"
-								disabled={!!loanType}
-								required
-							/>
-						</div>
-						<Input
-							{...register("borrowerPhoneNumber")}
-							label="Borrower Phone Number"
-							placeholder="XXX - XXX - XXXX"
-							disabled={!!loanType}
-							required
-						/>
-						<Input
-							{...register("borrowerEmailAddress")}
-							label="Borrower Email Address"
-							placeholder="Enter Borrower Email Address"
-							disabled={!!loanType}
-							required
-						/>
-						<Input
-							{...register("einSsn")}
-							label="EIN/SSN"
-							placeholder="Enter EIN/SSN"
-							disabled={!!loanType}
-							required
-						/>
-						<Input
-							{...register("mailingAddress")}
-							label="Mailing Address"
-							placeholder="Enter Mailing Address"
-							disabled={!!loanType}
-							required
-						/>
-					</div>
-
-					<div className="pl-6">
-						<h1 className="font-inter text-3xl leading-9 pb-3">
-							Multiple Collateral
-						</h1>
-					</div>
+					<Input
+						label="Tax Property URL"
+						placeholder="Enter Tax Property URL"
+						register={register("taxUrl")}
+						required
+					/>
+					<Input
+						label="Collateral Link (Google Drive)"
+						placeholder="Enter Collateral Link"
+						register={register("collateralLink")}
+						required
+					/>
+					<Select
+						label="Asset Type"
+						options={ASSET_TYPES}
+						placeholder="Enter Asset Type"
+						register={register("assetType")}
+						required
+					/>
 				</div>
 
-				<div className="pt-6">
-					<h1 className="font-inter text-3xl leading-9 pb-3">
-						Loan Information
-					</h1>
-					<button type="submit">Submit</button>
+				<div className="pl-6">
+					<Title text="Borrower Information" />
+					<Input
+						label="Borrower LLC"
+						placeholder="Enter Borrower LLC"
+						register={register("borrowerLlc")}
+						required
+					/>
+					<div className="grid grid-cols-2 gap-6">
+						<Input
+							label="First Name"
+							placeholder="Enter First Name"
+							register={register("firstName")}
+							required
+						/>
+						<Input
+							label="Last Name"
+							placeholder="Enter Last Name"
+							register={register("lastName")}
+							required
+						/>
+					</div>
+					<Input
+						label="Borrower Phone Number"
+						placeholder="XXX - XXX - XXXX"
+						register={register("borrowerPhoneNumber")}
+						required
+					/>
+					<Input
+						label="Borrower Email Address"
+						placeholder="Enter Borrower Email Address"
+						register={register("borrowerEmailAddress")}
+						required
+					/>
+					<Input
+						label="EIN/SSN"
+						placeholder="Enter EIN/SSN"
+						register={register("einSsn")}
+						required
+					/>
+					<Input
+						label="Mailing Address"
+						placeholder="Enter Mailing Address"
+						register={register("mailingAddress")}
+						required
+					/>
 				</div>
+
+				<div className="pl-6">
+					<div className="flex flex-row justify-between">
+						<Title text="Multiple Collateral" />
+						<Button
+							className="rounded-3xl px-3 bg-gray-200"
+							icon={<Icon name="plus" color="#0E2130" width="12" />}
+							onClick={() => append({})}
+						/>
+					</div>
+					<div className="max-h-[865px] overflow-y-auto">
+						{fields.length ? (
+							fields.map((item, index) => (
+								<div className="w-full" key={item.id}>
+									<div className="grid grid-cols-2 gap-6">
+										<Input
+											label="Collateral Address"
+											placeholder="Enter Collateral Address"
+											register={register(
+												`collateral.${index}.collateralAddress`
+											)}
+											required
+										/>
+										<div className="flex gap-6">
+											<Input
+												label="Insurance Expiration"
+												placeholder="MM-DD-YYYY"
+												register={register(
+													`collateral.${index}.insuranceExpirationDate`
+												)}
+												required
+											/>
+											<div className="flex items-end">
+												<Button
+													className="bg-white px-0 py-2 mr-2"
+													icon={
+														<Icon name="trashBin" color="#FF0033" width="24" />
+													}
+													onClick={() => remove(index)}
+												/>
+											</div>
+										</div>
+									</div>
+									<Input
+										label="Tax URL"
+										placeholder="Enter Tax URL"
+										register={register(`collateral.${index}.taxUrl`)}
+										required
+									/>
+									<Select
+										label="Asset Type"
+										options={ASSET_TYPES}
+										placeholder="Select Dropdown"
+										register={register(`collateral.${index}.assetType`)}
+										required
+									/>
+								</div>
+							))
+						) : (
+              <div className="flex flex-col h-[600px] mt-6 justify-center items-center rounded-xl border-[3px] border-dashed border-gray-200">
+								<text className="font-inter text-[13px] text-primary-300 leading-4 tracking-[-0.65px]">
+									No Collaterals added Yet
+								</text>
+								<Button
+									buttonText="Add Collateral"
+									className="rounded-lg bg-primary-500 mt-4 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
+									onClick={() => append({})}
+								/>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
+
+			<div className="pt-6">
+				<Title text="Funding Breakdown" />
+				<Button
+					buttonText="Save Loan"
+					className="w-full rounded-2xl bg-gold-600 px-[18px] py-4 font-inter font-semibold text-sm text-primary-300 leading-[17px] tracking-[-0.7px]"
+				/>
 			</div>
 		</form>
 	);
