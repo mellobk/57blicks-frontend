@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Mfa } from "@/features/Login/components/Mfa";
+import { Mfa } from "@/features/auth/components/Mfa";
 
 export const LoginMfa: FC = () => {
 	return (

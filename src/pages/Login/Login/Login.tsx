@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { LoginForm } from "@/features/Login/components/Login";
+import { LoginForm } from "@/features/auth/components/Login";
 
 export const Login: FC = () => {
 	return (

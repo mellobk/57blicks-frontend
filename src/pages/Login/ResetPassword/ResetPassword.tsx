@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { ResetPasswordForm } from "@/features/Login/components/ResetPassword";
+import { ResetPasswordForm } from "@/features/auth/components/ResetPassword";
 
 export const ResetPassword: FC = () => {
 	return (

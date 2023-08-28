@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Success } from "@/features/Login/components/Success";
+import { Success } from "@/features/auth/components/Success";
 
 export const SuccessResetPassword: FC = () => {
 	return (

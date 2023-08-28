@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { CreatePassword } from "@/features/Login/components/CreatePassWord/CreatePassWord";
+import { CreatePassword } from "@/features/auth/components/CreatePassWord/CreatePassWord";
 
 export const CreatePassWord: FC = () => {
 	return (

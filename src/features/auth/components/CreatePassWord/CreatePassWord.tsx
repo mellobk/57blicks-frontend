@@ -3,11 +3,11 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
-import createPassWordFields from "@/features/Login/utils/input-fields";
-import { createPasswordSchema } from "@/features/Login/utils/Schemas/validations-schemas.ts";
-import { passwordInitialsValidations } from "@/features/Login/utils/constants";
-import { validPasswordRules } from "@/features/Login/utils/functions";
-import type { PasswordValidations } from "@/features/Login/types/validations";
+import createPassWordFields from "@/features/auth/utils/input-fields";
+import { createPasswordSchema } from "@/features/auth/utils/Schemas/validations-schemas.ts";
+import { passwordInitialsValidations } from "@/features/auth/utils/constants";
+import { validPasswordRules } from "@/features/auth/utils/functions";
+import type { PasswordValidations } from "@/features/auth/types/validations";
 import { LoginTitle } from "../LoginTitle";
 
 interface MfaProps {

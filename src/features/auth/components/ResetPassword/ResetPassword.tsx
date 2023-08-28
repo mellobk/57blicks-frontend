@@ -3,8 +3,8 @@ import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
-import { loginFields } from "@/features/Login/utils/input-fields";
-import { ResetPasswordSchemas } from "@/features/Login/utils/Schemas/ResetPasswordSchemas";
+import { loginFields } from "@/features/auth/utils/input-fields";
+import { ResetPasswordSchemas } from "@/features/auth/utils/Schemas/ResetPasswordSchemas";
 import { LoginTitle } from "../LoginTitle";
 
 export const ResetPassword: FC = () => {
@@ -16,6 +16,7 @@ export const ResetPassword: FC = () => {
 		resolver: zodResolver(ResetPasswordSchemas),
 	});
 
+	// eslint-disable-next-line unicorn/consistent-function-scoping
 	const onSubmit: SubmitHandler<FieldValues> = (data): void => {
 		console.log(data);
 	};

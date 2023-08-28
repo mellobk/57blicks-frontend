@@ -1,9 +1,13 @@
-import { forwardRef, useEffect, useState } from "react";
-import IconTemplate from "../../../assets/icons/icons";
+import {
+	type InputHTMLAttributes,
+	forwardRef,
+	useEffect,
+	useState,
+} from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { classNames } from "primereact/utils";
+import type { PasswordValidations } from "@/features/auth/types/validations";
 import { Icon } from "@/components/ui/Icon";
-import type { PasswordValidations } from "@/features/Login/types/validations";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
