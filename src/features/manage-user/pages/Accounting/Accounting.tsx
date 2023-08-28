@@ -1,4 +1,4 @@
-import { AccountingTable } from "@/features/ManageUser/components/AccountingTable/AccountingTable";
+import { AccountingTable } from "@/features/manage-user/components/AccountingTable/AccountingTable";
 
 export const Accounting: React.FC = () => {
 	return (

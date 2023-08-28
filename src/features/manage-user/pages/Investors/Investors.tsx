@@ -1,4 +1,4 @@
-import { InvestorsTable } from "@/features/ManageUser/components/InvestorsTable/InvestorsTable";
+import { InvestorsTable } from "@/features/manage-user/components/InvestorsTable/InvestorsTable";
 
 export const Investors: React.FC = () => {
 	return (
