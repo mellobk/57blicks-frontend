@@ -5,8 +5,7 @@ import {
 } from "react";
 import { classNames } from "primereact/utils";
 import type { UseFormRegisterReturn } from "react-hook-form";
-import { classNames } from "primereact/utils";
-import { Icon, IconNames } from "@/components/ui/Icon";
+import { Icon, type IconNames } from "@/components/ui/Icon";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
