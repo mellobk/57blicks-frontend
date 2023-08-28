@@ -1,4 +1,9 @@
-import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
+import {
+	forwardRef,
+	type ForwardRefRenderFunction,
+	type InputHTMLAttributes,
+} from "react";
+import { classNames } from "primereact/utils";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { classNames } from "primereact/utils";
 import { Icon, IconNames } from "@/components/ui/Icon";
@@ -7,22 +12,25 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 	placeholder?: string;
 	error?: string;
-	iconName?: typeof IconNames[number];
+	iconName?: (typeof IconNames)[number];
 	register?: UseFormRegisterReturn;
 	defaultValue?: string;
 }
 
-export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
-	label,
-	placeholder,
-	error,
-	register,
-	iconName,
-	required,
-	disabled = false,
-	defaultValue,
-	...props
-}) => {
+const InputComponent: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
+	{
+		label,
+		placeholder,
+		error,
+		register,
+		iconName,
+		required,
+		disabled = false,
+		defaultValue,
+		...props
+	},
+	ref
+) => {
 	return (
 		<div className="flex flex-col gap-2 pt-6">
 			<div className="font-semibold text-gray-600 ">
@@ -41,6 +49,9 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 				)}
 
 				<input
+					ref={ref}
+					{...register}
+					{...props}
 					className={classNames(
 						error ? "text-red-ERROR bg-gray-100 " : "bg-gray-200",
 						"focus:outline-none",
@@ -52,7 +63,6 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 					disabled={disabled}
 					required={required}
 					{...register}
-					{...props}
 				/>
 			</div>
 			{error && (
@@ -68,3 +78,5 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 		</div>
 	);
 };
+
+export const Input = forwardRef(InputComponent);

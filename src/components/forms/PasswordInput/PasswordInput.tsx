@@ -1,9 +1,5 @@
-import {
-	type ForwardRefRenderFunction,
-	type InputHTMLAttributes,
-	useEffect,
-	useState,
-} from "react";
+import { forwardRef, useEffect, useState } from "react";
+import IconTemplate from "../../../assets/icons/icons";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { classNames } from "primereact/utils";
 import { Icon } from "@/components/ui/Icon";
@@ -20,19 +16,23 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	defaultValue?: string;
 }
 
-export const PasswordInput: ForwardRefRenderFunction<
+const PasswordInputComponent: React.ForwardRefRenderFunction<
 	HTMLInputElement,
 	InputProps
-> = ({
-	label,
-	placeholder,
-	error,
-	register,
-	required,
-	passWordValidations,
-	disabled = false,
-	defaultValue,
-}) => {
+> = (
+	{
+		label,
+		placeholder,
+		error,
+		register,
+		required,
+		passWordValidations,
+		disabled = false,
+		defaultValue,
+		...props
+	},
+	ref
+) => {
 	const [changeType, setChangeType] = useState<string>("password");
 	const [changeIcon, setChangeIcon] = useState<string>("closeEye");
 	const [statusLabel, setStatusLabel] = useState<string>("Bad");
@@ -110,6 +110,9 @@ export const PasswordInput: ForwardRefRenderFunction<
 					<Icon name={changeIcon} width="20" color={"#000"} />
 				</div>
 				<input
+					ref={ref}
+					{...register}
+					{...props}
 					defaultValue={defaultValue}
 					className={classNames(
 						error ? "text-red-ERROR bg-gray-100 " : "text-gray-400 bg-gray-200",
@@ -119,7 +122,6 @@ export const PasswordInput: ForwardRefRenderFunction<
 					disabled={disabled}
 					type={changeType}
 					placeholder={placeholder}
-					{...register}
 				/>
 			</div>
 
@@ -138,3 +140,5 @@ export const PasswordInput: ForwardRefRenderFunction<
 		</div>
 	);
 };
+
+export const PasswordInput = forwardRef(PasswordInputComponent);
