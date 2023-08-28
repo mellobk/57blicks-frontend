@@ -1,5 +1,5 @@
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import { CreateLoan } from "@/features/Dashboard/pages/CreateLoan/CreateLoan";
+import { CreateLoan } from "@/features/dashboard/pages/CreateLoan/CreateLoan";
 
 import UnauthenticatedRoute from "@/routes/routes";
 import { Reporting } from "../pages/Reporting/Reporting";
@@ -8,7 +8,7 @@ import { Servicing } from "../pages/Servicing/Servicing";
 import { InvestorPortals } from "../pages/InvestorPortals/InvestorPortals";
 import { Opportunities } from "../pages/Opportunities/Opportunities";
 import { Support } from "../pages/Support/Support";
-import { Admin } from "@/features/ManageUser/pages/Admin/Admin";
+import { Admin } from "@/features/manage-user/pages/Admin/Admin";
 
 export const NavbarRoutes = [
 	{

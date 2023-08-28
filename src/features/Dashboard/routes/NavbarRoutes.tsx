@@ -1,5 +1,5 @@
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import { CreateLoan } from "@/features/Dashboard/pages/CreateLoan/CreateLoan";
+import { CreateLoan } from "@/features/dashboard/pages/CreateLoan/CreateLoan";
 
 import UnauthenticatedRoute from "@/routes/routes";
 import { Reporting } from "../pages/Reporting/Reporting";

@@ -1,4 +1,4 @@
-import { AdminTable } from "@/features/ManageUser/components/AdminTable/AdminTable";
+import { AdminTable } from "@/features/manage-user/components/AdminTable/AdminTable";
 
 export const Admin: React.FC = () => {
 	return (
