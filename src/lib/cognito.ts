@@ -4,9 +4,9 @@ import {
 	CognitoUser,
 	CognitoUserAttribute,
 	CognitoUserPool,
-	type ISignUpResult,
 	type CognitoUserSession,
 	type ICognitoUserAttributeData,
+	type ISignUpResult,
 } from "amazon-cognito-identity-js";
 
 const poolData = {
@@ -27,9 +27,8 @@ function getCognitoUser(username: string): CognitoUser {
 		Username: username,
 		Pool: userPool,
 	};
-	const cognitoUser = new CognitoUser(userData);
 
-	return cognitoUser;
+	return new CognitoUser(userData);
 }
 
 export async function getSession(): Promise<CognitoUserSession> {
