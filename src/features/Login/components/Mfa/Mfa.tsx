@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 import { Input } from "@/components/forms/Input";
 import { AuthenticateCode } from "@/components/ui/AuthCode";
 import { Button } from "@/components/ui/Button";
@@ -17,13 +15,12 @@ interface MfaProps {
 export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 	const [resentMessage, sendResentMessage] = useState<boolean>();
 	const [codeMfa, sendCodeMfa] = useState<string>("");
-	const handleOnChange = (result: string): string => {
+	const handleAuthCodeChange = (result: string): void => {
 		if (result.length === 6) {
 			sendCodeMfa(result);
 		} else {
 			sendCodeMfa("");
 		}
-		return "";
 	};
 
 	const handleSendCode = (): void => {
@@ -58,7 +55,7 @@ export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 						</div>
 						<div>
 							<AuthenticateCode
-								handleOnChange={handleOnChange}
+								handleOnChange={handleAuthCodeChange}
 								title="Confirmation Code"
 								required
 							/>
@@ -69,7 +66,7 @@ export const Mfa: React.FC<MfaProps> = ({ title, subTitle, buttonText }) => {
 						<Button
 							text={buttonText}
 							className={`${codeMfa ? "bg-primary-500" : "bg-gray-300"}`}
-							disabled={codeMfa ? false : true}
+							disabled={!codeMfa}
 						/>
 						<Button text="Back" className="bg-transparent text-black" />
 					</div>

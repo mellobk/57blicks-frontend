@@ -1,1 +1,0 @@
-export { FirtsLogin } from './FirtsLogin';

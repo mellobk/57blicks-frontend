@@ -1,6 +1,5 @@
-// eslint-disable-next-line unicorn/filename-case
 import * as z from "zod";
-import { loginFields } from "../inputFields";
+import { loginFields } from "../input-fields";
 
 export const LoginSchema = z.object({
 	[loginFields?.email]: z

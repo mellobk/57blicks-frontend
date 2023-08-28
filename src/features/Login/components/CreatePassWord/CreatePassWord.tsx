@@ -1,17 +1,15 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import type { PasswordValidations } from "../../types/validations";
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FC, useEffect, useRef, useState } from "react";
+import type { SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { LoginTitle } from "../LoginTitle";
 import { PasswordInput } from "@/components/forms/PasswordInput";
-import createPassWordFields from "../../utils/inputFields";
-import { createPasswordSchema } from "../../utils/Schemas/validationsSchemas";
-import { useEffect, useRef, useState } from "react";
+import createPassWordFields from "../../utils/input-fields";
+import { createPasswordSchema } from "../../utils/Schemas/validations-schemas.ts";
 import { passwordInitialsValidations } from "../../utils/constants";
 import { validPasswordRules } from "../../utils/functions";
+import type { PasswordValidations } from "../../types/validations";
 
 interface MfaProps {
 	title?: string;
@@ -20,7 +18,7 @@ interface MfaProps {
 	buttonText?: string;
 }
 
-export const CreatePassword: React.FC<MfaProps> = ({
+export const CreatePassword: FC<MfaProps> = ({
 	title,
 	subTitle,
 	buttonText,
@@ -69,7 +67,7 @@ export const CreatePassword: React.FC<MfaProps> = ({
 						<div className="flex justify-between gap-2w-full h-full ">
 							<div className="w-full h-full">
 								<form
-									onSubmit={handleSubmit(onSubmit)}
+									onSubmit={() => handleSubmit(onSubmit)}
 									className="w-full h-full flex flex-col justify-between"
 								>
 									<PasswordInput
@@ -86,7 +84,7 @@ export const CreatePassword: React.FC<MfaProps> = ({
 											className={`${
 												errorPassword ? "bg-gray-300" : "bg-primary-500"
 											}`}
-											disabled={errorPassword ? true : false}
+											disabled={!!errorPassword}
 										/>
 										<Button text="Back" className="bg-transparent text-black" />
 									</div>

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { ResetPasswordForm } from "@/features/Login/components/ResetPassword";
 
 export const ResetPassword: React.FC = () => {

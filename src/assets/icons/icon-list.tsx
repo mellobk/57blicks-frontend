@@ -1,7 +1,7 @@
 import  { storyBooksIconsNames } from './icon-dictionary';
 import IconTemplate from './icons';
 
-const IconList: any = () => {
+const IconList = () => {
   return (
     <div style={{ display: 'flex', gap: '5px', textAlign: 'center' }}>
       {storyBooksIconsNames?.map((value, key) => {

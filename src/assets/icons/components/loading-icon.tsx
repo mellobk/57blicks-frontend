@@ -1,17 +1,14 @@
+import type { FC } from "react";
+
 type Props = {
 	color?: string;
-	fill?: string;
-	width?: number;
-	height?: number;
+	width?: string;
 };
 
-const LoadingIcon: React.FC<Props> = ({
-	color = "#BBBBBB",
-	width = 48,
-}: Props) => {
+const LoadingIcon: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
-		    className="animate-spin "
+			className="animate-spin "
 			width={width}
 			height={width}
 			viewBox={`0 0 64 64`}

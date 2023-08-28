@@ -1,13 +1,13 @@
+import type { FC } from "react";
+
 type Props = {
 	color?: string;
-	fill?: string;
-	width?: number;
-	height?: number;
+	width?: string;
 };
 
-const CloseEyeIcon: React.FC<Props> = ({
+const CloseEyeIcon: FC<Props> = ({
 	color = "#BBBBBB",
-	width = 48,
+	width = "48",
 }: Props) => {
 	return (
 		<svg

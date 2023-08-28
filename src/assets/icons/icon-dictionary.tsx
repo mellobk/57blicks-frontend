@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import SearchIcon from "./components/search-icon";
 import UserIcon from "./components/user-icon";
 import DateIcon from "./components/date-icon";
@@ -11,15 +12,25 @@ import LoadingIcon from "./components/loading-icon";
 import Ok from "./components/ok-arrow-icon";
 import Wrong from "./components/wrong-icon";
 import ShieldIcon from "./components/shield-icon";
+import Notification from "./components/notification";
 
-type Props = {
+interface Props {
 	name: string;
-	width?: number;
+	width?: string;
 	color?: string;
-};
+}
 
-const IconItems: any = ({ name, width, color }: Props) => {
-	const icons = {
+interface IconData {
+	name: string;
+	Icon: ReactElement;
+}
+
+interface IconMap {
+	[key: string]: IconData;
+}
+
+const IconItems = ({ name, width, color }: Props): ReactElement => {
+	const icons: IconMap = {
 		search: {
 			name: "search",
 			Icon: <SearchIcon width={width} color={color} />,
@@ -72,10 +83,15 @@ const IconItems: any = ({ name, width, color }: Props) => {
 			name: "shield",
 			Icon: <ShieldIcon width={width} color={color} />,
 		},
+		notification: {
+			name: "notification",
+			Icon: <Notification width={width} color={color} />,
+		},
 	};
-
-	return icons[name]?.Icon || null;
+	const Icon = icons[name]?.Icon;
+	return Icon || <></>;
 };
+
 // export icons to storybook mapping
 export const storyBooksIconsNames: Array<string> = [
 	"search",
