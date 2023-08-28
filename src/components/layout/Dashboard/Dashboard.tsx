@@ -3,7 +3,7 @@ import { Link } from "@tanstack/router";
 import { Icon } from "@/components/ui/Icon";
 import LogoGold from "@/assets/images/png/LogoGold.png";
 import { Avatar } from "@/components/ui/Avatar";
-import { NavbarRoutes } from "@/features/dashboard/routes/DashboardRouter";
+import { NavbarRoutes } from "@/features/Dashboard/routes/DashboardRouter";
 import "./Dashboard.css";
 
 type Props = {
@@ -14,7 +14,7 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 	const createLoanTo: string = "/create-loan";
 
 	return (
-		<div className="flex flex-col h-screen bg-gradient-to-b from-primary to-gold-600">
+		<div className="flex flex-col h-screen bg-gradient">
 			<div className="flex items-center justify-between px-12 py-4">
 				<img src={LogoGold} alt="DKC Logo" />
 				<ul className="flex space-x-2">
@@ -34,7 +34,7 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 				</ul>
 				<div className="flex space-x-2 items-center">
 					<Link
-						className="button-text px-4 py-2 rounded-2xl bg-white"
+						className="button-text px-4 py-2 rounded-2xl bg-white font-bold"
 						to={createLoanTo}
 						params={{}}
 						search={{}}
@@ -50,9 +50,7 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 				</div>
 			</div>
 
-			<div className="flex m-2 rounded-3xl h-screen overflow-y-auto bg-white">
-				{children}
-			</div>
+			<div className="flex m-2  h-screen overflow-y-auto">{children}</div>
 		</div>
 	);
 };

@@ -1,11 +1,17 @@
 import { Router } from "@tanstack/router";
 import { rootRoute } from "./RootRoute";
 import IndexRouter from "./IndexRouter.tsx";
+import DashboardRouter from "@/features/Dashboard/routes/DashboardRouter.tsx";
+import ManageUSerRouter from "@/features/ManageUser/routes/ManageUsersRoutes.tsx";
 import LoginRouter from "@/features/auth/routes/LoginRouter.tsx";
-import DashboardRouter from "@/features/dashboard/routes/DashboardRouter.tsx";
 
 //array of all routes
-const allRoutes = [...IndexRouter, ...LoginRouter, ...DashboardRouter];
+const allRoutes = [
+	...IndexRouter,
+	...LoginRouter,
+	...DashboardRouter,
+	...ManageUSerRouter,
+];
 
 const routeTree = rootRoute.addChildren([...allRoutes]);
 

@@ -1,5 +1,8 @@
+/* eslint-disable no-duplicate-imports */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import type { FC } from "react";
-import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
+import type { FieldValues, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";

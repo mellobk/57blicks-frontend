@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, type FC } from "react";
-import type { SubmitHandler } from "react-hook-form";
-import type { LoginFields } from "../../types/validations";
+import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { LoginSchema } from "../../utils/Schemas/LoginSchemas";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
@@ -10,6 +10,8 @@ import { Input } from "@/components/forms/Input";
 import { useAuth } from "@/providers/AuthContextProvider";
 import { Message } from "primereact/message";
 import { LoginTitle } from "../LoginTitle";
+import { loginFields } from "../../utils/input-fields";
+import type { LoginFields } from "../../types/validations";
 
 export const LoginForm: FC = () => {
 	const [loginError, setLoginError] = useState<string | null>(null);
@@ -18,11 +20,13 @@ export const LoginForm: FC = () => {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<LoginFields>({
+	} = useForm<FieldValues>({
 		resolver: zodResolver(LoginSchema),
 	});
 
-	const onSubmit: SubmitHandler<LoginFields> = async (data): Promise<void> => {
+	const onSubmit: SubmitHandler<any> = async (
+		data: LoginFields
+	): Promise<void> => {
 		try {
 			const session = await signInWithEmail(data.email, data.password);
 			console.log("Successfully logged in:", session);
@@ -40,18 +44,18 @@ export const LoginForm: FC = () => {
 				>
 					<div className="flex  flex-col justify-between w-full  gap-8">
 						<Input
-							{...register("email")}
+							register={register(loginFields?.email)}
 							label="Email"
 							placeholder="Enter Email"
 							required
-							error={errors.email?.message}
+							error={errors[loginFields?.email]?.message}
 						/>
 						<PasswordInput
-							{...register("password")}
+							register={register(loginFields?.password)}
 							label="Password"
 							placeholder="Enter Password"
 							required
-							error={errors.password?.message}
+							error={errors[loginFields?.password]?.message}
 						/>
 						{loginError && <Message severity="error" text={loginError} />}
 						<div className="w-full text-center text-sm font-normal leading-normal">

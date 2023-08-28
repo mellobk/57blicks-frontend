@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
 	type InputHTMLAttributes,
 	forwardRef,
@@ -13,7 +14,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 	placeholder?: string;
 	required?: boolean;
-	error?: string;
+	error?: any;
 	register?: UseFormRegisterReturn;
 	passWordValidations?: Array<PasswordValidations>;
 	disabled?: boolean;
@@ -119,7 +120,7 @@ const PasswordInputComponent: React.ForwardRefRenderFunction<
 					{...props}
 					defaultValue={defaultValue}
 					className={classNames(
-						error ? "text-red-ERROR bg-gray-100 " : "text-gray-400 bg-gray-200",
+						error ? "text-red-ERROR bg-gray-100 " : "text-black bg-gray-200",
 						"focus:outline-none",
 						"flex w-full h-10 p-4 items-center self-stretch rounded-md"
 					)}

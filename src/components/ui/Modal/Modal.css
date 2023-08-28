@@ -1,0 +1,27 @@
+
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #656a74 !important;
+  border: 0 none;
+  background-color: #edf3f5 !important;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+  margin-right: 0.5rem;
+  outline: none !important;
+    border: none;
+}
+
+.p-dialog-header-icon:hover {
+  color: #656a74 !important;
+  border: 0 none;
+  background-color: #edf3f5 !important;
+  outline: none;
+  border: none;
+}
+
+
+.p-dialog-header-icons button{
+    outline: none;
+    border: none;
+}
