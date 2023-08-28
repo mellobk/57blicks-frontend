@@ -1,4 +1,4 @@
-import type {FunctionComponent} from "../common/types";
+import type {FunctionComponent} from "../types";
 import {Button} from 'primereact/button';
 
 const Home = (): FunctionComponent => {

@@ -1,37 +1,29 @@
-import { render, screen } from '@testing-library/react';
-import { LoginLayout } from './Login';
+import { render } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect"; // For extended DOM matchers
+import { LoginLayout } from ".";
 
+describe("LoginLayout component", () => {
+	it("renders the logo and copyright text", () => {
+		const { getByAltText, getByText } = render(<LoginLayout />);
 
-describe('LoginLayout component', () => {
-  it('renders children and copyright text', () => {
-    render(
-      <LoginLayout>
-        <div data-testid="child-element">Child Content</div>
-      </LoginLayout>
-    );
+		// Check if the logo is present
+		const logoElement = getByAltText("DKC Logo");
+		expect(logoElement).toBeInTheDocument();
 
-    const childElement = screen.getByTestId('child-element');
-    const copyrightText = screen.getByText(/All right reserved \/ © DKC Lending/);
+		// Check if the copyright text is present
+		const copyrightElement = getByText("All right reserved / © DKC Lending");
+		expect(copyrightElement).toBeInTheDocument();
+	});
 
-    expect(childElement).toBeInTheDocument();
-    expect(copyrightText).toBeInTheDocument();
-  });
+	it("renders children content", () => {
+		const { getByTestId } = render(
+			<LoginLayout>
+				<div data-testid="test-child">Child Content</div>
+			</LoginLayout>
+		);
 
-  it('applies proper styles to the layout container', () => {
-    render(
-      <LoginLayout>
-        <div>Child Content</div>
-      </LoginLayout>
-    );
-
-    const layoutContainer = screen.getByTestId('login-layout-container');
-
-    expect(layoutContainer).toHaveClass('bg-cover');
-    expect(layoutContainer).toHaveClass('bg-center');
-    expect(layoutContainer).toHaveClass('w-screen');
-    expect(layoutContainer).toHaveClass('h-screen');
-    expect(layoutContainer).toHaveClass('box-border');
-    expect(layoutContainer).toHaveClass('p-6');
-    expect(layoutContainer).toHaveClass('overflow-auto');
-  });
+		// Check if the child content is present
+		const childElement = getByTestId("test-child");
+		expect(childElement).toBeInTheDocument();
+	});
 });

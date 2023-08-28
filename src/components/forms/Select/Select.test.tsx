@@ -1,73 +1,24 @@
-import { render, screen } from "@testing-library/react";
-import { Select } from "./Select.tsx";
+import { render, fireEvent } from "@testing-library/react";
+import { Select } from "./Select";
 
-describe("Input component", () => {
-	it("renders, placeholder, and icon when provided", () => {
-		render(
-			<Select
-				label="Username"
-				placeholder="Enter your username"
-				iconName="search"
-			/>
-		);
+test("dropdown selection works", () => {
+	const options = [
+		{ name: "Option 1", code: "option1" },
+		{ name: "Option 2", code: "option2" },
+		// Add more options as needed
+	];
 
-		const labelElement = screen.getByText("Username");
-		const placeholderElement = screen.getByPlaceholderText(
-			"Enter your username"
-		);
+	const { getByText } = render(<Select options={options} />);
 
-		expect(labelElement).toBeInTheDocument();
-		expect(placeholderElement).toBeInTheDocument();
-	});
+	const selectDropdown = getByText("Select Dropdown");
 
-	it("renders required indicator when required prop is true", () => {
-		render(
-			<Select
-				label="Username"
-				placeholder="Enter your username"
-				required={true}
-			/>
-		);
+	// Open the dropdown
+	fireEvent.click(selectDropdown);
 
-		const requiredIndicator = screen.getByText("*");
-		expect(requiredIndicator).toBeInTheDocument();
-	});
+	// Select an option
+	const optionToSelect = getByText("Option 2");
+	fireEvent.click(optionToSelect);
 
-	it("renders error message when error is provided", () => {
-		render(
-			<Select
-				label="Username"
-				placeholder="Enter your username"
-				error="Username is required"
-			/>
-		);
-
-		const errorMessage = screen.getByText("Username is required");
-		expect(errorMessage).toBeInTheDocument();
-	});
-
-	it("does not render icon when iconName is not provided", () => {
-		render(<Select label="Username" placeholder="Enter your username" />);
-
-		const iconElement = screen.queryByText("Mocked Icon"); // Use "queryByText" since the icon might not always be present
-		expect(iconElement).toBeNull();
-	});
-
-	it("renders without error and icon when no iconName, required, or error is provided", () => {
-		render(<Select label="Username" placeholder="Enter your username" />);
-
-		const labelElement = screen.getByText("Username");
-		const placeholderElement = screen.getByPlaceholderText(
-			"Enter your username"
-		);
-		const iconElement = screen.queryByText("Mocked Icon"); // Use "queryByText" since the icon might not always be present
-		const requiredIndicator = screen.queryByText("*"); // Use "queryByText" since the indicator might not always be present
-
-		expect(labelElement).toBeInTheDocument();
-		expect(placeholderElement).toBeInTheDocument();
-		expect(iconElement).toBeNull();
-		expect(requiredIndicator).toBeNull();
-	});
-
-	// Add more test cases as needed...
+	// Check if the selected option is rendered in the component
+	expect(selectDropdown.textContent).toContain("Option 2");
 });

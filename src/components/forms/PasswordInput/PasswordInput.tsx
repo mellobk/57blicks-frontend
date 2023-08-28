@@ -1,38 +1,43 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-	type ForwardRefRenderFunction,
 	type InputHTMLAttributes,
+	forwardRef,
 	useEffect,
 	useState,
 } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { classNames } from "primereact/utils";
+import type { PasswordValidations } from "@/features/auth/types/validations";
 import { Icon } from "@/components/ui/Icon";
-import type { PasswordValidations } from "@/features/Login/types/validations";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
 	placeholder?: string;
 	required?: boolean;
-	error?: string;
+	error?: any;
 	register?: UseFormRegisterReturn;
 	passWordValidations?: Array<PasswordValidations>;
 	disabled?: boolean;
 	defaultValue?: string;
 }
 
-export const PasswordInput: ForwardRefRenderFunction<
+const PasswordInputComponent: React.ForwardRefRenderFunction<
 	HTMLInputElement,
 	InputProps
-> = ({
-	label,
-	placeholder,
-	error,
-	register,
-	required,
-	passWordValidations,
-	disabled = false,
-	defaultValue,
-}) => {
+> = (
+	{
+		label,
+		placeholder,
+		error,
+		register,
+		required,
+		passWordValidations,
+		disabled = false,
+		defaultValue,
+		...props
+	},
+	ref
+) => {
 	const [changeType, setChangeType] = useState<string>("password");
 	const [changeIcon, setChangeIcon] = useState<string>("closeEye");
 	const [statusLabel, setStatusLabel] = useState<string>("Bad");
@@ -110,16 +115,18 @@ export const PasswordInput: ForwardRefRenderFunction<
 					<Icon name={changeIcon} width="20" color={"#000"} />
 				</div>
 				<input
+					ref={ref}
+					{...register}
+					{...props}
 					defaultValue={defaultValue}
 					className={classNames(
-						error ? "text-red-ERROR bg-gray-100 " : "text-gray-400 bg-gray-200",
+						error ? "text-red-ERROR bg-gray-100 " : "text-black bg-gray-200",
 						"focus:outline-none",
 						"flex w-full h-10 p-4 items-center self-stretch rounded-md"
 					)}
 					disabled={disabled}
 					type={changeType}
 					placeholder={placeholder}
-					{...register}
 				/>
 			</div>
 
@@ -138,3 +145,5 @@ export const PasswordInput: ForwardRefRenderFunction<
 		</div>
 	);
 };
+
+export const PasswordInput = forwardRef(PasswordInputComponent);

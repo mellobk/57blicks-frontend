@@ -5,6 +5,7 @@ import { Icon } from "@/components/ui/Icon";
 interface Props extends ButtonProps {
 	buttonText?: string;
 	className?: string;
+	deepClassName?: string;
 	disabled?: boolean;
 	iconName?: string;
 	loading?: boolean;
@@ -14,6 +15,7 @@ interface Props extends ButtonProps {
 export const Button: FC<Props> = ({
 	buttonText,
 	className,
+	deepClassName = "w-full flex flex-row items-center justify-center gap-1",
 	disabled,
 	icon,
 	loading,
@@ -24,17 +26,17 @@ export const Button: FC<Props> = ({
 		<PrimeReactButton
 			onClick={onClick}
 			disabled={loading || disabled}
-			className={`${className} border-none`}
-			{...props}
+      className={`${className} border-none`}
+      {...props}
 		>
-			<div className="w-full flex flex-row items-center justify-center gap-2">
+			<div className={deepClassName}>
 				{loading ? (
 					<Icon name="loader" width="20" color="white" />
 				) : (
-					<>
-						{icon && <>{icon}</>}
-						{buttonText && <>{buttonText}</>}
-					</>
+          <>
+            {icon && <>{icon}</>}
+            {buttonText && <>{buttonText}</>}
+          </>
 				)}
 			</div>
 		</PrimeReactButton>

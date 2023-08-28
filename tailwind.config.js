@@ -28,6 +28,8 @@ export default {
 					300: "#F04A4A",
 					400: "#FE1F4C",
 					500: "#FF0033",
+					600: "#fbf8fa",
+					700: "#fccbd6",
 					ERROR: "#f03",
 					default: "#FF0033",
 				},
@@ -38,6 +40,8 @@ export default {
 					400: "#62C202",
 					500: "#00BA35",
 					600: "#c9f0d6",
+					700: "#1bc24b",
+					800: "#dcf5e6",
 					DEFAULT: "#00BA35",
 				},
 				blue: {
@@ -55,7 +59,15 @@ export default {
 					800: "#31424F",
 					900: "#2E2F33",
 					1000: "#B0B4BA",
+					1100: "#e8edef",
+					1200: "#6c757d",
 					DEFAULT: "#2E2F33",
+				},
+				black: {
+					100: "#213240",
+					200: "#213240",
+					300: "#32424f",
+					DEFAULT: "black",
 				},
 				purple: {
 					500: "#675AF9",
@@ -70,7 +82,7 @@ export default {
 					DEFAULT: "#FAB400",
 				},
 				white: {
-					DEFAULT: "#FBFEFF",
+					DEFAULT: "white",
 				},
 			},
 		},

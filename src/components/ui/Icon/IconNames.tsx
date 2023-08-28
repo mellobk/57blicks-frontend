@@ -15,6 +15,12 @@ const IconNames: Array<string> = [
 	"trashBin",
 	"user",
 	"wrong",
+	"column",
+	"menuTable",
+	"trash",
+	"deleteBack",
+	"bank",
+	"arrowLeft",
 ];
 
 export default IconNames;
