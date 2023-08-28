@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { Toast } from 'primereact/toast';
-import type { FunctionComponent } from "@/common/types";
+import type { FunctionComponent } from "@/types";
 
 const ErrorFallback = (): FunctionComponent => {
   const toast = useRef<Toast>(null);
