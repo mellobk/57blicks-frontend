@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import ArrowDown from "@/assets/icons/arrow-down.tsx";
-import ArrowLeft from "@/assets/icons/trash copy.tsx";
+import ArrowLeft from "@/assets/icons/arrow-left.tsx";
 import Bank from "@/assets/icons/bank.tsx";
 import Clock from "@/assets/icons/clock.tsx";
 import CloseEye from "@/assets/icons/close-eye.tsx";
@@ -43,14 +43,14 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 			name: "arrowDown",
 			icon: <ArrowDown width={width} color={color} />,
 		},
-    arrowLeft: {
-      name: "arrowLeft",
-      icon: <ArrowLeft width={width} color={color} />,
-    },
-    bank: {
-      name: "bank",
-      icon: <Bank width={width} color={color} />,
-    },
+		arrowLeft: {
+			name: "arrowLeft",
+			icon: <ArrowLeft width={width} color={color} />,
+		},
+		bank: {
+			name: "bank",
+			icon: <Bank width={width} color={color} />,
+		},
 		clock: {
 			name: "clock",
 			icon: <Clock width={width} color={color} />,
@@ -63,26 +63,26 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 			name: "closesEyes",
 			icon: <CloseEyes width={width} color={color} />,
 		},
-    column: {
-      name: "column",
-      icon: <Column width={width} color={color} />,
-    },
+		column: {
+			name: "column",
+			icon: <Column width={width} color={color} />,
+		},
 		date: {
 			name: "date",
 			icon: <Date width={width} color={color} />,
 		},
-    deleteBack: {
-      name: "deleteBack",
-      icon: <DeleteBack width={width} color={color} />,
-    },
+		deleteBack: {
+			name: "deleteBack",
+			icon: <DeleteBack width={width} color={color} />,
+		},
 		loading: {
 			name: "loading",
 			icon: <Loading width={width} color={color} />,
 		},
-    menuTable: {
-      name: "menuTable",
-      icon: <MenuTable width={width} color={color} />,
-    },
+		menuTable: {
+			name: "menuTable",
+			icon: <MenuTable width={width} color={color} />,
+		},
 		notification: {
 			name: "notification",
 			icon: <Notification width={width} color={color} />,
