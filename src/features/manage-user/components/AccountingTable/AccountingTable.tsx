@@ -91,7 +91,7 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 						}
 					}}
 				>
-					<Icon name="trash" width="20" color="black" />
+					<Icon name="trashBin" width="20" color="black" />
 				</div>
 			),
 			omit: false,

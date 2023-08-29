@@ -155,17 +155,24 @@ export async function setAttribute(
 }
 
 export async function sendCode(username: string): Promise<unknown> {
-	const cognitoUser = getCognitoUser(username);
+	return new Promise(function (resolve, reject) {
+		const cognitoUser = getCognitoUser(username);
 
-	return new Promise((resolve, reject) => {
+		if (!cognitoUser) {
+			reject(`could not find ${username}`);
+			return;
+		}
+
 		cognitoUser.forgotPassword({
-			onSuccess: (passwordResetResult) => {
-				resolve(passwordResetResult);
+			onSuccess: function (result) {
+				resolve(result);
 			},
-			onFailure: (error) => {
-				reject(error);
+			onFailure: function (error) {
+				resolve(error.message);
 			},
 		});
+	}).catch((error) => {
+		throw error;
 	});
 }
 
@@ -176,13 +183,13 @@ export async function forgotPassword(
 ): Promise<string> {
 	const cognitoUser = getCognitoUser(username);
 
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		cognitoUser.confirmPassword(code, password, {
 			onSuccess: () => {
 				resolve("password updated");
 			},
 			onFailure: (error) => {
-				reject(error);
+				resolve(error.message);
 			},
 		});
 	});

@@ -9,6 +9,7 @@ export const SuccessResetPassword: FC = () => {
 				title="Success!"
 				subTitle="Your password has been reset, you may proceed to the login page."
 				buttonText="Login"
+				navigateTo={"login"}
 			/>
 		</div>
 	);

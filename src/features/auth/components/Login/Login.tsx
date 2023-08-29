@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
@@ -12,8 +13,14 @@ import { Message } from "primereact/message";
 import { LoginTitle } from "../LoginTitle";
 import { loginFields } from "../../utils/input-fields";
 import type { LoginFields } from "../../types/validations";
+import { useNavigate } from "@tanstack/router";
+import { loginRoutesNames } from "../../routes/LoginRouter";
+import { getSession } from "@/lib/cognito";
+import { sendToLocalStorage } from "@/utils/local-storage";
+import { accessToken, refreshToken } from "@/utils/constans";
 
 export const LoginForm: FC = () => {
+	const navigate = useNavigate();
 	const [loginError, setLoginError] = useState<string | null>(null);
 	const { signInWithEmail } = useAuth();
 	const {
@@ -28,11 +35,19 @@ export const LoginForm: FC = () => {
 		data: LoginFields
 	): Promise<void> => {
 		try {
-			const session = await signInWithEmail(data.email, data.password);
-			console.log("Successfully logged in:", session);
+			await signInWithEmail(data.email, data.password);
+			const sessionData: any = await getSession();
+			sendToLocalStorage(accessToken, `${sessionData?.accessToken?.jwtToken}`);
+			sendToLocalStorage(refreshToken, `${sessionData?.refreshToken?.token}`);
+
+			void navigate({ to: `/manage-users/admins` });
 		} catch {
 			setLoginError("Login failed. Please check your credentials.");
 		}
+	};
+
+	const ResetPassword = (): void => {
+		void navigate({ to: `/${loginRoutesNames.resetPassword}` });
 	};
 
 	return (
@@ -58,7 +73,12 @@ export const LoginForm: FC = () => {
 							error={errors[loginFields?.password]?.message}
 						/>
 						{loginError && <Message severity="error" text={loginError} />}
-						<div className="w-full text-center text-sm font-normal leading-normal">
+						<div
+							onClick={(): void => {
+								ResetPassword();
+							}}
+							className="w-full text-center text-sm font-normal leading-normal cursor-pointer"
+						>
 							Reset Password
 						</div>
 					</div>

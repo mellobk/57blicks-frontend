@@ -11,9 +11,18 @@ import { ResetPasswordMfa } from "../pages/ResetPasswordMfa";
 import { ResetCreatePassWord } from "../pages/ResetCreatePassword";
 import { SuccessResetPassword } from "../pages/SuccessResetPassword";
 
+export const loginRoutesNames = {
+	firstLogin: "/",
+	login: "login",
+	resetPassword: "reset-password",
+	resetPasswordMfa: "reset-password-mfa",
+	ResetCreatePassWord: "reset-create-password",
+	SuccessResetPassword: "success-reset-password",
+};
+
 const LoginRoutes = [
 	{
-		path: "/",
+		path: loginRoutesNames.firstLogin,
 		page: FirstLogin,
 		layout: LoginLayout,
 	},
@@ -28,7 +37,7 @@ const LoginRoutes = [
 		layout: LoginLayout,
 	},
 	{
-		path: "/login",
+		path: `/${loginRoutesNames.login}`,
 		page: Login,
 		layout: LoginLayout,
 	},
@@ -38,22 +47,22 @@ const LoginRoutes = [
 		layout: LoginLayout,
 	},
 	{
-		path: "/reset-password",
+		path: `/${loginRoutesNames.resetPassword}`,
 		page: ResetPassword,
 		layout: LoginLayout,
 	},
 	{
-		path: "/reset-password-mfa",
+		path: `/${loginRoutesNames.resetPasswordMfa}`,
 		page: ResetPasswordMfa,
 		layout: LoginLayout,
 	},
 	{
-		path: "/reset-create-password",
+		path: `/${loginRoutesNames.ResetCreatePassWord}`,
 		page: ResetCreatePassWord,
 		layout: LoginLayout,
 	},
 	{
-		path: "/success-reset-password",
+		path: `/${loginRoutesNames.SuccessResetPassword}`,
 		page: SuccessResetPassword,
 		layout: LoginLayout,
 	},

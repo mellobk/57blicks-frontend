@@ -15,6 +15,7 @@ export const DisableInvestor: React.FC<DeleteAdminProps> = ({ id = 0 }) => {
 				<div className="font-bold text-red-500">disable</div> this user?
 			</div>
 			<Button
+				className={`bg-primary-500`}
 				buttonText="Disable"
 				onClick={(): void => {
 					handleDeleteAdmin(id);
