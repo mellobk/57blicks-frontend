@@ -15,15 +15,7 @@ interface SelectProps extends DropdownProps {
 export const Select: ForwardRefRenderFunction<
 	HTMLSelectElement,
 	SelectProps
-> = ({
-	error,
-	iconName,
-	label,
-	register,
-	required,
-	className = "flex flex-col gap-2",
-	...props
-}) => {
+> = ({ error, iconName, label, register, required, className, ...props }) => {
 	const [selectedData, setSelectedData] = useState<{
 		name: string;
 		code: string;
@@ -40,9 +32,9 @@ export const Select: ForwardRefRenderFunction<
 	}, []);
 
 	return (
-		<div className={className}>
+		<div className={`flex flex-col gap-2 ${className}`}>
 			{label && (
-				<div className="font-semibold text-gray-600 ">
+				<div className="font-semibold text-gray-600">
 					<div>
 						{label} {required && <span className="text-red-ERROR">*</span>}
 					</div>

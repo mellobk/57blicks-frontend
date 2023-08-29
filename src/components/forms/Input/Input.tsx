@@ -17,6 +17,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	clickIcon?: () => void;
 	value?: string;
+	wrapperClassName?: string;
 }
 
 export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
@@ -36,9 +37,10 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 	iconColor = "#000",
 	value,
 	clickIcon,
+	wrapperClassName,
 }) => {
 	return (
-		<div className="flex flex-col gap-2">
+		<div className={`flex flex-col gap-2 ${wrapperClassName}`}>
 			{label && (
 				<div className="font-semibold text-gray-600 ">
 					<div>

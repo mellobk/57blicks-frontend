@@ -11,9 +11,9 @@ export type AddInvestorFields = {
 	lastName: string;
 	email: string;
 	phoneNumber: string;
-	einSsn?: string | undefined;
-	zip?: string | undefined;
-	streetAddress?: string | undefined;
+	einSsn?: string;
+	zip?: string;
+	streetAddress?: string;
 };
 
 export type AddInvestorBankFields = {
