@@ -4,6 +4,7 @@ import { Input } from "@/components/forms/Input";
 import { Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import Title from "@/features/create-loan/components/Title/Title.tsx";
 
 const ASSET_TYPES = [
 	{ value: "sfr", label: "SFR" },
@@ -95,12 +96,6 @@ type FormData = {
 	taxUrl: string;
 	totalLoanAmount: string;
 };
-
-const Title: FC<{ text: string }> = ({ text }) => (
-	<h1 className="font-inter text-[28px] text-primary-300 leading-[34px] tracking-[-1.4px]">
-		{text}
-	</h1>
-);
 
 export const CreateLoan: FC = () => {
 	const { control, handleSubmit, register } = useForm<FormData>();
