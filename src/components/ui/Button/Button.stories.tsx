@@ -12,40 +12,40 @@ type Story = StoryObj<typeof Button>;
 
 export const ButtonStandar: Story = {
 	args: {
-		loading: false,
-		iconName: "user",
-		text: "Button Primary",
-		disabled: false,
-		className: "bg-primary-500",
-	},
+    buttonText: "Button Primary",
+    className: "bg-primary-500",
+    disabled: false,
+    iconName: "user",
+    loading: false,
+  },
 };
 
 export const ButtonLoading: Story = {
 	args: {
-		loading: true,
-		iconName: "user",
-		text: "Button Primary",
-		disabled: false,
-		className: "w-full",
-	},
+    buttonText: "Button Primary",
+    className: "w-full",
+    disabled: false,
+    iconName: "user",
+    loading: true,
+  },
 };
 
 export const ButtonDisabled: Story = {
 	args: {
-		loading: false,
-		iconName: "user",
-		text: "Button Primary",
-		disabled: true,
-		className: "w-full",
-	},
+    buttonText: "Button Primary",
+    className: "w-full",
+    disabled: true,
+    iconName: "user",
+    loading: false,
+  },
 };
 
 export const ButtonColor: Story = {
 	args: {
-		loading: false,
-		iconName: "user",
-		text: "Button Primary",
-		disabled: false,
-		className: "w-full",
-	},
+    buttonText: "Button Primary",
+    className: "w-full",
+    disabled: false,
+    iconName: "user",
+    loading: false,
+  },
 };

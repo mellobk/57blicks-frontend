@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { useState, type ForwardRefRenderFunction, useEffect } from "react";
+import { type ForwardRefRenderFunction, useEffect, useState } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { Dropdown, type DropdownProps } from "primereact/dropdown";
 import { Icon } from "@/components/ui/Icon";
@@ -23,7 +21,7 @@ export const Select: ForwardRefRenderFunction<
 	label,
 	register,
 	required,
-	className = "flex flex-col gap-2 pt-6",
+	className = "flex flex-col gap-2",
 	...props
 }) => {
 	const [selectedData, setSelectedData] = useState<{

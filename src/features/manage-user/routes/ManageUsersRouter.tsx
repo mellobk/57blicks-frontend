@@ -1,5 +1,4 @@
 import { DashboardLayout } from "@/components/layout/Dashboard";
-
 import UnauthenticatedRoute from "@/routes/routes";
 import { Investors } from "../pages/Investors/Investors";
 import { Accounting } from "../pages/Accounting/Accounting";
@@ -7,6 +6,7 @@ import { Accounting } from "../pages/Accounting/Accounting";
 const ManageUserRoute = (route: string): string => {
 	return `/manage-users/${route}`;
 };
+
 export const NavbarRoutes = [
 	{
 		path: ManageUserRoute("Investors"),
@@ -25,6 +25,6 @@ export const NavbarRoutes = [
 	},
 ];
 
-const ManageUSerRouter = UnauthenticatedRoute([...NavbarRoutes]);
+const ManageUserRouter = UnauthenticatedRoute([...NavbarRoutes]);
 
-export default ManageUSerRouter;
+export default ManageUserRouter;

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Table } from "@/components/forms/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
 import { Icon } from "@/components/ui/Icon";
@@ -11,8 +8,8 @@ import { Tabs } from "@/components/ui/Tabs/Tabs";
 import { DisableInvestor } from "../DisableInvestor/DisableInvestor";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { AddInvestor } from "../AddInvestor/AddInvestor";
-import { tabs } from "../../utils/tab";
 import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBakingInformation";
+import { tabs } from "../../utils/tabs";
 
 interface SuccessProps {}
 
