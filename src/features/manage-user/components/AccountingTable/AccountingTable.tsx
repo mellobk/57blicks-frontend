@@ -7,7 +7,7 @@ import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import { AddAdmin } from "../AddAdmin/AddAdmin";
 import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
-import { tabs } from "../../utils/tab";
+import { tabs } from "../../utils/tabs";
 
 interface SuccessProps {}
 

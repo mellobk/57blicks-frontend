@@ -2,7 +2,7 @@ import { Router } from "@tanstack/router";
 import { rootRoute } from "./RootRoute";
 import IndexRouter from "./IndexRouter.tsx";
 import DashboardRouter from "@/features/dashboard/routes/DashboardRouter.tsx";
-import ManageUSerRouter from "@/features/manage-user/routes/ManageUsersRoutes.tsx";
+import ManageUserRouter from "@/features/manage-user/routes/ManageUsersRouter.tsx";
 import LoginRouter from "@/features/auth/routes/LoginRouter.tsx";
 
 //array of all routes
@@ -10,7 +10,7 @@ const allRoutes = [
 	...IndexRouter,
 	...LoginRouter,
 	...DashboardRouter,
-	...ManageUSerRouter,
+	...ManageUserRouter,
 ];
 
 const routeTree = rootRoute.addChildren([...allRoutes]);
