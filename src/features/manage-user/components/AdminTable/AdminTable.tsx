@@ -1,4 +1,4 @@
-import { Table } from "@/components/forms/Table";
+import { Table } from "@/features/manage-user/components/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal/Modal";
