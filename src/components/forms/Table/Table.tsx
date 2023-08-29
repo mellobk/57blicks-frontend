@@ -1,19 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FC, ReactElement } from "react";
-// eslint-disable-next-line no-duplicate-imports
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-
-import "./Table.css";
-
 import { Button } from "@/components/ui/Button";
-import { Input } from "../Input";
-import { useDebounce } from "@/hooks/debounce";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal/Modal";
+import { useDebounce } from "@/hooks/debounce";
+import "./Table.css";
+import { Input } from "../Input";
 
 interface Column {
 	name?: string;
@@ -53,6 +47,8 @@ export const Table: FC<TableProps> = ({
 	const [searchMenu, setSearchMenu] = useState<boolean>(false);
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [value, setValue] = useState<string>("");
+  const debouncedSearchTerm = useDebounce(value, 1000);
+
 	const handleCloseEye = (id: number): void => {
 		const newColumns = stateColumns.map((column, key: number) => {
 			if (key === id) {
@@ -73,8 +69,6 @@ export const Table: FC<TableProps> = ({
 		setValue(value);
 	};
 
-	const debouncedSearchTerm = useDebounce(value, 1000);
-
 	useEffect(() => {
 		if (debouncedSearchTerm !== "") {
 			if (handleSearchValue) {
@@ -83,6 +77,7 @@ export const Table: FC<TableProps> = ({
 			setSearchValue(debouncedSearchTerm);
 		}
 	}, [debouncedSearchTerm, handleSearchValue]);
+
 	return (
 		<div className="flex flex-col w-full h-full">
 			<div className="flex justify-between items-center w-full  bg-primary-500 px-4 mb-2">
