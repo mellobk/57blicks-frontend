@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import type { FC } from "react";
@@ -9,8 +11,13 @@ import { Input } from "@/components/forms/Input";
 import { loginFields } from "@/features/auth/utils/input-fields";
 import { ResetPasswordSchemas } from "@/features/auth/utils/Schemas/ResetPasswordSchemas";
 import { LoginTitle } from "../LoginTitle";
+import { sendCode } from "@/lib/cognito";
+import { useNavigate } from "@tanstack/router";
+import { sendToLocalStorage } from "@/utils/local-storage";
+import { userEmail } from "../../utils/constants";
 
 export const ResetPassword: FC = () => {
+	const navigate = useNavigate();
 	const {
 		register,
 		handleSubmit,
@@ -20,8 +27,18 @@ export const ResetPassword: FC = () => {
 	});
 
 	// eslint-disable-next-line unicorn/consistent-function-scoping
-	const onSubmit: SubmitHandler<FieldValues> = (data): void => {
-		console.log(data);
+	const onSubmit: SubmitHandler<FieldValues> = async (data): Promise<any> => {
+		try {
+			await sendCode(data[loginFields?.email]);
+			sendToLocalStorage(userEmail, data[loginFields?.email]);
+			void navigate({ to: `/reset-password-mfa` });
+		} catch (error) {
+			console.log("Unknown user", error);
+		}
+	};
+
+	const backTo = (): void => {
+		void navigate({ to: `/login` });
 	};
 
 	return (
@@ -52,10 +69,6 @@ export const ResetPassword: FC = () => {
 											}`}
 											disabled={!isValid}
 										/>
-										<Button
-											buttonText="Back"
-											className="bg-transparent text-black"
-										/>
 									</div>
 								</form>
 							</div>
@@ -63,6 +76,13 @@ export const ResetPassword: FC = () => {
 					</div>
 				</div>
 			</LoginTitle>
+			<div className="w-full">
+				<Button
+					buttonText="Back"
+					className="bg-transparent text-black w-full"
+					onClick={backTo}
+				/>
+			</div>
 		</div>
 	);
 };
