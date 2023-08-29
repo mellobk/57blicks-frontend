@@ -50,7 +50,7 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 				</div>
 			</div>
 
-			<div className="flex m-2  h-screen overflow-y-auto">{children}</div>
+			<div className="flex m-2 h-screen overflow-y-auto">{children}</div>
 		</div>
 	);
 };

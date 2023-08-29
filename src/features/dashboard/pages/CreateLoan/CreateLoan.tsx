@@ -78,7 +78,7 @@ type FormData = {
 	borrowerEmailAddress: string;
 	borrowerLlc: string;
 	borrowerPhoneNumber: string;
-	collateral: Collateral[];
+	collaterals: Collateral[];
 	collateralAddress: string;
 	collateralLink: string;
 	constructionHoldback: string;
@@ -115,7 +115,7 @@ export const CreateLoan: FC = () => {
 
 	return (
 		<form
-			className="flex flex-col gap-6 divide-y divide-gray-200 w-screen p-6 h-full overflow-y-auto"
+			className="flex flex-col rounded-3xl bg-white gap-6 divide-y divide-gray-200 w-screen p-6 h-full overflow-y-auto"
 			onSubmit={handleSubmit(onSubmit)}
 		>
 			<div className="grid grid-cols-3 gap-6 divide-x divide-gray-200">
@@ -266,7 +266,14 @@ export const CreateLoan: FC = () => {
 						<Button
 							className="rounded-3xl px-3 bg-gray-200"
 							icon={<Icon name="plus" color="#0E2130" width="12" />}
-							onClick={() => append({})}
+							onClick={() =>
+								append({
+									assetType: "",
+									collateralAddress: "",
+									insuranceExpirationDate: "",
+									taxUrl: "",
+								})
+							}
 						/>
 					</div>
 					<div className="max-h-[865px] overflow-y-auto">
@@ -278,7 +285,7 @@ export const CreateLoan: FC = () => {
 											label="Collateral Address"
 											placeholder="Enter Collateral Address"
 											register={register(
-												`collateral.${index}.collateralAddress`
+												`collaterals.${index}.collateralAddress`
 											)}
 											required
 										/>
@@ -287,7 +294,7 @@ export const CreateLoan: FC = () => {
 												label="Insurance Expiration"
 												placeholder="MM-DD-YYYY"
 												register={register(
-													`collateral.${index}.insuranceExpirationDate`
+													`collaterals.${index}.insuranceExpirationDate`
 												)}
 												required
 											/>
@@ -305,27 +312,34 @@ export const CreateLoan: FC = () => {
 									<Input
 										label="Tax URL"
 										placeholder="Enter Tax URL"
-										register={register(`collateral.${index}.taxUrl`)}
+										register={register(`collaterals.${index}.taxUrl`)}
 										required
 									/>
 									<Select
 										label="Asset Type"
 										options={ASSET_TYPES}
 										placeholder="Select Dropdown"
-										register={register(`collateral.${index}.assetType`)}
+										register={register(`collaterals.${index}.assetType`)}
 										required
 									/>
 								</div>
 							))
 						) : (
-              <div className="flex flex-col h-[600px] mt-6 justify-center items-center rounded-xl border-[3px] border-dashed border-gray-200">
+							<div className="flex flex-col h-[600px] mt-6 justify-center items-center rounded-xl border-[3px] border-dashed border-gray-200">
 								<text className="font-inter text-[13px] text-primary-300 leading-4 tracking-[-0.65px]">
 									No Collaterals added Yet
 								</text>
 								<Button
 									buttonText="Add Collateral"
 									className="rounded-lg bg-primary-500 mt-4 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
-									onClick={() => append({})}
+									onClick={() =>
+										append({
+											assetType: "",
+											collateralAddress: "",
+											insuranceExpirationDate: "",
+											taxUrl: "",
+										})
+									}
 								/>
 							</div>
 						)}
