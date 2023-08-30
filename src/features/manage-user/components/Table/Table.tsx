@@ -7,7 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { useDebounce } from "@/hooks/debounce";
 import "./Table.css";
-import { Input } from "../Input";
+import { Input } from "../../../../components/forms/Input";
 
 interface Column {
 	name?: string;
@@ -47,7 +47,7 @@ export const Table: FC<TableProps> = ({
 	const [searchMenu, setSearchMenu] = useState<boolean>(false);
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [value, setValue] = useState<string>("");
-  const debouncedSearchTerm = useDebounce(value, 1000);
+	const debouncedSearchTerm = useDebounce(value, 1000);
 
 	const handleCloseEye = (id: number): void => {
 		const newColumns = stateColumns.map((column, key: number) => {

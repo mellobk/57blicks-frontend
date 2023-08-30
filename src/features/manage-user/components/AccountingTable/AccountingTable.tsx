@@ -1,4 +1,4 @@
-import { Table } from "@/components/forms/Table";
+import { Table } from "@/features/manage-user/components/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal/Modal";
@@ -91,7 +91,7 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 						}
 					}}
 				>
-					<Icon name="trash" width="20" color="black" />
+					<Icon name="trashBin" width="20" color="black" />
 				</div>
 			),
 			omit: false,

@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { LoginTitle } from "../LoginTitle";
+import { useNavigate } from "@tanstack/router";
 
 interface SuccessProps {
 	title?: string;
@@ -16,7 +17,13 @@ export const Success: FC<SuccessProps> = ({
 	subTitle,
 	buttonText,
 	iconName = "closesEyes",
+	navigateTo,
 }) => {
+	const navigate = useNavigate();
+
+	const handleClick = (): void => {
+		void navigate({ to: `/${navigateTo}` });
+	};
 	return (
 		<div className="flex flex-col items-center  gap-3 h-full w-full">
 			<LoginTitle title={title} subTitle={subTitle}>
@@ -33,7 +40,11 @@ export const Success: FC<SuccessProps> = ({
 								</div>
 							</div>
 							<div className="w-full">
-								<Button buttonText={buttonText} className="bg-primary-500" />
+								<Button
+									buttonText={buttonText}
+									className="bg-primary-500 w-full"
+									onClick={handleClick}
+								/>
 							</div>
 						</div>
 					</div>
