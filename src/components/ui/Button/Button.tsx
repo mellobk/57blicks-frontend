@@ -1,9 +1,9 @@
-import type { FC } from "react";
+import type {FC, ReactElement} from "react";
 import { Button as PrimeReactButton, ButtonProps } from "primereact/button";
 import { Icon } from "@/components/ui/Icon";
 
 interface Props extends ButtonProps {
-	buttonText?: string;
+	buttonText?: string | ReactElement;
 	className?: string;
 	deepClassName?: string;
 	disabled?: boolean;

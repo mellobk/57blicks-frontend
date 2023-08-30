@@ -6,7 +6,6 @@ type Collateral = {
 };
 
 export type FundingBreakdown = {
-	id: number;
 	amount: string;
 	lender: string;
 	prorated: string;

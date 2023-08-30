@@ -42,7 +42,7 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 	return (
 		<div className={`flex flex-col gap-2 ${wrapperClassName}`}>
 			{label && (
-				<div className="font-semibold text-gray-600 ">
+				<div className="font-semibold text-gray-600">
 					<div>
 						{label} {required && <span className="text-red-ERROR">*</span>}
 					</div>
@@ -65,7 +65,7 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 				)}
 
 				<input
-					className={`${className}`}
+					className={className}
 					type="text"
 					defaultValue={defaultValue}
 					placeholder={placeholder}

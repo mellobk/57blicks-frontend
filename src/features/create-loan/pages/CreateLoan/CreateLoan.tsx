@@ -1,4 +1,4 @@
-import type { FC, ReactElement } from "react";
+import { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { Select } from "@/components/forms/Select";
@@ -10,23 +10,30 @@ import {
 	FundingBreakdown,
 	LoanFields,
 } from "@/features/create-loan/types/fields";
+import { defaultValues } from "@/features/create-loan/utils/values";
 import {
 	assetTypes,
 	loanTypes,
 	prepaymentPenalties,
-} from "@/features/create-loan/utils/selects.ts";
+} from "@/features/create-loan/utils/selects";
 
 export const CreateLoan: FC = () => {
-	const { control, handleSubmit, register } = useForm<LoanFields>();
+	const { control, handleSubmit, register } = useForm<LoanFields>({
+		defaultValues,
+	});
 	const {
-		fields: collaterals,
 		append: appendCollateral,
+		fields: collaterals,
 		remove: removeCollateral,
 	} = useFieldArray({
 		control,
 		name: "collaterals",
 	});
-	const { remove: removeParticipant } = useFieldArray({
+	const {
+		append: appendParticipant,
+		fields: fundingBreakdown,
+		remove: removeParticipant,
+	} = useFieldArray({
 		control,
 		name: "fundingBreakdown",
 	});
@@ -38,81 +45,73 @@ export const CreateLoan: FC = () => {
 	const columns: Column[] = [
 		{
 			name: "Lender",
-			selector: (row: FundingBreakdown): ReactElement => (
-				<input value={row.lender} />
+			selector: (row: FundingBreakdown): string => row.lender,
+		},
+		{
+			cell: (row: FundingBreakdown, rowIndex) => (
+				<input
+					className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none"
+					key={`${row.lender}-${rowIndex}`}
+					{...register(`fundingBreakdown.${rowIndex}.amount`)}
+				/>
 			),
-		},
-		{
 			name: "Amount",
-			selector: (row: FundingBreakdown): any => <input value={row.amount} />,
+			style: { padding: 0 },
 		},
 		{
+			cell: (row: FundingBreakdown, rowIndex) => (
+				<input
+					className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none"
+					key={`${row.lender}-${rowIndex}`}
+					{...register(`fundingBreakdown.${rowIndex}.rate`)}
+				/>
+			),
 			name: "Rate",
-			selector: (row: FundingBreakdown): any => <input value={row.rate} />,
+			style: { padding: 0 },
 		},
 		{
+			cell: (row: FundingBreakdown, rowIndex) => (
+				<input
+					className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none"
+					key={`${row.lender}-${rowIndex}`}
+					{...register(`fundingBreakdown.${rowIndex}.prorated`)}
+				/>
+			),
 			name: "Prorated",
-			selector: (row: FundingBreakdown): any => <input value={row.prorated} />,
+			style: { padding: 0 },
 		},
 		{
+			cell: (row: FundingBreakdown, rowIndex) => (
+				<input
+					className="h-full w-full mx-[-16px] py-3 px-4 bg-white hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none"
+					key={`${row.lender}-${rowIndex}`}
+					{...register(`fundingBreakdown.${rowIndex}.regular`)}
+				/>
+			),
 			name: "Regular",
-			selector: (row: FundingBreakdown): any => <input value={row.regular} />,
+			style: { padding: 0 },
 		},
 		{
-			name: "",
-			maxWidth: "50px",
-			selector: (row: FundingBreakdown): any => (
+			cell: (row: FundingBreakdown, rowIndex) => (
 				<>
 					{row.type === "participant" && (
 						<Button
 							className="bg-white px-0 py-2 mr-2"
 							icon={<Icon name="trashBin" color="#FF0033" width="24" />}
-							onClick={() => removeParticipant(row.id)}
+							onClick={() => removeParticipant(rowIndex)}
+							type="button"
 						/>
 					)}
 				</>
 			),
-		},
-	];
-
-	const data = [
-		{
-			id: 1,
-			lender: "DKC Lending LLC",
-			amount: "0",
-			rate: "0",
-			prorated: "0.00",
-			regular: "0.00",
-		},
-		{
-			id: 2,
-			lender: "DKC Servicing Fee Income",
-			amount: "0",
-			rate: "0",
-			prorated: "0.00",
-			regular: "0.00",
-		},
-		{
-			id: 3,
-			lender: "Yield Spread (optional)",
-			amount: "0",
-			rate: "0",
-			prorated: "0.00",
-			regular: "0.00",
-		},
-		{
-			id: 4,
-			lender: "Select Participant",
-			amount: "0",
-			rate: "0",
-			prorated: "0.00",
-			regular: "0.00",
+			maxWidth: "50px",
+			name: "",
 		},
 	];
 
 	return (
 		<form
-			className="flex flex-col rounded-3xl bg-white gap-6 divide-y divide-gray-200 w-screen p-6 h-full overflow-y-auto"
+			className=" flex flex-col rounded-3xl bg-white gap-6 divide-y divide-gray-200 w-screen p-6 h-full overflow-y-auto"
 			onSubmit={handleSubmit(onSubmit)}
 		>
 			<div className="grid grid-cols-3 gap-6 divide-x divide-gray-200">
@@ -278,10 +277,10 @@ export const CreateLoan: FC = () => {
 				</div>
 
 				<div className="pl-6">
-					<div className="flex flex-row justify-between">
+					<div className="flex flex-row justify-between mb-2">
 						<Title text="Multiple Collateral" />
 						<Button
-							className="rounded-3xl px-3 bg-gray-200"
+							className="rounded-3xl px-3 h-[34px] bg-gray-200"
 							icon={<Icon name="plus" color="#0E2130" width="12" />}
 							onClick={() =>
 								appendCollateral({
@@ -291,61 +290,71 @@ export const CreateLoan: FC = () => {
 									taxUrl: "",
 								})
 							}
+							type="button"
 						/>
 					</div>
 					<div className="max-h-[865px] overflow-y-auto">
 						{collaterals.length ? (
-							collaterals.map((item, index) => (
-								<div className="w-full" key={item.id}>
-									<div className="grid grid-cols-2 gap-6">
-										<Input
-											label="Collateral Address"
-											placeholder="Enter Collateral Address"
-											register={register(
-												`collaterals.${index}.collateralAddress`
-											)}
-											required
-										/>
-										<div className="flex gap-6">
+							<div className="flex flex-col gap-4 divide-y divide-gray-200 ">
+								{collaterals.map((item, index) => (
+									<div key={item.id}>
+										<div className="grid grid-cols-2 gap-6 mt-4">
 											<Input
-												label="Insurance Expiration"
-												placeholder="MM-DD-YYYY"
+												label="Collateral Address"
+												placeholder="Enter Collateral Address"
 												register={register(
-													`collaterals.${index}.insuranceExpirationDate`
+													`collaterals.${index}.collateralAddress`
 												)}
 												required
 											/>
-											<div className="flex items-end">
-												<Button
-													className="bg-white px-0 py-2 mr-2"
-													icon={
-														<Icon name="trashBin" color="#FF0033" width="24" />
-													}
-													onClick={() => removeCollateral(index)}
+											<div className="flex gap-6">
+												<Input
+													label="Insurance Expiration"
+													placeholder="MM-DD-YYYY"
+													register={register(
+														`collaterals.${index}.insuranceExpirationDate`
+													)}
+													required
 												/>
+												<div className="flex items-end">
+													<Button
+														className="bg-white px-0 py-2 mr-2"
+														icon={
+															<Icon
+																name="trashBin"
+																color="#FF0033"
+																width="24"
+															/>
+														}
+														onClick={() => removeCollateral(index)}
+														type="button"
+													/>
+												</div>
 											</div>
 										</div>
+										<Input
+											label="Tax URL"
+											placeholder="Enter Tax URL"
+											register={register(`collaterals.${index}.taxUrl`)}
+											wrapperClassName="mt-6"
+											required
+										/>
+										<Select
+											className="mt-6"
+											label="Asset Type"
+											options={assetTypes}
+											placeholder="Select Dropdown"
+											register={register(`collaterals.${index}.assetType`)}
+											required
+										/>
 									</div>
-									<Input
-										label="Tax URL"
-										placeholder="Enter Tax URL"
-										register={register(`collaterals.${index}.taxUrl`)}
-										required
-									/>
-									<Select
-										label="Asset Type"
-										options={assetTypes}
-										placeholder="Select Dropdown"
-										register={register(`collaterals.${index}.assetType`)}
-										required
-									/>
-								</div>
-							))
+								))}
+							</div>
 						) : (
 							<div className="flex flex-col h-[600px] mt-6 justify-center items-center rounded-xl border-[3px] border-dashed border-gray-200">
-								<text className="font-inter text-[13px] text-primary-300 leading-4 tracking-[-0.65px]">
+								<p className="font-inter text-[13px] text-primary-300 leading-4 tracking-[-0.65px]">
 									No Collaterals added Yet
-								</text>
+								</p>
 								<Button
 									buttonText="Add Collateral"
 									className="rounded-lg bg-primary-500 mt-4 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
@@ -357,6 +366,7 @@ export const CreateLoan: FC = () => {
 											taxUrl: "",
 										})
 									}
+									type="button"
 								/>
 							</div>
 						)}
@@ -365,11 +375,41 @@ export const CreateLoan: FC = () => {
 			</div>
 
 			<div className="pt-6">
-				<Title text="Funding Breakdown" />
-				<Table className="my-6" columns={columns} data={data} />
+				<div className="flex flex-row justify-between">
+					<Title text="Funding Breakdown" />
+					<Button
+						buttonText={
+							<div className="ml-2 font-inter font-semibold text-sm text-primary leading-[17px] tracking-[-0.7px]">
+								Add Participant
+							</div>
+						}
+						className="rounded-2xl px-4 h-[34px] bg-gray-200"
+						icon={<Icon name="plus" color="#0E2130" width="12" />}
+						onClick={() =>
+							appendParticipant({
+								amount: "0",
+								lender: "Select Participant",
+								prorated: "0.00",
+								rate: "0",
+								regular: "0.00",
+								type: "participant",
+							})
+						}
+						type="button"
+					/>
+				</div>
+				<Table
+					className="my-6"
+					columns={columns}
+					data={fundingBreakdown}
+					fixedHeader
+					fixedHeaderScrollHeight="300px"
+				/>
+        <div></div>
 				<Button
 					buttonText="Save Loan"
 					className="w-full rounded-2xl bg-gold-600 px-[18px] py-4 font-inter font-semibold text-sm text-primary-300 leading-[17px] tracking-[-0.7px]"
+					type="submit"
 				/>
 			</div>
 		</form>
