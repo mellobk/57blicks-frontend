@@ -4,32 +4,32 @@ import { AuthenticateCode } from "@/components/ui/AuthCode";
 import { Button } from "@/components/ui/Button";
 import { LoginTitle } from "../LoginTitle";
 import { ToastMfa } from "../ToastMfa";
-import { sendToLocalStorage } from "@/utils/local-storage";
-import { mfaCode } from "../../utils/constants";
 import { sendCode } from "@/lib/cognito";
-import { useNavigate } from "@tanstack/router";
 import { Message } from "primereact/message";
+import { useAuth } from "@/providers/AuthContextProvider";
 
 interface MfaProps {
+	data?: { email: string; password: string };
 	title?: string;
 	subTitle?: string;
 	navigateTo?: string | null;
 	buttonText?: string;
 	receptorCode?: string;
 	labelData?: string;
-	backRoute?: string;
+	backRoute?: () => void;
 }
 
-export const Mfa: FC<MfaProps> = ({
+export const LoginMfaComponent: FC<MfaProps> = ({
 	title,
 	subTitle,
 	buttonText,
 	receptorCode,
-	navigateTo,
 	backRoute,
 	labelData,
+	data,
 }) => {
-	const navigate = useNavigate();
+	const { signInWithEmail } = useAuth();
+	// const navigate = useNavigate();
 	const [resentMessage, sendResentMessage] = useState<boolean>();
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [codeMfa, sendCodeMfa] = useState<string>("");
@@ -44,28 +44,24 @@ export const Mfa: FC<MfaProps> = ({
 	const handleSendCode = async (): Promise<void> => {
 		try {
 			await sendCode(receptorCode || "");
-			sendResentMessage(true);
 		} catch (error) {
 			console.log(error);
 			setErrorMessage("Something goes wrong");
 		}
+		sendResentMessage(!resentMessage);
 	};
 
 	const handleSendMfa = async (): Promise<void> => {
-		try {
-			sendToLocalStorage(mfaCode, codeMfa);
-			void navigate({ to: `/${navigateTo}` });
-		} catch (error) {
-			console.log(error);
-			setErrorMessage("Something goes wrong");
-		}
+		await signInWithEmail(data?.email || "", data?.password || "", codeMfa);
+		// void navigate({ to: `/${navigateTo}` });
+		sendResentMessage(!resentMessage);
 	};
 	const closeResentMessage = (): void => {
 		sendResentMessage(!resentMessage);
 	};
 
 	const backTo = (): void => {
-		void navigate({ to: `/${backRoute}` });
+		backRoute;
 	};
 
 	return (

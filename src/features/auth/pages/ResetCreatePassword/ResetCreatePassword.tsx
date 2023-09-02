@@ -16,6 +16,7 @@ export const ResetCreatePassWord: FC = () => {
 				receptor={localEmail}
 				mfaCode={localMfa}
 				navigateTo={loginRoutesNames.SuccessResetPassword}
+				backTo="reset-password-mfa"
 			/>
 		</div>
 	);
