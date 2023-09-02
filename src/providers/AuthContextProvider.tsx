@@ -11,7 +11,8 @@ interface AuthContextProps {
 	session: CognitoUserSession | null;
 	signInWithEmail: (
 		username: string,
-		password: string
+		password: string,
+		code: string
 	) => Promise<CognitoUserSession>;
 	signOut: () => void;
 }
@@ -28,9 +29,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 	const signInWithEmail = async (
 		username: string,
-		password: string
+		password: string,
+		code: string
 	): Promise<CognitoUserSession> => {
-		const result = await Cognito.signInWithEmail(username, password);
+		const result = await Cognito.signInWithEmail(username, password, code);
 		setUser(Cognito.getCurrentUser());
 		setSession(result);
 		return result;

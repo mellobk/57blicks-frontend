@@ -63,7 +63,7 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 				)}
 
 				<input
-					className={`${className}`}
+					className={`${className} ${iconName && "pr-[30px]"}`}
 					type="text"
 					defaultValue={defaultValue}
 					placeholder={placeholder}

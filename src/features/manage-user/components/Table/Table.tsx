@@ -78,6 +78,14 @@ export const Table: FC<TableProps> = ({
 		}
 	}, [debouncedSearchTerm, handleSearchValue]);
 
+	const showAllColumn = (): void => {
+		const newColumns = stateColumns.map((data: Column) => {
+			return { ...data, omit: false };
+		});
+
+		setStateColumns(newColumns);
+	};
+
 	return (
 		<div className="flex flex-col w-full h-full">
 			<div className="flex justify-between items-center w-full  bg-primary-500 px-4 mb-2">
@@ -199,6 +207,12 @@ export const Table: FC<TableProps> = ({
 					className="flex flex-col items-center justify-between gap-5 "
 					style={{ width: "98%" }}
 				>
+					<div
+						className="flex justify-end w-full cursor-pointer text-blue-100 text-[13px]"
+						onClick={showAllColumn}
+					>
+						Show All
+					</div>
 					{stateColumns?.map((data, key: number) => {
 						return (
 							<div

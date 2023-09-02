@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import type { FC } from "react";
+import { useState, type FC } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +15,7 @@ import { sendCode } from "@/lib/cognito";
 import { useNavigate } from "@tanstack/router";
 import { sendToLocalStorage } from "@/utils/local-storage";
 import { userEmail } from "../../utils/constants";
+import { Message } from "primereact/message";
 
 export const ResetPassword: FC = () => {
 	const navigate = useNavigate();
@@ -26,15 +27,19 @@ export const ResetPassword: FC = () => {
 		resolver: zodResolver(ResetPasswordSchemas),
 	});
 
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 	// eslint-disable-next-line unicorn/consistent-function-scoping
 	const onSubmit: SubmitHandler<FieldValues> = async (data): Promise<any> => {
 		try {
-			await sendCode(data[loginFields?.email]);
 			sendToLocalStorage(userEmail, data[loginFields?.email]);
-			void navigate({ to: `/reset-password-mfa` });
+			await sendCode(data[loginFields?.email]);
 		} catch (error) {
-			console.log("Unknown user", error);
+			console.log(error);
+			setErrorMessage("Something goes wrong");
 		}
+
+		void navigate({ to: `/reset-password-mfa` });
 	};
 
 	const backTo = (): void => {
@@ -59,6 +64,10 @@ export const ResetPassword: FC = () => {
 											required
 											register={register(loginFields?.email)}
 										/>
+
+										{errorMessage && (
+											<Message severity="error" text={errorMessage} />
+										)}
 									</div>
 
 									<div className="flex flex-col gap-1">
