@@ -33,6 +33,7 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 	buttonText,
 	handleSuccess,
 }) => {
+	console.log(data?.accountType, "bank data");
 	const { register, handleSubmit, watch, setValue } = useForm<FieldValues>();
 
 	useEffect(() => {
