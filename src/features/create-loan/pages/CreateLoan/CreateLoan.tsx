@@ -111,7 +111,7 @@ export const CreateLoan: FC = () => {
 
 	return (
 		<form
-			className=" flex flex-col rounded-3xl bg-white gap-6 divide-y divide-gray-200 w-screen p-6 h-full overflow-y-auto"
+			className="flex flex-col rounded-3xl bg-white gap-6 divide-y divide-gray-200 w-screen p-6 h-full overflow-y-auto"
 			onSubmit={handleSubmit(onSubmit)}
 		>
 			<div className="grid grid-cols-3 gap-6 divide-x divide-gray-200">
@@ -132,7 +132,7 @@ export const CreateLoan: FC = () => {
 						wrapperClassName="mt-6"
 						required
 					/>
-					<div className="grid grid-cols-2 gap-6">
+					<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
 						<Input
 							label="Total Loan Amount"
 							placeholder="$0.00"
@@ -148,7 +148,7 @@ export const CreateLoan: FC = () => {
 							required
 						/>
 					</div>
-					<div className="grid grid-cols-2 gap-6">
+					<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
 						<Input
 							label="Origination Date"
 							placeholder="MM-DD-YYYY"
@@ -164,7 +164,7 @@ export const CreateLoan: FC = () => {
 							required
 						/>
 					</div>
-					<div className="grid grid-cols-2 gap-6">
+					<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
 						<Input
 							label="Construction Holdback"
 							placeholder="$0.00"
@@ -180,7 +180,7 @@ export const CreateLoan: FC = () => {
 							required
 						/>
 					</div>
-					<div className="grid grid-cols-2 gap-6">
+					<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
 						<Input
 							label="Insurance Expiration Date"
 							placeholder="MM-DD-YYYY"
@@ -221,63 +221,92 @@ export const CreateLoan: FC = () => {
 					/>
 				</div>
 
-				<div className="pl-6">
-					<Title text="Borrower Information" />
-					<Input
-						label="Borrower LLC"
-						placeholder="Enter Borrower LLC"
-						register={register("borrowerLlc")}
-						wrapperClassName="mt-6"
-						required
-					/>
-					<div className="grid grid-cols-2 gap-6">
+				<div className="flex flex-col gap-6 divide-y divide-gray-200 pl-6">
+					<div>
+						<Title text="Borrower Information" />
 						<Input
-							label="First Name"
-							placeholder="Enter First Name"
-							register={register("firstName")}
+							label="Borrower LLC"
+							placeholder="Enter Borrower LLC"
+							register={register("borrowerLlc")}
+							wrapperClassName="mt-6"
+							required
+						/>
+						<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
+							<Input
+								label="First Name"
+								placeholder="Enter First Name"
+								register={register("firstName")}
+								wrapperClassName="mt-6"
+								required
+							/>
+							<Input
+								label="Last Name"
+								placeholder="Enter Last Name"
+								register={register("lastName")}
+								wrapperClassName="mt-6"
+								required
+							/>
+						</div>
+						<Input
+							label="Borrower Phone Number"
+							placeholder="XXX - XXX - XXXX"
+							register={register("borrowerPhoneNumber")}
 							wrapperClassName="mt-6"
 							required
 						/>
 						<Input
-							label="Last Name"
-							placeholder="Enter Last Name"
-							register={register("lastName")}
+							label="Borrower Email Address"
+							placeholder="Enter Borrower Email Address"
+							register={register("borrowerEmailAddress")}
+							wrapperClassName="mt-6"
+							required
+						/>
+						<Input
+							label="EIN/SSN"
+							placeholder="Enter EIN/SSN"
+							register={register("einSsn")}
+							wrapperClassName="mt-6"
+							required
+						/>
+						<Input
+							label="Mailing Address"
+							placeholder="Enter Mailing Address"
+							register={register("mailingAddress")}
 							wrapperClassName="mt-6"
 							required
 						/>
 					</div>
-					<Input
-						label="Borrower Phone Number"
-						placeholder="XXX - XXX - XXXX"
-						register={register("borrowerPhoneNumber")}
-						wrapperClassName="mt-6"
-						required
-					/>
-					<Input
-						label="Borrower Email Address"
-						placeholder="Enter Borrower Email Address"
-						register={register("borrowerEmailAddress")}
-						wrapperClassName="mt-6"
-						required
-					/>
-					<Input
-						label="EIN/SSN"
-						placeholder="Enter EIN/SSN"
-						register={register("einSsn")}
-						wrapperClassName="mt-6"
-						required
-					/>
-					<Input
-						label="Mailing Address"
-						placeholder="Enter Mailing Address"
-						register={register("mailingAddress")}
-						wrapperClassName="mt-6"
-						required
-					/>
+					<div className="pt-6">
+						<Title text="Banking Information" />
+						<Input
+							label="Bank Name"
+							placeholder="Enter Bank Name"
+							register={register("bankingName")}
+							wrapperClassName="mt-6"
+						/>
+						<Input
+							label="Routing Number"
+							placeholder="Enter Routing Number"
+							register={register("routingNumber")}
+							wrapperClassName="mt-6"
+						/>
+						<Input
+							label="Account Number"
+							placeholder="Enter Account Number"
+							register={register("accountNumber")}
+							wrapperClassName="mt-6"
+						/>
+						<Input
+							label="Account Type"
+							placeholder="Enter Account Type"
+							register={register("accountType")}
+							wrapperClassName="mt-6"
+						/>
+					</div>
 				</div>
 
 				<div className="pl-6">
-					<div className="flex flex-row justify-between mb-2">
+					<div className="flex flex-row justify-between">
 						<Title text="Multiple Collateral" />
 						<Button
 							className="rounded-3xl px-3 h-[34px] bg-gray-200"
@@ -293,18 +322,19 @@ export const CreateLoan: FC = () => {
 							type="button"
 						/>
 					</div>
-					<div className="max-h-[865px] overflow-y-auto">
+					<div className="max-h-[1000px] overflow-y-auto">
 						{collaterals.length ? (
-							<div className="flex flex-col gap-4 divide-y divide-gray-200 ">
+							<div className="flex flex-col gap-4 divide-y divide-gray-200">
 								{collaterals.map((item, index) => (
 									<div key={item.id}>
-										<div className="grid grid-cols-2 gap-6 mt-4">
+										<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 											<Input
 												label="Collateral Address"
 												placeholder="Enter Collateral Address"
 												register={register(
 													`collaterals.${index}.collateralAddress`
 												)}
+												wrapperClassName="lg:mt-4 mt-6"
 												required
 											/>
 											<div className="flex gap-6">
@@ -314,6 +344,7 @@ export const CreateLoan: FC = () => {
 													register={register(
 														`collaterals.${index}.insuranceExpirationDate`
 													)}
+													wrapperClassName="lg:mt-4 mt-6 w-full"
 													required
 												/>
 												<div className="flex items-end">
@@ -404,8 +435,16 @@ export const CreateLoan: FC = () => {
 					data={fundingBreakdown}
 					fixedHeader
 					fixedHeaderScrollHeight="300px"
+					conditionalRowStyles={[
+						{
+							when: (row) => {
+								console.log(row);
+								return row.calories < 300;
+							},
+							classNames: [],
+						},
+					]}
 				/>
-        <div></div>
 				<Button
 					buttonText="Save Loan"
 					className="w-full rounded-2xl bg-gold-600 px-[18px] py-4 font-inter font-semibold text-sm text-primary-300 leading-[17px] tracking-[-0.7px]"

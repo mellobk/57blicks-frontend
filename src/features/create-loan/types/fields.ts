@@ -15,8 +15,11 @@ export type FundingBreakdown = {
 };
 
 export type LoanFields = {
+	accountNumber: string;
+	accountType: string;
 	amountDrawn: string;
 	assetType: string;
+	bankingName: string;
 	borrowerEmailAddress: string;
 	borrowerLlc: string;
 	borrowerPhoneNumber: string;
@@ -35,6 +38,7 @@ export type LoanFields = {
 	maturityDate: string;
 	originationDate: string;
 	prepaymentPenalty: string;
+	routingNumber: string;
 	taxUrl: string;
 	totalLoanAmount: string;
 };
