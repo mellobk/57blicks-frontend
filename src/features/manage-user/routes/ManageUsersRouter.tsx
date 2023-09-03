@@ -13,7 +13,7 @@ export const NavbarRoutes = [
 		page: Investors,
 		routeComponent: null,
 		layout: DashboardLayout,
-		name: "Reporting",
+		name: "Manage Users",
 	},
 
 	{
@@ -21,7 +21,7 @@ export const NavbarRoutes = [
 		page: Accounting,
 		routeComponent: null,
 		layout: DashboardLayout,
-		name: "Reporting",
+		name: "Manage Users",
 	},
 ];
 

@@ -26,6 +26,7 @@ interface MfaProps {
 	buttonText?: string;
 	receptor?: string;
 	mfaCode?: string;
+	backTo?: string;
 }
 
 export const CreatePassword: FC<MfaProps> = ({
@@ -35,6 +36,7 @@ export const CreatePassword: FC<MfaProps> = ({
 	navigateTo,
 	receptor,
 	mfaCode,
+	backTo,
 }) => {
 	const navigate = useNavigate();
 
@@ -53,6 +55,7 @@ export const CreatePassword: FC<MfaProps> = ({
 	} = useForm({
 		resolver: zodResolver(createPasswordSchema),
 	});
+
 	const passwordText = watch(createPassWordFields.password) as string;
 	const errorPassword = errors[createPassWordFields?.password]?.message;
 
@@ -88,6 +91,10 @@ export const CreatePassword: FC<MfaProps> = ({
 		setPasswordValidations(newRules);
 	}, [passwordText]);
 
+	const backHandleClick = (): void => {
+		console.log(backTo);
+		void navigate({ to: `/${backTo}` });
+	};
 	return (
 		<div className="flex flex-col items-center  gap-3 h-full w-full">
 			<LoginTitle title={title} subTitle={subTitle}>
@@ -121,6 +128,7 @@ export const CreatePassword: FC<MfaProps> = ({
 											disabled={!!errorPassword}
 										/>
 										<Button
+											onClick={backHandleClick}
 											buttonText="Back"
 											className="bg-transparent text-black"
 											type="submit"

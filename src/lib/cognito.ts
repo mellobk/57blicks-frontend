@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { COGNITO_CLIENT_ID, COGNITO_USER_POOL_ID } from "@/config";
 import {
 	AuthenticationDetails,
@@ -80,6 +83,23 @@ export async function signUpUserWithEmail(
 	});
 }
 
+export async function verifyCodeValidation(
+	username: string,
+	code: string
+): Promise<unknown> {
+	const cognitoUser = getCognitoUser(username);
+
+	return new Promise((resolve, reject) => {
+		cognitoUser.confirmRegistration(code, true, (error, confirmationResult) => {
+			if (error) {
+				reject(error);
+			} else {
+				resolve(confirmationResult);
+			}
+		});
+	});
+}
+
 export async function verifyCode(
 	username: string,
 	code: string
@@ -99,7 +119,8 @@ export async function verifyCode(
 
 export async function signInWithEmail(
 	username: string,
-	password: string
+	password: string,
+	code: string
 ): Promise<CognitoUserSession> {
 	return new Promise((resolve, reject) => {
 		const authenticationData = {
@@ -116,7 +137,25 @@ export async function signInWithEmail(
 				resolve(signInResult);
 			},
 			onFailure: (error) => {
+				console.log(error);
 				reject(error);
+			},
+			mfaSetup: () => {
+				if (code) {
+					cognitoUser.sendMFACode(code, {
+						onSuccess: (result) => {
+							resolve(result);
+						},
+						onFailure: (error) => {
+							console.log(error);
+							reject(error);
+						},
+					});
+				} else {
+					console.log("falta codigo");
+					resolve({ isValid: () => true } as CognitoUserSession);
+					return;
+				}
 			},
 		});
 	});
@@ -168,7 +207,7 @@ export async function sendCode(username: string): Promise<unknown> {
 				resolve(result);
 			},
 			onFailure: function (error) {
-				resolve(error.message);
+				reject(error.message);
 			},
 		});
 	}).catch((error) => {
@@ -183,13 +222,13 @@ export async function forgotPassword(
 ): Promise<string> {
 	const cognitoUser = getCognitoUser(username);
 
-	return new Promise((resolve) => {
+	return new Promise((resolve, reject) => {
 		cognitoUser.confirmPassword(code, password, {
 			onSuccess: () => {
 				resolve("password updated");
 			},
 			onFailure: (error) => {
-				resolve(error.message);
+				reject(error.message);
 			},
 		});
 	});

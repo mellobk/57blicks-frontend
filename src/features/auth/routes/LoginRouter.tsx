@@ -5,7 +5,6 @@ import UnauthenticatedRoute from "@/routes/routes";
 import { FirstLogin } from "../pages/FirstLogin";
 import { SuccessFirstLogin } from "../pages/SuccessFirstLogin";
 import { Login } from "../pages/Login";
-import { LoginMfa } from "../pages/LoginMfa";
 import { ResetPassword } from "../pages/ResetPassword";
 import { ResetPasswordMfa } from "../pages/ResetPasswordMfa";
 import { ResetCreatePassWord } from "../pages/ResetCreatePassword";
@@ -18,6 +17,7 @@ export const loginRoutesNames = {
 	resetPasswordMfa: "reset-password-mfa",
 	ResetCreatePassWord: "reset-create-password",
 	SuccessResetPassword: "success-reset-password",
+	LoginMfa: "login-mfa",
 };
 
 const LoginRoutes = [
@@ -39,11 +39,6 @@ const LoginRoutes = [
 	{
 		path: `/${loginRoutesNames.login}`,
 		page: Login,
-		layout: LoginLayout,
-	},
-	{
-		path: "/login-mfa",
-		page: LoginMfa,
 		layout: LoginLayout,
 	},
 	{

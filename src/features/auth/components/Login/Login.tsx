@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { FieldValues, SubmitHandler } from "react-hook-form";
@@ -17,9 +18,18 @@ import { useNavigate } from "@tanstack/router";
 import { loginRoutesNames } from "../../routes/LoginRouter";
 import { getSession } from "@/lib/cognito";
 import { sendToLocalStorage } from "@/utils/local-storage";
-import { accessToken, refreshToken } from "@/utils/constans";
+import { accessToken } from "@/utils/constans";
 
-export const LoginForm: FC = () => {
+type LoginData = {
+	email: string;
+	password: string;
+};
+
+type LoginFormProps = {
+	handleSuccessLogin?: (data: LoginData) => void;
+};
+
+export const LoginForm: FC<LoginFormProps> = () => {
 	const navigate = useNavigate();
 	const [loginError, setLoginError] = useState<string | null>(null);
 	const { signInWithEmail } = useAuth();
@@ -35,13 +45,16 @@ export const LoginForm: FC = () => {
 		data: LoginFields
 	): Promise<void> => {
 		try {
-			await signInWithEmail(data.email, data.password);
+			await signInWithEmail(data.email, data.password, "");
+			/* 			if (handleSuccessLogin) {
+				handleSuccessLogin({ email: data.email, password: data.password });
+			} */
 			const sessionData: any = await getSession();
-			sendToLocalStorage(accessToken, `${sessionData?.accessToken?.jwtToken}`);
-			sendToLocalStorage(refreshToken, `${sessionData?.refreshToken?.token}`);
-
+			console.log(sessionData);
+			sendToLocalStorage(accessToken, `${sessionData?.idToken?.jwtToken}`);
 			void navigate({ to: `/manage-users/admins` });
-		} catch {
+		} catch (error) {
+			console.log(error);
 			setLoginError("Login failed. Please check your credentials.");
 		}
 	};
