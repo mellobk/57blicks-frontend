@@ -8,6 +8,7 @@ import { Input } from "@/components/forms/Input";
 import { AddAdminSchema } from "../../utils/Schemas/AddAdminSchemas";
 import { addAdminFields } from "../../utils/input-fields";
 import { useEffect } from "react";
+import { MaskInput } from "@/components/forms/MaskInput";
 
 export const AddAdmin: React.FC = () => {
 	const {
@@ -86,8 +87,9 @@ export const AddAdmin: React.FC = () => {
 									}
 								/>
 
-								<Input
+								<MaskInput
 									label="Phone Number"
+									mask="(999) 999-9999"
 									placeholder="(XXX) XXX-XXXX"
 									register={register(addAdminFields?.phoneNumber)}
 									required
@@ -97,7 +99,10 @@ export const AddAdmin: React.FC = () => {
 									}
 								/>
 								<div className="flex flex-col gap-1">
-									<Button buttonText="Send Invite" className={`bg-primary-500`} />
+									<Button
+										buttonText="Send Invite"
+										className={`bg-primary-500`}
+									/>
 								</div>
 							</div>
 						</form>

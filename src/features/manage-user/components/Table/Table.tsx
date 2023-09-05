@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FC, ReactElement } from "react";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
@@ -162,21 +163,6 @@ export const Table: FC<TableProps> = ({
 								/>
 							</div>
 						</div>
-						{/* 				<div
-							style={{ position: "relative" }}
-							className={`h-[30px] rounded-[10px] flex items-center justify-center cursor-pointer ${
-								searchVisible || searchValue ? "not-visible" : "visible"
-							}`}
-							onClick={(): void => {
-								setSearchVisible(true);
-							}}
-						>
-							<Icon
-								name="search"
-								width="20"
-								color={`${searchVisible ? "#7c8991" : "#7c8991"}`}
-							/>
-						</div> */}
 					</div>
 
 					<div

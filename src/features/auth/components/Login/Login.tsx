@@ -18,7 +18,7 @@ import { useNavigate } from "@tanstack/router";
 import { loginRoutesNames } from "../../routes/LoginRouter";
 import { getSession } from "@/lib/cognito";
 import { sendToLocalStorage } from "@/utils/local-storage";
-import { accessToken } from "@/utils/constans";
+import { accessToken } from "@/utils/constant";
 
 type LoginData = {
 	email: string;
@@ -52,7 +52,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 			const sessionData: any = await getSession();
 			console.log(sessionData);
 			sendToLocalStorage(accessToken, `${sessionData?.idToken?.jwtToken}`);
-			void navigate({ to: `/manage-users/admins` });
+			window.location.href = "/manage-users/admins";
 		} catch (error) {
 			console.log(error);
 			setLoginError("Login failed. Please check your credentials.");

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
+import { InputMask } from "primereact/inputmask";
 import { classNames } from "primereact/utils";
 import { Icon, type IconNames } from "@/components/ui/Icon";
 
@@ -14,13 +15,16 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	defaultValue?: string;
 	iconWidth?: string;
 	iconColor?: string;
-	onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	mask?: string;
 	clickIcon?: () => void;
 	value?: string;
 	type?: string;
 }
 
-export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
+export const MaskInput: ForwardRefRenderFunction<
+	HTMLInputElement,
+	InputProps
+> = ({
 	label,
 	placeholder,
 	error,
@@ -33,7 +37,7 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 	className = `placeholder-gray-400 focus:outline-none ${
 		error ? "text-red-ERROR bg-gray-100" : "bg-gray-200"
 	} font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md`,
-	onChange,
+	mask,
 	iconWidth = "20",
 	iconColor = "#000",
 	value,
@@ -64,8 +68,8 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 					</div>
 				)}
 
-				<input
-					className={`${className} ${iconName && "pr-[30px]"}`}
+				<InputMask
+					className={`${className} ${iconName && "pr-[30px]"} outline-none`}
 					type={type}
 					defaultValue={defaultValue}
 					placeholder={placeholder}
@@ -73,7 +77,7 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 					required={required}
 					{...register}
 					value={value}
-					onChange={onChange}
+					mask={mask}
 				/>
 			</div>
 			{error && (
