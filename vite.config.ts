@@ -18,7 +18,15 @@ export default defineConfig({
 		host: true,
 		strictPort: true,
 	},
-	define: { _global: {}, global: {} },
+	optimizeDeps: {
+		esbuildOptions: {
+			// Node.js global to browser globalThis
+			define: {
+				global: "globalThis",
+			},
+		},
+	},
+	define: { _global: "({})" },
 
 	resolve: {
 		alias: {
