@@ -7,9 +7,10 @@ import axios from "axios";
 import { getLocalStorage, removeLocalStorage } from "./local-storage";
 import { accessToken } from "./constant";
 import { signOut } from "@/lib/cognito";
+import sharedObject from "@/api-config";
 
 export const authApiClient = axios.create({
-	baseURL: import.meta.env["VITE_URL_ENVIRONMENT"],
+	baseURL: sharedObject.api.ENDPOINT,
 	headers: {
 		"Content-type": "application/json",
 		Authorization: `Bearer ${getLocalStorage(accessToken)}`,
