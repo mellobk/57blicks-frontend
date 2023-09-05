@@ -78,12 +78,14 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 
 								<Input
 									label="Routing Number"
+									type="number"
 									placeholder="Enter Routing Number"
 									register={register(addInvestorBankFields?.routingNumber)}
 								/>
 
 								<Input
 									label="Account Number"
+									type="number"
 									placeholder="EnterAccount Number"
 									register={register(addInvestorBankFields?.accountNumber)}
 								/>

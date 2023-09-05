@@ -69,7 +69,9 @@ export const MaskInput: ForwardRefRenderFunction<
 				)}
 
 				<InputMask
-					className={`${className} ${iconName && "pr-[30px]"} outline-none`}
+					className={`${className} ${
+						iconName && "pr-[30px]"
+					} outline-none border-none focus:outline-none focus:border-transparent shadow-none`}
 					type={type}
 					defaultValue={defaultValue}
 					placeholder={placeholder}
