@@ -18,9 +18,8 @@ export default defineConfig({
 		host: true,
 		strictPort: true,
 	},
-	define: {
-		global: {},
-	},
+	define: { _global: {}, global: {} },
+
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "src"), // Adjust the path accordingly
