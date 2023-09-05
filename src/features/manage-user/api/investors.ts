@@ -1,27 +1,39 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-import { fetchData } from "@/utils/api-client";
-import type { Investor } from "../types/api";
+import { authApiClient } from "@/utils/api-client";
+import type { Investor, User } from "../types/api";
 import { filterData, investors, userFilterData } from "./backend-end-points";
 
 const filterAllInvestors = async (searchData: string, showDisable: boolean) => {
-	const response = fetchData(filterData(showDisable, searchData), "GET");
-	return response;
+	const response = await authApiClient.get<Array<Investor>>(
+		filterData(showDisable, searchData)
+	);
+	return response.data;
 };
 
 const filterAllAdmins = async (searchData: string) => {
-	const response = fetchData(userFilterData("admin", searchData), "GET");
-	return response;
+	const response = await authApiClient.get<Array<User>>(
+		userFilterData("admin", searchData)
+	);
+	return response.data;
 };
 
 const filterAllAccounting = async (searchData: string) => {
-	const response = fetchData(userFilterData("accounting", searchData), "GET");
-	return response;
+	const response = await authApiClient.get<Array<User>>(
+		userFilterData("accounting", searchData)
+	);
+	return response.data;
 };
 
 const updateInvestors = async (body: Investor) => {
+	const response = await authApiClient.put<Array<User>>(
+		investors(body?.id || ""),
+		body
+	);
+	return response.data;
+};
+/* const updateInvestors = async (body: Investor) => {
 	const response = fetchData(investors(body?.id || ""), "PUT", body);
 	return response;
-};
+}; */
 
 const ManageUsersService = {
 	filterAllInvestors,
