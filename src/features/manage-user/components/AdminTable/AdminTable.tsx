@@ -46,7 +46,7 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 	const adminQuery = useQuery(
 		["admin-query"],
 		() => {
-			return ManageUsersService.filterAllAccounting(searchValue);
+			return ManageUsersService.filterAllAdmins(searchValue);
 		},
 		{ enabled: true, staleTime: 1 }
 	);
