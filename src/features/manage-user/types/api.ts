@@ -1,13 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export interface UserStatus {
-	id: string;
-	createdAt: Date;
-	updatedAt: Date;
-	valueDefinition: string;
-	description: string;
-	active: boolean;
-	validationType: null;
-}
 
 export interface User {
 	id?: string;
@@ -20,7 +11,7 @@ export interface User {
 	sub?: string;
 	phoneNumber?: string;
 	mailingAddress?: string;
-	userStatus?: UserStatus;
+	isActive?: boolean;
 }
 
 export interface Investor {

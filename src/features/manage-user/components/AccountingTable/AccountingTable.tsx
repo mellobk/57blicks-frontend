@@ -2,20 +2,25 @@ import { Table } from "@/features/manage-user/components/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import { AddAdmin } from "../AddAdmin/AddAdmin";
 import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
 import { tabs } from "../../utils/tabs";
+import { useQuery } from "@tanstack/react-query";
+import ManageUsersService from "../../api/investors";
+import type { User } from "../../types/api";
 
 interface SuccessProps {}
 
 export const AccountingTable: React.FC<SuccessProps> = () => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
-	const [deleteId, setDeleteId] = useState<number>(0);
-	const handleDeleteAdmin = (id: number) => {
+	const [deleteId, setDeleteId] = useState<string>("");
+	const [searchValue, setSearchValue] = useState<string>("");
+
+	const handleDeleteAdmin = (id: string) => {
 		console.log(id);
 		setOpenDeleteModal(!openDeleteModal);
 		setDeleteId(id);
@@ -33,9 +38,30 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 		setOpenModal(!openModal);
 	};
 
+	const handleSearch = (data: string) => {
+		setSearchValue(data);
+		return data;
+	};
+
+	const accountQuery = useQuery(
+		["account-query"],
+		() => {
+			return ManageUsersService.filterAllAccounting(searchValue);
+		},
+		{ enabled: true, staleTime: 1 }
+	);
+
+	/* 	const accountMutation = useMutation(() => {
+		return ManageUsersService.filterAllAccounting(searchValue);
+	}); */
+
+	useEffect(() => {
+		accountQuery.refetch;
+	}, [searchValue]);
+
 	const conditionalRowStyles = [
 		{
-			when: (row: { status: string }) => row.status === "Inactive",
+			when: (row: User) => !row?.isActive,
 			style: {
 				opacity: 0.4,
 			},
@@ -47,48 +73,48 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 			name: "#",
 			maxWidth: "50px",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: { id: any }): any => row.id,
+			selector: (row: User): string => row?.id || "",
 			omit: false,
 		},
 		{
 			name: "name",
-			selector: (row: { name: any }): any => row.name,
+			selector: (row: User): string => `${row?.firstName} ${row?.lastName}`,
 			sortable: true,
 			omit: false,
 		},
 		{
 			name: "Email",
-			selector: (row: { email: any }): any => row.email,
+			selector: (row: User): string => row?.email || "",
 			sortable: true,
 			omit: false,
 		},
 		{
 			name: "Phone Number",
-			selector: (row: { phoneNumber: any }): any => row.phoneNumber,
+			selector: (row: User): string => row?.phoneNumber || "",
 			omit: false,
 		},
 		{
 			name: "Mailing Address",
-			selector: (row: { mailingAddress: any }): any => row.mailingAddress,
+			selector: (row: User): string => row?.mailingAddress || "",
 			omit: false,
 		},
 		{
 			name: "Status",
-			selector: (row: { status: any }): any => (
-				<TableStatus status={row?.status} />
+			maxWidth: "50px",
+			selector: (row: User): JSX.Element => (
+				<TableStatus status={row.isActive ? "Active" : "Inactive"} />
 			),
+			sortable: true,
 			omit: false,
 		},
 		{
 			name: "Delete",
 			maxWidth: "50px",
-			selector: (row: { id: number; status: string }): any => (
+			selector: (row: User): JSX.Element => (
 				<div
 					className="cursor-pointer"
 					onClick={(): void => {
-						if (row?.status === "Active") {
-							handleDeleteAdmin(row?.id);
-						}
+						handleDeleteAdmin(row?.id || "");
 					}}
 				>
 					<Icon name="trashBin" width="20" color="black" />
@@ -98,48 +124,23 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 		},
 	];
 
-	const data = [
-		{
-			id: 1,
-			name: "dayan manrique",
-			email: "c@revstarconsulting.com",
-			phoneNumber: "(909) 554 3402",
-			mailingAddress: "123 Main St, New York, NY 10010",
-			status: "Active",
-		},
-		{
-			id: 2,
-			name: "dayan manrique",
-			email: "c@revstarconsulting.com",
-			phoneNumber: "(909) 554 3402",
-			mailingAddress: "123 Main St, New York, NY 10010",
-			status: "Active",
-		},
-		{
-			id: 3,
-			name: "dayan manrique",
-			email: "c@revstarconsulting.com",
-			phoneNumber: "(909) 554 3402",
-			mailingAddress: "123 Main St, New York, NY 10010",
-			status: "Active",
-		},
-	];
-
 	return (
 		<>
 			<Table
-				widthSearch="185px"
+				handleSearchValue={handleSearch}
 				onClickButton={addAdmin}
 				columns={columns}
-				data={data}
+				loading={accountQuery.isLoading}
+				data={accountQuery.data}
 				buttonText="Add Accounting"
+				widthSearch="185px"
 				conditionalRowStyles={conditionalRowStyles}
 			>
 				<>
 					<div>
 						<BreadCrumb initialTab="Manage Users" actualTab="Accounting" />
 					</div>
-					<div>
+					<div className="relative z-10">
 						<Tabs tabs={tabs} actualTab="accounting" />
 					</div>
 				</>

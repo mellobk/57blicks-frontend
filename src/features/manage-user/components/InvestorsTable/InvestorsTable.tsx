@@ -13,9 +13,10 @@ import { AddInvestor } from "../AddInvestor/AddInvestor";
 import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBakingInformation";
 import { tabs } from "../../utils/tabs";
 import type { Investor } from "../../types/api";
-import InvestorsService from "../../api/investors";
-import { useMutation } from "@tanstack/react-query";
+import ManageUsersService from "../../api/investors";
+import { useQuery } from "@tanstack/react-query";
 import type { AddInvestorBankFields } from "../../types/validations";
+import { statusSort } from "@/utils/common-funtions";
 
 interface SuccessProps {}
 
@@ -25,23 +26,24 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
 	const [checkState, setCheckState] = useState<boolean>(false);
 	const [deleteId, setDeleteId] = useState<string>("");
+	const [idUpload, setIdUpload] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [bankInfo, setBankInfo] = useState<AddInvestorBankFields>();
 
-	/* 	const investorQuery = useQuery(
+	const investorQuery = useQuery(
 		["investor-query"],
 		() => {
-			return InvestorsService.findAll();
+			return ManageUsersService.filterAllInvestors(searchValue, checkState);
 		},
 		{ enabled: true, staleTime: 1 }
-	); */
+	);
 
-	const investorMutation = useMutation(() => {
-		return InvestorsService.filterAllInvestors(searchValue, checkState);
+	/* 	const investorMutation = useMutation(() => {
+		return ManageUsersService.filterAllInvestors(searchValue, checkState);
 	});
-
+ */
 	useEffect(() => {
-		investorMutation.mutate();
+		void investorQuery.refetch();
 	}, [searchValue, checkState]);
 
 	const handleCheckedToggle = (data: Investor) => {
@@ -54,10 +56,8 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		setDeleteId(id);
 	};
 
-	const handleUploadModal = (id: string) => {
-		console.log(id);
+	const handleUploadModal = () => {
 		setOpenUpdateModal(!openUpdateModal);
-		setDeleteId(id);
 	};
 
 	const closeDeleteAdminModal = (): void => {
@@ -77,6 +77,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const handleClick = (): void => {
+		void investorQuery.refetch();
 		setOpenUpdateModal(!openUpdateModal);
 	};
 
@@ -86,7 +87,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 	const conditionalRowStyles = [
 		{
-			when: (row: Investor) => row.user?.userStatus?.description === "Inactive",
+			when: (row: Investor) => row.user?.isActive === false,
 			style: {
 				opacity: 0.4,
 			},
@@ -132,8 +133,10 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 			name: "Status",
 			maxWidth: "50px",
 			selector: (row: Investor): JSX.Element => (
-				<TableStatus status={row.user?.userStatus?.description || ""} />
+				<TableStatus status={row.user?.isActive ? "Active" : "Inactive"} />
 			),
+			sortable: true,
+			sortFunction: statusSort,
 			omit: false,
 		},
 		{
@@ -166,13 +169,15 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 					className="cursor-pointer"
 					onClick={(): void => {
 						setBankInfo({
+							id: row?.id,
 							accountNumber: row?.accountNumber || "",
 							accountType: row?.accountType || "",
 							routingNumber: row?.routingNumber || "",
 							bankingName: row?.bankingName || "",
 						});
-						if (row?.user?.userStatus?.description === "Active") {
-							handleUploadModal(row?.id || "");
+						if (row?.user?.isActive) {
+							setIdUpload(row?.id || "");
+							handleUploadModal();
 						}
 					}}
 				>
@@ -188,12 +193,12 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 				<div
 					className="cursor-pointer"
 					onClick={(): void => {
-						if (row?.user?.userStatus?.description === "Active") {
+						if (row?.user?.isActive) {
 							handleDeleteAdmin(row?.id || "");
 						}
 					}}
 				>
-					{row?.user?.userStatus?.description === "Active" && (
+					{row?.user?.isActive && (
 						<Icon name="deleteBack" width="20" color="black" />
 					)}
 				</div>
@@ -209,17 +214,18 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 				handleCheckValue={handleCheckedToggle}
 				checkedValue={checkState}
 				onClickButton={addAdmin}
-				loading={false}
+				loading={investorQuery.isLoading}
 				columns={columns}
-				data={investorMutation.data}
+				data={investorQuery.data}
 				buttonText="Add Investor"
 				conditionalRowStyles={conditionalRowStyles}
+				widthSearch="160px"
 			>
 				<>
 					<div>
 						<BreadCrumb initialTab="Manage Users" actualTab="Investors" />
 					</div>
-					<div>
+					<div className="relative z-10">
 						<Tabs tabs={tabs} actualTab="investors" />
 					</div>
 				</>
@@ -239,7 +245,11 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 				title="Banking Info"
 				width="25vw"
 			>
-				<UpdateBakingInformation handleClick={handleClick} data={bankInfo} />
+				<UpdateBakingInformation
+					handleClick={handleClick}
+					data={bankInfo}
+					id={idUpload}
+				/>
 			</Modal>
 
 			<Modal

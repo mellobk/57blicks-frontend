@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/Button";
 
 interface DeleteAdminProps {
-	id?: number;
+	id?: string;
 }
 
-export const DeleteAdmin: React.FC<DeleteAdminProps> = ({ id = 0 }) => {
-	const handleDeleteAdmin = (id: number): void => {
+export const DeleteAdmin: React.FC<DeleteAdminProps> = ({ id = "" }) => {
+	const handleDeleteAdmin = (id: string): void => {
 		console.log(id);
 	};
 	return (

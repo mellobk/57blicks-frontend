@@ -11,6 +11,7 @@ import { Input } from "@/components/forms/Input";
 import { addInvestorFields } from "../../utils/input-fields";
 import { AddInvestorSchemas } from "../../utils/Schemas/AddInvestorSchemas";
 import type { AddInvestorFields } from "../../types/validations";
+import { MaskInput } from "@/components/forms/MaskInput";
 
 interface InvestorInfoProps {
 	handleInvestorInfo?: (data: AddInvestorFields) => void;
@@ -102,8 +103,9 @@ export const InvestorInfo: React.FC<InvestorInfoProps> = ({
 
 								<div className="flex w-full gap-4">
 									<div className="w-full">
-										<Input
+										<MaskInput
 											label="Phone Number"
+											mask="(999) 999-9999"
 											placeholder="(XXX) XXX-XXXX"
 											register={register(addInvestorFields?.phoneNumber)}
 											required={true}
@@ -114,8 +116,9 @@ export const InvestorInfo: React.FC<InvestorInfoProps> = ({
 										/>
 									</div>
 									<div className="w-[40%]">
-										<Input
+										<MaskInput
 											label="SSN/EIN"
+											mask="999 999 999"
 											placeholder="XXXXX"
 											register={register(addInvestorFields?.einSsn || "einSsn")}
 										/>

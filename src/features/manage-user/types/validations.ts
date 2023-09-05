@@ -17,6 +17,7 @@ export type AddInvestorFields = {
 };
 
 export type AddInvestorBankFields = {
+	id?: string;
 	bankingName: string;
 	routingNumber: string;
 	accountNumber: string;
