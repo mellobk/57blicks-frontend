@@ -2,13 +2,13 @@
 import type { FC, ReactElement } from "react";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
+import { Input } from "@/components/forms/Input";
 import { Button } from "@/components/ui/Button";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { useDebounce } from "@/hooks/debounce";
 import "./Table.css";
-import { Input } from "../../../../components/forms/Input";
 
 interface Column {
 	name?: string;
