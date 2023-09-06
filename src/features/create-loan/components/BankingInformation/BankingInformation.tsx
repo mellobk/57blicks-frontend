@@ -14,8 +14,8 @@ export const BankingInformation: FC<Props> = ({ register }) => (
 	<div className="pt-6">
 		<Title text="Banking Information" />
 		<Input
-			label="Bank Name"
-			placeholder="Enter Bank Name"
+			label="Banking Name"
+			placeholder="Enter Banking Name"
 			register={register("bankingName")}
 			wrapperClassName="mt-6"
 		/>
