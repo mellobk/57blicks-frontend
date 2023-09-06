@@ -3,31 +3,39 @@ import type { UseFormRegisterReturn } from "react-hook-form";
 import { Dropdown, type DropdownProps } from "primereact/dropdown";
 import { Icon } from "@/components/ui/Icon";
 
+export type Option = {
+	name: string;
+	code: string;
+};
+
 interface SelectProps extends DropdownProps {
 	error?: string;
 	iconName?: string;
 	label?: string;
 	register?: UseFormRegisterReturn;
-	required?: boolean;
 	className?: string;
+	value?: Option;
 }
 
 export const Select: ForwardRefRenderFunction<
 	HTMLSelectElement,
 	SelectProps
-> = ({ error, iconName, label, register, required, className, ...props }) => {
-	const [selectedData, setSelectedData] = useState<{
-		name: string;
-		code: string;
-	}>();
+> = ({
+	error,
+	iconName,
+	label,
+	register,
+	required,
+	className,
+	onChange,
+	value,
+	...props
+}) => {
+	const [selectedData, setSelectedData] = useState<Option>();
 
 	useEffect(() => {
-		if (props.value) {
-			const data: { name: string; code: string } = {
-				name: props.value,
-				code: props.value,
-			};
-			setSelectedData(data);
+		if (value) {
+			setSelectedData(value);
 		}
 	}, []);
 
@@ -46,7 +54,7 @@ export const Select: ForwardRefRenderFunction<
 						className="absolute top-0 right-2 bottom-0 flex items-center justify-center"
 						data-testid="icon"
 					>
-						<Icon name={iconName} width="20" color={"#000"} />
+						<Icon name={iconName} width="20" color="#000" />
 					</div>
 				)}
 
@@ -54,8 +62,8 @@ export const Select: ForwardRefRenderFunction<
 					{...register}
 					value={selectedData}
 					onChange={(event): void => {
-						console.log(event.value);
 						setSelectedData(event.value);
+						onChange?.(event);
 					}}
 					options={props.options}
 					optionLabel="name"

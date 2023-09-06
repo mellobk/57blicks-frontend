@@ -6,12 +6,11 @@ type Collateral = {
 };
 
 export type FundingBreakdown = {
-	amount: string;
+	amount: number;
 	lender: string;
-	prorated: string;
-	rate: string;
-	regular: string;
-	type?: "participant";
+  lenderId?: string;
+	rate: number;
+	type?: "lender" | "participant";
 };
 
 export type LoanFields = {
