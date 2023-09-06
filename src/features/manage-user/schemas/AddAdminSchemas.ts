@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { addAdminFields } from "../input-fields";
+import { addAdminFields } from "../utils/input-fields.ts";
 
 export const AddAdminSchema = z.object({
 	[addAdminFields?.firstName]: z.string().min(1, { message: "Required field" }),

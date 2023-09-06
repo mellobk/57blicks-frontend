@@ -127,11 +127,6 @@ export const FundingBreakdown: FC<Props> = ({
 				/>
 			</div>
 			<Table className="my-6" columns={columns} data={fields} />
-			<Button
-				buttonText="Save Loan"
-				className="w-full rounded-2xl bg-gold-600 px-[18px] py-4 font-inter font-semibold text-sm text-primary-300 leading-[17px] tracking-[-0.7px]"
-				type="submit"
-			/>
 		</div>
 	);
 };

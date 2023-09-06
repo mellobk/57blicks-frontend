@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import {
 	FieldArrayWithId,
+	FieldErrors,
 	UseFieldArrayAppend,
 	UseFieldArrayRemove,
 	UseFormRegister,
@@ -15,6 +16,7 @@ import { assetTypes } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	append: UseFieldArrayAppend<LoanFields, "collaterals">;
+	errors: FieldErrors<LoanFields>;
 	fields: FieldArrayWithId<LoanFields, "collaterals">[];
 	register: UseFormRegister<LoanFields>;
 	remove: UseFieldArrayRemove;
@@ -22,6 +24,7 @@ interface Props {
 
 export const MultipleCollateral: FC<Props> = ({
 	append,
+  errors,
 	fields,
 	register,
 	remove,
@@ -50,6 +53,7 @@ export const MultipleCollateral: FC<Props> = ({
 						<div key={item.id}>
 							<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 								<Input
+                  error={errors?.collaterals?.[index]?.collateralAddress?.message}
 									label="Collateral Address"
 									placeholder="Enter Collateral Address"
 									register={register(`collaterals.${index}.collateralAddress`)}
@@ -58,6 +62,7 @@ export const MultipleCollateral: FC<Props> = ({
 								/>
 								<div className="flex gap-6">
 									<Input
+                    error={errors?.collaterals?.[index]?.insuranceExpirationDate?.message}
 										label="Insurance Expiration"
 										placeholder="MM-DD-YYYY"
 										register={register(
@@ -77,6 +82,7 @@ export const MultipleCollateral: FC<Props> = ({
 								</div>
 							</div>
 							<Input
+                error={errors?.collaterals?.[index]?.taxUrl?.message}
 								label="Tax URL"
 								placeholder="Enter Tax URL"
 								register={register(`collaterals.${index}.taxUrl`)}
@@ -85,6 +91,7 @@ export const MultipleCollateral: FC<Props> = ({
 							/>
 							<Select
 								className="mt-6"
+                error={errors?.collaterals?.[index]?.assetType?.message}
 								label="Asset Type"
 								options={assetTypes}
 								placeholder="Select Dropdown"

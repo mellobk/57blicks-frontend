@@ -9,8 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
 import { addInvestorFields } from "../../utils/input-fields";
-import { AddInvestorSchemas } from "../../utils/Schemas/AddInvestorSchemas";
-import type { AddInvestorFields } from "../../types/validations";
+import { AddInvestorSchemas } from "@/features/manage-user/schemas/AddInvestorSchemas";
+import type { AddInvestorFields } from "../../types/fields";
 import { MaskInput } from "@/components/forms/MaskInput";
 
 interface InvestorInfoProps {

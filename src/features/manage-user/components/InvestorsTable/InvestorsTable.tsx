@@ -15,7 +15,7 @@ import { tabs } from "../../utils/tabs";
 import type { Investor } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 import { useQuery } from "@tanstack/react-query";
-import type { AddInvestorBankFields } from "../../types/validations";
+import type { AddInvestorBankFields } from "../../types/fields";
 import { statusSort } from "@/utils/common-funtions";
 
 interface SuccessProps {}
@@ -149,12 +149,10 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 						checkLabel=""
 						checkLabelClassName="text-white text-[13px]"
 						checked={
-							row?.accountNumber ||
-							row?.accountType ||
-							row?.bankingName ||
-							row?.accountType
-								? true
-								: false
+							!!(row?.accountNumber ||
+                row?.accountType ||
+                row?.bankingName ||
+                row?.accountType)
 						}
 					/>
 				</div>

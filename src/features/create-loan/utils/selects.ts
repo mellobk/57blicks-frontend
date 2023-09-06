@@ -70,7 +70,7 @@ export const loanTypes = [
 
 export const prepaymentPenalties = [
 	{ code: "90_days_2%", name: "90 - Days - 2%" },
-	{ code: "mf_4_less", name: "MF (4 or less)" },
+	{ code: "180_1%", name: "180 - 1%" },
 ];
 
 export const participants = [

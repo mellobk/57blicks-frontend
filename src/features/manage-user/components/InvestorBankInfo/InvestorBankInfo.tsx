@@ -11,7 +11,7 @@ import { addInvestorBankFields } from "../../utils/input-fields";
 import { useEffect } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Select } from "@/components/forms/Select";
-import type { AddInvestorBankFields } from "../../types/validations";
+import type { AddInvestorBankFields } from "../../types/fields";
 import { ACCOUNT_OPTIONS } from "../../utils/constant";
 
 interface InvestorBankInfoProps {
@@ -96,7 +96,6 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 									label="Account Type"
 									placeholder="Select Dropdown"
 									options={ACCOUNT_OPTIONS}
-									value={data?.accountType}
 								/>
 								<div className="flex flex-col gap-1">
 									<Button

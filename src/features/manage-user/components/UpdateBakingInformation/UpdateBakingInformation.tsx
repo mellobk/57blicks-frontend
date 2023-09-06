@@ -5,7 +5,7 @@
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useEffect, useState } from "react";
-import type { AddInvestorBankFields } from "../../types/validations";
+import type { AddInvestorBankFields } from "../../types/fields";
 import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo";
 import { Success } from "../Success";
 import type { Investor } from "../../types/api";

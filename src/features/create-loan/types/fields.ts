@@ -1,4 +1,4 @@
-type Collateral = {
+export type Collateral = {
 	assetType: string;
 	collateralAddress: string;
 	insuranceExpirationDate: string;
@@ -14,11 +14,11 @@ export type FundingBreakdown = {
 };
 
 export type LoanFields = {
-	accountNumber: string;
-	accountType: string;
+	accountNumber?: string;
+	accountType?: string;
 	amountDrawn: string;
 	assetType: string;
-	bankingName: string;
+	bankingName?: string;
 	borrowerEmailAddress: string;
 	borrowerLlc: string;
 	borrowerPhoneNumber: string;
@@ -37,7 +37,7 @@ export type LoanFields = {
 	maturityDate: string;
 	originationDate: string;
 	prepaymentPenalty: string;
-	routingNumber: string;
+	routingNumber?: string;
 	taxUrl: string;
 	totalLoanAmount: string;
 };
