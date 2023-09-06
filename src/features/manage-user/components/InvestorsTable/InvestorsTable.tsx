@@ -149,12 +149,10 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 						checkLabel=""
 						checkLabelClassName="text-white text-[13px]"
 						checked={
-							row?.accountNumber ||
-							row?.accountType ||
-							row?.bankingName ||
-							row?.accountType
-								? true
-								: false
+							!!(row?.accountNumber ||
+                row?.accountType ||
+                row?.bankingName ||
+                row?.accountType)
 						}
 					/>
 				</div>
