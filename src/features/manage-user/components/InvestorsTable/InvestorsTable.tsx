@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Table } from "@/features/manage-user/components/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import { DisableInvestor } from "../DisableInvestor/DisableInvestor";
@@ -10,6 +12,11 @@ import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { AddInvestor } from "../AddInvestor/AddInvestor";
 import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBakingInformation";
 import { tabs } from "../../utils/tabs";
+import type { Investor } from "../../types/api";
+import ManageUsersService from "../../api/investors";
+import { useQuery } from "@tanstack/react-query";
+import type { AddInvestorBankFields } from "../../types/validations";
+import { statusSort } from "@/utils/common-funtions";
 
 interface SuccessProps {}
 
@@ -17,28 +24,40 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 	const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
-	const [checkState, setCheckState] = useState<boolean>(true);
-	const [deleteId, setDeleteId] = useState<number>(0);
+	const [checkState, setCheckState] = useState<boolean>(false);
+	const [deleteId, setDeleteId] = useState<string>("");
+	const [idUpload, setIdUpload] = useState<string>("");
+	const [searchValue, setSearchValue] = useState<string>("");
+	const [bankInfo, setBankInfo] = useState<AddInvestorBankFields>();
 
-	const handleCheckedTableToggle = (id: number, data: any) => {
-		console.log(id, data);
+	const investorQuery = useQuery(
+		["investor-query"],
+		() => {
+			return ManageUsersService.filterAllInvestors(searchValue, checkState);
+		},
+		{ enabled: true, staleTime: 1 }
+	);
+
+	/* 	const investorMutation = useMutation(() => {
+		return ManageUsersService.filterAllInvestors(searchValue, checkState);
+	});
+ */
+	useEffect(() => {
+		void investorQuery.refetch();
+	}, [searchValue, checkState]);
+
+	const handleCheckedToggle = (data: Investor) => {
+		setCheckState(data.target.checked);
 	};
 
-	const handleCheckedToggle = (data: any) => {
-		setCheckState(!checkState);
-		console.log(data);
-	};
-
-	const handleDeleteAdmin = (id: number) => {
+	const handleDeleteAdmin = (id: string) => {
 		console.log(id);
 		setOpenDeleteModal(!openDeleteModal);
 		setDeleteId(id);
 	};
 
-	const handleUploadModal = (id: number) => {
-		console.log(id);
+	const handleUploadModal = () => {
 		setOpenUpdateModal(!openUpdateModal);
-		setDeleteId(id);
 	};
 
 	const closeDeleteAdminModal = (): void => {
@@ -58,12 +77,17 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const handleClick = (): void => {
+		void investorQuery.refetch();
 		setOpenUpdateModal(!openUpdateModal);
 	};
 
+	const handleSearch = (data: string) => {
+		setSearchValue(data);
+		return data;
+	};
 	const conditionalRowStyles = [
 		{
-			when: (row: { status: string }) => row.status === "Inactive",
+			when: (row: Investor) => row.user?.isActive === false,
 			style: {
 				opacity: 0.4,
 			},
@@ -75,59 +99,63 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 			name: "#",
 			maxWidth: "50px",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: { id: any }): any => row.id,
+			selector: (row: Investor): string => row.id || "",
 			omit: false,
 		},
 		{
 			name: "EIN/SSN    ",
-			selector: (row: { einSsn: any }): any => row.einSsn,
+			selector: (row: Investor): string => row.ssnEin || "",
 			sortable: true,
 			omit: false,
 		},
 		{
 			name: "Username/Email",
-			selector: (row: { email: any }): any => row.email,
+			selector: (row: Investor): string => row?.user?.email || "",
 			sortable: true,
 			omit: false,
 		},
 		{
 			name: "Entity Name",
-			selector: (row: { entityName: any }): any => row.entityName,
+			selector: (row: Investor): string => row?.user?.entityName || "",
 			omit: false,
 		},
 		{
 			name: "Phone Number",
-			selector: (row: { phoneNumber: any }): any => row.phoneNumber,
+			selector: (row: Investor): string => row?.user?.phoneNumber || "",
 			omit: false,
 		},
 		{
 			name: "Mailing Address",
-			selector: (row: { mailingAddress: any }): any => row.mailingAddress,
+			selector: (row: Investor): string => row.user?.mailingAddress || "",
 			omit: false,
 		},
 		{
 			name: "Status",
 			maxWidth: "50px",
-			selector: (row: { status: any }): any => (
-				<TableStatus status={row?.status} />
+			selector: (row: Investor): JSX.Element => (
+				<TableStatus status={row.user?.isActive ? "Active" : "Inactive"} />
 			),
+			sortable: true,
+			sortFunction: statusSort,
 			omit: false,
 		},
 		{
 			name: "ACH",
 			maxWidth: "50px",
-			selector: (row: { id: number; ach: boolean }): any => (
+			selector: (row: Investor): JSX.Element => (
 				<div key={row.id}>
 					<Toggle
 						checkedClassName="bg-green-500"
 						checkLabel=""
 						checkLabelClassName="text-white text-[13px]"
-						onChecked={(data): void => {
-							if (handleCheckedTableToggle) {
-								handleCheckedTableToggle(row.id, data);
-							}
-						}}
-						checked={row.ach}
+						checked={
+							row?.accountNumber ||
+							row?.accountType ||
+							row?.bankingName ||
+							row?.accountType
+								? true
+								: false
+						}
 					/>
 				</div>
 			),
@@ -136,12 +164,20 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		{
 			name: "Banking",
 			maxWidth: "50px",
-			selector: (row: { id: number; status: string }): any => (
+			selector: (row: Investor): JSX.Element => (
 				<div
 					className="cursor-pointer"
 					onClick={(): void => {
-						if (row?.status === "Active") {
-							handleUploadModal(row?.id);
+						setBankInfo({
+							id: row?.id,
+							accountNumber: row?.accountNumber || "",
+							accountType: row?.accountType || "",
+							routingNumber: row?.routingNumber || "",
+							bankingName: row?.bankingName || "",
+						});
+						if (row?.user?.isActive) {
+							setIdUpload(row?.id || "");
+							handleUploadModal();
 						}
 					}}
 				>
@@ -153,16 +189,16 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		{
 			name: "Disable",
 			maxWidth: "50px",
-			selector: (row: { id: number; status: string }): any => (
+			selector: (row: Investor): any => (
 				<div
 					className="cursor-pointer"
 					onClick={(): void => {
-						if (row?.status === "Active") {
-							handleDeleteAdmin(row?.id);
+						if (row?.user?.isActive) {
+							handleDeleteAdmin(row?.id || "");
 						}
 					}}
 				>
-					{row?.status === "Active" && (
+					{row?.user?.isActive && (
 						<Icon name="deleteBack" width="20" color="black" />
 					)}
 				</div>
@@ -171,45 +207,25 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		},
 	];
 
-	const data = [
-		{
-			id: 1,
-			einSsn: "4122",
-			email: "b@revstarconsulting.com",
-			entityName: "RevStar Consulting",
-			phoneNumber: "(909) 554 3402",
-			mailingAddress: "123 Main St, New York, NY 10010",
-			status: "Inactive",
-			ach: false,
-		},
-		{
-			id: 2,
-			einSsn: "4122",
-			email: "c@revstarconsulting.com",
-			entityName: "RevStar Consulting",
-			phoneNumber: "(909) 554 3402",
-			mailingAddress: "123 Main St, New York, NY 10010",
-			status: "Active",
-			ach: true,
-		},
-	];
-
 	return (
 		<>
 			<Table
+				handleSearchValue={handleSearch}
 				handleCheckValue={handleCheckedToggle}
 				checkedValue={checkState}
 				onClickButton={addAdmin}
+				loading={investorQuery.isLoading}
 				columns={columns}
-				data={data}
+				data={investorQuery.data}
 				buttonText="Add Investor"
 				conditionalRowStyles={conditionalRowStyles}
+				widthSearch="160px"
 			>
 				<>
 					<div>
 						<BreadCrumb initialTab="Manage Users" actualTab="Investors" />
 					</div>
-					<div>
+					<div className="relative z-10">
 						<Tabs tabs={tabs} actualTab="investors" />
 					</div>
 				</>
@@ -229,7 +245,11 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 				title="Banking Info"
 				width="25vw"
 			>
-				<UpdateBakingInformation handleClick={handleClick} />
+				<UpdateBakingInformation
+					handleClick={handleClick}
+					data={bankInfo}
+					id={idUpload}
+				/>
 			</Modal>
 
 			<Modal

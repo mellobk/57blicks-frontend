@@ -1,25 +1,46 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { AddInvestorBankFields } from "../../types/validations";
 import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo";
 import { Success } from "../Success";
+import type { Investor } from "../../types/api";
+import ManageUsersService from "../../api/investors";
+import { useMutation } from "@tanstack/react-query";
 
 interface UpdateBakingInformationProps {
 	handleClick?: () => void;
+	data?: Investor;
+	id?: string;
 }
 
 export const UpdateBakingInformation: React.FC<
 	UpdateBakingInformationProps
-> = ({ handleClick }) => {
-	const [investorBankInfo, setInvestorBankInfo] =
-		useState<AddInvestorBankFields>();
+> = ({ handleClick, data, id }) => {
+	const [investorBankInfo, setInvestorBankInfo] = useState<any>(data);
 	const [showInvestorBankInfo, setShowInvestorBankInfo] =
 		useState<boolean>(false);
 
+	const investorMutation = useMutation((data: Investor) => {
+		return ManageUsersService.updateInvestors(data);
+	});
+
+	useEffect(() => {
+		if (investorMutation.isSuccess) {
+			setShowInvestorBankInfo(true);
+		}
+	}, [investorMutation]);
+
 	const handleInvestorBankInfo = (data: AddInvestorBankFields): void => {
 		setInvestorBankInfo(data);
-		setShowInvestorBankInfo(!showInvestorBankInfo);
+		investorMutation.mutate({
+			id: id,
+			...data,
+		});
 	};
 
 	return (

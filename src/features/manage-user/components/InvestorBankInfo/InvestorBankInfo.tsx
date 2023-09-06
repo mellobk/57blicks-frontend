@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Select } from "@/components/forms/Select";
 import type { AddInvestorBankFields } from "../../types/validations";
+import { ACCOUNT_OPTIONS } from "../../utils/constant";
 
 interface InvestorBankInfoProps {
 	showInvestorBankInfo?: boolean;
@@ -21,11 +22,6 @@ interface InvestorBankInfoProps {
 	buttonText?: string;
 }
 
-const OPTIONS = [
-	{ name: "Saving", code: "Saving" },
-	{ name: "Checking", code: "Checking" },
-];
-
 export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 	showInvestorBankInfo,
 	handleInvestorBankInfo,
@@ -33,6 +29,7 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 	buttonText,
 	handleSuccess,
 }) => {
+	console.log(data?.accountType, "bank data");
 	const { register, handleSubmit, watch, setValue } = useForm<FieldValues>();
 
 	useEffect(() => {
@@ -61,7 +58,6 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 		if (handleSuccess) {
 			handleSuccess(data);
 		}
-		console.log(data);
 	};
 
 	return (
@@ -82,12 +78,14 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 
 								<Input
 									label="Routing Number"
+									type="number"
 									placeholder="Enter Routing Number"
 									register={register(addInvestorBankFields?.routingNumber)}
 								/>
 
 								<Input
 									label="Account Number"
+									type="number"
 									placeholder="EnterAccount Number"
 									register={register(addInvestorBankFields?.accountNumber)}
 								/>
@@ -97,7 +95,7 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 									className="flex flex-col gap-2"
 									label="Account Type"
 									placeholder="Select Dropdown"
-									options={OPTIONS}
+									options={ACCOUNT_OPTIONS}
 									value={data?.accountType}
 								/>
 								<div className="flex flex-col gap-1">

@@ -13,13 +13,21 @@ export default defineConfig({
 			},
 		}),
 	],
+
 	server: {
 		host: true,
 		strictPort: true,
 	},
-	define: {
-		global: {},
+	optimizeDeps: {
+		esbuildOptions: {
+			// Node.js global to browser globalThis
+			define: {
+				global: "globalThis",
+			},
+		},
 	},
+	define: { _global: "({})" },
+
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "src"), // Adjust the path accordingly

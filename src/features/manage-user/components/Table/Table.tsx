@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FC, ReactElement } from "react";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
@@ -27,6 +28,7 @@ interface TableProps {
 	conditionalRowStyles?: any;
 	onClickButton: () => void;
 	widthSearch?: string;
+	loading?: boolean;
 }
 
 export const Table: FC<TableProps> = ({
@@ -40,10 +42,11 @@ export const Table: FC<TableProps> = ({
 	conditionalRowStyles,
 	onClickButton,
 	widthSearch = "158px",
+	loading,
 }) => {
 	const [visible, setVisible] = useState(false);
 	const [stateColumns, setStateColumns] = useState<Array<Column>>(columns);
-	const [_, setSearchVisible] = useState<boolean>(false);
+	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const [searchMenu, setSearchMenu] = useState<boolean>(false);
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [value, setValue] = useState<string>("");
@@ -70,11 +73,13 @@ export const Table: FC<TableProps> = ({
 	};
 
 	useEffect(() => {
-		if (debouncedSearchTerm !== "") {
-			if (handleSearchValue) {
-				handleSearchValue(debouncedSearchTerm);
+		if (handleSearchValue) {
+			handleSearchValue(debouncedSearchTerm);
+			if (value === "") {
+				setSearchValue(debouncedSearchTerm);
+			} else {
+				setSearchValue("");
 			}
-			setSearchValue(debouncedSearchTerm);
 		}
 	}, [debouncedSearchTerm, handleSearchValue]);
 
@@ -106,9 +111,6 @@ export const Table: FC<TableProps> = ({
 								width: "350px",
 								zIndex: "0",
 							}}
-							onMouseEnter={(): void => {
-								setSearchVisible(true);
-							}}
 						>
 							{handleCheckValue && (
 								<Toggle
@@ -123,37 +125,44 @@ export const Table: FC<TableProps> = ({
 									checked={checkedValue}
 								/>
 							)}
-							<Input
-								type="text"
-								value={value}
-								placeholder="Search"
-								iconColor="white"
-								iconWidth={`${searchValue ? "12" : "20"}`}
-								iconName={`${searchValue ? "wrong" : "search"}`}
-								onChange={(data): void => {
-									handleSearch(data.target.value);
+							<div
+								className={`${
+									searchVisible || value
+										? "w-[200px] bg-transparent transition duration-500"
+										: "bg-transparent  w-[30px] transition duration-500 "
+								} `}
+								onMouseEnter={(): void => {
+									setSearchVisible(true);
 								}}
-								clickIcon={(): void => {
-									setSearchValue("");
+								onMouseLeave={(): void => {
+									setSearchVisible(false);
 								}}
-								className={`placeholder-gray-400 text-white text-[13px] font-normal font-weight-400 leading-normal bg-black-200  tracking-wide flex w-[200px] h-3 p-4 items-center self-stretch rounded-md border-none outline-none `}
-							/>
+							>
+								<Input
+									type="text"
+									value={value}
+									placeholder="Search"
+									iconColor="white"
+									iconWidth={`${value ? "12" : "20"}`}
+									iconName={`${value ? "wrong" : "search"}`}
+									onChange={(data): void => {
+										handleSearch(data.target.value);
+									}}
+									clickIcon={(): void => {
+										if (handleSearchValue) {
+											setSearchValue("");
+											setValue("");
+											handleSearchValue("");
+										}
+									}}
+									className={`placeholder-gray-400 text-white text-[13px] font-normal font-weight-400 leading-normal w-full ${
+										searchVisible || value
+											? "bg-black-200  "
+											: "bg-transparent "
+									}  tracking-wide flex h-3 p-4 items-center self-stretch rounded-md border-none outline-none `}
+								/>
+							</div>
 						</div>
-						{/* 				<div
-							style={{ position: "relative" }}
-							className={`h-[30px] rounded-[10px] flex items-center justify-center cursor-pointer ${
-								searchVisible || searchValue ? "not-visible" : "visible"
-							}`}
-							onClick={(): void => {
-								setSearchVisible(true);
-							}}
-						>
-							<Icon
-								name="search"
-								width="20"
-								color={`${searchVisible ? "#7c8991" : "#7c8991"}`}
-							/>
-						</div> */}
 					</div>
 
 					<div
@@ -190,6 +199,7 @@ export const Table: FC<TableProps> = ({
 					<DataTable
 						columns={stateColumns}
 						data={data}
+						progressPending={loading}
 						conditionalRowStyles={conditionalRowStyles}
 					/>
 				</div>
