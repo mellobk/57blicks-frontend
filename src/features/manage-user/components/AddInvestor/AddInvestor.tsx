@@ -5,7 +5,7 @@ import { InvestorInfo } from "../InvestorInfo/InvestorInfo";
 import type {
 	AddInvestorBankFields,
 	AddInvestorFields,
-} from "../../types/validations";
+} from "../../types/fields";
 import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo";
 
 export const AddInvestor: React.FC = () => {

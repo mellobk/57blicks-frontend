@@ -1,17 +1,19 @@
 import type { FC } from "react";
-import { UseFormRegister } from "react-hook-form";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { Title } from "@/features/create-loan/components/Title/Title";
 import { LoanFields } from "@/features/create-loan/types/fields";
 
 interface Props {
+	errors: FieldErrors<LoanFields>;
 	register: UseFormRegister<LoanFields>;
 }
 
-export const BorrowerInformation: FC<Props> = ({ register }) => (
+export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
 	<div>
 		<Title text="Borrower Information" />
 		<Input
+      error={errors?.borrowerLlc?.message}
 			label="Borrower LLC"
 			placeholder="Enter Borrower LLC"
 			register={register("borrowerLlc")}
@@ -20,6 +22,7 @@ export const BorrowerInformation: FC<Props> = ({ register }) => (
 		/>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
 			<Input
+        error={errors?.firstName?.message}
 				label="First Name"
 				placeholder="Enter First Name"
 				register={register("firstName")}
@@ -27,6 +30,7 @@ export const BorrowerInformation: FC<Props> = ({ register }) => (
 				required
 			/>
 			<Input
+        error={errors?.lastName?.message}
 				label="Last Name"
 				placeholder="Enter Last Name"
 				register={register("lastName")}
@@ -35,6 +39,7 @@ export const BorrowerInformation: FC<Props> = ({ register }) => (
 			/>
 		</div>
 		<Input
+      error={errors?.borrowerPhoneNumber?.message}
 			label="Borrower Phone Number"
 			placeholder="XXX - XXX - XXXX"
 			register={register("borrowerPhoneNumber")}
@@ -42,6 +47,7 @@ export const BorrowerInformation: FC<Props> = ({ register }) => (
 			required
 		/>
 		<Input
+      error={errors?.borrowerEmailAddress?.message}
 			label="Borrower Email Address"
 			placeholder="Enter Borrower Email Address"
 			register={register("borrowerEmailAddress")}
@@ -49,6 +55,7 @@ export const BorrowerInformation: FC<Props> = ({ register }) => (
 			required
 		/>
 		<Input
+      error={errors?.einSsn?.message}
 			label="EIN/SSN"
 			placeholder="Enter EIN/SSN"
 			register={register("einSsn")}
@@ -56,6 +63,7 @@ export const BorrowerInformation: FC<Props> = ({ register }) => (
 			required
 		/>
 		<Input
+      error={errors?.mailingAddress?.message}
 			label="Mailing Address"
 			placeholder="Enter Mailing Address"
 			register={register("mailingAddress")}

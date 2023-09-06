@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
-import { AddAdminSchema } from "../../utils/Schemas/AddAdminSchemas";
+import { AddAdminSchema } from "@/features/manage-user/schemas/AddAdminSchemas";
 import { addAdminFields } from "../../utils/input-fields";
 import { useEffect } from "react";
 import { MaskInput } from "@/components/forms/MaskInput";

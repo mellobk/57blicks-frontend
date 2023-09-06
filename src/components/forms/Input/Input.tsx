@@ -72,7 +72,6 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 					defaultValue={defaultValue}
 					placeholder={placeholder}
 					disabled={disabled}
-					required={required}
 					{...register}
 					value={value}
 					onChange={onChange}

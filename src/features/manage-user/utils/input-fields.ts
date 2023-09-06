@@ -2,7 +2,7 @@ import type {
 	AddAdminFields,
 	AddInvestorBankFields,
 	AddInvestorFields,
-} from "../types/validations";
+} from "../types/fields";
 
 export const addAdminFields: AddAdminFields = {
 	firstName: "firstName",
