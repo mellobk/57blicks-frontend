@@ -1,5 +1,8 @@
-import type {FC, ReactElement} from "react";
-import { Button as PrimeReactButton, ButtonProps } from "primereact/button";
+import type { FC, ReactElement } from "react";
+import {
+	Button as PrimeReactButton,
+	type ButtonProps,
+} from "primereact/button";
 import { Icon } from "@/components/ui/Icon";
 
 interface Props extends ButtonProps {
@@ -26,17 +29,17 @@ export const Button: FC<Props> = ({
 		<PrimeReactButton
 			onClick={onClick}
 			disabled={loading || disabled}
-      className={`${className} border-none`}
-      {...props}
+			className={`${className} border-none`}
+			{...props}
 		>
 			<div className={deepClassName}>
 				{loading ? (
-					<Icon name="loader" width="20" color="white" />
+					<Icon name="loading" width="20" color="white" />
 				) : (
-          <>
-            {icon && <>{icon}</>}
-            {buttonText && <>{buttonText}</>}
-          </>
+					<>
+						{icon && <>{icon}</>}
+						{buttonText && <>{buttonText}</>}
+					</>
 				)}
 			</div>
 		</PrimeReactButton>

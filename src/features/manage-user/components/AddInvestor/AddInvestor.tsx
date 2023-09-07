@@ -1,14 +1,22 @@
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InvestorInfo } from "../InvestorInfo/InvestorInfo";
 import type {
 	AddInvestorBankFields,
 	AddInvestorFields,
 } from "../../types/fields";
 import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo";
+import { unFormatPhone } from "@/utils/common-funtions";
+import { useMutation } from "@tanstack/react-query";
+import ManageUsersService from "../../api/investors";
+import type { Investor } from "../../types/api";
 
-export const AddInvestor: React.FC = () => {
+interface AddInvestorProps {
+	handleSuccess?: () => void;
+}
+
+export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
 	const [investorInfo, setInvestorInfo] = useState<AddInvestorFields>();
 	const [investorBankInfo, setInvestorBankInfo] =
 		useState<AddInvestorBankFields>();
@@ -21,8 +29,44 @@ export const AddInvestor: React.FC = () => {
 
 	const handleInvestorBankInfo = (data: AddInvestorBankFields): void => {
 		setInvestorBankInfo(data);
-		setShowInvestorBankInfo(!showInvestorBankInfo);
+		setShowInvestorBankInfo(false);
 	};
+
+	const createInvestorMutation = useMutation((data: Investor) => {
+		return ManageUsersService.createNewInvestor(data);
+	});
+
+	const handleSendInvitation = (data: AddInvestorBankFields): void => {
+		const phoneNumber = unFormatPhone(investorInfo?.phoneNumber || "");
+
+		const formatData = {
+			ssnEin: investorInfo?.einSsn,
+			streetAddress: investorInfo?.streetAddress,
+			zip: investorInfo?.zip,
+			bankingName: data?.bankingName,
+			routingNumber: data?.routingNumber,
+			accountNumber: data?.accountNumber,
+			accountType: data?.accountType,
+			user: {
+				firstName: investorInfo?.firstName,
+				lastName: investorInfo?.lastName,
+				email: investorInfo?.email,
+				phoneNumber: `+1${phoneNumber}`,
+				mailingAddress: "Mailing Address",
+			},
+		};
+
+		createInvestorMutation.mutate({
+			...formatData,
+		});
+	};
+
+	useEffect(() => {
+		if (createInvestorMutation.isSuccess) {
+			handleSuccess && handleSuccess();
+		}
+	}, [createInvestorMutation]);
+
 	return (
 		<div className="flex  flex-col justify-between w-full h-full gap-5">
 			<div className="flex flex-col gap-5 w-full h-full">
@@ -38,6 +82,7 @@ export const AddInvestor: React.FC = () => {
 							<InvestorBankInfo
 								showInvestorBankInfo
 								handleInvestorBankInfo={handleInvestorBankInfo}
+								handleSuccess={handleSendInvitation}
 								data={investorBankInfo}
 								buttonText="Send Invite"
 							/>

@@ -11,3 +11,15 @@ export const userFilterData = (role: string, data: string): string => {
 export const investors = (id: string): string => {
 	return `/investors/${id}`;
 };
+
+export const createAdmin = (): string => {
+	return `/users/admin`;
+};
+
+export const createAccounting = (): string => {
+	return `/users/accounting`;
+};
+
+export const createInvestor = (): string => {
+	return `users/investor`;
+};

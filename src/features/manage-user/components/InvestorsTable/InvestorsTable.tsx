@@ -72,13 +72,18 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		setOpenModal(!openModal);
 	};
 
+	const handleSuccessInvestor = (): void => {
+		setOpenModal(false);
+		void investorQuery.refetch();
+	};
+
 	const closeUploadModal = (): void => {
 		setOpenUpdateModal(!openUpdateModal);
 	};
 
 	const handleClick = (): void => {
 		void investorQuery.refetch();
-		setOpenUpdateModal(!openUpdateModal);
+		setOpenUpdateModal(false);
 	};
 
 	const handleSearch = (data: string) => {
@@ -149,10 +154,12 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 						checkLabel=""
 						checkLabelClassName="text-white text-[13px]"
 						checked={
-							!!(row?.accountNumber ||
-                row?.accountType ||
-                row?.bankingName ||
-                row?.accountType)
+							!!(
+								row?.accountNumber ||
+								row?.accountType ||
+								row?.bankingName ||
+								row?.accountType
+							)
 						}
 					/>
 				</div>
@@ -234,7 +241,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 				title="Add Investor"
 				width="30vw"
 			>
-				<AddInvestor />
+				<AddInvestor handleSuccess={handleSuccessInvestor} />
 			</Modal>
 
 			<Modal

@@ -5,12 +5,12 @@ import { Modal } from "@/components/ui/Modal/Modal";
 import { useEffect, useState } from "react";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
-import { AddAdmin } from "../AddAdmin/AddAdmin";
 import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
 import { tabs } from "../../utils/tabs";
 import { useQuery } from "@tanstack/react-query";
 import ManageUsersService from "../../api/investors";
 import type { User } from "../../types/api";
+import { AddAccounting } from "../AddAccounting/AddAccounting";
 
 interface SuccessProps {}
 
@@ -19,6 +19,13 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 	const [deleteId, setDeleteId] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
+	const accountQuery = useQuery(
+		["account-query"],
+		() => {
+			return ManageUsersService.filterAllAccounting(searchValue);
+		},
+		{ enabled: true, staleTime: 1 }
+	);
 
 	const handleDeleteAdmin = (id: string) => {
 		console.log(id);
@@ -38,18 +45,15 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 		setOpenModal(!openModal);
 	};
 
+	const successCreateAccounting = (): void => {
+		setOpenModal(false);
+		void accountQuery.refetch();
+	};
+
 	const handleSearch = (data: string) => {
 		setSearchValue(data);
 		return data;
 	};
-
-	const accountQuery = useQuery(
-		["account-query"],
-		() => {
-			return ManageUsersService.filterAllAccounting(searchValue);
-		},
-		{ enabled: true, staleTime: 1 }
-	);
 
 	/* 	const accountMutation = useMutation(() => {
 		return ManageUsersService.filterAllAccounting(searchValue);
@@ -151,7 +155,7 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 				title="Add Accounting"
 				width="30vw"
 			>
-				<AddAdmin />
+				<AddAccounting handleSuccess={successCreateAccounting} />
 			</Modal>
 			<Modal
 				visible={openDeleteModal}

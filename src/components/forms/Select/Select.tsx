@@ -32,7 +32,7 @@ export const Select: ForwardRefRenderFunction<
 	...props
 }) => {
 	const [selectedData, setSelectedData] = useState<Option>();
-
+	console.log;
 	useEffect(() => {
 		if (value) {
 			setSelectedData(value);

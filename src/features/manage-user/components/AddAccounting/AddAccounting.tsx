@@ -18,7 +18,7 @@ interface AddAdminProps {
 	handleSuccess?: () => void;
 }
 
-export const AddAdmin: React.FC<AddAdminProps> = ({ handleSuccess }) => {
+export const AddAccounting: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 	const {
 		register,
 		handleSubmit,
@@ -27,8 +27,8 @@ export const AddAdmin: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 		resolver: zodResolver(AddAdminSchema),
 	});
 
-	const createAdminMutation = useMutation((data: User) => {
-		return ManageUsersService.createNewAdmin(data);
+	const createAccountingMutation = useMutation((data: User) => {
+		return ManageUsersService.createNewAccounting(data);
 	});
 
 	// eslint-disable-next-line unicorn/consistent-function-scoping
@@ -40,16 +40,17 @@ export const AddAdmin: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 			[addAdminFields?.phoneNumber]: `+1${phoneNumber}`,
 		};
 
-		createAdminMutation.mutate({
+		createAccountingMutation.mutate({
 			...formatData,
 		});
+		console.log(formatData);
 	};
 
 	useEffect(() => {
-		if (createAdminMutation.isSuccess) {
+		if (createAccountingMutation.isSuccess) {
 			handleSuccess && handleSuccess();
 		}
-	}, [createAdminMutation]);
+	}, [createAccountingMutation]);
 
 	return (
 		<div className="flex  flex-col justify-between w-full h-full gap-5">
@@ -125,7 +126,7 @@ export const AddAdmin: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 									<Button
 										buttonText="Send Invite"
 										className={`bg-primary-500`}
-										loading={createAdminMutation.isLoading}
+										loading={createAccountingMutation.isLoading}
 									/>
 								</div>
 							</div>

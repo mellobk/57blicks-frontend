@@ -7,7 +7,7 @@ import axios from "axios";
 import { getLocalStorage, removeLocalStorage } from "./local-storage";
 import { accessToken } from "./constant";
 import { signOut } from "@/lib/cognito";
-import sharedObject from "@/api-config";
+import sharedObject from "@/config/api-config";
 
 export const authApiClient = axios.create({
 	baseURL: sharedObject.api.ENDPOINT,

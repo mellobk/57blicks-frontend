@@ -1,4 +1,4 @@
-import sharedObject from "@/api-config";
+import sharedObject from "@/config/api-config";
 
 export const COGNITO_USER_POOL_ID = sharedObject.cognito.USER_POOL_ID;
 

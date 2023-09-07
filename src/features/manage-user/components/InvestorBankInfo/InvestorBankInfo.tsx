@@ -95,6 +95,10 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 									className="flex flex-col gap-2"
 									label="Account Type"
 									placeholder="Select Dropdown"
+									value={{
+										name: data?.accountType || "",
+										code: data?.accountType || "",
+									}}
 									options={ACCOUNT_OPTIONS}
 								/>
 								<div className="flex flex-col gap-1">

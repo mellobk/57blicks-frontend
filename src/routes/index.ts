@@ -4,6 +4,7 @@ import IndexRouter from "./IndexRouter.tsx";
 import DashboardRouter from "@/features/dashboard/routes/DashboardRouter.tsx";
 import ManageUserRouter from "@/features/manage-user/routes/ManageUsersRouter.tsx";
 import LoginRouter from "@/features/auth/routes/LoginRouter.tsx";
+import ServicingRouter from "@/features/servicing/routes/ServicingRoutes.tsx";
 
 //array of all routes
 const allRoutes = [
@@ -11,6 +12,7 @@ const allRoutes = [
 	...LoginRouter,
 	...DashboardRouter,
 	...ManageUserRouter,
+	...ServicingRouter,
 ];
 
 const routeTree = rootRoute.addChildren([...allRoutes]);
