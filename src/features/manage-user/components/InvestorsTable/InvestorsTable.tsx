@@ -73,8 +73,8 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const handleSuccessInvestor = (): void => {
-		setOpenModal(false);
 		void investorQuery.refetch();
+		setOpenModal(false);
 	};
 
 	const closeUploadModal = (): void => {
