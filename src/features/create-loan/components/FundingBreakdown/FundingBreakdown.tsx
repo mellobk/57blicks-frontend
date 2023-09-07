@@ -1,9 +1,11 @@
 import type { FC } from "react";
 import {
-	FieldArrayWithId,
+	Control,
 	UseFieldArrayRemove,
 	UseFormRegister,
+	useWatch,
 } from "react-hook-form";
+import moment from "moment";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Column, Table } from "@/features/create-loan/components/Table/Table";
@@ -12,9 +14,10 @@ import {
 	FundingBreakdown as FundingBreakdownType,
 	LoanFields,
 } from "@/features/create-loan/types/fields";
+import { lenders } from "@/features/create-loan/utils/selects.ts";
 
 interface Props {
-	fields: FieldArrayWithId<LoanFields, "fundingBreakdown">[];
+	control: Control<LoanFields>;
 	setOpenLenderModal: (openLenderModal: boolean) => void;
 	setOpenParticipantModal: (openParticipantModal: boolean) => void;
 	register: UseFormRegister<LoanFields>;
@@ -22,35 +25,50 @@ interface Props {
 }
 
 export const FundingBreakdown: FC<Props> = ({
-	fields,
+	control,
 	setOpenLenderModal,
 	setOpenParticipantModal,
 	register,
 	remove,
 }) => {
+	const fundingBreakdown = useWatch({
+		control,
+		name: "fundingBreakdown",
+		defaultValue: [],
+	});
+	const originationDate = useWatch({
+		control,
+		name: "originationDate",
+	});
 	const columns: Column[] = [
 		{
 			cell: (row: FundingBreakdownType, rowIndex) => {
-				if (row.type === "lender") {
+				if (rowIndex === 0) {
 					return (
-						<input
-							className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none"
-							key={`${row.lender}-${rowIndex}`}
-							onClick={() => setOpenLenderModal(true)}
-							{...register(`fundingBreakdown.${rowIndex}.lender`)}
-						/>
+						<button
+							className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200"
+              onClick={() => setOpenLenderModal(true)}
+              type="button"
+						>
+							<div className="flex flex-row justify-between items-center">
+								{row.lender}
+								<Icon name="arrowDown" width="6" color="#656A74" />
+							</div>
+						</button>
 					);
 				}
 
-				return row.lender;
+				return <div className="px-4">{row.lender}</div>;
 			},
 			name: "Lender",
+			style: { padding: 0 },
 		},
 		{
 			cell: (row: FundingBreakdownType, rowIndex) => (
 				<input
 					className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none"
 					key={`${row.lender}-${rowIndex}`}
+					type="number"
 					{...register(`fundingBreakdown.${rowIndex}.amount`)}
 				/>
 			),
@@ -62,6 +80,7 @@ export const FundingBreakdown: FC<Props> = ({
 				<input
 					className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none"
 					key={`${row.lender}-${rowIndex}`}
+					type="number"
 					{...register(`fundingBreakdown.${rowIndex}.rate`)}
 				/>
 			),
@@ -69,21 +88,17 @@ export const FundingBreakdown: FC<Props> = ({
 			style: { padding: 0 },
 		},
 		{
-			cell: (row: FundingBreakdownType, rowIndex) => (
-				<input
-					className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none"
-					key={`${row.lender}-${rowIndex}`}
-					value={(row.amount * row.rate) / 12}
-					disabled
-				/>
+			cell: (row: FundingBreakdownType) => (
+				<div className="px-4">{calculateProrated(row.amount, row.rate)}</div>
 			),
 			name: "Prorated",
-			selector: (row: FundingBreakdownType): string => row.lender,
 			style: { padding: 0 },
 		},
 		{
+			cell: (row: FundingBreakdownType) => (
+				<div className="px-4">{calculateRegular(row.amount, row.rate)}</div>
+			),
 			name: "Regular",
-			selector: (row: FundingBreakdownType): string => row.lender,
 			style: { padding: 0 },
 		},
 		{
@@ -102,12 +117,31 @@ export const FundingBreakdown: FC<Props> = ({
 			maxWidth: "50px",
 			name: "",
 			style: { padding: 0 },
+			right: true,
 		},
 	];
-	const lender = fields.find((field) => field.type === "lender");
-	const participantRows = fields.filter(
-		(field) => field.type === "participant"
-	);
+
+	function calculateRegular(amount = 0, rate = 0) {
+		return ((amount * (rate / 100)) / 12).toFixed(2);
+	}
+
+	function calculateProrated(amount = 0, rate = 0) {
+		const date = originationDate
+			? moment(originationDate, "MM-DD-YYYY")
+			: moment();
+		const lastDayOfMonth = date.clone().endOf("month");
+		const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days");
+
+		return ((amount * (rate / 100)) / (365 * daysUntilEndOfMonth)).toFixed(2);
+	}
+
+	function canAddParticipant() {
+		const lender = fundingBreakdown[0]?.lenderId === lenders[0]?.code;
+		const participants = fundingBreakdown.filter(
+			(field) => field.type === "participant"
+		);
+		return lender && participants.length < 4;
+	}
 
 	return (
 		<div className="pt-6">
@@ -123,10 +157,10 @@ export const FundingBreakdown: FC<Props> = ({
 					icon={<Icon name="plus" color="#0E2130" width="12" />}
 					onClick={() => setOpenParticipantModal(true)}
 					type="button"
-					disabled={!(lender && participantRows.length < 4)}
+					disabled={!canAddParticipant()}
 				/>
 			</div>
-			<Table className="my-6" columns={columns} data={fields} />
+			<Table className="my-6" columns={columns} data={fundingBreakdown} />
 		</div>
 	);
 };

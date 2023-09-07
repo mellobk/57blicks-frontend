@@ -72,7 +72,7 @@ export const CreateLoan: FC = () => {
 				</div>
 
 				<FundingBreakdown
-					fields={fundingBreakdown}
+          control={control}
 					register={register}
 					remove={removeParticipant}
 					setOpenLenderModal={setOpenLenderModal}
