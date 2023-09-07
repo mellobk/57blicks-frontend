@@ -8,7 +8,7 @@ export const SuccessFirstLogin: FC = () => {
 				title="Success!"
 				subTitle="Your account has been created, you may proceed to the login page."
 				buttonText="Login"
-				navigateTo="login"
+				navigateTo=""
 			/>
 		</div>
 	);
