@@ -80,6 +80,7 @@ export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
 						)}
 						{showInvestorBankInfo && (
 							<InvestorBankInfo
+								loading={createInvestorMutation.isLoading}
 								showInvestorBankInfo
 								handleInvestorBankInfo={handleInvestorBankInfo}
 								handleSuccess={handleSendInvitation}

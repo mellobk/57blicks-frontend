@@ -20,6 +20,7 @@ interface InvestorBankInfoProps {
 	handleSuccess?: (data: AddInvestorBankFields) => void;
 	data?: AddInvestorBankFields;
 	buttonText?: string;
+	loading?: boolean;
 }
 
 export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
@@ -28,6 +29,7 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 	data,
 	buttonText,
 	handleSuccess,
+	loading,
 }) => {
 	console.log(data?.accountType, "bank data");
 	const { register, handleSubmit, watch, setValue } = useForm<FieldValues>();
@@ -103,6 +105,7 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 								/>
 								<div className="flex flex-col gap-1">
 									<Button
+										loading={loading}
 										buttonText={buttonText}
 										className={`bg-primary-500`}
 									/>

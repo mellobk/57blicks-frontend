@@ -22,7 +22,7 @@ export const loginRoutesNames = {
 
 const LoginRoutes = [
 	{
-		path: loginRoutesNames.firstLogin,
+		path: `/${loginRoutesNames.firstLogin}`,
 		page: FirstLogin,
 		layout: LoginLayout,
 	},
