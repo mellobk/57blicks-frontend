@@ -46,9 +46,9 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 		setOpenModal(false);
 	};
 
-	const successCreateAdmin = (): void => {
-		setOpenModal(false);
+	const successCreateAdmin = async (): Promise<void> => {
 		void adminQuery.refetch();
+		setOpenModal(false);
 	};
 
 	const handleSearch = (data: string) => {
@@ -148,11 +148,11 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 			</Table>
 			<Modal
 				visible={openModal}
-				onHide={successCreateAdmin}
+				onHide={closeModal}
 				title="Add Admin"
 				width="30vw"
 			>
-				<AddAdmin handleSuccess={closeModal} />
+				<AddAdmin handleSuccess={successCreateAdmin} />
 			</Modal>
 			<Modal
 				visible={openDeleteModal}

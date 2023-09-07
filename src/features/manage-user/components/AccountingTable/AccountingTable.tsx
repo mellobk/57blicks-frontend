@@ -46,8 +46,8 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 	};
 
 	const successCreateAccounting = (): void => {
-		setOpenModal(false);
 		void accountQuery.refetch();
+		setOpenModal(false);
 	};
 
 	const handleSearch = (data: string) => {

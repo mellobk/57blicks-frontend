@@ -11,8 +11,8 @@ import { ResetCreatePassWord } from "../pages/ResetCreatePassword";
 import { SuccessResetPassword } from "../pages/SuccessResetPassword";
 
 export const loginRoutesNames = {
-	firstLogin: "/",
-	login: "login",
+	firstLogin: "first-login",
+	login: "/",
 	resetPassword: "reset-password",
 	resetPasswordMfa: "reset-password-mfa",
 	ResetCreatePassWord: "reset-create-password",
@@ -37,7 +37,7 @@ const LoginRoutes = [
 		layout: LoginLayout,
 	},
 	{
-		path: `/${loginRoutesNames.login}`,
+		path: `${loginRoutesNames.login}`,
 		page: Login,
 		layout: LoginLayout,
 	},
