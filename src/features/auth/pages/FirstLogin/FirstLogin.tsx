@@ -1,4 +1,4 @@
-import { type FC, useLayoutEffect, useCallback } from "react";
+import { type FC, useLayoutEffect } from "react";
 import { Mfa } from "@/features/auth/components/Mfa";
 import { useSearch } from "@tanstack/router";
 import { sendCode } from "@/lib/cognito";

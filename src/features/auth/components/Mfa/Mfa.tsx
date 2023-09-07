@@ -1,4 +1,4 @@
-import { type FC, useState, useEffect } from "react";
+import { type FC, useState } from "react";
 import { Input } from "@/components/forms/Input";
 import { AuthenticateCode } from "@/components/ui/AuthCode";
 import { Button } from "@/components/ui/Button";
