@@ -6,3 +6,4 @@ export const passwordInitialsValidations = [
 
 export const userEmail = "userEmail";
 export const mfaCode = "mfaCode";
+export const emailStatus = "emailStatus";

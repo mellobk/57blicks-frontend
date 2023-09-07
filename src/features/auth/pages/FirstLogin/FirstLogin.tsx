@@ -1,13 +1,17 @@
-import { useEffect, type FC } from "react";
+import { type FC, useLayoutEffect, useCallback } from "react";
 import { Mfa } from "@/features/auth/components/Mfa";
 import { useSearch } from "@tanstack/router";
 import { sendCode } from "@/lib/cognito";
-import { sendToLocalStorage, getLocalStorage } from "@/utils/local-storage";
-import { userEmail } from "../../utils/constants";
+import {
+	sendToLocalStorage,
+	getLocalStorage,
+	removeLocalStorage,
+} from "@/utils/local-storage";
+import { emailStatus, userEmail } from "../../utils/constants";
 
 export const FirstLogin: FC = () => {
 	const data: { email: string } = useSearch();
-
+	removeLocalStorage(emailStatus);
 	const localStorageEmail = getLocalStorage(userEmail);
 	sendToLocalStorage(userEmail, data.email || localStorageEmail);
 
@@ -18,8 +22,10 @@ export const FirstLogin: FC = () => {
 		"*******"
 	)}@${emailParts[1]}`;
 
-	useEffect(() => {
-		void sendCode(localEmail || "");
+	useLayoutEffect(() => {
+		const statusEmail = getLocalStorage("emailStatus");
+		if (!statusEmail) void sendCode(localEmail || "");
+		sendToLocalStorage("emailStatus", "sended");
 	}, []);
 
 	return (
