@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { type FC, useEffect, useRef, useState } from "react";
 import { type SubmitHandler, useForm, type FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -43,7 +46,7 @@ export const CreatePassword: FC<MfaProps> = ({
 	const buttonContainer = useRef(null);
 	const [PasswordValidations, setPasswordValidations] =
 		useState<Array<PasswordValidations>>();
-	const [createPasswordError, setCreatePasswordError] = useState<string | null>(
+	const [createPasswordError, setCreatePasswordError] = useState<any | string>(
 		null
 	);
 	const {
@@ -60,18 +63,20 @@ export const CreatePassword: FC<MfaProps> = ({
 	const errorPassword = errors[createPassWordFields?.password]?.message;
 
 	const onSubmit: SubmitHandler<FieldValues> = async (data): Promise<any> => {
-		const respondCreatePassword = await forgotPassword(
-			receptor || "",
-			mfaCode || "",
-			data[createPassWordFields?.password]
-		);
+		try {
+			const respondCreatePassword = await forgotPassword(
+				receptor || "",
+				mfaCode || "",
+				data[createPassWordFields?.password]
+			);
 
-		if (respondCreatePassword === "password updated") {
-			void navigate({ to: `/${navigateTo}` });
-			removeLocalStorage(userEmail);
-			removeLocalStorage(localMfa);
-		} else {
-			setCreatePasswordError(respondCreatePassword);
+			if (respondCreatePassword === "password updated") {
+				void navigate({ to: `/${navigateTo}` });
+				removeLocalStorage(userEmail);
+				removeLocalStorage(localMfa);
+			}
+		} catch (error) {
+			setCreatePasswordError(error);
 		}
 	};
 
@@ -93,7 +98,7 @@ export const CreatePassword: FC<MfaProps> = ({
 
 	const backHandleClick = (): void => {
 		console.log(backTo);
-		void navigate({ to: `/${backTo}` });
+		void navigate({ to: `/${backTo || ""}` });
 	};
 	return (
 		<div className="flex flex-col items-center  gap-3 h-full w-full">

@@ -76,7 +76,6 @@ export const MaskInput: ForwardRefRenderFunction<
 					defaultValue={defaultValue}
 					placeholder={placeholder}
 					disabled={disabled}
-					required={required}
 					{...register}
 					value={value}
 					mask={mask}

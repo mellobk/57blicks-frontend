@@ -9,6 +9,8 @@ import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { useDebounce } from "@/hooks/debounce";
 import "./Table.css";
+import { FooterTable } from "@/components/ui/FooterTabs/FooterTabs";
+import { footerTabData } from "../../utils/tabs";
 
 interface Column {
 	name?: string;
@@ -31,7 +33,7 @@ interface TableProps {
 	loading?: boolean;
 }
 
-export const Table: FC<TableProps> = ({
+export const ServicingTable: FC<TableProps> = ({
 	columns = [],
 	data,
 	children,
@@ -196,14 +198,21 @@ export const Table: FC<TableProps> = ({
 					)}
 				</div>
 			</div>
-			<div className="h-full w-full rounded-3xl bg-white">
-				<div className="rounded-3xl">
-					<DataTable
-						columns={stateColumns}
-						data={data}
-						progressPending={loading}
-						conditionalRowStyles={conditionalRowStyles}
-					/>
+			<div className="table h-full w-full">
+				<div
+					className="h-full w-full rounded-3xl bg-white flex flex-col justify-between"
+					style={{ overflow: "overlay" }}
+				>
+					<div className="rounded-3xl">
+						<DataTable
+							responsive={false}
+							columns={stateColumns}
+							data={data}
+							progressPending={loading}
+							conditionalRowStyles={conditionalRowStyles}
+						/>
+					</div>
+					<FooterTable tabs={footerTabData} />
 				</div>
 			</div>
 

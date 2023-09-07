@@ -18,6 +18,7 @@ interface MfaProps {
 	receptorCode?: string;
 	labelData?: string;
 	backRoute?: string;
+	showBackButton?: boolean;
 }
 
 export const Mfa: FC<MfaProps> = ({
@@ -28,6 +29,7 @@ export const Mfa: FC<MfaProps> = ({
 	navigateTo,
 	backRoute,
 	labelData,
+	showBackButton = true,
 }) => {
 	const navigate = useNavigate();
 	const [resentMessage, sendResentMessage] = useState<boolean>();
@@ -111,11 +113,13 @@ export const Mfa: FC<MfaProps> = ({
 							className={`${codeMfa ? "bg-primary-500" : "bg-gray-300"}`}
 							disabled={!codeMfa}
 						/>
-						<Button
-							buttonText="Back"
-							className="bg-transparent text-black"
-							onClick={backTo}
-						/>
+						{showBackButton && (
+							<Button
+								buttonText="Back"
+								className="bg-transparent text-black"
+								onClick={backTo}
+							/>
+						)}
 					</div>
 				</div>
 			</LoginTitle>

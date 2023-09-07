@@ -20,6 +20,14 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 	const [deleteId, setDeleteId] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
 
+	const adminQuery = useQuery(
+		["admin-query"],
+		() => {
+			return ManageUsersService.filterAllAdmins(searchValue);
+		},
+		{ enabled: true, staleTime: 1 }
+	);
+
 	const handleDeleteAdmin = (id: string) => {
 		console.log(id);
 		setOpenDeleteModal(!openDeleteModal);
@@ -35,25 +43,18 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 	};
 
 	const closeModal = (): void => {
-		setOpenModal(!openModal);
+		setOpenModal(false);
+	};
+
+	const successCreateAdmin = (): void => {
+		setOpenModal(false);
+		void adminQuery.refetch();
 	};
 
 	const handleSearch = (data: string) => {
 		setSearchValue(data);
 		return data;
 	};
-
-	const adminQuery = useQuery(
-		["admin-query"],
-		() => {
-			return ManageUsersService.filterAllAdmins(searchValue);
-		},
-		{ enabled: true, staleTime: 1 }
-	);
-
-	/* 	const adminMutation = useMutation(() => {
-		return ManageUsersService.filterAllAdmins(searchValue);
-	}); */
 
 	useEffect(() => {
 		void adminQuery.refetch();
@@ -147,11 +148,11 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 			</Table>
 			<Modal
 				visible={openModal}
-				onHide={closeModal}
+				onHide={successCreateAdmin}
 				title="Add Admin"
 				width="30vw"
 			>
-				<AddAdmin />
+				<AddAdmin handleSuccess={closeModal} />
 			</Modal>
 			<Modal
 				visible={openDeleteModal}
