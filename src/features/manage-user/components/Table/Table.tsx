@@ -199,6 +199,7 @@ export const Table: FC<TableProps> = ({
 			<div className="h-full w-full rounded-3xl bg-white">
 				<div className="rounded-3xl">
 					<DataTable
+						fixedHeader
 						columns={stateColumns}
 						data={data}
 						progressPending={loading}
