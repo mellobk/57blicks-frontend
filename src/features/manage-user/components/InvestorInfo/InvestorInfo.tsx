@@ -136,8 +136,9 @@ export const InvestorInfo: React.FC<InvestorInfoProps> = ({
 										/>
 									</div>
 									<div className="w-[40%]">
-										<Input
+										<MaskInput
 											label="ZIP"
+											mask="99999"
 											placeholder="XXXXX"
 											register={register(addInvestorFields?.zip || "zip")}
 										/>
