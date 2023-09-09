@@ -4,7 +4,7 @@ import { AuthenticateCode } from "@/components/ui/AuthCode";
 import { Button } from "@/components/ui/Button";
 import { LoginTitle } from "../LoginTitle";
 import { ToastMfa } from "../ToastMfa";
-import { sendToLocalStorage } from "@/utils/local-storage";
+import { sendToLocalStorage } from "@/utils/local-storage.ts";
 import { mfaCode } from "../../utils/constants";
 import { sendCode } from "@/lib/cognito";
 import { useNavigate } from "@tanstack/router";

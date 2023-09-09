@@ -9,6 +9,7 @@ import { Subtitle } from "@/features/loan-overview/components/Subtitle/Subtitle"
 import { Value } from "@/features/loan-overview/components/Value/Value";
 import { FundingBreakdown as FundingBreakdownType } from "@/features/create-loan/types/fields";
 import { lenders } from "@/features/create-loan/utils/selects";
+import { moneyFormat } from "@/utils/format";
 
 export const LoanOverview: FC = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
@@ -49,12 +50,12 @@ export const LoanOverview: FC = () => {
 		},
 		{
 			name: "Total Loan",
-			selector: (row: FundingBreakdownType) => row.amount,
+			selector: (row: FundingBreakdownType) => moneyFormat(row.amount),
 			style: { padding: 0 },
 		},
 		{
 			name: "Total Drawn to Date",
-			selector: (row: FundingBreakdownType) => row.amount,
+			selector: (row: FundingBreakdownType) => moneyFormat(row.amount),
 			style: { padding: 0 },
 		},
 		{
@@ -67,7 +68,7 @@ export const LoanOverview: FC = () => {
 				/>
 			),
 			name: "Trust-Unallocated",
-			selector: (row: FundingBreakdownType) => row.amount,
+			selector: (row: FundingBreakdownType) => moneyFormat(row.amount),
 			style: { padding: 0 },
 		},
 		{
@@ -80,17 +81,17 @@ export const LoanOverview: FC = () => {
 				/>
 			),
 			name: "Trust-Allocated",
-			selector: (row: FundingBreakdownType) => row.amount,
+			selector: (row: FundingBreakdownType) => moneyFormat(row.amount),
 			style: { padding: 0 },
 		},
 		{
 			name: "Due to Draws",
-			selector: (row: FundingBreakdownType) => row.amount,
+			selector: (row: FundingBreakdownType) => moneyFormat(row.amount),
 			style: { padding: 0 },
 		},
 		{
 			name: "Total Funds",
-			selector: (row: FundingBreakdownType) => row.amount,
+			selector: (row: FundingBreakdownType) => moneyFormat(row.amount),
 			style: { padding: 0 },
 		},
 	];

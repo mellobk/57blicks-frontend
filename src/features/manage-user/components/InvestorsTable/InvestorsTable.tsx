@@ -16,7 +16,7 @@ import type { Investor } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 import { useQuery } from "@tanstack/react-query";
 import type { AddInvestorBankFields } from "../../types/fields";
-import { statusSort } from "@/utils/common-funtions";
+import { statusSort } from "@/utils/common-funtions.ts";
 
 interface SuccessProps {}
 

@@ -20,7 +20,7 @@ import { LoginTitle } from "../LoginTitle";
 import { forgotPassword } from "@/lib/cognito";
 import { useNavigate } from "@tanstack/router";
 import { Message } from "primereact/message";
-import { removeLocalStorage } from "@/utils/local-storage";
+import { removeLocalStorage } from "@/utils/local-storage.ts";
 
 interface MfaProps {
 	title?: string;

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import "@/utils/story-book-css-export";
+import "@/utils/story-book-css-export.ts";
 import { Button } from "./Button";
 import { Icon } from "@/components/ui/Icon";
 

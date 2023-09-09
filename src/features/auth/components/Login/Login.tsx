@@ -17,8 +17,8 @@ import type { LoginFields } from "../../types/validations";
 import { useNavigate } from "@tanstack/router";
 import { loginRoutesNames } from "../../routes/LoginRouter";
 import { getSession } from "@/lib/cognito";
-import { sendToLocalStorage } from "@/utils/local-storage";
-import { accessToken } from "@/utils/constant";
+import { sendToLocalStorage } from "@/utils/local-storage.ts";
+import { accessToken } from "@/utils/constant.ts";
 
 type LoginData = {
 	email: string;

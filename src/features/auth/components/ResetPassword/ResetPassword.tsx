@@ -13,7 +13,7 @@ import { ResetPasswordSchemas } from "@/features/auth/utils/Schemas/ResetPasswor
 import { LoginTitle } from "../LoginTitle";
 import { sendCode } from "@/lib/cognito";
 import { useNavigate } from "@tanstack/router";
-import { sendToLocalStorage } from "@/utils/local-storage";
+import { sendToLocalStorage } from "@/utils/local-storage.ts";
 import { userEmail } from "../../utils/constants";
 import { Message } from "primereact/message";
 

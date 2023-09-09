@@ -12,7 +12,7 @@ import { MaskInput } from "@/components/forms/MaskInput";
 import { useMutation } from "@tanstack/react-query";
 import type { User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
-import { unFormatPhone } from "@/utils/common-funtions";
+import { unFormatPhone } from "@/utils/common-funtions.ts";
 
 interface AddAdminProps {
 	handleSuccess?: () => void;
