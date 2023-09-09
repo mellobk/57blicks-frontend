@@ -10,7 +10,6 @@ interface Props extends ButtonProps {
 	className?: string;
 	deepClassName?: string;
 	disabled?: boolean;
-	iconName?: string;
 	loading?: boolean;
 	onClick?: () => void;
 }
@@ -36,10 +35,10 @@ export const Button: FC<Props> = ({
 				{loading ? (
 					<Icon name="loading" width="20" color="white" />
 				) : (
-					<>
-						{icon && <>{icon}</>}
+					<div className="flex flex-row">
+						{icon && <div className="pr-2"><>{icon}</></div>}
 						{buttonText && <>{buttonText}</>}
-					</>
+					</div>
 				)}
 			</div>
 		</PrimeReactButton>

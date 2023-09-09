@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import "@/utils/StoryBookCssExport.tsx";
-import { Modal } from "./Modal.tsx";
+import "@/utils/story-book-css-export";
+import { Modal } from "./Modal";
 
 const meta: Meta<typeof Modal> = {
 	component: Modal,

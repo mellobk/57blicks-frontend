@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
-import { Title } from "@/features/create-loan/components/Title/Title";
+import { Title } from "@/components/ui/Title/Title";
 import { LoanFields } from "@/features/create-loan/types/fields";
 
 interface Props {

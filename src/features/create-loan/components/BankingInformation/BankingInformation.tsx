@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { Select } from "@/components/forms/Select";
-import { Title } from "@/features/create-loan/components/Title/Title";
+import { Title } from "@/components/ui/Title/Title";
 import { LoanFields } from "@/features/create-loan/types/fields";
 import { accountTypes } from "@/features/create-loan/utils/selects";
 

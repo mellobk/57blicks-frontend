@@ -5,7 +5,7 @@ import { router } from "./routes";
 import { PrimeReactProvider } from "primereact/api";
 import { ErrorBoundary } from "react-error-boundary";
 import { AuthProvider } from "./providers/AuthContextProvider";
-import ErrorFallback from "@/utils/ErrorFallback";
+import { ErrorFallback } from "@/components/ui/ErrorFallback";
 import { TanStackRouterDevelopmentTools } from "@/utils/development-tools/TanStackRouterDevelopmentTools";
 import { ReactQueryDevelopmentTools } from "@/utils/development-tools/ReactQueryDevelopmentTools";
 

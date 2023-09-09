@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
 import createPassWordFields from "@/features/auth/utils/input-fields";
-import { createPasswordSchema } from "@/features/auth/utils/Schemas/validations-schemas.ts";
+import { createPasswordSchema } from "@/features/auth/utils/Schemas/validations-schemas";
 import {
 	passwordInitialsValidations,
 	userEmail,

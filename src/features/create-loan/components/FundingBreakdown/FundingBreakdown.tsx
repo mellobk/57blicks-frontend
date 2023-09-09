@@ -5,16 +5,17 @@ import {
 	UseFormRegister,
 	useWatch,
 } from "react-hook-form";
+import { TableColumn } from "react-data-table-component";
 import moment from "moment";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { Column, Table } from "@/features/create-loan/components/Table/Table";
-import { Title } from "@/features/create-loan/components/Title/Title";
+import { Title } from "@/components/ui/Title/Title";
+import { Table } from "@/components/ui/Table/Table";
 import {
 	FundingBreakdown as FundingBreakdownType,
 	LoanFields,
 } from "@/features/create-loan/types/fields";
-import { lenders } from "@/features/create-loan/utils/selects.ts";
+import { lenders } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	control: Control<LoanFields>;
@@ -40,15 +41,15 @@ export const FundingBreakdown: FC<Props> = ({
 		control,
 		name: "originationDate",
 	});
-	const columns: Column[] = [
+	const columns: TableColumn<FundingBreakdownType>[] = [
 		{
 			cell: (row: FundingBreakdownType, rowIndex) => {
 				if (rowIndex === 0) {
 					return (
 						<button
 							className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200"
-              onClick={() => setOpenLenderModal(true)}
-              type="button"
+							onClick={() => setOpenLenderModal(true)}
+							type="button"
 						>
 							<div className="flex flex-row justify-between items-center">
 								{row.lender}
@@ -160,7 +161,7 @@ export const FundingBreakdown: FC<Props> = ({
 					disabled={!canAddParticipant()}
 				/>
 			</div>
-			<Table className="my-6" columns={columns} data={fundingBreakdown} />
+			<Table className="my-6 rounded-3xl" columns={columns} data={fundingBreakdown} />
 		</div>
 	);
 };

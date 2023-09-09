@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import "../../../styles/tailwind.css";
-import { Toggle } from "./Toggle.tsx";
+import { Toggle } from "./Toggle";
 
 const meta: Meta<typeof Toggle> = {
 	component: Toggle,
