@@ -1,7 +1,5 @@
 import type { FC } from "react";
-import DataTable, { TableColumn, TableProps } from "react-data-table-component";
-
-export interface Column extends TableColumn<any> {}
+import DataTable, { TableProps } from "react-data-table-component";
 
 export interface Props extends TableProps<any> {
 	className?: string;
@@ -9,7 +7,7 @@ export interface Props extends TableProps<any> {
 
 export const Table: FC<Props> = ({ className, ...props }) => {
 	return (
-		<div className={`rounded-3xl ${className}`}>
+		<div className={className}>
 			<DataTable {...props} />
 		</div>
 	);

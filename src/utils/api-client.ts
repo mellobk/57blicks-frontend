@@ -4,8 +4,8 @@
 /* eslint-disable unicorn/prevent-abbreviations */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-import { getLocalStorage, removeLocalStorage } from "./local-storage";
-import { accessToken } from "./constant";
+import { getLocalStorage, removeLocalStorage } from "./local-storage.ts";
+import { accessToken } from "./constant.ts";
 import { signOut } from "@/lib/cognito";
 import sharedObject from "@/config/api-config";
 

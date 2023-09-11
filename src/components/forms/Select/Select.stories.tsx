@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Select } from "./Select.tsx";
-import "../../../utils/StoryBookCssExport.tsx";
-import "../../../styles/tailwind.css";
+import { Select } from "./Select";
+import "@/utils/story-book-css-export.ts";
+import "@/styles/tailwind.css";
 
 const meta: Meta<typeof Select> = {
 	component: Select,

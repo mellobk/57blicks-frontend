@@ -1,26 +1,28 @@
 import type { ReactElement } from "react";
-import ArrowDown from "@/assets/icons/arrow-down.tsx";
-import ArrowLeft from "@/assets/icons/arrow-left.tsx";
-import Bank from "@/assets/icons/bank.tsx";
-import Clock from "@/assets/icons/clock.tsx";
-import CloseEye from "@/assets/icons/close-eye.tsx";
-import CloseEyes from "@/assets/icons/closes-eyes.tsx";
-import Column from "@/assets/icons/column.tsx";
-import Date from "@/assets/icons/date.tsx";
-import DeleteBack from "@/assets/icons/delete-back.tsx";
-import Loading from "@/assets/icons/loading.tsx";
-import MenuTable from "@/assets/icons/menu-table.tsx";
-import Notification from "@/assets/icons/notification.tsx";
-import Ok from "@/assets/icons/ok.tsx";
-import OpenEye from "@/assets/icons/open-eye.tsx";
-import Plus from "@/assets/icons/plus.tsx";
-import Search from "@/assets/icons/search.tsx";
-import Shield from "@/assets/icons/shield.tsx";
-import Star from "@/assets/icons/star.tsx";
-import TrashBin from "@/assets/icons/trash-bin.tsx";
-import User from "@/assets/icons/user.tsx";
-import Wrong from "@/assets/icons/wrong.tsx";
-import IconNames from "./IconNames.tsx";
+import ArrowDown from "@/assets/icons/arrow-down";
+import ArrowLeft from "@/assets/icons/arrow-left";
+import Bank from "@/assets/icons/bank";
+import Clock from "@/assets/icons/clock";
+import CloseEye from "@/assets/icons/close-eye";
+import CloseEyes from "@/assets/icons/closes-eyes";
+import Column from "@/assets/icons/column";
+import Date from "@/assets/icons/date";
+import DeleteBack from "@/assets/icons/delete-back";
+import Loading from "@/assets/icons/loading";
+import MenuTable from "@/assets/icons/menu-table";
+import MoneyBag from "@/assets/icons/money-bag";
+import Notification from "@/assets/icons/notification";
+import Ok from "@/assets/icons/ok";
+import Open from "@/assets/icons/open";
+import OpenEye from "@/assets/icons/open-eye";
+import Plus from "@/assets/icons/plus";
+import Search from "@/assets/icons/search";
+import Shield from "@/assets/icons/shield";
+import Star from "@/assets/icons/star";
+import TrashBin from "@/assets/icons/trash-bin";
+import User from "@/assets/icons/user";
+import Wrong from "@/assets/icons/wrong";
+import IconNames from "./IconNames";
 
 interface Props {
 	name: (typeof IconNames)[number];
@@ -83,6 +85,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 			name: "menuTable",
 			icon: <MenuTable width={width} color={color} />,
 		},
+		moneyBag: {
+			name: "moneyBag",
+			icon: <MoneyBag width={width} color={color} />,
+		},
 		notification: {
 			name: "notification",
 			icon: <Notification width={width} color={color} />,
@@ -90,6 +96,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 		ok: {
 			name: "ok",
 			icon: <Ok width={width} color={color} />,
+		},
+		open: {
+			name: "open",
+			icon: <Open width={width} color={color} />,
 		},
 		openEye: {
 			name: "openEye",

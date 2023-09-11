@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { addInvestorFields } from "../utils/input-fields.ts";
+import { addInvestorFields } from "../utils/input-fields";
 
 export const AddInvestorSchemas = z.object({
 	[addInvestorFields?.firstName]: z

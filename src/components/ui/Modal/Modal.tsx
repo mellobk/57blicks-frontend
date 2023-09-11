@@ -1,15 +1,18 @@
+import { FC, ReactNode } from "react";
 import { Dialog } from "primereact/dialog";
 import "./Modal.css";
 
 interface LoginTitleProps {
+	minHeight?: string;
 	width?: string;
 	onHide?: () => void;
 	visible?: boolean;
-	children?: React.ReactNode;
-	title?: string;
+	children?: ReactNode;
+	title?: string | ReactNode;
 }
 
-export const Modal: React.FC<LoginTitleProps> = ({
+export const Modal: FC<LoginTitleProps> = ({
+	minHeight,
 	width = "50vw",
 	onHide,
 	visible,
@@ -26,7 +29,7 @@ export const Modal: React.FC<LoginTitleProps> = ({
 						onHide();
 					}
 				}}
-				style={{ width: width }}
+				style={{ width: width, minHeight: minHeight }}
 				breakpoints={{ "960px": "75vw", "641px": "100vw" }}
 			>
 				<div className="h-[1px] bg-gray-1100 mb-6"></div>

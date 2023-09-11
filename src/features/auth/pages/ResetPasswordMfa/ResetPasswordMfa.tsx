@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { Mfa } from "@/features/auth/components/Mfa";
-import { getLocalStorage } from "@/utils/local-storage";
+import { getLocalStorage } from "@/utils/local-storage.ts";
 import { userEmail } from "../../utils/constants";
 import { loginRoutesNames } from "../../routes/LoginRouter";
 

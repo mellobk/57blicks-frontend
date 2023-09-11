@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import { Toast } from "primereact/toast";
 import type { FunctionComponent } from "@/types";
 
-const ErrorFallback = (): FunctionComponent => {
+export const ErrorFallback = (): FunctionComponent => {
 	const toast = useRef<Toast>(null);
 
 	useEffect(() => {
@@ -18,5 +18,3 @@ const ErrorFallback = (): FunctionComponent => {
 
 	return <Toast ref={toast} />;
 };
-
-export default ErrorFallback;

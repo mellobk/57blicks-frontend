@@ -1,10 +1,10 @@
 import { Router } from "@tanstack/router";
 import { rootRoute } from "./RootRoute";
-import IndexRouter from "./IndexRouter.tsx";
-import DashboardRouter from "@/features/dashboard/routes/DashboardRouter.tsx";
-import ManageUserRouter from "@/features/manage-user/routes/ManageUsersRouter.tsx";
-import LoginRouter from "@/features/auth/routes/LoginRouter.tsx";
-import ServicingRouter from "@/features/servicing/routes/ServicingRoutes.tsx";
+import IndexRouter from "./IndexRouter";
+import DashboardRouter from "@/features/dashboard/routes/DashboardRouter";
+import ManageUserRouter from "@/features/manage-user/routes/ManageUsersRouter";
+import LoginRouter from "@/features/auth/routes/LoginRouter";
+import ServicingRouter from "@/features/servicing/routes/ServicingRoutes";
 
 //array of all routes
 const allRoutes = [

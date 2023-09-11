@@ -1,4 +1,4 @@
-import Icon from "./Icon.tsx";
-import IconNames from "./IconNames.tsx";
+import Icon from "./Icon";
+import IconNames from "./IconNames";
 
 export { Icon, IconNames };

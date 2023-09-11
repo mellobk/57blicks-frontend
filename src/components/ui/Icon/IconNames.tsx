@@ -1,12 +1,19 @@
 const IconNames: Array<string> = [
 	"arrowDown",
+	"arrowLeft",
+	"bank",
 	"clock",
 	"closeEye",
 	"closesEyes",
+	"column",
 	"date",
+	"deleteBack",
 	"loading",
+	"menuTable",
+	"moneyBag",
 	"notification",
 	"ok",
+	"open",
 	"openEye",
 	"plus",
 	"search",
@@ -15,12 +22,6 @@ const IconNames: Array<string> = [
 	"trashBin",
 	"user",
 	"wrong",
-	"column",
-	"menuTable",
-	"trash",
-	"deleteBack",
-	"bank",
-	"arrowLeft",
 ];
 
 export default IconNames;
