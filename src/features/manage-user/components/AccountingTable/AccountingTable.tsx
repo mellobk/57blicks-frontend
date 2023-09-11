@@ -7,7 +7,7 @@ import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
 import { tabs } from "../../utils/tabs";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import ManageUsersService from "../../api/investors";
 import type { User } from "../../types/api";
 import { AddAccounting } from "../AddAccounting/AddAccounting";
@@ -26,6 +26,21 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 		},
 		{ enabled: true, staleTime: 1 }
 	);
+
+	const deleteAdminMutation = useMutation((id: string) => {
+		return ManageUsersService.deleteUser(id);
+	});
+
+	useEffect(() => {
+		if (deleteAdminMutation.isSuccess) {
+			void accountQuery.refetch();
+			setOpenDeleteModal(false);
+		}
+	}, [deleteAdminMutation]);
+
+	const handleDeleteUser = (id: string) => {
+		deleteAdminMutation.mutate(id);
+	};
 
 	const handleDeleteAdmin = (id: string) => {
 		console.log(id);
@@ -163,7 +178,7 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 				title="Delete"
 				width="25vw"
 			>
-				<DeleteAdmin id={deleteId} />
+				<DeleteAdmin id={deleteId} handleDeleteAdmin={handleDeleteUser} />
 			</Modal>
 		</>
 	);

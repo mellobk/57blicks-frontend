@@ -4,6 +4,7 @@ import {
 	createAccounting,
 	createAdmin,
 	createInvestor,
+	deleteUserData,
 	filterData,
 	investors,
 	userFilterData,
@@ -58,6 +59,11 @@ const createNewInvestor = async (body: Investor) => {
 	);
 	return response.data;
 };
+
+const deleteUser = async (id: string) => {
+	const response = await authApiClient.delete<Array<User>>(deleteUserData(id));
+	return response.data;
+};
 /* const updateInvestors = async (body: Investor) => {
 	const response = fetchData(investors(body?.id || ""), "PUT", body);
 	return response;
@@ -71,6 +77,7 @@ const ManageUsersService = {
 	createNewAdmin,
 	createNewAccounting,
 	createNewInvestor,
+	deleteUser,
 };
 
 export default ManageUsersService;

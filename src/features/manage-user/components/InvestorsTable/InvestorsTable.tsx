@@ -14,7 +14,7 @@ import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBaking
 import { tabs } from "../../utils/tabs";
 import type { Investor } from "../../types/api";
 import ManageUsersService from "../../api/investors";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { AddInvestorBankFields } from "../../types/fields";
 import { statusSort } from "@/utils/common-funtions";
 
@@ -38,10 +38,17 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		{ enabled: true, staleTime: 1 }
 	);
 
-	/* 	const investorMutation = useMutation(() => {
-		return ManageUsersService.filterAllInvestors(searchValue, checkState);
+	const deleteAdminMutation = useMutation((id: string) => {
+		return ManageUsersService.deleteUser(id);
 	});
- */
+
+	useEffect(() => {
+		if (deleteAdminMutation.isSuccess) {
+			void investorQuery.refetch();
+			setOpenDeleteModal(false);
+		}
+	}, [deleteAdminMutation]);
+
 	useEffect(() => {
 		void investorQuery.refetch();
 	}, [searchValue, checkState]);
@@ -54,6 +61,10 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		console.log(id);
 		setOpenDeleteModal(!openDeleteModal);
 		setDeleteId(id);
+	};
+
+	const handleDeleteUser = (id: string) => {
+		deleteAdminMutation.mutate(id);
 	};
 
 	const handleUploadModal = () => {
@@ -199,7 +210,8 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 					className="cursor-pointer"
 					onClick={(): void => {
 						if (row?.user?.isActive) {
-							handleDeleteAdmin(row?.id || "");
+							console.log(row);
+							handleDeleteAdmin(row?.user.id || "");
 						}
 					}}
 				>
@@ -263,7 +275,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 				title="Banking Info"
 				width="25vw"
 			>
-				<DisableInvestor id={deleteId} />
+				<DisableInvestor id={deleteId} handleDeleteUser={handleDeleteUser} />
 			</Modal>
 		</>
 	);
