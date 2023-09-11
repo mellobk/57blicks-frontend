@@ -13,6 +13,7 @@ import MenuTable from "@/assets/icons/menu-table";
 import MoneyBag from "@/assets/icons/money-bag";
 import Notification from "@/assets/icons/notification";
 import Ok from "@/assets/icons/ok";
+import Open from "@/assets/icons/open";
 import OpenEye from "@/assets/icons/open-eye";
 import Plus from "@/assets/icons/plus";
 import Search from "@/assets/icons/search";
@@ -95,6 +96,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 		ok: {
 			name: "ok",
 			icon: <Ok width={width} color={color} />,
+		},
+		open: {
+			name: "open",
+			icon: <Open width={width} color={color} />,
 		},
 		openEye: {
 			name: "openEye",

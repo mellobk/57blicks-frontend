@@ -13,6 +13,7 @@ const IconNames: Array<string> = [
 	"moneyBag",
 	"notification",
 	"ok",
+	"open",
 	"openEye",
 	"plus",
 	"search",
