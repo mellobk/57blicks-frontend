@@ -2,12 +2,13 @@ import { Button } from "@/components/ui/Button";
 
 interface DeleteAdminProps {
 	id?: string;
+	handleDeleteUser?: (id: string) => void;
 }
 
-export const DisableInvestor: React.FC<DeleteAdminProps> = ({ id = "" }) => {
-	const handleDeleteAdmin = (id: string): void => {
-		console.log(id);
-	};
+export const DisableInvestor: React.FC<DeleteAdminProps> = ({
+	id = "",
+	handleDeleteUser,
+}) => {
 	return (
 		<div className="flex  flex-col justify-between w-full h-full gap-10 mt-9">
 			<div className="flex items-center gap-2 justify-center">
@@ -18,7 +19,9 @@ export const DisableInvestor: React.FC<DeleteAdminProps> = ({ id = "" }) => {
 				className={`bg-primary-500`}
 				buttonText="Disable"
 				onClick={(): void => {
-					handleDeleteAdmin(id);
+					if (handleDeleteUser) {
+						handleDeleteUser(id);
+					}
 				}}
 			/>
 		</div>

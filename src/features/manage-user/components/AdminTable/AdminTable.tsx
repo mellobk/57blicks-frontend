@@ -8,7 +8,7 @@ import { Tabs } from "@/components/ui/Tabs/Tabs";
 import { AddAdmin } from "../AddAdmin/AddAdmin";
 import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
 import { tabs } from "../../utils/tabs";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 
@@ -28,8 +28,22 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 		{ enabled: true, staleTime: 1 }
 	);
 
+	const deleteAdminMutation = useMutation((id: string) => {
+		return ManageUsersService.deleteUser(id);
+	});
+
+	useEffect(() => {
+		if (deleteAdminMutation.isSuccess) {
+			void adminQuery.refetch();
+			setOpenDeleteModal(false);
+		}
+	}, [deleteAdminMutation]);
+
+	const handleDeleteUser = (id: string) => {
+		deleteAdminMutation.mutate(id);
+	};
+
 	const handleDeleteAdmin = (id: string) => {
-		console.log(id);
 		setOpenDeleteModal(!openDeleteModal);
 		setDeleteId(id);
 	};
@@ -160,7 +174,7 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 				title="Delete"
 				width="25vw"
 			>
-				<DeleteAdmin id={deleteId} />
+				<DeleteAdmin id={deleteId} handleDeleteAdmin={handleDeleteUser} />
 			</Modal>
 		</>
 	);

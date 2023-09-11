@@ -2,12 +2,13 @@ import { Button } from "@/components/ui/Button";
 
 interface DeleteAdminProps {
 	id?: string;
+	handleDeleteAdmin?: (id: string) => void;
 }
 
-export const DeleteAdmin: React.FC<DeleteAdminProps> = ({ id = "" }) => {
-	const handleDeleteAdmin = (id: string): void => {
-		console.log(id);
-	};
+export const DeleteAdmin: React.FC<DeleteAdminProps> = ({
+	id = "",
+	handleDeleteAdmin,
+}) => {
 	return (
 		<div className="flex  flex-col justify-between w-full h-full gap-10 mt-9">
 			<div className="flex items-center gap-2 justify-center">
@@ -18,7 +19,9 @@ export const DeleteAdmin: React.FC<DeleteAdminProps> = ({ id = "" }) => {
 				buttonText="Delete"
 				className={`bg-primary-500`}
 				onClick={(): void => {
-					handleDeleteAdmin(id);
+					if (handleDeleteAdmin) {
+						handleDeleteAdmin(id);
+					}
 				}}
 			/>
 		</div>
