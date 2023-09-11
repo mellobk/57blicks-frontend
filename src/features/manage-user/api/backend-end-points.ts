@@ -23,3 +23,7 @@ export const createAccounting = (): string => {
 export const createInvestor = (): string => {
 	return `users/investor`;
 };
+
+export const deleteUserData = (id: string): string => {
+	return `/users/${id}`;
+};
