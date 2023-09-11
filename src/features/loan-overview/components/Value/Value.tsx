@@ -18,7 +18,11 @@ export const Value: FC<Props> = ({ action, checkAndBalance, label, value }) => (
 		<div className="flex flex-row justify-between items-center">
 			<h1
 				className={`font-inter text-[28px] ${
-					checkAndBalance ? "text-green-500" : "text-primary-500"
+					action
+						? "text-gold-500"
+						: checkAndBalance
+						? "text-green-500"
+						: "text-primary-500"
 				} leading-[34px] tracking-[-1.4px]`}
 			>
 				{moneyFormat(value)}

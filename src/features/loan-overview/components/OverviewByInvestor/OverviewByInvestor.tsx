@@ -12,6 +12,7 @@ import {
 	FundingBreakdown,
 	LoanOverviewFields,
 } from "@/features/loan-overview/types/fields";
+import {Footer} from "@/features/loan-overview/components/Footer/Footer.tsx";
 
 type Props = {
 	data: LoanOverviewFields;
@@ -66,7 +67,7 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 	];
 
 	return (
-		<>
+		<div className="flex flex-col h-full">
 			<div className="flex flex-row px-8 py-6 justify-between">
 				<Title text="Overview by Investors" />
 				<div className="flex flex-row gap-4">
@@ -106,13 +107,17 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 				</div>
 			</div>
 
-			<Table
-				columns={columns}
-				data={data.fundingBreakdown}
-				expandableRows
-				expandableRowDisabled={(row) => !row.participants?.length}
-				expandableRowsComponent={ExpandedComponent}
-			/>
-		</>
+      <div className="flex flex-col h-full justify-between">
+        <Table
+          columns={columns}
+          data={data.fundingBreakdown}
+          expandableRows
+          expandableRowDisabled={(row) => !row.participants?.length}
+          expandableRowsComponent={ExpandedComponent}
+        />
+
+        <Footer data={data} />
+      </div>
+		</div>
 	);
 };

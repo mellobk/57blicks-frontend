@@ -7,44 +7,44 @@ export const LoanOverview: FC = () => {
 	const data: LoanOverviewFields = {
 		checkAndBalanceInterest: 0,
 		checkAndBalancePrinciple: 0,
-    dueToDrawDetails: [
-      {
-        amountOwed: 4200,
-        lender: "Lender Name",
-        loanName: "Some Name",
-        loanAddress: "Some Address",
-      },
-      {
-        amountOwed: 4200,
-        lender: "Lender Name",
-        loanName: "Some Name",
-        loanAddress: "Some Address",
-      },
-      {
-        amountOwed: 4200,
-        lender: "Lender Name",
-        loanName: "Some Name",
-        loanAddress: "Some Address",
-      },
-      {
-        amountOwed: 4200,
-        lender: "Lender Name",
-        loanName: "Some Name",
-        loanAddress: "Some Address",
-      },
-      {
-        amountOwed: 4200,
-        lender: "Lender Name",
-        loanName: "Some Name",
-        loanAddress: "Some Address",
-      },
-      {
-        amountOwed: 4200,
-        lender: "Lender Name",
-        loanName: "Some Name",
-        loanAddress: "Some Address",
-      },
-    ],
+		dueToDrawDetails: [
+			{
+				amountOwed: 4200,
+				lender: "Lender Name",
+				loanName: "Some Name",
+				loanAddress: "Some Address",
+			},
+			{
+				amountOwed: 4200,
+				lender: "Lender Name",
+				loanName: "Some Name",
+				loanAddress: "Some Address",
+			},
+			{
+				amountOwed: 4200,
+				lender: "Lender Name",
+				loanName: "Some Name",
+				loanAddress: "Some Address",
+			},
+			{
+				amountOwed: 4200,
+				lender: "Lender Name",
+				loanName: "Some Name",
+				loanAddress: "Some Address",
+			},
+			{
+				amountOwed: 4200,
+				lender: "Lender Name",
+				loanName: "Some Name",
+				loanAddress: "Some Address",
+			},
+			{
+				amountOwed: 4200,
+				lender: "Lender Name",
+				loanName: "Some Name",
+				loanAddress: "Some Address",
+			},
+		],
 		dueToDraws: 774500,
 		fundingBreakdown: [
 			{
