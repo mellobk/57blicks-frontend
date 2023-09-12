@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { Input } from "./Input";
+import { TextArea } from "./TextArea.tsx";
 
-describe("Input component", () => {
+describe("TextArea component", () => {
 	it("renders, placeholder, and icon when provided", () => {
 		render(
-			<Input
+			<TextArea
 				label="Username"
 				placeholder="Enter your username"
 				iconName="search"
@@ -22,7 +22,7 @@ describe("Input component", () => {
 
 	it("renders required indicator when required prop is true", () => {
 		render(
-			<Input
+			<TextArea
 				label="Username"
 				placeholder="Enter your username"
 				required
@@ -35,7 +35,7 @@ describe("Input component", () => {
 
 	it("renders error message when error is provided", () => {
 		render(
-			<Input
+			<TextArea
 				label="Username"
 				placeholder="Enter your username"
 				error="Username is required"
@@ -47,14 +47,14 @@ describe("Input component", () => {
 	});
 
 	it("does not render icon when iconName is not provided", () => {
-		render(<Input label="Username" placeholder="Enter your username" />);
+		render(<TextArea label="Username" placeholder="Enter your username" />);
 
 		const iconElement = screen.queryByText("Mocked Icon"); // Use "queryByText" since the icon might not always be present
 		expect(iconElement).toBeNull();
 	});
 
 	it("renders without error and icon when no iconName, required, or error is provided", () => {
-		render(<Input label="Username" placeholder="Enter your username" />);
+		render(<TextArea label="Username" placeholder="Enter your username" />);
 
 		const labelElement = screen.getByText("Username");
 		const placeholderElement = screen.getByPlaceholderText(

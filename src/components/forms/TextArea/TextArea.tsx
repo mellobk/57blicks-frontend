@@ -1,9 +1,9 @@
-import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
+import type { ForwardRefRenderFunction, TextareaHTMLAttributes } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
-import { classNames } from "primereact/utils";
 import { Icon, type IconNames } from "@/components/ui/Icon";
+import { classNames } from "primereact/utils";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	clickIcon?: () => void;
 	error?: any;
 	iconColor?: string;
@@ -14,11 +14,14 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	wrapperClassName?: string;
 }
 
-export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
+export const TextArea: ForwardRefRenderFunction<
+	HTMLTextAreaElement,
+	TextAreaProps
+> = ({
 	error,
 	className = `placeholder-gray-400 focus:outline-none ${
 		error ? "text-red-ERROR bg-gray-100" : "bg-gray-200"
-	} font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md`,
+	} font-normal font-weight-400 leading-normal tracking-wide flex w-full p-4 rounded-md`,
 	clickIcon,
 	iconColor = "#000",
 	iconName,
@@ -26,6 +29,7 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 	label,
 	required,
 	register,
+	rows = 7,
 	wrapperClassName,
 	...props
 }) => (
@@ -54,8 +58,9 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 				</div>
 			)}
 
-			<input
+			<textarea
 				className={`${className} ${iconName && "pr-[30px]"}`}
+        rows={rows}
 				{...props}
 				{...register}
 			/>

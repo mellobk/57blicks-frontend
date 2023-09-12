@@ -2,11 +2,11 @@ import { DashboardLayout } from "@/components/layout/Dashboard";
 import { CreateLoan } from "@/features/create-loan/pages/CreateLoan/CreateLoan";
 import { LoanOverview } from "@/features/loan-overview/pages/LoanOverview/LoanOverview";
 import { Admin } from "@/features/manage-user/pages/Admin/Admin";
+import { Opportunities } from "@/features/opportunities/pages/Opportunities/Opportunities";
 import { DkcLlc } from "@/features/servicing/pages/DkcLLC/DkcLlc";
 import UnauthenticatedRoute from "@/routes/routes";
 import { Reporting } from "../pages/Reporting/Reporting";
 import { InvestorPortals } from "../pages/InvestorPortals/InvestorPortals";
-import { Opportunities } from "../pages/Opportunities/Opportunities";
 import { Support } from "../pages/Support/Support";
 
 export const NavbarRoutes = [
