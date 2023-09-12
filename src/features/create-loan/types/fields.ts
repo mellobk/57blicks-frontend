@@ -13,7 +13,7 @@ export type FundingBreakdown = {
 	type?: "lender" | "participant";
 };
 
-export type LoanFields = {
+export type Loan = {
 	accountNumber?: string;
 	accountType?: string;
 	amountDrawn: string;

@@ -1,7 +1,7 @@
-import { LoanFields } from "@/features/create-loan/types/fields";
+import { Loan } from "@/features/create-loan/types/fields";
 import { lenders } from "@/features/create-loan/utils/selects";
 
-export const defaultValues: LoanFields = {
+export const defaultValues: Loan = {
 	amountDrawn: "",
 	assetType: "",
 	borrowerEmailAddress: "",

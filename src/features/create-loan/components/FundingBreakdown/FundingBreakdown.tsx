@@ -13,15 +13,15 @@ import { Title } from "@/components/ui/Title/Title";
 import { Table } from "@/components/ui/Table/Table";
 import {
 	FundingBreakdown as FundingBreakdownType,
-	LoanFields,
+	Loan,
 } from "@/features/create-loan/types/fields";
 import { lenders } from "@/features/create-loan/utils/selects";
 
 interface Props {
-	control: Control<LoanFields>;
+	control: Control<Loan>;
 	setOpenLenderModal: (openLenderModal: boolean) => void;
 	setOpenParticipantModal: (openParticipantModal: boolean) => void;
-	register: UseFormRegister<LoanFields>;
+	register: UseFormRegister<Loan>;
 	remove: UseFieldArrayRemove;
 }
 
@@ -161,7 +161,11 @@ export const FundingBreakdown: FC<Props> = ({
 					disabled={!canAddParticipant()}
 				/>
 			</div>
-			<Table className="my-6 rounded-3xl" columns={columns} data={fundingBreakdown} />
+			<Table
+				className="my-6 rounded-3xl"
+				columns={columns}
+				data={fundingBreakdown}
+			/>
 		</div>
 	);
 };
