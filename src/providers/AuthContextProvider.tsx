@@ -1,10 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import type React from "react";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import type {
 	CognitoUserSession,
 	CognitoUser,
 } from "amazon-cognito-identity-js";
 import * as Cognito from "@/lib/cognito";
+import { Toast } from "primereact/toast";
+import useStore from "@/stores/app-store";
 
 interface AuthContextProps {
 	user: CognitoUser | null;
@@ -24,6 +29,9 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+	const errorMessage = useStore((state) => state.errorMessage);
+	const clearErrorMessage = useStore((state) => state.clearErrorMessage);
+	const toast = useRef(null) || <div></div>;
 	const [user, setUser] = useState<CognitoUser | null>(null);
 	const [session, setSession] = useState<CognitoUserSession | null>(null);
 
@@ -44,10 +52,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		setSession(null);
 	};
 
+	useEffect(() => {
+		if (errorMessage && toast?.current) {
+			(toast?.current as any)?.show({
+				severity: "error",
+				summary: "Error",
+				detail: errorMessage,
+				life: 3000,
+			});
+			clearErrorMessage();
+		}
+	}, [errorMessage]);
+
 	return (
-		<AuthContext.Provider value={{ user, session, signInWithEmail, signOut }}>
-			{children}
-		</AuthContext.Provider>
+		<>
+			<Toast ref={toast} />
+			<AuthContext.Provider value={{ user, session, signInWithEmail, signOut }}>
+				{children}
+			</AuthContext.Provider>
+		</>
 	);
 };
 

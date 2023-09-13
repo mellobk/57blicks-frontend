@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import type { FieldValues, SubmitHandler } from "react-hook-form";
@@ -13,6 +14,8 @@ import { useMutation } from "@tanstack/react-query";
 import type { User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 import { unFormatPhone } from "@/utils/common-funtions.ts";
+import useStore from "@/stores/app-store";
+import { CreateAdminError } from "../../types/errors";
 
 interface AddAdminProps {
 	handleSuccess?: () => void;
@@ -27,11 +30,12 @@ export const AddAdmin: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 		resolver: zodResolver(AddAdminSchema),
 	});
 
+	const setErrorMessage = useStore((state) => state.setErrorMessage);
+
 	const createAdminMutation = useMutation((data: User) => {
 		return ManageUsersService.createNewAdmin(data);
 	});
 
-	// eslint-disable-next-line unicorn/consistent-function-scoping
 	const onSubmit: SubmitHandler<FieldValues> = (data: User): void => {
 		const phoneNumber = unFormatPhone(data?.phoneNumber || "");
 
@@ -48,6 +52,11 @@ export const AddAdmin: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 	useEffect(() => {
 		if (createAdminMutation.isSuccess) {
 			handleSuccess && handleSuccess();
+		}
+		if (createAdminMutation.isError) {
+			const error = createAdminMutation.error as CreateAdminError;
+			setErrorMessage(error?.response?.data?.message);
+			createAdminMutation.reset();
 		}
 	}, [createAdminMutation]);
 
