@@ -21,7 +21,7 @@ export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
 			wrapperClassName="mt-6"
 			required
 		/>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 			<Input
 				error={errors?.borrower?.user?.firstName?.message}
 				label="First Name"
@@ -35,7 +35,7 @@ export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
 				label="Last Name"
 				placeholder="Enter Last Name"
 				register={register("borrower.user.lastName")}
-				wrapperClassName="my-6"
+				wrapperClassName="mt-6"
 				required
 			/>
 		</div>
@@ -45,6 +45,7 @@ export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
 			mask="(999) 999-9999"
 			placeholder="(XXX) XXX-XXXX"
 			register={register("borrower.user.phoneNumber")}
+			wrapperClassName="mt-6"
 			required
 		/>
 		<Input
@@ -52,17 +53,18 @@ export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
 			label="Borrower Email Address"
 			placeholder="Enter Borrower Email Address"
 			register={register("borrower.user.email")}
-			wrapperClassName="my-6"
+			wrapperClassName="mt-6"
 			required
 		/>
-    <MaskInput
-      error={errors?.borrower?.ssnEin?.message}
-      label="EIN/SSN"
-      mask="999 999 999"
-      placeholder="Enter EIN/SSN"
-      register={register("borrower.ssnEin")}
-      required
-    />
+		<MaskInput
+			error={errors?.borrower?.ssnEin?.message}
+			label="EIN/SSN"
+			mask="999999999"
+			placeholder="Enter EIN/SSN"
+			register={register("borrower.ssnEin")}
+			wrapperClassName="mt-6"
+			required
+		/>
 		<Input
 			error={errors?.borrower?.user?.mailingAddress?.message}
 			label="Mailing Address"

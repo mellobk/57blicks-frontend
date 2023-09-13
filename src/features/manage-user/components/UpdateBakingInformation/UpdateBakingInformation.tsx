@@ -1,9 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-duplicate-imports */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useEffect, useState } from "react";
 import type { AddInvestorBankFields } from "../../types/fields";
 import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo";
@@ -48,16 +42,15 @@ export const UpdateBakingInformation: React.FC<
 			<div className="flex flex-col gap-5 w-full h-full">
 				<div className="flex justify-between gap-2 w-full h-full ">
 					<div className="w-full h-full">
-						{showInvestorBankInfo && (
+						{showInvestorBankInfo ? (
 							<div className="w-full">
 								<Success
 									handleClick={handleClick}
-									buttonText="ok"
+									buttonText="Ok"
 									subTitle="Bank Information has been updated successfully."
 								/>
 							</div>
-						)}
-						{!showInvestorBankInfo && (
+						) : (
 							<InvestorBankInfo
 								handleSuccess={handleInvestorBankInfo}
 								data={investorBankInfo}

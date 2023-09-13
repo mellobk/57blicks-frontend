@@ -19,6 +19,7 @@ const IconNames: Array<string> = [
 	"search",
 	"shield",
 	"star",
+	"success",
 	"trashBin",
 	"user",
 	"wrong",

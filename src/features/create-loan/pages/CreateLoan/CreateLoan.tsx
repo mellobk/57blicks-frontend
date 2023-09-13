@@ -15,16 +15,19 @@ import { LoanSchema } from "@/features/create-loan/schemas/LoanSchema";
 import { LoanFields } from "@/features/create-loan/types/fields";
 import { defaultValues } from "@/features/create-loan/utils/values";
 import { unFormatPhone } from "@/utils/common-funtions";
+import { SuccessModal } from "@/components/ui/SuccessModal";
 
 export const CreateLoan: FC = () => {
 	const [openLenderModal, setOpenLenderModal] = useState<boolean>(false);
 	const [openParticipantModal, setOpenParticipantModal] =
 		useState<boolean>(false);
+	const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(true);
 	const {
 		control,
 		formState: { errors },
 		handleSubmit,
 		register,
+		reset,
 		setValue,
 	} = useForm<LoanFields>({
 		defaultValues,
@@ -47,7 +50,7 @@ export const CreateLoan: FC = () => {
 		name: "fundingBreakdown",
 	});
 
-	const createLoanMutation = useMutation((data: LoanFields) => {
+	const { mutate, isSuccess, reset: resetMutation } = useMutation((data: LoanFields) => {
 		return CreateLoanService.createLoan(data);
 	});
 
@@ -56,25 +59,25 @@ export const CreateLoan: FC = () => {
 
 		const formatData = {
 			...data,
-      borrower: {
-        ...data.borrower,
-        user: {
-          ...data.borrower.user,
-          phoneNumber:`+1${phoneNumber}`
-        }
-      }
+			borrower: {
+				...data.borrower,
+				user: {
+					...data.borrower.user,
+					phoneNumber: `+1${phoneNumber}`,
+				},
+			},
 		};
 
-		createLoanMutation.mutate({
-			...formatData,
-		});
+		mutate(formatData);
 	};
 
 	useEffect(() => {
-		if (createLoanMutation.isSuccess) {
-			console.log("okokok");
+		if (isSuccess) {
+			reset();
+      resetMutation();
+			setOpenSuccessModal(true);
 		}
-	}, [createLoanMutation]);
+	}, [isSuccess]);
 
 	return (
 		<>
@@ -127,6 +130,13 @@ export const CreateLoan: FC = () => {
 				openModal={openLenderModal}
 				setOpenModal={setOpenLenderModal}
 				setValue={setValue}
+			/>
+
+			<SuccessModal
+				description="Loan information added to the related participants"
+				openModal={openSuccessModal}
+				setOpenModal={setOpenSuccessModal}
+				title="Loan Created"
 			/>
 		</>
 	);
