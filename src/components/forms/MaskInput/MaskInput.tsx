@@ -19,6 +19,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	clickIcon?: () => void;
 	value?: string;
 	type?: string;
+	wrapperClassName?: string;
 }
 
 export const MaskInput: ForwardRefRenderFunction<
@@ -42,9 +43,10 @@ export const MaskInput: ForwardRefRenderFunction<
 	iconColor = "#000",
 	value,
 	clickIcon,
+	wrapperClassName,
 }) => {
 	return (
-		<div className="flex flex-col gap-2">
+		<div className={`flex flex-col gap-2 ${wrapperClassName}`}>
 			{label && (
 				<div className="font-semibold text-gray-600 ">
 					<div>

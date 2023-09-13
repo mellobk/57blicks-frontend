@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
+import { MaskInput } from "@/components/forms/MaskInput";
 import { Title } from "@/components/ui/Title/Title";
 import { LoanFields } from "@/features/create-loan/types/fields";
 
@@ -13,60 +14,62 @@ export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
 	<div>
 		<Title text="Borrower Information" />
 		<Input
-      error={errors?.borrowerLlc?.message}
+			error={errors?.borrower?.llc?.message}
 			label="Borrower LLC"
 			placeholder="Enter Borrower LLC"
-			register={register("borrowerLlc")}
+			register={register("borrower.llc")}
 			wrapperClassName="mt-6"
 			required
 		/>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 			<Input
-        error={errors?.firstName?.message}
+				error={errors?.borrower?.user?.firstName?.message}
 				label="First Name"
 				placeholder="Enter First Name"
-				register={register("firstName")}
+				register={register("borrower.user.firstName")}
 				wrapperClassName="mt-6"
 				required
 			/>
 			<Input
-        error={errors?.lastName?.message}
+				error={errors?.borrower?.user?.lastName?.message}
 				label="Last Name"
 				placeholder="Enter Last Name"
-				register={register("lastName")}
+				register={register("borrower.user.lastName")}
 				wrapperClassName="mt-6"
 				required
 			/>
 		</div>
-		<Input
-      error={errors?.borrowerPhoneNumber?.message}
+		<MaskInput
+			error={errors?.borrower?.user?.phoneNumber?.message}
 			label="Borrower Phone Number"
-			placeholder="XXX - XXX - XXXX"
-			register={register("borrowerPhoneNumber")}
+			mask="(999) 999-9999"
+			placeholder="(XXX) XXX-XXXX"
+			register={register("borrower.user.phoneNumber")}
 			wrapperClassName="mt-6"
 			required
 		/>
 		<Input
-      error={errors?.borrowerEmailAddress?.message}
+			error={errors?.borrower?.user?.email?.message}
 			label="Borrower Email Address"
 			placeholder="Enter Borrower Email Address"
-			register={register("borrowerEmailAddress")}
+			register={register("borrower.user.email")}
 			wrapperClassName="mt-6"
 			required
 		/>
-		<Input
-      error={errors?.einSsn?.message}
+		<MaskInput
+			error={errors?.borrower?.ssnEin?.message}
 			label="EIN/SSN"
+			mask="999999999"
 			placeholder="Enter EIN/SSN"
-			register={register("einSsn")}
+			register={register("borrower.ssnEin")}
 			wrapperClassName="mt-6"
 			required
 		/>
 		<Input
-      error={errors?.mailingAddress?.message}
+			error={errors?.borrower?.user?.mailingAddress?.message}
 			label="Mailing Address"
 			placeholder="Enter Mailing Address"
-			register={register("mailingAddress")}
+			register={register("borrower.user.mailingAddress")}
 			wrapperClassName="mt-6"
 			required
 		/>

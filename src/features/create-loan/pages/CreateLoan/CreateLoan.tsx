@@ -1,7 +1,9 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
+import CreateLoanService from "@/features/create-loan/api/create-loan";
 import { AddParticipant } from "@/features/create-loan/components/AddParticipant/AddParticipant";
 import { BankingInformation } from "@/features/create-loan/components/BankingInformation/BankingInformation";
 import { BorrowerInformation } from "@/features/create-loan/components/BorrowerInformation/BorrowerInformation";
@@ -12,16 +14,20 @@ import { SelectLender } from "@/features/create-loan/components/SelectLender/Sel
 import { LoanSchema } from "@/features/create-loan/schemas/LoanSchema";
 import { LoanFields } from "@/features/create-loan/types/fields";
 import { defaultValues } from "@/features/create-loan/utils/values";
+import { unFormatPhone } from "@/utils/common-funtions";
+import { SuccessModal } from "@/components/ui/SuccessModal";
 
 export const CreateLoan: FC = () => {
 	const [openLenderModal, setOpenLenderModal] = useState<boolean>(false);
 	const [openParticipantModal, setOpenParticipantModal] =
 		useState<boolean>(false);
+	const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(true);
 	const {
 		control,
 		formState: { errors },
 		handleSubmit,
 		register,
+		reset,
 		setValue,
 	} = useForm<LoanFields>({
 		defaultValues,
@@ -44,9 +50,34 @@ export const CreateLoan: FC = () => {
 		name: "fundingBreakdown",
 	});
 
+	const { mutate, isSuccess, reset: resetMutation } = useMutation((data: LoanFields) => {
+		return CreateLoanService.createLoan(data);
+	});
+
 	const onSubmit: SubmitHandler<LoanFields> = (data: LoanFields): void => {
-		console.log(data);
+		const phoneNumber = unFormatPhone(data.borrower?.user?.phoneNumber || "");
+
+		const formatData = {
+			...data,
+			borrower: {
+				...data.borrower,
+				user: {
+					...data.borrower.user,
+					phoneNumber: `+1${phoneNumber}`,
+				},
+			},
+		};
+
+		mutate(formatData);
 	};
+
+	useEffect(() => {
+		if (isSuccess) {
+			reset();
+      resetMutation();
+			setOpenSuccessModal(true);
+		}
+	}, [isSuccess]);
 
 	return (
 		<>
@@ -72,7 +103,7 @@ export const CreateLoan: FC = () => {
 				</div>
 
 				<FundingBreakdown
-          control={control}
+					control={control}
 					register={register}
 					remove={removeParticipant}
 					setOpenLenderModal={setOpenLenderModal}
@@ -99,6 +130,13 @@ export const CreateLoan: FC = () => {
 				openModal={openLenderModal}
 				setOpenModal={setOpenLenderModal}
 				setValue={setValue}
+			/>
+
+			<SuccessModal
+				description="Loan information added to the related participants"
+				openModal={openSuccessModal}
+				setOpenModal={setOpenSuccessModal}
+				title="Loan Created"
 			/>
 		</>
 	);

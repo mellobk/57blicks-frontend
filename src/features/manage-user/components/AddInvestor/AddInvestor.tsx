@@ -63,7 +63,7 @@ export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
 
 	useEffect(() => {
 		if (createInvestorMutation.isSuccess) {
-			handleSuccess && handleSuccess();
+			handleSuccess?.();
 		}
 	}, [createInvestorMutation]);
 

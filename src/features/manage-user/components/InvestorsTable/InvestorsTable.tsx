@@ -119,7 +119,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 			omit: false,
 		},
 		{
-			name: "EIN/SSN    ",
+			name: "EIN/SSN",
 			selector: (row: Investor): string => row.ssnEin || "",
 			sortable: true,
 			omit: false,
