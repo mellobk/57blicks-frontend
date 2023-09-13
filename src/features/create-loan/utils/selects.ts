@@ -29,7 +29,7 @@ export const lenders = [
 	{ code: "first_capital_trust", name: "First Capital Trust" },
 ];
 
-export const loanTypes = [
+export const types = [
 	{
 		code: "fix_and_flip",
 		name: "Fix and Flip Loans",
