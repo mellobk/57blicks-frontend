@@ -44,8 +44,8 @@ const stage: AppConfig = {
 	},
 	cognito: {
 		REGION: "us-east-1",
-		USER_POOL_ID: "us-east-1_LDY3n6kau",
-		APP_CLIENT_ID: "5m24a4n8i13jo7avvan25dtcvc",
+		USER_POOL_ID: "us-east-1_P5kxOpe9a",
+		APP_CLIENT_ID: "3h9k0q13h6md0l6eabjtts81je",
 	},
 };
 
@@ -55,8 +55,8 @@ const production: AppConfig = {
 	},
 	cognito: {
 		REGION: "us-east-1",
-		USER_POOL_ID: "us-east-1_LDY3n6kau",
-		APP_CLIENT_ID: "5m24a4n8i13jo7avvan25dtcvc",
+		USER_POOL_ID: "us-east-1_svUojV9Mw",
+		APP_CLIENT_ID: "3cljco2rfpvgdg8apqe07efutb",
 	},
 };
 
