@@ -21,7 +21,7 @@ export const CreateLoan: FC = () => {
 	const [openLenderModal, setOpenLenderModal] = useState<boolean>(false);
 	const [openParticipantModal, setOpenParticipantModal] =
 		useState<boolean>(false);
-	const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(true);
+	const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(false);
 	const {
 		control,
 		formState: { errors },
