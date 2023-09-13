@@ -5,7 +5,7 @@ export interface FooterTableProps {
 export const FooterTable: React.FC<FooterTableProps> = ({ tabs }) => {
 	return (
 		<div
-			className="flex  h-[40px]  w-[auto]  text-black text-[13px]"
+			className="flex  h-[40px]  w-full  text-black text-[13px] "
 			style={{
 				backgroundColor: "#edf3f5",
 				borderBottomLeftRadius: "1.5rem",
