@@ -96,7 +96,7 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 									register={register(addInvestorBankFields?.accountType)}
 									className="flex flex-col gap-2"
 									label="Account Type"
-									placeholder="Select Dropdown"
+									placeholder="Select Account Type"
 									value={{
 										name: data?.accountType || "",
 										code: data?.accountType || "",

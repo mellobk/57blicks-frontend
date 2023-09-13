@@ -198,7 +198,7 @@ export const ServicingTable: FC<TableProps> = ({
 					)}
 				</div>
 			</div>
-			<div className="table h-full w-full">
+			<div className="h-full w-full">
 				<div
 					className="h-full w-full rounded-3xl bg-white flex flex-col justify-between"
 					style={{ overflow: "overlay" }}

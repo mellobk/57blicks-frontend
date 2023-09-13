@@ -1,5 +1,5 @@
-import { FC, useState } from "react";
-import { TableColumn } from "react-data-table-component";
+import { type FC, useState } from "react";
+import type { TableColumn } from "react-data-table-component";
 import { Input } from "@/components/forms/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -8,11 +8,11 @@ import { Title } from "@/components/ui/Title/Title";
 import { Cell } from "@/features/loan-overview/components/Cell/Cell";
 import { CellInput } from "@/features/loan-overview/components/CellInput/CellInput";
 import { ExpandedComponent } from "@/features/loan-overview/components/ExpandedComponent/ExpandedComponent";
-import {
+import type {
 	FundingBreakdown,
 	LoanOverviewFields,
 } from "@/features/loan-overview/types/fields";
-import {Footer} from "@/features/loan-overview/components/Footer/Footer.tsx";
+import { Footer } from "@/features/loan-overview/components/Footer/Footer.tsx";
 
 type Props = {
 	data: LoanOverviewFields;
@@ -21,7 +21,7 @@ type Props = {
 export const OverviewByInvestor: FC<Props> = ({ data }) => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
-	const columns: TableColumn<FundingBreakdown>[] = [
+	const columns: Array<TableColumn<FundingBreakdown>> = [
 		{
 			cell: (row) => <Cell type="text" value={row.lender} />,
 			name: "Lenders and Participants",
@@ -83,8 +83,12 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 								? "w-[200px] bg-transparent"
 								: "bg-transparent w-[30px]"
 						} transition duration-500`}
-						onMouseEnter={() => setSearchVisible(true)}
-						onMouseLeave={() => setSearchVisible(false)}
+						onMouseEnter={() => {
+							setSearchVisible(true);
+						}}
+						onMouseLeave={() => {
+							setSearchVisible(false);
+						}}
 					>
 						<Input
 							type="text"
@@ -97,8 +101,12 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 							}
 							iconWidth={searchValue ? "10" : "18"}
 							iconName={searchValue ? "wrong" : "search"}
-							onChange={(data) => setSearchValue(data.target.value)}
-							clickIcon={() => setSearchValue("")}
+							onChange={(data) => {
+								setSearchValue(data.target.value);
+							}}
+							clickIcon={() => {
+								setSearchValue("");
+							}}
 							className={`${
 								searchVisible || searchValue ? "bg-gray-200" : "bg-transparent"
 							} rounded-2xl w-full px-4 py-2 placeholder-primary-500/[.5] text-primary-500 text-[13px] leading-[18px] tracking-[-0.65px] caret-blue-200 items-center outline-none`}
@@ -107,17 +115,17 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 				</div>
 			</div>
 
-      <div className="flex flex-col h-full justify-between">
-        <Table
-          columns={columns}
-          data={data.fundingBreakdown}
-          expandableRows
-          expandableRowDisabled={(row) => !row.participants?.length}
-          expandableRowsComponent={ExpandedComponent}
-        />
+			<div className="flex flex-col h-full justify-between">
+				<Table
+					columns={columns}
+					data={data.fundingBreakdown}
+					expandableRows
+					expandableRowDisabled={(row) => !row.participants?.length}
+					expandableRowsComponent={ExpandedComponent}
+				/>
 
-        <Footer data={data} />
-      </div>
+				<Footer data={data} />
+			</div>
 		</div>
 	);
 };

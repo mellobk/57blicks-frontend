@@ -23,5 +23,5 @@ export const footerTabData: Array<{
 	{ label: "$467.50", width: "200px" },
 	{ label: "03-23-2020", width: "200px" },
 	{ label: "01-04-2022", width: "200px" },
-	{ label: "01-04-2022 ", width: "200px" },
+	{ label: "01-04-2022 ", width: "250px" },
 ];
