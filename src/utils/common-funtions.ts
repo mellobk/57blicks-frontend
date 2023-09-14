@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable unicorn/prefer-string-replace-all */
-import type {Investor} from "@/features/manage-user/types/api";
+
+import type { Investor, User } from "@/features/manage-user/types/api";
 
 export const statusSort = (rowA: Investor, rowB: Investor) => {
 	const a = rowA.user?.isActive || "";
@@ -17,5 +19,11 @@ export const statusSort = (rowA: Investor, rowB: Investor) => {
 };
 
 export const unFormatPhone = (number: string): string => {
-  return number.replace(/[\s()-]/g, "");
+	return number.replace(/[\s()-]/g, "");
+};
+
+export const findIndex = (data: Array<User>, id: string): number => {
+	const index = data.findIndex((object: User) => object.id === id);
+
+	return index + 1;
 };

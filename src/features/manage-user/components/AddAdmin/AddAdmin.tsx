@@ -15,7 +15,7 @@ import type { User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 import { unFormatPhone } from "@/utils/common-funtions.ts";
 import useStore from "@/stores/app-store";
-import { CreateAdminError } from "../../types/errors";
+import type { CreateAdminError } from "../../types/errors";
 
 interface AddAdminProps {
 	handleSuccess?: () => void;

@@ -11,6 +11,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import ManageUsersService from "../../api/investors";
 import type { User } from "../../types/api";
 import { AddAccounting } from "../AddAccounting/AddAccounting";
+import { findIndex } from "@/utils/common-funtions";
 
 interface SuccessProps {}
 
@@ -92,7 +93,8 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 			name: "#",
 			maxWidth: "50px",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: User): string => row?.id || "",
+			selector: (row: User): number =>
+				findIndex(accountQuery.data || [], row?.id || ""),
 			omit: false,
 		},
 		{
@@ -145,25 +147,27 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 
 	return (
 		<>
-			<Table
-				handleSearchValue={handleSearch}
-				onClickButton={addAdmin}
-				columns={columns}
-				loading={accountQuery.isLoading}
-				data={accountQuery.data}
-				buttonText="Add Accounting"
-				widthSearch="185px"
-				conditionalRowStyles={conditionalRowStyles}
-			>
-				<>
-					<div>
-						<BreadCrumb initialTab="Manage Users" actualTab="Accounting" />
-					</div>
-					<div className="relative z-10">
-						<Tabs tabs={tabs} actualTab="accounting" />
-					</div>
-				</>
-			</Table>
+			{accountQuery.data && (
+				<Table
+					handleSearchValue={handleSearch}
+					onClickButton={addAdmin}
+					columns={columns}
+					loading={accountQuery.isLoading}
+					data={accountQuery.data}
+					buttonText="Add Accounting"
+					widthSearch="185px"
+					conditionalRowStyles={conditionalRowStyles}
+				>
+					<>
+						<div>
+							<BreadCrumb initialTab="Manage Users" actualTab="Accounting" />
+						</div>
+						<div className="relative z-10">
+							<Tabs tabs={tabs} actualTab="accounting" />
+						</div>
+					</>
+				</Table>
+			)}
 			<Modal
 				visible={openModal}
 				onHide={closeModal}
