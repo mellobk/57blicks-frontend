@@ -12,7 +12,7 @@ export const CreatePassWord: FC = () => {
 				title="Welcome to DKC!"
 				subTitle="Thanks for confirming it’s you, you can create your password now."
 				buttonText="Continue"
-				backTo=""
+				backTo="/first-login"
 				receptor={localEmail}
 				mfaCode={localMfa}
 				navigateTo="success-first-login"

@@ -97,7 +97,6 @@ export const CreatePassword: FC<MfaProps> = ({
 	}, [passwordText]);
 
 	const backHandleClick = (): void => {
-		console.log(backTo);
 		void navigate({ to: `/${backTo || ""}` });
 	};
 	return (
