@@ -10,9 +10,9 @@ interface Props {
 }
 
 export const LoanDetails: FC<Props> = ({ errors, register }) => (
-	<div className="col-span-2 pl-6">
+	<div>
 		<Title text="Loan Details" />
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 			<Input
 				error={errors?.assetValue?.message}
 				label="Asset Value"

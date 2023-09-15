@@ -8,7 +8,9 @@ interface Props {
 }
 
 export const DocumentPreview: FC<Props> = () => (
-	<div className="col-span-3 pl-6">
-		<div className="max-h-[1000px] overflow-y-auto"></div>
-	</div>
+		<div className="h-4/6 rounded-r-2xl bg-gold-300">
+		<div className="h-fit m-6 bg-white border-2 border-red-500">
+
+    </div>
+    </div>
 );

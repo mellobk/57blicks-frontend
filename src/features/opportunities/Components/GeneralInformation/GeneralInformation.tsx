@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
-import {TextArea} from "@/components/forms/TextArea";
+import { TextArea } from "@/components/forms/TextArea";
 import { Title } from "@/components/ui/Title/Title";
 import { Opportunity } from "@/features/opportunities/types/fields";
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const GeneralInformation: FC<Props> = ({ errors, register }) => (
-	<div className="col-span-2">
+	<>
 		<Title text="General Information" />
 		<Input
 			error={errors?.postTitle?.message}
@@ -47,10 +47,11 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
 		<TextArea
 			error={errors?.investmentSummary?.message}
 			label="Investment Summary"
+			maxLength={2000}
 			placeholder="Limit 2000 Characters"
 			register={register("investmentSummary")}
 			wrapperClassName="mt-6"
 			required
 		/>
-	</div>
+	</>
 );

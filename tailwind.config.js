@@ -18,6 +18,7 @@ export default {
 					DEFAULT: "#0E2130",
 				},
 				gold: {
+					300: "#EDEFF3",
 					400: "#D4B68A",
 					500: "#C79E63",
 					600: "#C7A06D",
