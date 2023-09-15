@@ -1,8 +1,8 @@
-import { LoanFields } from "@/features/create-loan/types/fields.ts";
+import { Loan } from "@/features/create-loan/types/fields";
 import { authApiClient } from "@/utils/api-client";
 
-const createLoan = async (body: LoanFields) => {
-	const response = await authApiClient.post<Array<LoanFields>>("/loans", body);
+const createLoan = async (body: Loan) => {
+	const response = await authApiClient.post<Array<Loan>>("/loans", body);
 
 	return response.data;
 };

@@ -50,11 +50,11 @@ export const CreateLoan: FC = () => {
 		name: "fundingBreakdown",
 	});
 
-	const { mutate, isSuccess, reset: resetMutation } = useMutation((data: LoanFields) => {
+	const { mutate, isSuccess, reset: resetMutation } = useMutation((data: Loan) => {
 		return CreateLoanService.createLoan(data);
 	});
 
-	const onSubmit: SubmitHandler<Loan> = (data: LoanFields): void => {
+	const onSubmit: SubmitHandler<Loan> = (data: Loan): void => {
 		const phoneNumber = unFormatPhone(data.borrower?.user?.phoneNumber || "");
 
 		const formatData = {
