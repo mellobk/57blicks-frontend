@@ -2,7 +2,7 @@ import { AccountingTable } from "@/features/manage-user/components/AccountingTab
 
 export const Accounting: React.FC = () => {
 	return (
-		<div className="flex flex-col items-center  h-full w-full ">
+		<div className="flex flex-col items-center h-full w-full">
 			<AccountingTable />
 		</div>
 	);
