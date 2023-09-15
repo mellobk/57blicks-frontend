@@ -26,7 +26,7 @@ authApiClient.interceptors.response.use(
 		if (error?.response?.status === 401) {
 			signOut();
 			removeLocalStorage(accessToken);
-			window.location.href = "/";
+			window.location.href = "/login";
 		}
 
 		return Promise.reject(error);
