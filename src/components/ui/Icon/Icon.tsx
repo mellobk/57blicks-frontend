@@ -19,6 +19,7 @@ import Plus from "@/assets/icons/plus";
 import Search from "@/assets/icons/search";
 import Shield from "@/assets/icons/shield";
 import Star from "@/assets/icons/star";
+import Success from "@/assets/icons/success";
 import TrashBin from "@/assets/icons/trash-bin";
 import User from "@/assets/icons/user";
 import Wrong from "@/assets/icons/wrong";
@@ -120,6 +121,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 		star: {
 			name: "star",
 			icon: <Star width={width} color={color} />,
+		},
+		success: {
+			name: "success",
+			icon: <Success width={width} color={color} />,
 		},
 		trashBin: {
 			name: "trashBin",

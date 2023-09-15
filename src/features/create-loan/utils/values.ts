@@ -3,16 +3,31 @@ import { lenders } from "@/features/create-loan/utils/selects";
 
 export const defaultValues: Loan = {
 	amountDrawn: "",
-	assetType: "",
-	borrowerEmailAddress: "",
-	borrowerLlc: "",
-	borrowerPhoneNumber: "",
-	collaterals: [],
-	collateralAddress: "",
-	collateralLink: "",
+	borrower: {
+		accountNumber: "",
+		accountType: "",
+		bankingName: "",
+		llc: "",
+		routingNumber: "",
+		ssnEin: "",
+		user: {
+			email: "",
+			firstName: "",
+			lastName: "",
+			mailingAddress: "",
+			phoneNumber: "",
+		},
+	},
+	collaterals: [
+		{
+			address: "",
+			assetType: "",
+			insuranceExpirationDate: "",
+			link: "",
+			taxUrl: "",
+		},
+	],
 	constructionHoldback: "",
-	einSsn: "",
-	firstName: "",
 	fundingBreakdown: [
 		{
 			amount: 0,
@@ -32,14 +47,10 @@ export const defaultValues: Loan = {
 			rate: 0,
 		},
 	],
-	insuranceExpirationDate: "",
 	interestRate: "",
-	lastName: "",
-	loanType: "",
-	mailingAddress: "",
 	maturityDate: "",
 	originationDate: "",
 	prepaymentPenalty: "",
-	taxUrl: "",
 	totalLoanAmount: "",
+	type: "",
 };

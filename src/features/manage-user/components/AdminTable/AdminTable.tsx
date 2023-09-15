@@ -11,6 +11,7 @@ import { tabs } from "../../utils/tabs";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
+import { findIndex } from "@/utils/common-funtions";
 
 interface SuccessProps {}
 
@@ -88,7 +89,8 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 			name: "#",
 			maxWidth: "50px",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: User): string => row?.id || "",
+			selector: (row: User): number =>
+				findIndex(adminQuery.data || [], row?.id || ""),
 			omit: false,
 		},
 		{
@@ -141,25 +143,27 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 
 	return (
 		<>
-			<Table
-				handleSearchValue={handleSearch}
-				onClickButton={addAdmin}
-				columns={columns}
-				data={adminQuery.data}
-				loading={adminQuery.isLoading}
-				buttonText="Add admin"
-				widthSearch="150px"
-				conditionalRowStyles={conditionalRowStyles}
-			>
-				<>
-					<div>
-						<BreadCrumb initialTab="Manage Users" actualTab="Admins" />
-					</div>
-					<div className="relative z-10">
-						<Tabs tabs={tabs} actualTab="admins" />
-					</div>
-				</>
-			</Table>
+			{adminQuery.data && (
+				<Table
+					handleSearchValue={handleSearch}
+					onClickButton={addAdmin}
+					columns={columns}
+					data={adminQuery.data}
+					loading={adminQuery.isLoading}
+					buttonText="Add admin"
+					widthSearch="150px"
+					conditionalRowStyles={conditionalRowStyles}
+				>
+					<>
+						<div>
+							<BreadCrumb initialTab="Manage Users" actualTab="Admins" />
+						</div>
+						<div className="relative z-10">
+							<Tabs tabs={tabs} actualTab="admins" />
+						</div>
+					</>
+				</Table>
+			)}
 			<Modal
 				visible={openModal}
 				onHide={closeModal}

@@ -6,8 +6,8 @@ import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
 import {
 	assetTypes,
-	loanTypes,
 	prepaymentPenalties,
+	types,
 } from "@/features/create-loan/utils/selects";
 
 interface Props {
@@ -20,18 +20,18 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 		<Title text="Loan Information" />
 		<Select
 			className="mt-6"
-			error={errors?.loanType?.message}
+			error={errors?.type?.message}
 			label="Loan Type"
-			options={loanTypes}
+			options={types}
 			placeholder="Select Loan Type"
-			register={register("loanType", { required: true })}
+			register={register("type")}
 			required
 		/>
 		<Input
-			error={errors?.collateralAddress?.message}
+			error={errors?.collaterals?.[0]?.address?.message}
 			label="Collateral Address"
 			placeholder="Enter Collateral Address"
-			register={register("collateralAddress")}
+			register={register("collaterals.0.address")}
 			wrapperClassName="mt-6"
 			required
 		/>
@@ -41,6 +41,7 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 				label="Total Loan Amount"
 				placeholder="$0.00"
 				register={register("totalLoanAmount")}
+				type="number"
 				wrapperClassName="mt-6"
 				required
 			/>
@@ -49,6 +50,7 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 				label="Interest Rate"
 				placeholder="0%"
 				register={register("interestRate")}
+				type="number"
 				wrapperClassName="mt-6"
 				required
 			/>
@@ -77,6 +79,7 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 				label="Construction Holdback"
 				placeholder="$0.00"
 				register={register("constructionHoldback")}
+				type="number"
 				wrapperClassName="mt-6"
 				required
 			/>
@@ -85,16 +88,17 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 				label="Amount Drawn"
 				placeholder="$0.00"
 				register={register("amountDrawn")}
+				type="number"
 				wrapperClassName="mt-6"
 				required
 			/>
 		</div>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
 			<Input
-				error={errors?.insuranceExpirationDate?.message}
+				error={errors?.collaterals?.[0]?.insuranceExpirationDate?.message}
 				label="Insurance Expiration Date"
 				placeholder="MM-DD-YYYY"
-				register={register("insuranceExpirationDate")}
+				register={register("collaterals.0.insuranceExpirationDate")}
 				wrapperClassName="mt-6"
 				required
 			/>
@@ -109,28 +113,28 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 			/>
 		</div>
 		<Input
-			error={errors?.taxUrl?.message}
+			error={errors?.collaterals?.[0]?.taxUrl?.message}
 			label="Tax Property URL"
 			placeholder="Enter Tax Property URL"
-			register={register("taxUrl")}
+			register={register("collaterals.0.taxUrl")}
 			wrapperClassName="mt-6"
 			required
 		/>
 		<Input
-			error={errors?.collateralLink?.message}
+			error={errors?.collaterals?.[0]?.link?.message}
 			label="Collateral Link (Google Drive)"
 			placeholder="Enter Collateral Link"
-			register={register("collateralLink")}
+			register={register("collaterals.0.link")}
 			wrapperClassName="mt-6"
 			required
 		/>
 		<Select
-			error={errors?.assetType?.message}
+			error={errors?.collaterals?.[0]?.assetType?.message}
 			className="mt-6"
 			label="Asset Type"
 			options={assetTypes}
 			placeholder="Enter Asset Type"
-			register={register("assetType")}
+			register={register("collaterals.0.assetType")}
 			required
 		/>
 	</div>

@@ -15,33 +15,34 @@ export const BankingInformation: FC<Props> = ({ errors, register }) => (
 	<div className="pt-6">
 		<Title text="Banking Information" />
 		<Input
-      error={errors?.bankingName?.message}
+			error={errors?.borrower?.bankingName?.message}
 			label="Banking Name"
 			placeholder="Enter Banking Name"
-			register={register("bankingName")}
+			register={register("borrower.bankingName")}
 			wrapperClassName="mt-6"
 		/>
 		<Input
-      error={errors?.routingNumber?.message}
+			error={errors?.borrower?.routingNumber?.message}
 			label="Routing Number"
 			placeholder="Enter Routing Number"
-			register={register("routingNumber")}
+			register={register("borrower.routingNumber")}
 			wrapperClassName="mt-6"
 		/>
 		<Input
-      error={errors?.accountNumber?.message}
+			error={errors?.borrower?.accountNumber?.message}
 			label="Account Number"
 			placeholder="Enter Account Number"
-			register={register("accountNumber")}
+			register={register("borrower.accountNumber")}
+			type="number"
 			wrapperClassName="mt-6"
 		/>
 		<Select
 			className="mt-6"
-      error={errors?.accountType?.message}
+			error={errors?.borrower?.accountType?.message}
 			label="Account Type"
 			options={accountTypes}
 			placeholder="Select Account Type"
-			register={register("accountType")}
+			register={register("borrower.accountType")}
 		/>
 	</div>
 );
