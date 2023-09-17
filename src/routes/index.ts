@@ -1,9 +1,10 @@
 import { Router } from "@tanstack/router";
 import { rootRoute } from "./RootRoute";
 import IndexRouter from "./IndexRouter";
+import LoginRouter from "@/features/auth/routes/LoginRouter";
 import DashboardRouter from "@/features/dashboard/routes/DashboardRouter";
 import ManageUserRouter from "@/features/manage-user/routes/ManageUsersRouter";
-import LoginRouter from "@/features/auth/routes/LoginRouter";
+import OpportunitiesRouter from "@/features/opportunities/routes/OpportunitiesRouter";
 import ServicingRouter from "@/features/servicing/routes/ServicingRoutes";
 
 //array of all routes
@@ -12,6 +13,7 @@ const allRoutes = [
 	...LoginRouter,
 	...DashboardRouter,
 	...ManageUserRouter,
+	...OpportunitiesRouter,
 	...ServicingRouter,
 ];
 

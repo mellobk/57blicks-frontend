@@ -2,7 +2,7 @@ import { DashboardLayout } from "@/components/layout/Dashboard";
 import { CreateLoan } from "@/features/create-loan/pages/CreateLoan/CreateLoan";
 import { LoanOverview } from "@/features/loan-overview/pages/LoanOverview/LoanOverview";
 import { Admin } from "@/features/manage-user/pages/Admin/Admin";
-import { Opportunities } from "@/features/opportunities/pages/Opportunities/Opportunities";
+import { CreateOpportunity } from "@/features/opportunities/pages/CreateOpportunity/CreateOpportunity";
 import { DkcLlc } from "@/features/servicing/pages/DkcLLC/DkcLlc";
 import UnauthenticatedRoute from "@/routes/routes";
 import { Reporting } from "../pages/Reporting/Reporting";
@@ -35,8 +35,8 @@ export const NavbarRoutes = [
 		name: "Investor Portals",
 	},
 	{
-		path: "/opportunities",
-		page: Opportunities,
+		path: "/opportunities/create-opportunity",
+		page: CreateOpportunity,
 		layout: DashboardLayout,
 		name: "Opportunities",
 	},

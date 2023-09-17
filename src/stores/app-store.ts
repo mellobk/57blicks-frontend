@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
-import create, { type SetState } from "zustand";
+import { create, type SetState } from "zustand";
 
 interface IState {
 	errorMessage: string;
