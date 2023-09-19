@@ -28,7 +28,7 @@ export const Button: FC<Props> = ({
 		<PrimeReactButton
 			onClick={onClick}
 			disabled={loading || disabled}
-			className={`${className} border-none`}
+			className={`${className} border-none focus:shadow-none`}
 			{...props}
 		>
 			<div className={deepClassName}>
