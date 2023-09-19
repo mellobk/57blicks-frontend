@@ -4,6 +4,7 @@ import { Input } from "@/components/forms/Input";
 import { TextArea } from "@/components/forms/TextArea";
 import { Title } from "@/components/ui/Title/Title";
 import { Opportunity } from "@/features/opportunities/types/fields";
+import {FileUpload} from "@/components/forms/FileUpload";
 
 interface Props {
 	errors: FieldErrors<Opportunity>;
@@ -36,11 +37,11 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
 			wrapperClassName="mt-6"
 			required
 		/>
-		<Input
-			error={errors?.googleDriveLink?.message}
+		<FileUpload
+			error={errors?.image?.message}
 			label="Choose File"
 			placeholder="Choose File"
-			register={register("googleDriveLink")}
+			register={register("image")}
 			wrapperClassName="mt-6"
 			required
 		/>

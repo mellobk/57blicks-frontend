@@ -1,24 +1,29 @@
 import type { FC } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Button } from "@/components/ui/Button";
 import { Tabs } from "@/components/ui/Tabs";
 import { LoanSchema } from "@/features/create-loan/schemas/LoanSchema";
-import { AdditionalInformation } from "@/features/opportunities/Components/AdditionalInformation/AdditionalInformation";
-import { DocumentPreview } from "@/features/opportunities/Components/DocumentPreview/DocumentPreview";
-import { GeneralInformation } from "@/features/opportunities/Components/GeneralInformation/GeneralInformation";
-import { LoanDetails } from "@/features/opportunities/Components/LoanDetails/LoanDetails";
-import { NotesOnTheBorrower } from "@/features/opportunities/Components/NotesOnTheBorrower/NotesOnTheBorrower";
-import { ParticipantOpportunities } from "@/features/opportunities/Components/ParticipantOpportunities/ParticipantOpportunities";
+import { AdditionalInformation } from "@/features/opportunities/components/AdditionalInformation/AdditionalInformation";
+import { DocumentPreview } from "@/features/opportunities/components/DocumentPreview/DocumentPreview";
+import { GeneralInformation } from "@/features/opportunities/components/GeneralInformation/GeneralInformation";
+import { LoanDetails } from "@/features/opportunities/components/LoanDetails/LoanDetails";
+import { NotesOnTheBorrower } from "@/features/opportunities/components/NotesOnTheBorrower/NotesOnTheBorrower";
+import { ParticipantOpportunities } from "@/features/opportunities/components/ParticipantOpportunities/ParticipantOpportunities";
 import { Opportunity } from "@/features/opportunities/types/fields";
 import { tabs } from "@/features/opportunities/utils/tabs";
+import { PostTo } from "@/features/opportunities/components/PostTo/PostTo.tsx";
 
 export const CreateOpportunity: FC = () => {
+	const [openPostToModal, setOpenPostToModal] = useState(false);
 	const {
+		control,
 		formState: { errors },
 		handleSubmit,
 		register,
+		setValue,
 	} = useForm<Opportunity>({
 		resolver: zodResolver(LoanSchema),
 	});
@@ -40,7 +45,12 @@ export const CreateOpportunity: FC = () => {
 					<Tabs tabs={tabs} actualTab="create opportunity" />
 				</div>
 				<div>
-					<Button />
+					<Button
+						className="rounded-2xl h-9 bg-gold-500/[.16] text-gold-500"
+						label="Post"
+						onClick={() => setOpenPostToModal(true)}
+						type="submit"
+					/>
 				</div>
 			</div>
 			<form
@@ -59,9 +69,16 @@ export const CreateOpportunity: FC = () => {
 				</div>
 
 				<div className="lg:col-span-3 col-span-1 lg:pl-6">
-					<DocumentPreview errors={errors} register={register} />
+					<DocumentPreview control={control} />
 				</div>
 			</form>
+
+			<PostTo
+				control={control}
+				openModal={openPostToModal}
+				setOpenModal={setOpenPostToModal}
+				setValue={setValue}
+			/>
 		</div>
 	);
 };

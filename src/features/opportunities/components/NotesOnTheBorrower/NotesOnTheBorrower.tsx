@@ -13,26 +13,26 @@ export const NotesOnTheBorrower: FC<Props> = ({ errors, register }) => (
 	<div>
 		<Title text="Notes on the Borrower" />
 		<Input
-			error={errors?.postTitle?.message}
+			error={errors?.investmentBorrower?.message}
 			label="Investment Borrower"
 			placeholder="Enter Investment Borrower"
-			register={register("postTitle")}
+			register={register("investmentBorrower")}
 			wrapperClassName="mt-6"
 			required
 		/>
 		<Input
-			error={errors?.investmentCollateral?.message}
+			error={errors?.dkcRepeatBorrower?.message}
 			label="DKC Repeat Borrower"
 			placeholder="Enter DKC Repeat Borrower"
-			register={register("investmentCollateral")}
+			register={register("dkcRepeatBorrower")}
 			wrapperClassName="mt-6"
 			required
 		/>
 		<Input
-			error={errors?.googleDriveLink?.message}
+			error={errors?.investmentBorrowerBackground?.message}
 			label="Investment Borrower Background"
 			placeholder="Enter Investment Borrower Background"
-			register={register("googleDriveLink")}
+			register={register("investmentBorrowerBackground")}
 			wrapperClassName="mt-6"
 			required
 		/>

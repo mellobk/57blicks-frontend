@@ -13,11 +13,11 @@ export const AdditionalInformation: FC<Props> = ({ errors, register }) => (
 	<div>
 		<Title text="Additional Information" />
 		<TextArea
-			error={errors?.investmentSummary?.message}
+			error={errors?.additionalInformation?.message}
 			label="Additional Information"
 			maxLength={2000}
 			placeholder="Limit 2000 Characters"
-			register={register("investmentSummary")}
+			register={register("additionalInformation")}
 			wrapperClassName="mt-6"
 			required
 		/>
