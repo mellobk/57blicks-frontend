@@ -3,14 +3,14 @@ import { FieldArrayWithId, UseFormSetValue } from "react-hook-form";
 import { Option, Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import { LoanFields } from "@/features/create-loan/types/fields";
+import { Loan } from "@/features/create-loan/types/fields";
 import { lenders } from "@/features/create-loan/utils/selects";
 
 interface Props {
-	fields: FieldArrayWithId<LoanFields, "fundingBreakdown">[];
+	fields: FieldArrayWithId<Loan, "fundingBreakdown">[];
 	openModal: boolean;
 	setOpenModal: (openModal: boolean) => void;
-	setValue: UseFormSetValue<LoanFields>;
+	setValue: UseFormSetValue<Loan>;
 }
 
 export const SelectLender: FC<Props> = ({

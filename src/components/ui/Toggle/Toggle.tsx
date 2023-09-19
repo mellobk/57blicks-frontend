@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import "./Toggle.css";
 
 interface AvatarProps {

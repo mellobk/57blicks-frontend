@@ -12,7 +12,7 @@ import { LoanInformation } from "@/features/create-loan/components/LoanInformati
 import { MultipleCollateral } from "@/features/create-loan/components/MultipleCollateral/MultipleCollateral";
 import { SelectLender } from "@/features/create-loan/components/SelectLender/SelectLender";
 import { LoanSchema } from "@/features/create-loan/schemas/LoanSchema";
-import { LoanFields } from "@/features/create-loan/types/fields";
+import { Loan } from "@/features/create-loan/types/fields";
 import { defaultValues } from "@/features/create-loan/utils/values";
 import { unFormatPhone } from "@/utils/common-funtions";
 import { SuccessModal } from "@/components/ui/SuccessModal";
@@ -29,7 +29,7 @@ export const CreateLoan: FC = () => {
 		register,
 		reset,
 		setValue,
-	} = useForm<LoanFields>({
+	} = useForm<Loan>({
 		defaultValues,
 		resolver: zodResolver(LoanSchema),
 	});
@@ -50,11 +50,11 @@ export const CreateLoan: FC = () => {
 		name: "fundingBreakdown",
 	});
 
-	const { mutate, isSuccess, reset: resetMutation } = useMutation((data: LoanFields) => {
+	const { mutate, isSuccess, reset: resetMutation } = useMutation((data: Loan) => {
 		return CreateLoanService.createLoan(data);
 	});
 
-	const onSubmit: SubmitHandler<LoanFields> = (data: LoanFields): void => {
+	const onSubmit: SubmitHandler<Loan> = (data: Loan): void => {
 		const phoneNumber = unFormatPhone(data.borrower?.user?.phoneNumber || "");
 
 		const formatData = {

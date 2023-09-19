@@ -24,11 +24,7 @@ export const Modal: FC<LoginTitleProps> = ({
 			<Dialog
 				header={title}
 				visible={visible}
-				onHide={(): void => {
-					if (onHide) {
-						onHide();
-					}
-				}}
+				onHide={() => onHide?.()}
 				style={{ width: width, minHeight: minHeight }}
 				breakpoints={{ "960px": "75vw", "641px": "100vw" }}
 			>

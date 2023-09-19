@@ -2,15 +2,18 @@ import type { ReactElement } from "react";
 import ArrowDown from "@/assets/icons/arrow-down";
 import ArrowLeft from "@/assets/icons/arrow-left";
 import Bank from "@/assets/icons/bank";
+import Cellphone from "@/assets/icons/cellphone";
 import Clock from "@/assets/icons/clock";
 import CloseEye from "@/assets/icons/close-eye";
 import CloseEyes from "@/assets/icons/closes-eyes";
 import Column from "@/assets/icons/column";
 import Date from "@/assets/icons/date";
 import DeleteBack from "@/assets/icons/delete-back";
+import Email from "@/assets/icons/email";
 import Loading from "@/assets/icons/loading";
 import MenuTable from "@/assets/icons/menu-table";
 import MoneyBag from "@/assets/icons/money-bag";
+import Note from "@/assets/icons/note";
 import Notification from "@/assets/icons/notification";
 import Ok from "@/assets/icons/ok";
 import Open from "@/assets/icons/open";
@@ -21,6 +24,7 @@ import Shield from "@/assets/icons/shield";
 import Star from "@/assets/icons/star";
 import Success from "@/assets/icons/success";
 import TrashBin from "@/assets/icons/trash-bin";
+import Upload from "@/assets/icons/upload";
 import User from "@/assets/icons/user";
 import Wrong from "@/assets/icons/wrong";
 import IconNames from "./IconNames";
@@ -55,6 +59,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 			name: "bank",
 			icon: <Bank width={width} color={color} />,
 		},
+		cellphone: {
+			name: "cellphone",
+			icon: <Cellphone width={width} color={color} />,
+		},
 		clock: {
 			name: "clock",
 			icon: <Clock width={width} color={color} />,
@@ -79,6 +87,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 			name: "deleteBack",
 			icon: <DeleteBack width={width} color={color} />,
 		},
+		email: {
+			name: "email",
+			icon: <Email width={width} color={color} />,
+		},
 		loading: {
 			name: "loading",
 			icon: <Loading width={width} color={color} />,
@@ -90,6 +102,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 		moneyBag: {
 			name: "moneyBag",
 			icon: <MoneyBag width={width} color={color} />,
+		},
+		note: {
+			name: "note",
+			icon: <Note width={width} color={color} />,
 		},
 		notification: {
 			name: "notification",
@@ -130,6 +146,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 		trashBin: {
 			name: "trashBin",
 			icon: <TrashBin width={width} color={color} />,
+		},
+		upload: {
+			name: "upload",
+			icon: <Upload width={width} color={color} />,
 		},
 		user: {
 			name: "user",

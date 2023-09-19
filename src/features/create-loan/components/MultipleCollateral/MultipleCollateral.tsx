@@ -11,14 +11,14 @@ import { Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title/Title";
-import { LoanFields } from "@/features/create-loan/types/fields";
+import { Loan } from "@/features/create-loan/types/fields";
 import { assetTypes } from "@/features/create-loan/utils/selects";
 
 interface Props {
-	append: UseFieldArrayAppend<LoanFields, "collaterals">;
-	errors: FieldErrors<LoanFields>;
-	fields: FieldArrayWithId<LoanFields, "collaterals">[];
-	register: UseFormRegister<LoanFields>;
+	append: UseFieldArrayAppend<Loan, "collaterals">;
+	errors: FieldErrors<Loan>;
+	fields: FieldArrayWithId<Loan, "collaterals">[];
+	register: UseFormRegister<Loan>;
 	remove: UseFieldArrayRemove;
 }
 
