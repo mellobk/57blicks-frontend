@@ -35,17 +35,22 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		() => {
 			return ManageUsersService.filterAllInvestors(searchValue, checkState);
 		},
-		{ enabled: true, staleTime: 1 }
+		{ enabled: true, staleTime: 1000 * 60 }
 	);
 
 	const deleteAdminMutation = useMutation((id: string) => {
 		return ManageUsersService.deleteUser(id);
 	});
 
+	const handleSuccessDelete = async (): Promise<void> => {
+		await investorQuery.refetch();
+		setOpenDeleteModal(false);
+		deleteAdminMutation.reset();
+	};
+
 	useEffect(() => {
 		if (deleteAdminMutation.isSuccess) {
-			void investorQuery.refetch();
-			setOpenDeleteModal(false);
+			void handleSuccessDelete();
 		}
 	}, [deleteAdminMutation]);
 
@@ -58,7 +63,6 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const handleDeleteAdmin = (id: string) => {
-		console.log(id);
 		setOpenDeleteModal(!openDeleteModal);
 		setDeleteId(id);
 	};
@@ -68,19 +72,19 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const handleUploadModal = () => {
-		setOpenUpdateModal(!openUpdateModal);
+		setOpenUpdateModal(true);
 	};
 
 	const closeDeleteAdminModal = (): void => {
-		setOpenDeleteModal(!openDeleteModal);
+		setOpenDeleteModal(false);
 	};
 
 	const addAdmin = (): void => {
-		setOpenModal(!openModal);
+		setOpenModal(true);
 	};
 
 	const closeModal = (): void => {
-		setOpenModal(!openModal);
+		setOpenModal(false);
 	};
 
 	const handleSuccessInvestor = (): void => {
@@ -89,7 +93,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const closeUploadModal = (): void => {
-		setOpenUpdateModal(!openUpdateModal);
+		setOpenUpdateModal(false);
 	};
 
 	const handleClick = (): void => {
