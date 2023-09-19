@@ -24,6 +24,7 @@ import TrashBin from "@/assets/icons/trash-bin";
 import User from "@/assets/icons/user";
 import Wrong from "@/assets/icons/wrong";
 import IconNames from "./IconNames";
+import DoorOut from "@/assets/icons/door-out";
 
 interface Props {
 	name: (typeof IconNames)[number];
@@ -137,6 +138,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 		wrong: {
 			name: "wrong",
 			icon: <Wrong width={width} color={color} />,
+		},
+		doorOut: {
+			name: "doorOut",
+			icon: <DoorOut width={width} color={color} />,
 		},
 	};
 

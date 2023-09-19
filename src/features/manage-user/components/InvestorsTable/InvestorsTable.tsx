@@ -211,14 +211,11 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 					className="cursor-pointer"
 					onClick={(): void => {
 						if (row?.user?.isActive) {
-							console.log(row);
 							handleDeleteAdmin(row?.user.id || "");
 						}
 					}}
 				>
-					{row?.user?.isActive && (
-						<Icon name="deleteBack" width="20" color="black" />
-					)}
+					<Icon name="deleteBack" width="20" color="black" />
 				</div>
 			),
 			omit: false,
@@ -275,7 +272,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 			<Modal
 				visible={openDeleteModal}
 				onHide={closeDeleteAdminModal}
-				title="Banking Info"
+				title="Disable User"
 				width="25vw"
 			>
 				<DisableInvestor id={deleteId} handleDeleteUser={handleDeleteUser} />

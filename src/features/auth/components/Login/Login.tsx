@@ -18,7 +18,7 @@ import { useNavigate } from "@tanstack/router";
 import { loginRoutesNames } from "../../routes/LoginRouter";
 import { getSession } from "@/lib/cognito";
 import { sendToLocalStorage } from "@/utils/local-storage.ts";
-import { accessToken } from "@/utils/constant.ts";
+import { accessToken, sub } from "@/utils/constant.ts";
 
 type LoginData = {
 	email: string;
@@ -52,6 +52,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 			const sessionData: any = await getSession();
 			console.log(sessionData);
 			sendToLocalStorage(accessToken, `${sessionData?.idToken?.jwtToken}`);
+			sendToLocalStorage(sub, `${sessionData?.idToken?.payload?.sub}`);
 			window.location.href = "/manage-users/admins";
 		} catch (error) {
 			console.log(error);
