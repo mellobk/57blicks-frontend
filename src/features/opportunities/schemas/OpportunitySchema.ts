@@ -1,7 +1,7 @@
 import * as z from "zod";
 import { errorMessages } from "@/utils/error-messages";
 
-export const LoanSchema = z.object({
+export const OpportunitySchema = z.object({
 	additionalInformation: z
 		.string()
 		.min(1, { message: errorMessages.required })
