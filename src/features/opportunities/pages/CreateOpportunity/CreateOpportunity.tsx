@@ -29,7 +29,7 @@ export const CreateOpportunity: FC = () => {
 	});
 
 	const onSubmit: SubmitHandler<Opportunity> = (data: Opportunity): void => {
-    setOpenPostToModal(true);
+		setOpenPostToModal(true);
 		console.log(data);
 	};
 
@@ -52,15 +52,11 @@ export const CreateOpportunity: FC = () => {
 					<Button
 						className="rounded-2xl h-9 bg-gold-500/[.16] text-gold-500"
 						label="Post"
-						// onClick={() => setOpenPostToModal(true)}
 						type="submit"
 					/>
 				</div>
 			</div>
-			<div
-				className="grid lg:grid-cols-7 gap-6 divide-x divide-gray-200 bg-white rounded-3xl w-screen p-6 h-full overflow-y-auto"
-				// onSubmit={handleSubmit(onSubmit)}
-			>
+			<div className="grid lg:grid-cols-7 gap-6 divide-x divide-gray-200 bg-white rounded-3xl w-screen p-6 h-full overflow-y-auto">
 				<div className="lg:col-span-2 col-span-1">
 					<GeneralInformation errors={errors} register={register} />
 				</div>
