@@ -175,7 +175,7 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 			<Modal
 				visible={openDeleteModal}
 				onHide={closeDeleteAdminModal}
-				title="Delete"
+				title="Delete User"
 				width="25vw"
 			>
 				<DeleteAdmin id={deleteId} handleDeleteAdmin={handleDeleteUser} />

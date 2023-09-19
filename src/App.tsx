@@ -8,7 +8,6 @@ import { AuthProvider } from "./providers/AuthContextProvider";
 import { ErrorFallback } from "@/components/ui/ErrorFallback";
 import { TanStackRouterDevelopmentTools } from "@/utils/development-tools/TanStackRouterDevelopmentTools";
 import { ReactQueryDevelopmentTools } from "@/utils/development-tools/ReactQueryDevelopmentTools";
-
 const queryClient = new QueryClient();
 
 const App = (): FunctionComponent => {

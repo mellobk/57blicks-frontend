@@ -23,6 +23,7 @@ const IconNames: Array<string> = [
 	"trashBin",
 	"user",
 	"wrong",
+	"doorOut",
 ];
 
 export default IconNames;
