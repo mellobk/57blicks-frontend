@@ -25,17 +25,22 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 		() => {
 			return ManageUsersService.filterAllAccounting(searchValue);
 		},
-		{ enabled: true, staleTime: 1 }
+		{ enabled: true, staleTime: 1000 * 60 }
 	);
 
 	const deleteAdminMutation = useMutation((id: string) => {
 		return ManageUsersService.deleteUser(id);
 	});
 
+	const handleSuccessDelete = async (): Promise<void> => {
+		await accountQuery.refetch();
+		setOpenDeleteModal(false);
+		deleteAdminMutation.reset();
+	};
+
 	useEffect(() => {
 		if (deleteAdminMutation.isSuccess) {
-			void accountQuery.refetch();
-			setOpenDeleteModal(false);
+			void handleSuccessDelete();
 		}
 	}, [deleteAdminMutation]);
 
