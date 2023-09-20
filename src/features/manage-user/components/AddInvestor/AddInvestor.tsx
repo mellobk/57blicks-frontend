@@ -70,7 +70,7 @@ export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
 		}
 		if (createInvestorMutation.isError) {
 			const error = createInvestorMutation.error as CreateAdminError;
-			setErrorMessage(error?.response?.data?.message);
+			setErrorMessage(error.message);
 			createInvestorMutation.reset();
 		}
 	}, [createInvestorMutation]);

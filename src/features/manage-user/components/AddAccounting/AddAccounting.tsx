@@ -56,7 +56,7 @@ export const AddAccounting: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 		}
 		if (createAccountingMutation.isError) {
 			const error = createAccountingMutation.error as CreateAdminError;
-			setErrorMessage(error?.response?.data?.message);
+			setErrorMessage(error.message);
 			createAccountingMutation.reset();
 		}
 	}, [createAccountingMutation]);
