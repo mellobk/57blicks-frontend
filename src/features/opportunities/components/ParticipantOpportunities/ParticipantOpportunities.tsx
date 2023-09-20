@@ -14,23 +14,23 @@ export const ParticipantOpportunities: FC<Props> = ({ errors, register }) => (
 		<Title text="Participant Opportunities" />
 		<div className="grid xl:grid-cols-3 grid-cols-1 xl:gap-6 items-end">
 			<Input
-				error={errors?.participantOpportunities?.[99]?.message}
+				error={errors?.participantOpportunities?.["99%"]?.message}
 				placeholder="99%"
-				register={register("participantOpportunities.99")}
+				register={register("participantOpportunities.99%")}
 				wrapperClassName="mt-6"
 				required
 			/>
 			<Input
-				error={errors?.participantOpportunities?.[75]?.message}
+				error={errors?.participantOpportunities?.["75%"]?.message}
 				placeholder="75%"
-				register={register("participantOpportunities.75")}
+				register={register("participantOpportunities.75%")}
 				wrapperClassName="mt-6"
 				required
 			/>
 			<Input
-				error={errors?.participantOpportunities?.[50]?.message}
+				error={errors?.participantOpportunities?.["50%"]?.message}
 				placeholder="50%"
-				register={register("participantOpportunities.50")}
+				register={register("participantOpportunities.50%")}
 				wrapperClassName="mt-6"
 				required
 			/>

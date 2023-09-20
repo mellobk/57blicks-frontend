@@ -23,9 +23,9 @@ export type Opportunity = {
 	loanToValue: string;
 	loanType: string;
 	participantOpportunities: {
-		"99": string;
-		"75": string;
-		"50": string;
+		"99%": string;
+		"75%": string;
+		"50%": string;
 	};
 	postTitle: string;
 };

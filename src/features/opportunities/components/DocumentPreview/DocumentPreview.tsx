@@ -97,19 +97,19 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 				</div>
 				<div className="flex flex-col my-4">
 					<Subtitle subtitle="Participation Opportunities:" />
-					{form.participantOpportunities?.[99] && (
+					{form.participantOpportunities?.["99%"] && (
 						<div className="flex flex-row text-primary-500 text-xs">
-              <div className="font-semibold">99%</div> - {form.participantOpportunities?.[99]}
+              <div className="font-semibold">99%</div> - {form.participantOpportunities?.["99%"]}
 						</div>
 					)}
-					{form.participantOpportunities?.[75] && (
+					{form.participantOpportunities?.["75%"] && (
             <div className="flex flex-row text-primary-500 text-xs">
-              <div className="font-semibold">75%</div> - {form.participantOpportunities?.[75]}
+              <div className="font-semibold">75%</div> - {form.participantOpportunities?.["75%"]}
             </div>
 					)}
-					{form.participantOpportunities?.[50] && (
+					{form.participantOpportunities?.["50%"] && (
             <div className="flex flex-row text-primary-500 text-xs">
-              <div className="font-semibold">50%</div> - {form.participantOpportunities?.[50]}
+              <div className="font-semibold">50%</div> - {form.participantOpportunities?.["50%"]}
             </div>
 					)}
 				</div>

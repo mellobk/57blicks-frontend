@@ -17,6 +17,7 @@ export const OpportunitySchema = z.object({
 	googleDriveLink: z
 		.string()
 		.nonempty(errorMessages.required)
+		.url()
 		.max(50, errorMessages.maxLength),
 	image: z
 		.any()
@@ -65,6 +66,10 @@ export const OpportunitySchema = z.object({
 		.nonempty(errorMessages.required)
 		.max(4, errorMessages.maxLength),
 	loanType: z.string().nonempty(errorMessages.required),
-	participantOpportunities: z.array(z.string()),
+	participantOpportunities: z.object({
+		"99%": z.string(),
+		"75%": z.string(),
+		"50%": z.string(),
+	}),
 	postTitle: z.string().max(50, errorMessages.maxLength),
 });
