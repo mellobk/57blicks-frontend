@@ -27,6 +27,7 @@ const IconNames: Array<string> = [
 	"upload",
 	"user",
 	"wrong",
+	"doorOut",
 ];
 
 export default IconNames;

@@ -55,7 +55,7 @@ export const AddAdmin: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 		}
 		if (createAdminMutation.isError) {
 			const error = createAdminMutation.error as CreateAdminError;
-			setErrorMessage(error?.response?.data?.message);
+			setErrorMessage(error.message);
 			createAdminMutation.reset();
 		}
 	}, [createAdminMutation]);

@@ -35,17 +35,22 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		() => {
 			return ManageUsersService.filterAllInvestors(searchValue, checkState);
 		},
-		{ enabled: true, staleTime: 1 }
+		{ enabled: true, staleTime: 1000 * 60 }
 	);
 
 	const deleteAdminMutation = useMutation((id: string) => {
 		return ManageUsersService.deleteUser(id);
 	});
 
+	const handleSuccessDelete = async (): Promise<void> => {
+		await investorQuery.refetch();
+		setOpenDeleteModal(false);
+		deleteAdminMutation.reset();
+	};
+
 	useEffect(() => {
 		if (deleteAdminMutation.isSuccess) {
-			void investorQuery.refetch();
-			setOpenDeleteModal(false);
+			void handleSuccessDelete();
 		}
 	}, [deleteAdminMutation]);
 
@@ -58,7 +63,6 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const handleDeleteAdmin = (id: string) => {
-		console.log(id);
 		setOpenDeleteModal(!openDeleteModal);
 		setDeleteId(id);
 	};
@@ -68,19 +72,19 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const handleUploadModal = () => {
-		setOpenUpdateModal(!openUpdateModal);
+		setOpenUpdateModal(true);
 	};
 
 	const closeDeleteAdminModal = (): void => {
-		setOpenDeleteModal(!openDeleteModal);
+		setOpenDeleteModal(false);
 	};
 
 	const addAdmin = (): void => {
-		setOpenModal(!openModal);
+		setOpenModal(true);
 	};
 
 	const closeModal = (): void => {
-		setOpenModal(!openModal);
+		setOpenModal(false);
 	};
 
 	const handleSuccessInvestor = (): void => {
@@ -89,7 +93,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const closeUploadModal = (): void => {
-		setOpenUpdateModal(!openUpdateModal);
+		setOpenUpdateModal(false);
 	};
 
 	const handleClick = (): void => {
@@ -211,14 +215,11 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 					className="cursor-pointer"
 					onClick={(): void => {
 						if (row?.user?.isActive) {
-							console.log(row);
 							handleDeleteAdmin(row?.user.id || "");
 						}
 					}}
 				>
-					{row?.user?.isActive && (
-						<Icon name="deleteBack" width="20" color="black" />
-					)}
+					<Icon name="deleteBack" width="20" color="black" />
 				</div>
 			),
 			omit: false,
@@ -275,7 +276,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 			<Modal
 				visible={openDeleteModal}
 				onHide={closeDeleteAdminModal}
-				title="Banking Info"
+				title="Disable User"
 				width="25vw"
 			>
 				<DisableInvestor id={deleteId} handleDeleteUser={handleDeleteUser} />

@@ -4,7 +4,7 @@ import { LoanOverview } from "@/features/loan-overview/pages/LoanOverview/LoanOv
 import { Admin } from "@/features/manage-user/pages/Admin/Admin";
 import { CreateOpportunity } from "@/features/opportunities/pages/CreateOpportunity/CreateOpportunity";
 import { DkcLlc } from "@/features/servicing/pages/DkcLLC/DkcLlc";
-import UnauthenticatedRoute from "@/routes/routes";
+import { AuthenticatedRoute } from "@/routes/routes";
 import { Reporting } from "../pages/Reporting/Reporting";
 import { InvestorPortals } from "../pages/InvestorPortals/InvestorPortals";
 import { Support } from "../pages/Support/Support";
@@ -48,6 +48,13 @@ export const NavbarRoutes = [
 		name: "Manage Users",
 	},
 	{
+		path: "/",
+		page: Admin,
+		routeComponent: null,
+		layout: DashboardLayout,
+		name: "Manage Users",
+	},
+	{
 		path: "/support",
 		page: Support,
 		layout: DashboardLayout,
@@ -63,6 +70,6 @@ const OtherRoutes = [
 	},
 ];
 
-const DashboardRouter = UnauthenticatedRoute([...NavbarRoutes, ...OtherRoutes]);
+const DashboardRouter = AuthenticatedRoute([...NavbarRoutes, ...OtherRoutes]);
 
 export default DashboardRouter;

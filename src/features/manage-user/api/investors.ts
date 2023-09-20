@@ -6,9 +6,15 @@ import {
 	createInvestor,
 	deleteUserData,
 	filterData,
+	getUserData,
 	investors,
 	userFilterData,
 } from "./backend-end-points";
+
+const getUser = async (sub: string) => {
+	const response = await authApiClient.get<User>(getUserData(sub));
+	return response.data;
+};
 
 const filterAllInvestors = async (searchData: string, showDisable: boolean) => {
 	const response = await authApiClient.get<Array<Investor>>(
@@ -78,6 +84,7 @@ const ManageUsersService = {
 	createNewAccounting,
 	createNewInvestor,
 	deleteUser,
+	getUser,
 };
 
 export default ManageUsersService;

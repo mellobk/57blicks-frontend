@@ -1,5 +1,5 @@
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import UnauthenticatedRoute from "@/routes/routes";
+import { AuthenticatedRoute } from "@/routes/routes";
 import { Investors } from "../pages/Investors/Investors";
 import { Accounting } from "../pages/Accounting/Accounting";
 
@@ -25,6 +25,6 @@ export const NavbarRoutes = [
 	},
 ];
 
-const ManageUserRouter = UnauthenticatedRoute([...NavbarRoutes]);
+const ManageUserRouter = AuthenticatedRoute([...NavbarRoutes]);
 
 export default ManageUserRouter;

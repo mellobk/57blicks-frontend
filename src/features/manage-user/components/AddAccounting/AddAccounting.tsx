@@ -13,6 +13,8 @@ import { useMutation } from "@tanstack/react-query";
 import type { User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 import { unFormatPhone } from "@/utils/common-funtions.ts";
+import type { CreateAdminError } from "../../types/errors";
+import useStore from "@/stores/app-store";
 
 interface AddAdminProps {
 	handleSuccess?: () => void;
@@ -30,6 +32,8 @@ export const AddAccounting: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 	const createAccountingMutation = useMutation((data: User) => {
 		return ManageUsersService.createNewAccounting(data);
 	});
+
+	const setErrorMessage = useStore((state) => state.setErrorMessage);
 
 	// eslint-disable-next-line unicorn/consistent-function-scoping
 	const onSubmit: SubmitHandler<FieldValues> = (data: User): void => {
@@ -49,6 +53,11 @@ export const AddAccounting: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 	useEffect(() => {
 		if (createAccountingMutation.isSuccess) {
 			handleSuccess && handleSuccess();
+		}
+		if (createAccountingMutation.isError) {
+			const error = createAccountingMutation.error as CreateAdminError;
+			setErrorMessage(error.message);
+			createAccountingMutation.reset();
 		}
 	}, [createAccountingMutation]);
 

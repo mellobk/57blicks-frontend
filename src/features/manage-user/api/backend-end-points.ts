@@ -27,3 +27,7 @@ export const createInvestor = (): string => {
 export const deleteUserData = (id: string): string => {
 	return `/users/${id}`;
 };
+
+export const getUserData = (sub: string): string => {
+	return `/users/user-sub/${sub}`;
+};

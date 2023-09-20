@@ -1,8 +1,4 @@
 export interface CreateAdminError {
-	response: {
-		data: {
-			message: string;
-		};
-	};
+	message: string;
 	// other fields
 }
