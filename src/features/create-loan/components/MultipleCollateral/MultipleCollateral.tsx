@@ -36,7 +36,7 @@ export const MultipleCollateral: FC<Props> = ({
 			<div className="flex flex-row justify-between">
 				<Title text="Multiple Collateral" />
 				<Button
-					className="rounded-3xl px-3 h-[34px] bg-gray-200"
+					className="rounded-3xl pl-3 pr-1 h-[34px] bg-gray-200"
 					icon={<Icon name="plus" color="#0E2130" width="12" />}
 					onClick={() =>
 						append({

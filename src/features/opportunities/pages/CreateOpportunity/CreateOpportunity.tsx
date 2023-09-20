@@ -52,7 +52,8 @@ export const CreateOpportunity: FC = () => {
 					<Button
 						className="rounded-2xl h-9 bg-gold-500/[.16] text-gold-500"
 						label="Post"
-						type="submit"
+						// type="submit"
+            onClick={() => setOpenPostToModal(true)}
 					/>
 				</div>
 			</div>
