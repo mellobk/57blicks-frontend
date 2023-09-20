@@ -18,6 +18,7 @@ export const LoanDetails: FC<Props> = ({ errors, register }) => (
 			<Input
 				error={errors?.assetValue?.message}
 				label="Asset Value"
+				min={0}
 				placeholder="Enter Asset Value"
 				register={register("assetValue")}
 				type="number"
@@ -27,6 +28,7 @@ export const LoanDetails: FC<Props> = ({ errors, register }) => (
 			<Input
 				error={errors?.loanAmount?.message}
 				label="Loan Amount"
+				min={0}
 				placeholder="Enter Loan Amount"
 				register={register("loanAmount")}
 				type="number"
@@ -38,6 +40,7 @@ export const LoanDetails: FC<Props> = ({ errors, register }) => (
 			<Input
 				error={errors?.loanToValue?.message}
 				label="Loan to Value"
+				min={0}
 				placeholder="Enter Loan to Value"
 				register={register("loanToValue")}
 				type="number"
@@ -73,9 +76,10 @@ export const LoanDetails: FC<Props> = ({ errors, register }) => (
 		<Input
 			error={errors?.investmentMonthlyInterestedOfferedToParticipant?.message}
 			label="Investment Monthly Interested Offered to Participant"
+			min={0}
 			placeholder="Enter Investment Monthly Interested Offered to Participant"
 			register={register("investmentMonthlyInterestedOfferedToParticipant")}
-      type="number"
+			type="number"
 			wrapperClassName="mt-6"
 			required
 		/>
