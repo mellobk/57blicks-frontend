@@ -1,6 +1,7 @@
 import type { FC } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
+import { MaskInput } from "@/components/forms/MaskInput";
 import { Select } from "@/components/forms/Select";
 import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
@@ -35,10 +36,11 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 			wrapperClassName="mt-6"
 			required
 		/>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 			<Input
 				error={errors?.totalLoanAmount?.message}
 				label="Total Loan Amount"
+				min={0}
 				placeholder="$0.00"
 				register={register("totalLoanAmount")}
 				type="number"
@@ -48,6 +50,7 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 			<Input
 				error={errors?.interestRate?.message}
 				label="Interest Rate"
+				min={0}
 				placeholder="0%"
 				register={register("interestRate")}
 				type="number"
@@ -55,28 +58,31 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 				required
 			/>
 		</div>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
-			<Input
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
+			<MaskInput
 				error={errors?.originationDate?.message}
 				label="Origination Date"
+				mask="99-99-9999"
 				placeholder="MM-DD-YYYY"
 				register={register("originationDate")}
 				wrapperClassName="mt-6"
 				required
 			/>
-			<Input
+			<MaskInput
 				error={errors?.maturityDate?.message}
 				label="Maturity Date"
+				mask="99-99-9999"
 				placeholder="MM-DD-YYYY"
 				register={register("maturityDate")}
 				wrapperClassName="mt-6"
 				required
 			/>
 		</div>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 			<Input
 				error={errors?.constructionHoldback?.message}
 				label="Construction Holdback"
+				min={0}
 				placeholder="$0.00"
 				register={register("constructionHoldback")}
 				type="number"
@@ -93,10 +99,11 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 				required
 			/>
 		</div>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
-			<Input
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
+			<MaskInput
 				error={errors?.collaterals?.[0]?.insuranceExpirationDate?.message}
 				label="Insurance Expiration Date"
+				mask="99-99-9999"
 				placeholder="MM-DD-YYYY"
 				register={register("collaterals.0.insuranceExpirationDate")}
 				wrapperClassName="mt-6"

@@ -50,7 +50,11 @@ export const CreateLoan: FC = () => {
 		name: "fundingBreakdown",
 	});
 
-	const { mutate, isSuccess, reset: resetMutation } = useMutation((data: Loan) => {
+	const {
+		mutate,
+		isSuccess,
+		reset: resetMutation,
+	} = useMutation((data: Loan) => {
 		return CreateLoanService.createLoan(data);
 	});
 
@@ -74,7 +78,7 @@ export const CreateLoan: FC = () => {
 	useEffect(() => {
 		if (isSuccess) {
 			reset();
-      resetMutation();
+			resetMutation();
 			setOpenSuccessModal(true);
 		}
 	}, [isSuccess]);
@@ -104,7 +108,6 @@ export const CreateLoan: FC = () => {
 
 				<FundingBreakdown
 					control={control}
-					register={register}
 					remove={removeParticipant}
 					setOpenLenderModal={setOpenLenderModal}
 					setOpenParticipantModal={setOpenParticipantModal}

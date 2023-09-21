@@ -12,3 +12,7 @@ export const nameFormat = (name: string) => {
 		return match.toUpperCase();
 	});
 };
+
+export const percentageFormat = (value: number) => {
+	return `${value}%`;
+};
