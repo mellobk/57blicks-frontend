@@ -1,26 +1,25 @@
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Title } from "./Title";
+import { SearchBar } from "./SearchBar.tsx";
 import "../../../styles/tailwind.css";
 
-const meta: Meta<typeof Title> = {
-	component: Title,
+const meta: Meta<typeof SearchBar> = {
+	component: SearchBar,
 	tags: ["autodocs"],
 };
 
 export default meta;
-type Story = StoryObj<typeof Title>;
+type Story = StoryObj<typeof SearchBar>;
 
-export const NormalTitle: Story = {
+export const ClosedSearchBar: Story = {
 	args: {
-		text: "Title",
+		value: "",
 	},
 };
 
-export const ColorTitle: Story = {
+export const OpenedSearchBar: Story = {
 	args: {
-    color: "text-gold-500",
-    text: "Color Title",
+    value: "Opened",
 	},
 };

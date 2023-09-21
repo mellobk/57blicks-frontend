@@ -1,10 +1,10 @@
 import type { FC } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FileUpload } from "@/components/forms/FileUpload";
 import { Input } from "@/components/forms/Input";
 import { TextArea } from "@/components/forms/TextArea";
 import { Title } from "@/components/ui/Title/Title";
 import { Opportunity } from "@/features/opportunities/types/fields";
-import {FileUpload} from "@/components/forms/FileUpload";
 
 interface Props {
 	errors: FieldErrors<Opportunity>;
@@ -38,6 +38,7 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
 			required
 		/>
 		<FileUpload
+			accept="image/*"
 			error={errors?.image?.message}
 			label="Choose File"
 			placeholder="Choose File"
