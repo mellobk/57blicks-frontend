@@ -1,27 +1,23 @@
 import type { FC } from "react";
-import {
-	Control,
-	UseFieldArrayRemove,
-	UseFormRegister,
-	useWatch,
-} from "react-hook-form";
+import { Control, UseFieldArrayRemove, useWatch } from "react-hook-form";
 import { TableColumn } from "react-data-table-component";
 import moment from "moment";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title/Title";
 import { Table } from "@/components/ui/Table/Table";
+import { FormatInput } from "@/features/create-loan/components/FundingBreakdown/FormatInput/FormatInput";
 import {
 	FundingBreakdown as FundingBreakdownType,
 	Loan,
 } from "@/features/create-loan/types/fields";
 import { lenders } from "@/features/create-loan/utils/selects";
+import {moneyFormat} from "@/utils/format.ts";
 
 interface Props {
 	control: Control<Loan>;
 	setOpenLenderModal: (openLenderModal: boolean) => void;
 	setOpenParticipantModal: (openParticipantModal: boolean) => void;
-	register: UseFormRegister<Loan>;
 	remove: UseFieldArrayRemove;
 }
 
@@ -29,7 +25,6 @@ export const FundingBreakdown: FC<Props> = ({
 	control,
 	setOpenLenderModal,
 	setOpenParticipantModal,
-	register,
 	remove,
 }) => {
 	const fundingBreakdown = useWatch({
@@ -43,7 +38,7 @@ export const FundingBreakdown: FC<Props> = ({
 	});
 	const columns: TableColumn<FundingBreakdownType>[] = [
 		{
-			cell: (row: FundingBreakdownType, rowIndex) => {
+			cell: (row, rowIndex) => {
 				if (rowIndex === 0) {
 					return (
 						<button
@@ -65,24 +60,22 @@ export const FundingBreakdown: FC<Props> = ({
 			style: { padding: 0 },
 		},
 		{
-			cell: (row: FundingBreakdownType, rowIndex) => (
-				<input
-					className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none"
-					key={`${row.lender}-${rowIndex}`}
-					type="number"
-					{...register(`fundingBreakdown.${rowIndex}.amount`)}
+			cell: (_, rowIndex) => (
+				<FormatInput
+					control={control}
+					format="money"
+					name={`fundingBreakdown.${rowIndex}.amount`}
 				/>
 			),
 			name: "Amount",
 			style: { padding: 0 },
 		},
 		{
-			cell: (row: FundingBreakdownType, rowIndex) => (
-				<input
-					className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none"
-					key={`${row.lender}-${rowIndex}`}
-					type="number"
-					{...register(`fundingBreakdown.${rowIndex}.rate`)}
+			cell: (_, rowIndex) => (
+				<FormatInput
+					control={control}
+					format="percentage"
+					name={`fundingBreakdown.${rowIndex}.rate`}
 				/>
 			),
 			name: "Rate",
@@ -103,7 +96,7 @@ export const FundingBreakdown: FC<Props> = ({
 			style: { padding: 0 },
 		},
 		{
-			cell: (row: FundingBreakdownType, rowIndex) => (
+			cell: (row, rowIndex) => (
 				<>
 					{row.type === "participant" && (
 						<Button
@@ -123,7 +116,7 @@ export const FundingBreakdown: FC<Props> = ({
 	];
 
 	function calculateRegular(amount = 0, rate = 0) {
-		return ((amount * (rate / 100)) / 12).toFixed(2);
+		return moneyFormat((amount * (rate / 100)) / 12);
 	}
 
 	function calculateProrated(amount = 0, rate = 0) {
@@ -133,7 +126,7 @@ export const FundingBreakdown: FC<Props> = ({
 		const lastDayOfMonth = date.clone().endOf("month");
 		const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days");
 
-		return ((amount * (rate / 100)) / (365 * daysUntilEndOfMonth)).toFixed(2);
+		return moneyFormat(((amount * (rate / 100)) / (365 * daysUntilEndOfMonth)));
 	}
 
 	function canAddParticipant() {
