@@ -20,7 +20,7 @@ export const NormalTitle: Story = {
 
 export const ColorTitle: Story = {
 	args: {
-		text: "Color Title",
-		textColor: "text-gold-500",
+    color: "text-gold-500",
+    text: "Color Title",
 	},
 };

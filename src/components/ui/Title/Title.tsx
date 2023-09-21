@@ -1,14 +1,14 @@
 import { FC } from "react";
 
 type Props = {
+	color?: string;
 	text: string;
-	textColor?: string;
 };
 
-export const Title: FC<Props> = ({ text, textColor }) => (
+export const Title: FC<Props> = ({ color, text }) => (
 	<h1
 		className={`${
-			textColor || "text-primary-500"
+			color || "text-primary-500"
 		} font-inter text-[28px] leading-[34px] tracking-[-1.4px]`}
 	>
 		{text}
