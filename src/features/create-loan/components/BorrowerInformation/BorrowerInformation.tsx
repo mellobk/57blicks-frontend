@@ -3,11 +3,11 @@ import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { Title } from "@/components/ui/Title/Title";
-import { LoanFields } from "@/features/create-loan/types/fields";
+import { Loan } from "@/features/create-loan/types/fields";
 
 interface Props {
-	errors: FieldErrors<LoanFields>;
-	register: UseFormRegister<LoanFields>;
+	errors: FieldErrors<Loan>;
+	register: UseFormRegister<Loan>;
 }
 
 export const BorrowerInformation: FC<Props> = ({ errors, register }) => (

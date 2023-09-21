@@ -25,7 +25,7 @@ describe("Input component", () => {
 			<Input
 				label="Username"
 				placeholder="Enter your username"
-				required={true}
+				required
 			/>
 		);
 

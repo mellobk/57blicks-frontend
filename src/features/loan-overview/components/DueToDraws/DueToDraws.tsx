@@ -42,7 +42,7 @@ export const DueToDraws: FC<Props> = ({ data, openModal, setOpenModal }) => {
 	const ModalTitle = () => (
 		<div className="flex flex-row gap-2.5">
 			<Title text="Due to Draws" />
-			<Title textColor="text-green-500" text={moneyFormat(data.dueToDraws)} />
+			<Title color="text-green-500" text={moneyFormat(data.dueToDraws)} />
 		</div>
 	);
 

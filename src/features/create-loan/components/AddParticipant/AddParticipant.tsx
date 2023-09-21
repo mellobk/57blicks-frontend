@@ -3,11 +3,11 @@ import { UseFieldArrayAppend } from "react-hook-form";
 import { Option, Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import { LoanFields } from "@/features/create-loan/types/fields";
+import { Loan } from "@/features/create-loan/types/fields";
 import { participants } from "@/features/create-loan/utils/selects";
 
 interface Props {
-	append: UseFieldArrayAppend<LoanFields, "fundingBreakdown">;
+	append: UseFieldArrayAppend<Loan, "fundingBreakdown">;
 	openModal: boolean;
 	setOpenModal: (openModal: boolean) => void;
 }

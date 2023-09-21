@@ -24,7 +24,7 @@ export type FundingBreakdown = {
 	type?: "lender" | "participant";
 };
 
-export type LoanFields = {
+export type Loan = {
 	amountDrawn: string;
 	borrower: Borrower;
 	collaterals: Collateral[];

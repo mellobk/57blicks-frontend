@@ -12,7 +12,7 @@ import { SuccessResetPassword } from "../pages/SuccessResetPassword";
 
 export const loginRoutesNames = {
 	firstLogin: "first-login",
-	login: "/",
+	login: "/login",
 	resetPassword: "reset-password",
 	resetPasswordMfa: "reset-password-mfa",
 	ResetCreatePassWord: "reset-create-password",

@@ -16,7 +16,7 @@ import type { Investor } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { AddInvestorBankFields } from "../../types/fields";
-import { statusSort } from "@/utils/common-funtions.ts";
+import { findIndex, statusSort } from "@/utils/common-funtions.ts";
 
 interface SuccessProps {}
 
@@ -35,17 +35,22 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		() => {
 			return ManageUsersService.filterAllInvestors(searchValue, checkState);
 		},
-		{ enabled: true, staleTime: 1 }
+		{ enabled: true, staleTime: 1000 * 60 }
 	);
 
 	const deleteAdminMutation = useMutation((id: string) => {
 		return ManageUsersService.deleteUser(id);
 	});
 
+	const handleSuccessDelete = async (): Promise<void> => {
+		await investorQuery.refetch();
+		setOpenDeleteModal(false);
+		deleteAdminMutation.reset();
+	};
+
 	useEffect(() => {
 		if (deleteAdminMutation.isSuccess) {
-			void investorQuery.refetch();
-			setOpenDeleteModal(false);
+			void handleSuccessDelete();
 		}
 	}, [deleteAdminMutation]);
 
@@ -58,7 +63,6 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const handleDeleteAdmin = (id: string) => {
-		console.log(id);
 		setOpenDeleteModal(!openDeleteModal);
 		setDeleteId(id);
 	};
@@ -68,19 +72,19 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const handleUploadModal = () => {
-		setOpenUpdateModal(!openUpdateModal);
+		setOpenUpdateModal(true);
 	};
 
 	const closeDeleteAdminModal = (): void => {
-		setOpenDeleteModal(!openDeleteModal);
+		setOpenDeleteModal(false);
 	};
 
 	const addAdmin = (): void => {
-		setOpenModal(!openModal);
+		setOpenModal(true);
 	};
 
 	const closeModal = (): void => {
-		setOpenModal(!openModal);
+		setOpenModal(false);
 	};
 
 	const handleSuccessInvestor = (): void => {
@@ -89,7 +93,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const closeUploadModal = (): void => {
-		setOpenUpdateModal(!openUpdateModal);
+		setOpenUpdateModal(false);
 	};
 
 	const handleClick = (): void => {
@@ -115,7 +119,8 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 			name: "#",
 			maxWidth: "50px",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Investor): string => row.id || "",
+			selector: (row: Investor): number =>
+				findIndex(investorQuery.data || [], row?.id || ""),
 			omit: false,
 		},
 		{
@@ -210,14 +215,11 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 					className="cursor-pointer"
 					onClick={(): void => {
 						if (row?.user?.isActive) {
-							console.log(row);
 							handleDeleteAdmin(row?.user.id || "");
 						}
 					}}
 				>
-					{row?.user?.isActive && (
-						<Icon name="deleteBack" width="20" color="black" />
-					)}
+					<Icon name="deleteBack" width="20" color="black" />
 				</div>
 			),
 			omit: false,
@@ -226,27 +228,29 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 
 	return (
 		<>
-			<Table
-				handleSearchValue={handleSearch}
-				handleCheckValue={handleCheckedToggle}
-				checkedValue={checkState}
-				onClickButton={addAdmin}
-				loading={investorQuery.isLoading}
-				columns={columns}
-				data={investorQuery.data}
-				buttonText="Add Investor"
-				conditionalRowStyles={conditionalRowStyles}
-				widthSearch="160px"
-			>
-				<>
-					<div>
-						<BreadCrumb initialTab="Manage Users" actualTab="Investors" />
-					</div>
-					<div className="relative z-10">
-						<Tabs tabs={tabs} actualTab="investors" />
-					</div>
-				</>
-			</Table>
+			{investorQuery.data && (
+				<Table
+					handleSearchValue={handleSearch}
+					handleCheckValue={handleCheckedToggle}
+					checkedValue={checkState}
+					onClickButton={addAdmin}
+					loading={investorQuery.isLoading}
+					columns={columns}
+					data={investorQuery.data}
+					buttonText="Add Investor"
+					conditionalRowStyles={conditionalRowStyles}
+					widthSearch="160px"
+				>
+					<>
+						<div>
+							<BreadCrumb initialTab="Manage Users" actualTab="Investors" />
+						</div>
+						<div className="relative z-10">
+							<Tabs tabs={tabs} actualTab="investors" />
+						</div>
+					</>
+				</Table>
+			)}
 			<Modal
 				visible={openModal}
 				onHide={closeModal}
@@ -272,7 +276,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 			<Modal
 				visible={openDeleteModal}
 				onHide={closeDeleteAdminModal}
-				title="Banking Info"
+				title="Disable User"
 				width="25vw"
 			>
 				<DisableInvestor id={deleteId} handleDeleteUser={handleDeleteUser} />
