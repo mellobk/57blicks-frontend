@@ -1,9 +1,11 @@
 import { Investor } from "@/features/opportunities/types/api";
 import { authApiClient } from "@/utils/api-client";
 
-const getInvestors = async () => {
+const getInvestors = async (searchValue: string) => {
 	const response = await authApiClient.get<Array<Investor>>(
-		"/investors/filter-data/?canShowDisable=false"
+		`/investors/filter-data/?canShowDisable=false${
+			searchValue && `&searchData=${searchValue}`
+		}`
 	);
 
 	return response.data;

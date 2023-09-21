@@ -6,7 +6,6 @@ import {
 	useWatch,
 } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
-import { Input } from "@/components/forms/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title";
@@ -15,6 +14,7 @@ import OpportunitiesService from "@/features/opportunities/api/opportunities";
 import { Investor } from "@/features/opportunities/types/api";
 import { Opportunity } from "@/features/opportunities/types/fields";
 import { nameFormat } from "@/utils/format";
+import { SearchBar } from "@/components/ui/SearchBar";
 
 interface Props {
 	control: Control<Opportunity>;
@@ -30,7 +30,6 @@ export const PostTo: FC<Props> = ({
 	setValue,
 }) => {
 	const [searchValue, setSearchValue] = useState<string>("");
-	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const [selectedInvestor, setSelectedInvestor] = useState<{
 		investor: Investor;
 		opportunityInvestorIndex: number;
@@ -45,8 +44,8 @@ export const PostTo: FC<Props> = ({
 		defaultValue: [],
 	});
 	const investorQuery = useQuery(
-		["investor-query"],
-		() => OpportunitiesService.getInvestors(),
+		["investor-query", searchValue],
+		() => OpportunitiesService.getInvestors(searchValue),
 		{ enabled: openModal }
 	);
 
@@ -150,43 +149,7 @@ export const PostTo: FC<Props> = ({
 							<Title text="Post to" />
 
 							<div className="flex flex-row gap-2">
-								<div
-									className={`${
-										searchVisible || searchValue
-											? "w-[200px] bg-transparent"
-											: "bg-transparent w-[30px]"
-									} transition duration-500`}
-									onMouseEnter={() => {
-										setSearchVisible(true);
-									}}
-									onMouseLeave={() => {
-										setSearchVisible(false);
-									}}
-								>
-									<Input
-										type="text"
-										value={searchValue}
-										placeholder="Search"
-										iconColor={
-											searchVisible || searchValue
-												? "#0E2130"
-												: "rgba(14, 33, 48, 0.5)"
-										}
-										iconWidth={searchValue ? "10" : "18"}
-										iconName={searchValue ? "wrong" : "search"}
-										onChange={(data) => {
-											setSearchValue(data.target.value);
-										}}
-										clickIcon={() => {
-											setSearchValue("");
-										}}
-										className={`${
-											searchVisible || searchValue
-												? "bg-gray-200"
-												: "bg-transparent"
-										} rounded-2xl w-full px-4 py-2 placeholder-primary-500/[.5] text-primary-500 text-[13px] leading-[18px] tracking-[-0.65px] caret-blue-200 items-center outline-none`}
-									/>
-								</div>
+								<SearchBar setValue={setSearchValue} value={searchValue} />
 								<Button
 									className={`${
 										selectedInvestor ? "hidden" : ""
