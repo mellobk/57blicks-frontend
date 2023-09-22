@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import { FormatInput } from "@/components/forms/FormatInput";
 import { Input } from "@/components/forms/Input";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { Select } from "@/components/forms/Select";
@@ -17,7 +18,7 @@ interface Props {
 	register: UseFormRegister<Loan>;
 }
 
-export const LoanInformation: FC<Props> = ({ errors, register }) => (
+export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 	<div>
 		<Title text="Loan Information" />
 		<Select
@@ -38,26 +39,26 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 			required
 		/>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
-			<Input
-				error={errors?.totalLoanAmount?.message}
-				label="Total Loan Amount"
-				min={0}
-				placeholder="$0.00"
-				register={register("totalLoanAmount")}
-				type="number"
-				wrapperClassName="mt-6"
-				required
-			/>
-			<Input
-				error={errors?.interestRate?.message}
-				label="Interest Rate"
-				min={0}
-				placeholder="0%"
-				register={register("interestRate")}
-				type="number"
-				wrapperClassName="mt-6"
-				required
-			/>
+			<FormatInput
+        control={control}
+        error={errors?.totalLoanAmount?.message}
+        format="money"
+        label="Total Loan Amount"
+        name="totalLoanAmount"
+        placeholder="$0.00"
+        wrapperClassName="mt-6"
+        required
+      />
+			<FormatInput
+        control={control}
+        error={errors?.interestRate?.message}
+        format="percentage"
+        label="Interest Rate"
+        name="interestRate"
+        placeholder="0%"
+        wrapperClassName="mt-6"
+        required
+      />
 		</div>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 			<MaskInput
@@ -80,25 +81,26 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 			/>
 		</div>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
-			<Input
-				error={errors?.constructionHoldback?.message}
-				label="Construction Holdback"
-				min={0}
-				placeholder="$0.00"
-				register={register("constructionHoldback")}
-				type="number"
-				wrapperClassName="mt-6"
-				required
-			/>
-			<Input
-				error={errors?.amountDrawn?.message}
-				label="Amount Drawn"
-				placeholder="$0.00"
-				register={register("amountDrawn")}
-				type="number"
-				wrapperClassName="mt-6"
-				required
-			/>
+      <FormatInput
+        control={control}
+        error={errors?.constructionHoldback?.message}
+        format="money"
+        label="Construction Holdback"
+        name="constructionHoldback"
+        placeholder="$0.00"
+        wrapperClassName="mt-6"
+        required
+      />
+      <FormatInput
+        control={control}
+        error={errors?.amountDrawn?.message}
+        format="money"
+        label="Amount Drawn"
+        name="amountDrawn"
+        placeholder="$0.00"
+        wrapperClassName="mt-6"
+        required
+      />
 		</div>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 			<MaskInput
