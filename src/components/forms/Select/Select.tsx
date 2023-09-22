@@ -1,6 +1,8 @@
 import { type ForwardRefRenderFunction, useEffect, useState } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { Dropdown, type DropdownProps } from "primereact/dropdown";
+import { ErrorText } from "@/components/forms/ErrorText";
+import { Label } from "@/components/forms/Label";
 import { Icon } from "@/components/ui/Icon";
 
 export type Option = {
@@ -41,13 +43,8 @@ export const Select: ForwardRefRenderFunction<
 
 	return (
 		<div className={`flex flex-col gap-2 ${className}`}>
-			{label && (
-				<div className="font-semibold text-gray-600">
-					<div>
-						{label} {required && <span className="text-red-ERROR">*</span>}
-					</div>
-				</div>
-			)}
+			<Label label={label} required={required} />
+
 			<div className="relative">
 				{iconName && (
 					<div
@@ -75,7 +72,7 @@ export const Select: ForwardRefRenderFunction<
 					pt={{
 						input: {
 							className:
-								"p-2 font-inter font-normal leading-none  text-black text-[13px]",
+								"p-2 font-inter text-[13px] text-primary-500 leading-4 tracking-[-0.65px]",
 						},
 						wrapper: { className: "bg-gray-200 rounded-b-lg p-0" },
 						trigger: { className: "w-auto" },
@@ -86,7 +83,8 @@ export const Select: ForwardRefRenderFunction<
 					}}
 				/>
 			</div>
-			{error && <div className="text-red-ERROR">{error}</div>}
+
+			<ErrorText error={error} />
 		</div>
 	);
 };

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { moneyFormat } from "@/utils/format.ts";
+import { moneyFormat } from "@/utils/formats";
 
 type Props = {
 	bold?: boolean;

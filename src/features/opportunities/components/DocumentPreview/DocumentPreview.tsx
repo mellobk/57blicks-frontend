@@ -4,7 +4,7 @@ import LogoNavy from "@/assets/images/png/LogoNavy.png";
 import { Detail } from "@/features/opportunities/components/DocumentPreview/Detail/Detail";
 import { Subtitle } from "@/features/opportunities/components/DocumentPreview/Subtitle/Subtitle";
 import { Opportunity } from "@/features/opportunities/types/fields";
-import { moneyFormat } from "@/utils/format";
+import { moneyFormat } from "@/utils/formats";
 
 interface Props {
 	control: Control<Opportunity>;

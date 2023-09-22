@@ -1,7 +1,9 @@
 import type { ForwardRefRenderFunction, TextareaHTMLAttributes } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
+import { ErrorText } from "@/components/forms/ErrorText";
+import { Label } from "@/components/forms/Label";
 import { Icon, type IconNames } from "@/components/ui/Icon";
-import { classNames } from "primereact/utils";
+import {inputClassName} from "@/utils/class-names.ts";
 
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	clickIcon?: () => void;
@@ -19,9 +21,7 @@ export const TextArea: ForwardRefRenderFunction<
 	TextAreaProps
 > = ({
 	error,
-	className = `placeholder-gray-400 focus:outline-none ${
-		error ? "text-red-ERROR bg-gray-100" : "bg-gray-200"
-	} font-normal font-weight-400 leading-normal tracking-wide flex w-full p-4 rounded-md`,
+	className = inputClassName(error),
 	clickIcon,
 	iconColor = "#000",
 	iconName,
@@ -34,13 +34,7 @@ export const TextArea: ForwardRefRenderFunction<
 	...props
 }) => (
 	<div className={`flex flex-col gap-2 ${wrapperClassName}`}>
-		{label && (
-			<div className="font-semibold text-gray-600">
-				<div>
-					{label} {required && <span className="text-red-ERROR">*</span>}
-				</div>
-			</div>
-		)}
+		<Label label={label} required={required} />
 
 		<div className="relative">
 			{iconName && (
@@ -60,21 +54,12 @@ export const TextArea: ForwardRefRenderFunction<
 
 			<textarea
 				className={`${className} ${iconName && "pr-[30px]"}`}
-        rows={rows}
+				rows={rows}
 				{...props}
 				{...register}
 			/>
 		</div>
 
-		{error && (
-			<div
-				className={classNames(
-					"text-red-ERROR",
-					"leading-normal tracking-tight"
-				)}
-			>
-				{error}
-			</div>
-		)}
+		<ErrorText error={error} />
 	</div>
 );

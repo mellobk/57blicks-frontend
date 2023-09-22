@@ -31,7 +31,7 @@ export default {
 					500: "#FF0033",
 					600: "#FBF8FA",
 					700: "#FCCBD6",
-					ERROR: "#F03",
+					ERROR: "#FF0033",
 					default: "#FF0033",
 				},
 				green: {

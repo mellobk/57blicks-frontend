@@ -6,8 +6,8 @@ import {
 	DueToDrawDetails,
 	LoanOverviewFields,
 } from "@/features/loan-overview/types/fields";
-import { Title } from "@/components/ui/Title/Title.tsx";
-import { moneyFormat } from "@/utils/format.ts";
+import { Title } from "@/components/ui/Title";
+import { moneyFormat } from "@/utils/formats";
 
 type Props = {
 	data: LoanOverviewFields;

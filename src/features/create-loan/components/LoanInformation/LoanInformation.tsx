@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { Select } from "@/components/forms/Select";
@@ -12,6 +12,7 @@ import {
 } from "@/features/create-loan/utils/selects";
 
 interface Props {
+	control: Control<Loan>;
 	errors: FieldErrors<Loan>;
 	register: UseFormRegister<Loan>;
 }

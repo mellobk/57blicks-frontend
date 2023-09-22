@@ -90,7 +90,7 @@ export const CreateLoan: FC = () => {
 				onSubmit={handleSubmit(onSubmit)}
 			>
 				<div className="grid grid-cols-3 gap-6 divide-x divide-gray-200">
-					<LoanInformation errors={errors} register={register} />
+					<LoanInformation control={control} errors={errors} register={register} />
 
 					<div className="flex flex-col gap-6 divide-y divide-gray-200 pl-6">
 						<BorrowerInformation errors={errors} register={register} />

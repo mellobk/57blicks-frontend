@@ -8,13 +8,13 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { SearchBar } from "@/components/ui/SearchBar";
 import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
 import OpportunitiesService from "@/features/opportunities/api/opportunities";
 import { Investor } from "@/features/opportunities/types/api";
 import { Opportunity } from "@/features/opportunities/types/fields";
-import { nameFormat } from "@/utils/format";
-import { SearchBar } from "@/components/ui/SearchBar";
+import { nameFormat } from "@/utils/formats";
 
 interface Props {
 	control: Control<Opportunity>;
@@ -190,7 +190,7 @@ export const PostTo: FC<Props> = ({
 															onChange={() => toggleInvestor(investor.id)}
 															type="checkbox"
 														/>
-														<div className="ml-1 font-inter text-gray-1000 text-[13px] leading-[16px] tracking-[-0.65]">
+														<div className="ml-1 font-inter text-gray-1000 text-[13px] leading-4 tracking-[-0.65]">
 															{nameFormat(
 																`${investor.user?.firstName} ${investor.user?.lastName}`
 															)}
@@ -265,7 +265,7 @@ export const PostTo: FC<Props> = ({
 									Opportunity Notes
 								</div>
 								<textarea
-									className="h-full rounded-lg py-3 px-4 bg-gray-1300 resize-none focus:outline-none font-inter text-white text-[13px] leading-[16px] tracking-[-0.65]"
+									className="h-full rounded-lg py-3 px-4 bg-gray-1300 resize-none focus:outline-none font-inter text-white text-[13px] leading-4 tracking-[-0.65]"
 									onChange={(e) =>
 										toggleNote(
 											selectedInvestor.opportunityInvestorIndex,

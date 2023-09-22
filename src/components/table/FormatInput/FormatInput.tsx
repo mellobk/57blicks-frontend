@@ -1,15 +1,14 @@
-import { FC, useEffect, useState } from "react";
+import { FC, InputHTMLAttributes, useEffect, useState } from "react";
 import { Control, Controller } from "react-hook-form";
-import { FundingBreakdown, Loan } from "@/features/create-loan/types/fields";
-import { moneyFormat, percentageFormat } from "@/utils/format";
+import { moneyFormat, percentageFormat } from "@/utils/formats";
 
-interface Props {
-	control: Control<Loan>;
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+	control: Control<any>;
 	format: "money" | "percentage";
-	name: `${"fundingBreakdown"}.${number}.${keyof FundingBreakdown}`;
+	name: string;
 }
 
-export const FormatInput: FC<Props> = ({ control, format, name }) => {
+export const FormatInput: FC<Props> = ({ control, format, name, ...props }) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null);
 
@@ -50,6 +49,7 @@ export const FormatInput: FC<Props> = ({ control, format, name }) => {
 							}}
 							type="number"
 							value={String(value)}
+							{...props}
 						/>
 					) : (
 						<span
