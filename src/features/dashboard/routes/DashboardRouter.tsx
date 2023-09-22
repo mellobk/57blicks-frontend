@@ -11,7 +11,7 @@ import { Support } from "../pages/Support/Support";
 
 export const NavbarRoutes = [
 	{
-		path: "/reporting",
+		path: "/",
 		page: Reporting,
 		layout: DashboardLayout,
 		name: "Reporting",
@@ -47,13 +47,7 @@ export const NavbarRoutes = [
 		layout: DashboardLayout,
 		name: "Manage Users",
 	},
-	{
-		path: "/",
-		page: Admin,
-		routeComponent: null,
-		layout: DashboardLayout,
-		name: "Manage Users",
-	},
+
 	{
 		path: "/support",
 		page: Support,

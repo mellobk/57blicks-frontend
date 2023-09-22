@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { authApiClient } from "@/utils/api-client";
 import type { Investor, User } from "../types/api";
 import {

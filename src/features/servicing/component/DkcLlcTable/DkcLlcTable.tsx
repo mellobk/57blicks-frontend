@@ -5,6 +5,7 @@ import type { DkcServicing } from "../../types/api";
 import { servicingTabs } from "../../utils/tabs";
 import { ServicingTable } from "../ServicingTable";
 import { Toggle } from "@/components/ui/Toggle";
+import { ServicingModal } from "../ServicingModal/ServicingModal";
 
 interface SuccessProps {}
 
@@ -39,12 +40,14 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 			name: "Borrower",
 			maxWidth: "230px",
 			minWidth: "230px",
-			selector: (row: DkcServicing): string => row?.borrower || "",
+			selector: (row: DkcServicing): JSX.Element => <div>{row?.borrower}</div>,
 			omit: false,
 		},
 		{
 			name: "Collateral Address",
-			selector: (row: DkcServicing): string => `${row?.collateralAddress}`,
+			selector: (row: DkcServicing): JSX.Element => (
+				<div>{row?.collateralAddress}</div>
+			),
 			sortable: true,
 			omit: false,
 			maxWidth: "500px",
@@ -52,7 +55,7 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 		},
 		{
 			name: "Total Loan",
-			selector: (row: DkcServicing): string => row?.totalLoan || "",
+			selector: (row: DkcServicing): JSX.Element => <div>{row?.totalLoan}</div>,
 			sortable: true,
 			omit: false,
 			maxWidth: "150px",
@@ -60,28 +63,32 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 		},
 		{
 			name: "Rate",
-			selector: (row: DkcServicing): string => row?.rate || "",
+			selector: (row: DkcServicing): JSX.Element => <div>{row?.rate}</div>,
 			omit: false,
 			maxWidth: "100px",
 			minWidth: "100px",
 		},
 		{
 			name: "Monthly Payment",
-			selector: (row: DkcServicing): string => row?.monthlyPayment || "",
+			selector: (row: DkcServicing): JSX.Element => (
+				<div>{row?.monthlyPayment}</div>
+			),
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
 		},
 		{
 			name: "Origin Date",
-			selector: (row: DkcServicing): string => row?.originDate || "",
+			selector: (row: DkcServicing): JSX.Element =>
+				<div>{row?.originDate}</div> || "",
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: DkcServicing): string => row?.maturityDate || "",
+			selector: (row: DkcServicing): JSX.Element =>
+				<div>{row?.maturityDate}</div> || "",
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
@@ -247,6 +254,8 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 					</div>
 				</>
 			</ServicingTable>
+
+			<ServicingModal />
 		</>
 	);
 };

@@ -12,6 +12,14 @@ export const servicingTabs = [
 	{ label: "First Capital Trusts LLC", routeTo: "servicing/first-capital" },
 ];
 
+export const servicingModalTabs = [
+	{ label: "Loan", routeTo: "servicing/dkc-llc" },
+	{ label: "Borrower", routeTo: "servicing/dkc-fl" },
+	{ label: "Ledger", routeTo: "servicing/dkc-iv" },
+	{ label: "Funding", routeTo: "servicing/dkc-cl" },
+	{ label: "Invoices", routeTo: "servicing/first-capital" },
+];
+
 export const footerTabData: Array<{
 	label: string;
 	width: string;
