@@ -30,21 +30,21 @@ export const defaultValues: Loan = {
 	constructionHoldback: "",
 	fundingBreakdown: [
 		{
-			amount: 0,
+			amount: "",
 			lender: lenders[0]?.name || "DKC Lending LLC",
 			lenderId: lenders[0]?.code,
-			rate: 0,
+			rate: "",
 			type: "lender",
 		},
 		{
-			amount: 0,
+			amount: "",
 			lender: "DKC Servicing Fee Income",
-			rate: 0,
+			rate: "",
 		},
 		{
-			amount: 0,
+			amount: "",
 			lender: "Yield Spread (optional)",
-			rate: 0,
+			rate: "",
 		},
 	],
 	interestRate: "",

@@ -17,10 +17,10 @@ export type Collateral = {
 };
 
 export type FundingBreakdown = {
-	amount: number;
+	amount: string;
 	lender: string;
 	lenderId?: string;
-	rate: number;
+	rate: string;
 	type?: "lender" | "participant";
 };
 
