@@ -1,14 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-	type InputHTMLAttributes,
 	forwardRef,
+	ForwardRefRenderFunction,
+	type InputHTMLAttributes,
+	ReactElement,
 	useEffect,
 	useState,
 } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
-import { classNames } from "primereact/utils";
-import type { PasswordValidations } from "@/features/auth/types/validations";
+import { ErrorText } from "@/components/forms/ErrorText";
+import { Label } from "@/components/forms/Label";
 import { Icon } from "@/components/ui/Icon";
+import type { PasswordValidations } from "@/features/auth/types/validations";
+import { inputClassName } from "@/utils/class-names.ts";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
@@ -21,7 +24,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	defaultValue?: string;
 }
 
-const PasswordInputComponent: React.ForwardRefRenderFunction<
+const PasswordInputComponent: ForwardRefRenderFunction<
 	HTMLInputElement,
 	InputProps
 > = (
@@ -68,7 +71,7 @@ const PasswordInputComponent: React.ForwardRefRenderFunction<
 		message: string,
 		complete: boolean,
 		key: number
-	): JSX.Element => {
+	): ReactElement => {
 		return (
 			<div className="flex gap-1 items-center" key={key}>
 				<div
@@ -88,9 +91,8 @@ const PasswordInputComponent: React.ForwardRefRenderFunction<
 	return (
 		<div className="flex flex-col gap-2">
 			<div className="flex justify-between font-semibold text-gray-600 ">
-				<div>
-					{label} {required && <span className="text-red-ERROR">*</span>}
-				</div>
+				<Label label={label} required={required} />
+
 				{passWordValidations?.length ? (
 					<div className="flex gap-1 items-center">
 						{passWordValidations?.length && <div> {statusLabel} </div>}
@@ -119,11 +121,7 @@ const PasswordInputComponent: React.ForwardRefRenderFunction<
 					{...register}
 					{...props}
 					defaultValue={defaultValue}
-					className={classNames(
-						error ? "text-red-ERROR bg-gray-100 " : "text-black bg-gray-200",
-						"focus:outline-none",
-						"flex w-full h-10 p-4 items-center self-stretch rounded-md"
-					)}
+					className={inputClassName(error)}
 					disabled={disabled}
 					type={changeType}
 					placeholder={placeholder}
@@ -141,7 +139,8 @@ const PasswordInputComponent: React.ForwardRefRenderFunction<
 					})}
 				</div>
 			) : null}
-			{error && <div className="text-red-ERROR">{error}</div>}
+
+			<ErrorText error={error} />
 		</div>
 	);
 };

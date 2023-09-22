@@ -2,17 +2,17 @@ import type { FC } from "react";
 import { Control, UseFieldArrayRemove, useWatch } from "react-hook-form";
 import { TableColumn } from "react-data-table-component";
 import moment from "moment";
+import { FormatInput } from "@/components/table/FormatInput";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title/Title";
 import { Table } from "@/components/ui/Table/Table";
-import { FormatInput } from "@/features/create-loan/components/FundingBreakdown/FormatInput/FormatInput";
 import {
 	FundingBreakdown as FundingBreakdownType,
 	Loan,
 } from "@/features/create-loan/types/fields";
 import { lenders } from "@/features/create-loan/utils/selects";
-import {moneyFormat} from "@/utils/format.ts";
+import { moneyFormat } from "@/utils/formats";
 
 interface Props {
 	control: Control<Loan>;
@@ -115,18 +115,18 @@ export const FundingBreakdown: FC<Props> = ({
 		},
 	];
 
-	function calculateRegular(amount = 0, rate = 0) {
-		return moneyFormat((amount * (rate / 100)) / 12);
+	function calculateRegular(amount: string, rate: string) {
+		return moneyFormat((Number(amount) * (Number(rate) / 100)) / 12);
 	}
 
-	function calculateProrated(amount = 0, rate = 0) {
+	function calculateProrated(amount: string, rate: string) {
 		const date = originationDate
 			? moment(originationDate, "MM-DD-YYYY")
 			: moment();
 		const lastDayOfMonth = date.clone().endOf("month");
 		const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days");
 
-		return moneyFormat(((amount * (rate / 100)) / (365 * daysUntilEndOfMonth)));
+		return moneyFormat((Number(amount) * (Number(rate) / 100)) / (365 * daysUntilEndOfMonth));
 	}
 
 	function canAddParticipant() {

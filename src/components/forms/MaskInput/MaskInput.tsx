@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { InputMask } from "primereact/inputmask";
-import { classNames } from "primereact/utils";
+import { ErrorText } from "@/components/forms/ErrorText";
+import { Label } from "@/components/forms/Label";
 import { Icon, type IconNames } from "@/components/ui/Icon";
+import { inputClassName } from "@/utils/class-names";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label?: string;
@@ -35,9 +36,7 @@ export const MaskInput: ForwardRefRenderFunction<
 	disabled = false,
 	defaultValue,
 	type = "text",
-	className = `placeholder-gray-400 focus:outline-none ${
-		error ? "text-red-ERROR bg-gray-100" : "bg-gray-200"
-	} font-normal font-weight-400 leading-normal tracking-wide flex w-full h-10 p-4 items-center self-stretch rounded-md`,
+	className = inputClassName(error),
 	mask,
 	iconWidth = "20",
 	iconColor = "#000",
@@ -47,13 +46,8 @@ export const MaskInput: ForwardRefRenderFunction<
 }) => {
 	return (
 		<div className={`flex flex-col gap-2 ${wrapperClassName}`}>
-			{label && (
-				<div className="font-semibold text-gray-600 ">
-					<div>
-						{label} {required && <span className="text-red-ERROR">*</span>}
-					</div>
-				</div>
-			)}
+			<Label label={label} required={required} />
+
 			<div className="relative">
 				{iconName && (
 					<div
@@ -83,16 +77,8 @@ export const MaskInput: ForwardRefRenderFunction<
 					mask={mask}
 				/>
 			</div>
-			{error && (
-				<div
-					className={classNames(
-						"text-red-ERROR",
-						"leading-normal tracking-tight"
-					)}
-				>
-					{error}
-				</div>
-			)}
+
+			<ErrorText error={error} />
 		</div>
 	);
 };

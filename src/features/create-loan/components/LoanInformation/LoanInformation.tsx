@@ -1,22 +1,20 @@
 import type { FC } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import { FormatInput } from "@/components/forms/FormatInput";
 import { Input } from "@/components/forms/Input";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { Select } from "@/components/forms/Select";
 import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
-import {
-	assetTypes,
-	prepaymentPenalties,
-	types,
-} from "@/features/create-loan/utils/selects";
+import { assetTypes, types } from "@/features/create-loan/utils/selects";
 
 interface Props {
+	control: Control<Loan>;
 	errors: FieldErrors<Loan>;
 	register: UseFormRegister<Loan>;
 }
 
-export const LoanInformation: FC<Props> = ({ errors, register }) => (
+export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 	<div>
 		<Title text="Loan Information" />
 		<Select
@@ -37,23 +35,23 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 			required
 		/>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
-			<Input
+			<FormatInput
+				control={control}
 				error={errors?.totalLoanAmount?.message}
+				format="money"
 				label="Total Loan Amount"
-				min={0}
+				name="totalLoanAmount"
 				placeholder="$0.00"
-				register={register("totalLoanAmount")}
-				type="number"
 				wrapperClassName="mt-6"
 				required
 			/>
-			<Input
+			<FormatInput
+				control={control}
 				error={errors?.interestRate?.message}
+				format="percentage"
 				label="Interest Rate"
-				min={0}
+				name="interestRate"
 				placeholder="0%"
-				register={register("interestRate")}
-				type="number"
 				wrapperClassName="mt-6"
 				required
 			/>
@@ -79,22 +77,23 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 			/>
 		</div>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
-			<Input
+			<FormatInput
+				control={control}
 				error={errors?.constructionHoldback?.message}
+				format="money"
 				label="Construction Holdback"
-				min={0}
+				name="constructionHoldback"
 				placeholder="$0.00"
-				register={register("constructionHoldback")}
-				type="number"
 				wrapperClassName="mt-6"
 				required
 			/>
-			<Input
+			<FormatInput
+				control={control}
 				error={errors?.amountDrawn?.message}
+				format="money"
 				label="Amount Drawn"
+				name="amountDrawn"
 				placeholder="$0.00"
-				register={register("amountDrawn")}
-				type="number"
 				wrapperClassName="mt-6"
 				required
 			/>
@@ -109,13 +108,12 @@ export const LoanInformation: FC<Props> = ({ errors, register }) => (
 				wrapperClassName="mt-6"
 				required
 			/>
-			<Select
-				className="mt-6"
+			<Input
 				error={errors?.prepaymentPenalty?.message}
 				label="Prepayment Penalty"
-				options={prepaymentPenalties}
 				placeholder="0%, (90 Days)"
 				register={register("prepaymentPenalty")}
+				wrapperClassName="mt-6"
 				required
 			/>
 		</div>
