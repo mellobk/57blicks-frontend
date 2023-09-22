@@ -6,11 +6,7 @@ import { MaskInput } from "@/components/forms/MaskInput";
 import { Select } from "@/components/forms/Select";
 import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
-import {
-	assetTypes,
-	prepaymentPenalties,
-	types,
-} from "@/features/create-loan/utils/selects";
+import { assetTypes, types } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	control: Control<Loan>;
@@ -40,25 +36,25 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 		/>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 			<FormatInput
-        control={control}
-        error={errors?.totalLoanAmount?.message}
-        format="money"
-        label="Total Loan Amount"
-        name="totalLoanAmount"
-        placeholder="$0.00"
-        wrapperClassName="mt-6"
-        required
-      />
+				control={control}
+				error={errors?.totalLoanAmount?.message}
+				format="money"
+				label="Total Loan Amount"
+				name="totalLoanAmount"
+				placeholder="$0.00"
+				wrapperClassName="mt-6"
+				required
+			/>
 			<FormatInput
-        control={control}
-        error={errors?.interestRate?.message}
-        format="percentage"
-        label="Interest Rate"
-        name="interestRate"
-        placeholder="0%"
-        wrapperClassName="mt-6"
-        required
-      />
+				control={control}
+				error={errors?.interestRate?.message}
+				format="percentage"
+				label="Interest Rate"
+				name="interestRate"
+				placeholder="0%"
+				wrapperClassName="mt-6"
+				required
+			/>
 		</div>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 			<MaskInput
@@ -81,26 +77,26 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 			/>
 		</div>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
-      <FormatInput
-        control={control}
-        error={errors?.constructionHoldback?.message}
-        format="money"
-        label="Construction Holdback"
-        name="constructionHoldback"
-        placeholder="$0.00"
-        wrapperClassName="mt-6"
-        required
-      />
-      <FormatInput
-        control={control}
-        error={errors?.amountDrawn?.message}
-        format="money"
-        label="Amount Drawn"
-        name="amountDrawn"
-        placeholder="$0.00"
-        wrapperClassName="mt-6"
-        required
-      />
+			<FormatInput
+				control={control}
+				error={errors?.constructionHoldback?.message}
+				format="money"
+				label="Construction Holdback"
+				name="constructionHoldback"
+				placeholder="$0.00"
+				wrapperClassName="mt-6"
+				required
+			/>
+			<FormatInput
+				control={control}
+				error={errors?.amountDrawn?.message}
+				format="money"
+				label="Amount Drawn"
+				name="amountDrawn"
+				placeholder="$0.00"
+				wrapperClassName="mt-6"
+				required
+			/>
 		</div>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
 			<MaskInput
@@ -112,13 +108,12 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 				wrapperClassName="mt-6"
 				required
 			/>
-			<Select
-				className="mt-6"
+			<Input
 				error={errors?.prepaymentPenalty?.message}
 				label="Prepayment Penalty"
-				options={prepaymentPenalties}
 				placeholder="0%, (90 Days)"
 				register={register("prepaymentPenalty")}
+				wrapperClassName="mt-6"
 				required
 			/>
 		</div>

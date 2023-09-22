@@ -68,11 +68,6 @@ export const types = [
 	},
 ];
 
-export const prepaymentPenalties = [
-	{ code: "90_days_2%", name: "90 - Days - 2%" },
-	{ code: "180_1%", name: "180 - 1%" },
-];
-
 export const participants = [
 	{ code: "participant_1", name: "Participant 1" },
 	{ code: "participant_2", name: "Participant 2" },
