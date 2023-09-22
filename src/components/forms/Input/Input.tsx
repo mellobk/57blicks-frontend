@@ -7,7 +7,7 @@ import { inputClassName } from "@/utils/class-names";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	clickIcon?: () => void;
-	error?: string;
+	error?: any;
 	iconColor?: string;
 	iconName?: (typeof IconNames)[number];
 	iconWidth?: string;

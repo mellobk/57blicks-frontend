@@ -24,10 +24,10 @@ export const AddParticipant: FC<Props> = ({
 	const addParticipant = () => {
 		if (selectedParticipant) {
 			append({
-				amount: 0,
+				amount: "",
 				lender: selectedParticipant.name,
 				lenderId: selectedParticipant.code,
-				rate: 0,
+				rate: "",
 				type: "participant",
 			});
 			setSelectedParticipant(null);
