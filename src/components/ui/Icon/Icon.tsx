@@ -1,15 +1,18 @@
-import type { ReactElement } from "react";
 import ArrowDown from "@/assets/icons/arrow-down";
 import ArrowLeft from "@/assets/icons/arrow-left";
 import Bank from "@/assets/icons/bank";
 import Cellphone from "@/assets/icons/cellphone";
 import Clock from "@/assets/icons/clock";
+import ClockReverse from "@/assets/icons/clock-reverse";
 import CloseEye from "@/assets/icons/close-eye";
 import CloseEyes from "@/assets/icons/closes-eyes";
 import Column from "@/assets/icons/column";
 import Date from "@/assets/icons/date";
 import DeleteBack from "@/assets/icons/delete-back";
+import DoorOut from "@/assets/icons/door-out";
 import Email from "@/assets/icons/email";
+import Hamburger from "@/assets/icons/hamburger";
+import IconNames from "./IconNames";
 import Loading from "@/assets/icons/loading";
 import MenuTable from "@/assets/icons/menu-table";
 import MoneyBag from "@/assets/icons/money-bag";
@@ -19,6 +22,7 @@ import Ok from "@/assets/icons/ok";
 import Open from "@/assets/icons/open";
 import OpenEye from "@/assets/icons/open-eye";
 import Plus from "@/assets/icons/plus";
+import type { ReactElement } from "react";
 import Search from "@/assets/icons/search";
 import Shield from "@/assets/icons/shield";
 import Star from "@/assets/icons/star";
@@ -27,8 +31,6 @@ import TrashBin from "@/assets/icons/trash-bin";
 import Upload from "@/assets/icons/upload";
 import User from "@/assets/icons/user";
 import Wrong from "@/assets/icons/wrong";
-import IconNames from "./IconNames";
-import DoorOut from "@/assets/icons/door-out";
 
 interface Props {
 	name: (typeof IconNames)[number];
@@ -66,6 +68,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 		clock: {
 			name: "clock",
 			icon: <Clock width={width} color={color} />,
+		},
+		"clock-reverse": {
+			name: "clock-reverse",
+			icon: <ClockReverse width={width} color={color} />,
 		},
 		closeEye: {
 			name: "closeEye",
@@ -162,6 +168,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 		doorOut: {
 			name: "doorOut",
 			icon: <DoorOut width={width} color={color} />,
+		},
+		hamburger: {
+			name: "hamburger",
+			icon: <Hamburger width={width} color={color} />,
 		},
 	};
 
