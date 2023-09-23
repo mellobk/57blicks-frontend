@@ -1,17 +1,19 @@
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+
+import { AddAdmin } from "../AddAdmin/AddAdmin";
+import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
+import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
+import { Icon } from "@/components/ui/Icon";
+import ManageUsersService from "../../api/investors";
+import { Modal } from "@/components/ui/Modal/Modal";
 import { Table } from "@/features/manage-user/components/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
-import { Icon } from "@/components/ui/Icon";
-import { Modal } from "@/components/ui/Modal/Modal";
-import { useEffect, useState } from "react";
-import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
-import { AddAdmin } from "../AddAdmin/AddAdmin";
-import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
-import { tabs } from "../../utils/tabs";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import type { User } from "../../types/api";
-import ManageUsersService from "../../api/investors";
+import UserActivity from "../UserActivity/UserActivity";
 import { findIndex } from "@/utils/common-funtions";
+import { tabs } from "../../utils/tabs";
 
 interface SuccessProps {}
 
@@ -20,6 +22,7 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 	const [deleteId, setDeleteId] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
+	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
 	const adminQuery = useQuery(
 		["admin-query"],
@@ -74,6 +77,10 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 	const handleSearch = (data: string) => {
 		setSearchValue(data);
 		return data;
+	};
+
+	const handleRowClicked = (row: unknown): void => {
+		setSelectedUser(row as User);
 	};
 
 	useEffect(() => {
@@ -158,6 +165,7 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 					buttonText="Add admin"
 					widthSearch="150px"
 					conditionalRowStyles={conditionalRowStyles}
+					onRowClicked={handleRowClicked}
 				>
 					<>
 						<div>
@@ -185,6 +193,9 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 			>
 				<DeleteAdmin id={deleteId} handleDeleteAdmin={handleDeleteUser} />
 			</Modal>
+			{selectedUser && (
+				<UserActivity user={selectedUser} setUser={setSelectedUser} />
+			)}
 		</>
 	);
 };

@@ -1,17 +1,19 @@
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+
+import { AddAccounting } from "../AddAccounting/AddAccounting";
+import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
+import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
+import { Icon } from "@/components/ui/Icon";
+import ManageUsersService from "../../api/investors";
+import { Modal } from "@/components/ui/Modal/Modal";
 import { Table } from "@/features/manage-user/components/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
-import { Icon } from "@/components/ui/Icon";
-import { Modal } from "@/components/ui/Modal/Modal";
-import { useEffect, useState } from "react";
-import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
-import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
-import { tabs } from "../../utils/tabs";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import ManageUsersService from "../../api/investors";
 import type { User } from "../../types/api";
-import { AddAccounting } from "../AddAccounting/AddAccounting";
+import UserActivity from "../UserActivity/UserActivity";
 import { findIndex } from "@/utils/common-funtions";
+import { tabs } from "../../utils/tabs";
 
 interface SuccessProps {}
 
@@ -20,6 +22,8 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 	const [deleteId, setDeleteId] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
+	const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
 	const accountQuery = useQuery(
 		["account-query"],
 		() => {
@@ -74,6 +78,10 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 	const handleSearch = (data: string) => {
 		setSearchValue(data);
 		return data;
+	};
+
+	const handleRowClicked = (row: unknown): void => {
+		setSelectedUser(row as User);
 	};
 
 	/* 	const accountMutation = useMutation(() => {
@@ -162,6 +170,7 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 					buttonText="Add Accounting"
 					widthSearch="185px"
 					conditionalRowStyles={conditionalRowStyles}
+					onRowClicked={handleRowClicked}
 				>
 					<>
 						<div>
@@ -189,6 +198,9 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 			>
 				<DeleteAdmin id={deleteId} handleDeleteAdmin={handleDeleteUser} />
 			</Modal>
+			{selectedUser && (
+				<UserActivity user={selectedUser} setUser={setSelectedUser} />
+			)}
 		</>
 	);
 };
