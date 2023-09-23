@@ -1,14 +1,16 @@
+import "./Table.css";
+
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FC, ReactElement } from "react";
 import { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import { Input } from "@/components/forms/Input";
+
 import { Button } from "@/components/ui/Button";
-import { Toggle } from "@/components/ui/Toggle/Toggle";
+import DataTable from "react-data-table-component";
 import { Icon } from "@/components/ui/Icon";
+import { Input } from "@/components/forms/Input";
 import { Modal } from "@/components/ui/Modal/Modal";
+import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { useDebounce } from "@/hooks/debounce";
-import "./Table.css";
 
 interface Column {
 	name?: string;
@@ -29,6 +31,7 @@ interface TableProps {
 	onClickButton?: () => void;
 	widthSearch?: string;
 	loading?: boolean;
+	onRowClicked?: (row: unknown) => void;
 }
 
 export const Table: FC<TableProps> = ({
@@ -43,6 +46,7 @@ export const Table: FC<TableProps> = ({
 	onClickButton,
 	widthSearch = "158px",
 	loading,
+	onRowClicked,
 }) => {
 	const [visible, setVisible] = useState(false);
 	const [stateColumns, setStateColumns] = useState<Array<Column>>(columns);
@@ -204,6 +208,7 @@ export const Table: FC<TableProps> = ({
 						data={data}
 						progressPending={loading}
 						conditionalRowStyles={conditionalRowStyles}
+						onRowClicked={onRowClicked}
 					/>
 				</div>
 			</div>
