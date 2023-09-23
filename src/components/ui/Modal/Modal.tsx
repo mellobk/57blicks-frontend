@@ -1,6 +1,8 @@
-import { FC, ReactNode } from "react";
-import { Dialog } from "primereact/dialog";
 import "./Modal.css";
+
+import { FC, ReactNode } from "react";
+
+import { Dialog } from "primereact/dialog";
 
 interface LoginTitleProps {
 	minHeight?: string;
