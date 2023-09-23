@@ -33,3 +33,9 @@ export const footerTabData: Array<{
 	{ label: "01-04-2022", width: "200px" },
 	{ label: "01-04-2022 ", width: "250px" },
 ];
+
+export const userTabs = [
+	{ label: "Activity", routeTo: "manage-users/admins" },
+	{ label: "Permission", routeTo: "manage-users/admins" },
+	{ label: "Edit", routeTo: "manage-users/admins" },
+];
