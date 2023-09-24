@@ -16,3 +16,9 @@ export const nameFormat = (name: string) => {
 export const percentageFormat = (value: number) => {
 	return `${value}%`;
 };
+
+export const formatValue = (value: number, format: "money" | "percentage") => {
+	return format === "money"
+		? moneyFormat(Number(value))
+		: percentageFormat(Number(value));
+};

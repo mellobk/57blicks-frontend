@@ -3,7 +3,3 @@ export const inputClassName = (error?: string) => {
     error ? "text-red-ERROR bg-gray-100" : "bg-gray-200"
   } font-inter text-[13px] text-primary-500 leading-4 tracking-[-0.65px] flex w-full h-10 p-4 items-center self-stretch rounded-md`;
 };
-
-export const placeholderClassName = () => {
-  return "bg-gray-200 font-inter text-[13px] text-gray-400 leading-4 tracking-[-0.65px] flex w-full h-10 p-4 items-center self-stretch rounded-md";
-};
