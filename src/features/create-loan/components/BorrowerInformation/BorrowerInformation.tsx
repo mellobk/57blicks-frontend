@@ -21,7 +21,7 @@ export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
 			wrapperClassName="mt-6"
 			required
 		/>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 			<Input
 				error={errors?.borrower?.user?.firstName?.message}
 				label="First Name"

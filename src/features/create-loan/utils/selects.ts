@@ -21,6 +21,12 @@ export const assetTypes = [
 	{ code: "comm_other", name: "Commercial-Other" },
 ];
 
+export const leadSources = [
+	{ code: "MARKETING_LEAD", name: "Marketing Lead" },
+	{ code: "PARTNER_LEAD", name: "Partner Lead" },
+	{ code: "LC_LEAD", name: "LC Lead" },
+];
+
 export const lenders = [
 	{ code: "dkc_lending_llc", name: "DKC Lending LLC" },
 	{ code: "dkc_lending_fl", name: "DKC Lending FL" },

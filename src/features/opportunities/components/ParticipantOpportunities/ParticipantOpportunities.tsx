@@ -12,7 +12,7 @@ interface Props {
 export const ParticipantOpportunities: FC<Props> = ({ errors, register }) => (
 	<div>
 		<Title text="Participant Opportunities" />
-		<div className="grid xl:grid-cols-3 grid-cols-1 xl:gap-6 items-end">
+		<div className="grid xl:grid-cols-3 grid-cols-1 xl:gap-6">
 			<Input
 				error={errors?.participantOpportunities?.["99%"]?.message}
 				placeholder="99%"

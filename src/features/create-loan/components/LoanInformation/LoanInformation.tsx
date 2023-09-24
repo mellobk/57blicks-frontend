@@ -6,7 +6,11 @@ import { MaskInput } from "@/components/forms/MaskInput";
 import { Select } from "@/components/forms/Select";
 import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
-import { assetTypes, types } from "@/features/create-loan/utils/selects";
+import {
+	assetTypes,
+	leadSources,
+	types,
+} from "@/features/create-loan/utils/selects";
 
 interface Props {
 	control: Control<Loan>;
@@ -34,7 +38,7 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 			wrapperClassName="mt-6"
 			required
 		/>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 			<FormatInput
 				control={control}
 				error={errors?.totalLoanAmount?.message}
@@ -56,7 +60,7 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 				required
 			/>
 		</div>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 			<MaskInput
 				error={errors?.originationDate?.message}
 				label="Origination Date"
@@ -76,7 +80,7 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 				required
 			/>
 		</div>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 			<FormatInput
 				control={control}
 				error={errors?.constructionHoldback?.message}
@@ -98,7 +102,7 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 				required
 			/>
 		</div>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 			<MaskInput
 				error={errors?.collaterals?.[0]?.insuranceExpirationDate?.message}
 				label="Insurance Expiration Date"
@@ -138,8 +142,37 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 			className="mt-6"
 			label="Asset Type"
 			options={assetTypes}
-			placeholder="Enter Asset Type"
+			placeholder="Select Asset Type"
 			register={register("collaterals.0.assetType")}
+			required
+		/>
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
+			<Input
+				error={errors?.loanConsultant?.message}
+				label="Loan Consultant"
+				placeholder="Enter Loan Consultant"
+				register={register("loanConsultant")}
+				wrapperClassName="mt-6"
+				required
+			/>
+			<FormatInput
+				control={control}
+				error={errors?.ltv?.message}
+				format="percentage"
+				label="LTV"
+				name="ltv"
+				placeholder="0%"
+				wrapperClassName="mt-6"
+				required
+			/>
+		</div>
+		<Select
+			error={errors?.leadSource?.message}
+			className="mt-6"
+			label="Lead Origin"
+			options={leadSources}
+			placeholder="Select Lead Origin"
+      register={register("leadSource")}
 			required
 		/>
 	</div>

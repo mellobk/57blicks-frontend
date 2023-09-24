@@ -13,10 +13,9 @@ export const FormatInput: FC<Props> = ({ control, format, name, ...props }) => {
 
 	return (
 		<Controller
-			name={name}
-			control={control}
-			defaultValue=""
-			render={({ field: { onChange, onBlur, value } }) => (
+      control={control}
+      name={name}
+      render={({ field: { onChange, onBlur, value } }) => (
 				<input
 					className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none"
 					min={0}

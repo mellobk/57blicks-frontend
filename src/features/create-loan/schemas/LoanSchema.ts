@@ -17,7 +17,16 @@ export const LoanSchema = z.object({
 	interestRate: z
 		.string()
 		.min(1, { message: errorMessages.required })
-		.max(100, { message: errorMessages.maxLength }),
+		.max(3, { message: errorMessages.maxLength }),
+  leadSource: z.string().min(1, { message: errorMessages.required }),
+  loanConsultant: z
+    .string()
+    .min(1, { message: errorMessages.required })
+    .max(100, { message: errorMessages.maxLength }),
+  ltv: z
+    .string()
+    .min(1, { message: errorMessages.required })
+    .max(3, { message: errorMessages.maxLength }),
 	maturityDate: z.string().min(1, { message: errorMessages.required }),
 	originationDate: z.string().min(1, { message: errorMessages.required }),
 	prepaymentPenalty: z.string().min(1, { message: errorMessages.required }),

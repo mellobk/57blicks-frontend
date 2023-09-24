@@ -31,9 +31,12 @@ export type Loan = {
 	constructionHoldback: string;
 	fundingBreakdown: FundingBreakdown[];
 	interestRate: string;
-	maturityDate: string;
-	originationDate: string;
-	prepaymentPenalty: string;
+  leadSource: string;
+  loanConsultant: string;
+  ltv: string;
+  maturityDate: string;
+  originationDate: string;
+  prepaymentPenalty: string;
 	totalLoanAmount: string;
 	type: string;
 };

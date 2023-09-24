@@ -55,16 +55,12 @@ export const MultipleCollateral: FC<Props> = ({
 					<div className="flex flex-col gap-4 divide-y divide-gray-200">
 						{collaterals.map((item, index) => (
 							<div key={item.id}>
-								<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
+								<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 									<Input
-										error={
-											errors?.collaterals?.[index]?.address?.message
-										}
+										error={errors?.collaterals?.[index]?.address?.message}
 										label="Collateral Address"
 										placeholder="Enter Collateral Address"
-										register={register(
-											`collaterals.${index}.address`
-										)}
+										register={register(`collaterals.${index}.address`)}
 										wrapperClassName="lg:mt-4 mt-6"
 										required
 									/>
@@ -107,7 +103,7 @@ export const MultipleCollateral: FC<Props> = ({
 									error={errors?.collaterals?.[index]?.assetType?.message}
 									label="Asset Type"
 									options={assetTypes}
-									placeholder="Select Dropdown"
+									placeholder="Select Asset Type"
 									register={register(`collaterals.${index}.assetType`)}
 									required
 								/>
@@ -124,7 +120,7 @@ export const MultipleCollateral: FC<Props> = ({
 							className="rounded-lg bg-primary-500 mt-4 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
 							onClick={() =>
 								append({
-                  address: "",
+									address: "",
 									assetType: "",
 									insuranceExpirationDate: "",
 									link: "",
