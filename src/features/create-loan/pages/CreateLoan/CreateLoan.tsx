@@ -3,6 +3,7 @@ import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
+import { SuccessModal } from "@/components/ui/SuccessModal";
 import CreateLoanService from "@/features/create-loan/api/create-loan";
 import { AddParticipant } from "@/features/create-loan/components/AddParticipant/AddParticipant";
 import { BankingInformation } from "@/features/create-loan/components/BankingInformation/BankingInformation";
@@ -14,8 +15,8 @@ import { SelectLender } from "@/features/create-loan/components/SelectLender/Sel
 import { LoanSchema } from "@/features/create-loan/schemas/LoanSchema";
 import { Loan } from "@/features/create-loan/types/fields";
 import { defaultValues } from "@/features/create-loan/utils/values";
+import useStore from "@/stores/app-store";
 import { unFormatPhone } from "@/utils/common-funtions";
-import { SuccessModal } from "@/components/ui/SuccessModal";
 
 export const CreateLoan: FC = () => {
 	const [openLenderModal, setOpenLenderModal] = useState<boolean>(false);
@@ -49,14 +50,16 @@ export const CreateLoan: FC = () => {
 		control,
 		name: "fundingBreakdown",
 	});
-
 	const {
-		mutate,
+		error,
+		isError,
 		isSuccess,
+		mutate,
 		reset: resetMutation,
 	} = useMutation((data: Loan) => {
 		return CreateLoanService.createLoan(data);
 	});
+	const setErrorMessage = useStore((state) => state.setErrorMessage);
 
 	const onSubmit: SubmitHandler<Loan> = (data: Loan): void => {
 		const phoneNumber = unFormatPhone(data.borrower?.user?.phoneNumber || "");
@@ -83,6 +86,15 @@ export const CreateLoan: FC = () => {
 		}
 	}, [isSuccess]);
 
+	useEffect(() => {
+		if (isError && (error as Error)) {
+			const currentError = error as Error;
+
+			setErrorMessage(currentError?.message);
+			resetMutation();
+		}
+	}, [isError]);
+
 	return (
 		<>
 			<form
@@ -90,7 +102,11 @@ export const CreateLoan: FC = () => {
 				onSubmit={handleSubmit(onSubmit)}
 			>
 				<div className="grid grid-cols-3 gap-6 divide-x divide-gray-200">
-					<LoanInformation control={control} errors={errors} register={register} />
+					<LoanInformation
+						control={control}
+						errors={errors}
+						register={register}
+					/>
 
 					<div className="flex flex-col gap-6 divide-y divide-gray-200 pl-6">
 						<BorrowerInformation errors={errors} register={register} />

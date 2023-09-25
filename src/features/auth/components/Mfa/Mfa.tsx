@@ -58,7 +58,6 @@ export const Mfa: FC<MfaProps> = ({
 			sendToLocalStorage(mfaCode, codeMfa);
 			void navigate({ to: `/${navigateTo}` });
 		} catch (error) {
-			console.log(error);
 			setErrorMessage("Something goes wrong");
 		}
 	};
