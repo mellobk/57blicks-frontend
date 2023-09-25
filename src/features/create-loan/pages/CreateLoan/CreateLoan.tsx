@@ -42,14 +42,15 @@ export const CreateLoan: FC = () => {
 		control,
 		name: "collaterals",
 	});
-	const {
-		append: appendParticipant,
-		fields: fundingBreakdown,
-		remove: removeParticipant,
-	} = useFieldArray({
+	const { fields: fundingBreakdown } = useFieldArray({
 		control,
 		name: "fundingBreakdown",
 	});
+	const { append: appendParticipant, remove: removeParticipant } =
+		useFieldArray({
+			control,
+			name: "participationBreakdown",
+		});
 	const {
 		error,
 		isError,
@@ -94,6 +95,10 @@ export const CreateLoan: FC = () => {
 			resetMutation();
 		}
 	}, [isError]);
+
+	useEffect(() => {
+		console.log(errors);
+	}, [errors]);
 
 	return (
 		<>

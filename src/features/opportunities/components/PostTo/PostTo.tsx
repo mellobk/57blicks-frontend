@@ -11,7 +11,7 @@ import { Icon } from "@/components/ui/Icon";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
-import OpportunitiesService from "@/features/opportunities/api/opportunities";
+import OpportunitiesService from "@/features/opportunities/api/investors.ts";
 import { Investor } from "@/features/opportunities/types/api";
 import { Opportunity } from "@/features/opportunities/types/fields";
 import { nameFormat } from "@/utils/formats";

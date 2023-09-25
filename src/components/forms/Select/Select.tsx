@@ -16,7 +16,6 @@ interface SelectProps extends DropdownProps {
 	error?: string;
 	label?: string;
 	register?: UseFormRegisterReturn;
-	value?: Option;
 }
 
 export const Select: ForwardRefRenderFunction<
@@ -32,7 +31,7 @@ export const Select: ForwardRefRenderFunction<
 	value,
 	...props
 }) => {
-	const [selectedData, setSelectedData] = useState<string>(value?.code || "");
+	const [selectedData, setSelectedData] = useState<string>(value);
 
 	return (
 		<div className={`flex flex-col gap-2 ${className}`}>
@@ -43,9 +42,9 @@ export const Select: ForwardRefRenderFunction<
 					{...props}
 					{...register}
 					value={selectedData}
-					onChange={(event): void => {
-						setSelectedData(event.value);
-						onChange?.(event);
+					onChange={(e): void => {
+						setSelectedData(e.target.value);
+						onChange?.(e);
 					}}
 					optionLabel="name"
 					optionValue="code"

@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import { useEffect } from "react";
 import { Control, UseFieldArrayRemove, useWatch } from "react-hook-form";
 import { TableColumn } from "react-data-table-component";
 import moment from "moment";
@@ -37,6 +38,12 @@ export const FundingBreakdown: FC<Props> = ({
 		control,
 		name: "originationDate",
 	});
+	const participationBreakdown = useWatch({
+		control,
+		name: "participationBreakdown",
+		defaultValue: [],
+	});
+
 	const columns: TableColumn<FundingBreakdownType>[] = [
 		{
 			cell: (row, rowIndex) => {
@@ -48,14 +55,14 @@ export const FundingBreakdown: FC<Props> = ({
 							type="button"
 						>
 							<div className="flex flex-row justify-between items-center">
-								{row.lender}
+								{row.lenderName}
 								<Icon name="arrowDown" width="6" color="#656A74" />
 							</div>
 						</button>
 					);
 				}
 
-				return <Cell className="px-4" format="text" value={row.lender} />;
+				return <Cell className="px-4" format="text" value={row.lenderName} />;
 			},
 			name: "Lender",
 			style: { padding: 0 },
@@ -65,7 +72,9 @@ export const FundingBreakdown: FC<Props> = ({
 				<FormatInput
 					control={control}
 					format="money"
-					name={`fundingBreakdown.${rowIndex}.amount`}
+					name={`${
+						rowIndex > 2 ? "participationBreakdown" : "fundingBreakdown"
+					}.${rowIndex}.amount`}
 				/>
 			),
 			name: "Amount",
@@ -76,7 +85,9 @@ export const FundingBreakdown: FC<Props> = ({
 				<FormatInput
 					control={control}
 					format="percentage"
-					name={`fundingBreakdown.${rowIndex}.rate`}
+					name={`${
+						rowIndex > 2 ? "participationBreakdown" : "fundingBreakdown"
+					}.${rowIndex}.rate`}
 				/>
 			),
 			name: "Rate",
@@ -149,6 +160,10 @@ export const FundingBreakdown: FC<Props> = ({
 		return lender && participants.length < 4;
 	}
 
+	useEffect(() => {
+		console.log([...fundingBreakdown, ...participationBreakdown]);
+	}, [participationBreakdown]);
+
 	return (
 		<div className="pt-6">
 			<div className="flex flex-row justify-between">
@@ -169,7 +184,7 @@ export const FundingBreakdown: FC<Props> = ({
 			<Table
 				className="mt-6 rounded-3xl"
 				columns={columns}
-				data={fundingBreakdown}
+				data={[...fundingBreakdown, ...participationBreakdown]}
 			/>
 			<Footer />
 		</div>

@@ -9,8 +9,8 @@ export type Borrower = {
 };
 
 export type Collateral = {
-  address: string;
-  assetType: string;
+	address: string;
+	assetType: string;
 	insuranceExpirationDate: string;
 	link: string;
 	taxUrl: string;
@@ -18,9 +18,11 @@ export type Collateral = {
 
 export type FundingBreakdown = {
 	amount: string;
-	lender: string;
 	lenderId?: string;
+  lenderName: string;
+  prorate: string;
 	rate: string;
+	regular: string;
 	type?: "lender" | "participant";
 };
 
@@ -31,12 +33,13 @@ export type Loan = {
 	constructionHoldback: string;
 	fundingBreakdown: FundingBreakdown[];
 	interestRate: string;
-  leadSource: string;
-  loanConsultant: string;
-  ltv: string;
-  maturityDate: string;
-  originationDate: string;
-  prepaymentPenalty: string;
+	leadSource: string;
+	loanConsultant: string;
+	ltv: string;
+	maturityDate: string;
+	originationDate: string;
+	participationBreakdown: FundingBreakdown[];
+	prepaymentPenalty: string;
 	totalLoanAmount: string;
 	type: string;
 };
