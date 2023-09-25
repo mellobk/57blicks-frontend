@@ -53,7 +53,7 @@ export const TextArea: ForwardRefRenderFunction<
 			)}
 
 			<textarea
-				className={`${className} ${iconName && "pr-[30px]"}`}
+				className={`h-36 ${className} ${iconName && "pr-[30px]"}`}
 				rows={rows}
 				{...props}
 				{...register}
