@@ -1,6 +1,6 @@
 import { ComponentType } from "react";
 import { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
-import { Cell } from "@/features/loan-overview/components/Cell/Cell";
+import { Cell } from "@/components/table/Cell";
 import { LoanOverviewFields } from "@/features/loan-overview/types/fields";
 
 interface Props extends ExpanderComponentProps<any> {
@@ -33,13 +33,13 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 		<div className="flex flex-row h-12 bg-gray-200 rounded-b-2xl">
 			<div className="w-12" />
 			<div className="grid grid-cols-7 gap-8 px-4 w-full items-center">
-				<Cell type="text" value={`Total: ${totals.total}`} bold />
-				<Cell type="number" value={totals.totalLoan} bold />
-				<Cell type="number" value={totals.totalDrawn} bold />
-				<Cell type="number" value={totals.trustUnallocated} bold />
-				<Cell type="number" value={totals.trustAllocated} bold />
-				<Cell type="number" value={totals.dueToDraws} bold />
-				<Cell type="number" value={totals.totalFunds} bold />
+				<Cell format="text" value={`Total: ${totals.total}`} bold />
+				<Cell format="money" value={totals.totalLoan} bold />
+				<Cell format="money" value={totals.totalDrawn} bold />
+				<Cell format="money" value={totals.trustUnallocated} bold />
+				<Cell format="money" value={totals.trustAllocated} bold />
+				<Cell format="money" value={totals.dueToDraws} bold />
+				<Cell format="money" value={totals.totalFunds} bold />
 			</div>
 		</div>
 	);

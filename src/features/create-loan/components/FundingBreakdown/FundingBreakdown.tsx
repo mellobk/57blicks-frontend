@@ -2,17 +2,18 @@ import type { FC } from "react";
 import { Control, UseFieldArrayRemove, useWatch } from "react-hook-form";
 import { TableColumn } from "react-data-table-component";
 import moment from "moment";
+import { Cell } from "@/components/table/Cell";
 import { FormatInput } from "@/components/table/FormatInput";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title/Title";
 import { Table } from "@/components/ui/Table/Table";
+import { Footer } from "@/features/create-loan/components/FundingBreakdown/Footer/Footer";
 import {
 	FundingBreakdown as FundingBreakdownType,
 	Loan,
 } from "@/features/create-loan/types/fields";
 import { lenders } from "@/features/create-loan/utils/selects";
-import { moneyFormat } from "@/utils/formats";
 
 interface Props {
 	control: Control<Loan>;
@@ -54,7 +55,7 @@ export const FundingBreakdown: FC<Props> = ({
 					);
 				}
 
-				return <div className="px-4">{row.lender}</div>;
+				return <Cell className="px-4" format="text" value={row.lender} />;
 			},
 			name: "Lender",
 			style: { padding: 0 },
@@ -83,14 +84,22 @@ export const FundingBreakdown: FC<Props> = ({
 		},
 		{
 			cell: (row: FundingBreakdownType) => (
-				<div className="px-4">{calculateProrated(row.amount, row.rate)}</div>
+				<Cell
+					className="px-4"
+					format="money"
+					value={calculateProrated(row.amount, row.rate)}
+				/>
 			),
 			name: "Prorated",
 			style: { padding: 0 },
 		},
 		{
 			cell: (row: FundingBreakdownType) => (
-				<div className="px-4">{calculateRegular(row.amount, row.rate)}</div>
+				<Cell
+					className="px-4"
+					format="money"
+					value={calculateRegular(row.amount, row.rate)}
+				/>
 			),
 			name: "Regular",
 			style: { padding: 0 },
@@ -108,7 +117,7 @@ export const FundingBreakdown: FC<Props> = ({
 					)}
 				</>
 			),
-			maxWidth: "50px",
+			width: "48px",
 			name: "",
 			style: { padding: 0 },
 			right: true,
@@ -116,7 +125,7 @@ export const FundingBreakdown: FC<Props> = ({
 	];
 
 	function calculateRegular(amount: string, rate: string) {
-		return moneyFormat((Number(amount) * (Number(rate) / 100)) / 12);
+		return (Number(amount) * (Number(rate) / 100)) / 12;
 	}
 
 	function calculateProrated(amount: string, rate: string) {
@@ -126,7 +135,9 @@ export const FundingBreakdown: FC<Props> = ({
 		const lastDayOfMonth = date.clone().endOf("month");
 		const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days");
 
-		return moneyFormat((Number(amount) * (Number(rate) / 100)) / (365 * daysUntilEndOfMonth));
+		return (
+			(Number(amount) * (Number(rate) / 100)) / (365 * daysUntilEndOfMonth)
+		);
 	}
 
 	function canAddParticipant() {
@@ -134,6 +145,7 @@ export const FundingBreakdown: FC<Props> = ({
 		const participants = fundingBreakdown.filter(
 			(field) => field.type === "participant"
 		);
+
 		return lender && participants.length < 4;
 	}
 
@@ -155,10 +167,11 @@ export const FundingBreakdown: FC<Props> = ({
 				/>
 			</div>
 			<Table
-				className="my-6 rounded-3xl"
+				className="mt-6 rounded-3xl"
 				columns={columns}
 				data={fundingBreakdown}
 			/>
+			<Footer />
 		</div>
 	);
 };
