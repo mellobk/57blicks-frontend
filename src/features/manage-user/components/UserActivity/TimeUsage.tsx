@@ -1,7 +1,5 @@
 import { Icon } from "@/components/ui/Icon";
 import React from "react";
-import { UserActivity } from "../../types/logs";
-import { formatDate } from "@/utils/date-format";
 
 interface TimeUsageProps {}
 
