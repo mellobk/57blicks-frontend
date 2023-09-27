@@ -12,9 +12,8 @@ export type Option = {
 };
 
 interface SelectProps extends DropdownProps {
-	className?: string;
 	error?: string;
-	label?: string;
+	label: string;
 	register?: UseFormRegisterReturn;
 }
 

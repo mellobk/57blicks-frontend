@@ -1,4 +1,4 @@
-import { render, fireEvent } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { Select } from "./Select";
 
 test("dropdown selection works", () => {
@@ -8,7 +8,7 @@ test("dropdown selection works", () => {
 		// Add more options as needed
 	];
 
-	const { getByText } = render(<Select options={options} />);
+	const { getByText } = render(<Select options={options} label="Label" />);
 
 	const selectDropdown = getByText("Select Dropdown");
 

@@ -7,7 +7,7 @@ import { inputClassName } from "@/utils/class-names";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	error?: any;
-	label?: string;
+	label: string;
 	register?: UseFormRegisterReturn;
 	wrapperClassName?: string;
 }

@@ -14,31 +14,17 @@ import type { PasswordValidations } from "@/features/auth/types/validations";
 import { inputClassName } from "@/utils/class-names.ts";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-	label?: string;
-	placeholder?: string;
-	required?: boolean;
+	label: string;
 	error?: any;
 	register?: UseFormRegisterReturn;
 	passWordValidations?: Array<PasswordValidations>;
-	disabled?: boolean;
-	defaultValue?: string;
 }
 
 const PasswordInputComponent: ForwardRefRenderFunction<
 	HTMLInputElement,
 	InputProps
 > = (
-	{
-		label,
-		placeholder,
-		error,
-		register,
-		required,
-		passWordValidations,
-		disabled = false,
-		defaultValue,
-		...props
-	},
+	{ label, error, register, required, passWordValidations, ...props },
 	ref
 ) => {
 	const [changeType, setChangeType] = useState<string>("password");
@@ -120,11 +106,8 @@ const PasswordInputComponent: ForwardRefRenderFunction<
 					ref={ref}
 					{...register}
 					{...props}
-					defaultValue={defaultValue}
 					className={inputClassName(error)}
-					disabled={disabled}
 					type={changeType}
-					placeholder={placeholder}
 				/>
 			</div>
 

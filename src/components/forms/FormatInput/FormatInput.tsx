@@ -9,7 +9,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	control: Control<any>;
 	error?: string;
 	format: "money" | "percentage";
-	label?: string;
+	label: string;
 	name: string;
 	wrapperClassName?: string;
 }
