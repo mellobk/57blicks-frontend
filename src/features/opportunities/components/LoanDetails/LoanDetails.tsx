@@ -36,7 +36,7 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 				required
 			/>
 		</div>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 			<FormatInput
 				control={control}
 				error={errors?.loanToValue?.message}

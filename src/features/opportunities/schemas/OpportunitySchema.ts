@@ -15,9 +15,7 @@ export const OpportunitySchema = z.object({
 		.string()
 		.nonempty(errorMessages.required)
 		.max(50, errorMessages.maxLength),
-  documentS3Path: z
-		.string()
-		.nonempty(errorMessages.required),
+	documentS3Path: z.string().optional(),
 	googleDriveLink: z
 		.string()
 		.nonempty(errorMessages.required)
@@ -66,10 +64,7 @@ export const OpportunitySchema = z.object({
 		.string()
 		.nonempty(errorMessages.required)
 		.max(25, errorMessages.maxLength),
-	loanToValue: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(4, errorMessages.maxLength),
+	loanToValue: z.string().nonempty(errorMessages.required),
 	loanType: z.string().nonempty(errorMessages.required),
 	participantOpportunities: z.object({
 		"99%": z.string(),

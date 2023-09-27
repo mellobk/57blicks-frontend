@@ -66,6 +66,18 @@ export const PostTo: FC<Props> = ({
 	});
 	const setErrorMessage = useStore((state) => state.setErrorMessage);
 
+	const allEmail = () => {
+		investorsNotifications.map((_, index) =>
+			setValue(`investorsNotifications.${index}.email`, true)
+		);
+	};
+
+	const allSMS = () => {
+		investorsNotifications.map((_, index) =>
+			setValue(`investorsNotifications.${index}.sms`, true)
+		);
+	};
+
 	const findIndex = (investorId: string) =>
 		investorsNotifications.findIndex(
 			(opportunityInvestor) => opportunityInvestor.investorId === investorId
@@ -152,7 +164,7 @@ export const PostTo: FC<Props> = ({
 		setSelectedInvestor(null);
 	};
 
-	const toggleSms = (investorId: string) => {
+	const toggleSMS = (investorId: string) => {
 		const index = findIndex(investorId);
 
 		if (index < 0) {
@@ -220,8 +232,12 @@ export const PostTo: FC<Props> = ({
 							<div className="flex flex-col gap-2 divide-y divide-gray-200 h-full">
 								<div className="grid grid-cols-7 gap-1 mr-3 divide-x divide-gray-200 font-inter font-semibold text-blue-200 text-xs leading-[15px] tracking-[-0.6]">
 									<div className="col-span-5">Select Investors</div>
-									<div className="pl-1">All SMS</div>
-									<div className="pl-1">All Email</div>
+									<button className="pl-1" onClick={allSMS}>
+										All SMS
+									</button>
+									<button className="pl-1" onClick={allEmail}>
+										All SMS
+									</button>
 								</div>
 								<div className="grid grid-cols-1 divide-y divide-gray-200 overflow-y-auto">
 									{investorQuery.data?.map((investor, index) => {
@@ -269,7 +285,7 @@ export const PostTo: FC<Props> = ({
 														checked={!!opportunityInvestor?.sms}
 														offIconName="cellphone"
 														offLabel="SMS"
-														onChange={() => toggleSms(investor.id)}
+														onChange={() => toggleSMS(investor.id)}
 														lineThrough
 													/>
 												</div>
