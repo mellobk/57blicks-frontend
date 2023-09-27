@@ -49,7 +49,7 @@ export const TextArea: FC<Props> = ({
 			)}
 
 			<textarea
-				className={`h-36 ${className} ${iconName && "pr-[30px]"}`}
+				className={`h-44 ${className} ${iconName && "pr-[30px]"}`}
 				{...props}
 				{...register}
 			/>

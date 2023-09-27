@@ -72,17 +72,24 @@ export const PostTo: FC<Props> = ({
 
 		if (index < 0) {
 			append({
-				email: false,
+				email: true,
 				sms: false,
 				note,
 				investorId: investor.id,
 			});
+		} else {
+			setValue(`investors.${index}.email`, true);
+			setValue(`investors.${index}.note`, note);
 		}
 
 		setSelectedInvestor({
 			investor,
 			opportunityInvestorIndex,
 		});
+	};
+
+	const setNote = (index: number, note: string) => {
+		setValue(`investors.${index}.note`, note);
 	};
 
 	const toggleEmail = (investorId: string) => {
@@ -111,10 +118,8 @@ export const PostTo: FC<Props> = ({
 		} else {
 			remove(index);
 		}
-	};
 
-	const toggleNote = (index: number, note: string) => {
-		setValue(`investors.${index}.note`, note);
+		setSelectedInvestor(null);
 	};
 
 	const toggleSms = (investorId: string) => {
@@ -267,7 +272,7 @@ export const PostTo: FC<Props> = ({
 								<textarea
 									className="h-full rounded-lg py-3 px-4 bg-gray-1300 resize-none focus:outline-none font-inter text-white text-[13px] leading-4 tracking-[-0.65]"
 									onChange={(e) =>
-										toggleNote(
+										setNote(
 											selectedInvestor.opportunityInvestorIndex,
 											e.target.value
 										)
