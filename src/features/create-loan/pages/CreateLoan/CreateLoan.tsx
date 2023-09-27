@@ -17,6 +17,7 @@ import { Loan } from "@/features/create-loan/types/fields";
 import { defaultValues } from "@/features/create-loan/utils/values";
 import useStore from "@/stores/app-store";
 import { unFormatPhone } from "@/utils/common-funtions";
+import moment from "moment/moment";
 
 export const CreateLoan: FC = () => {
 	const [openLenderModal, setOpenLenderModal] = useState<boolean>(false);
@@ -51,7 +52,7 @@ export const CreateLoan: FC = () => {
 			control,
 			name: "participationBreakdown",
 		});
-  const {
+	const {
 		error,
 		isError,
 		isSuccess,
@@ -62,8 +63,47 @@ export const CreateLoan: FC = () => {
 	});
 	const setErrorMessage = useStore((state) => state.setErrorMessage);
 
+	function calculateRegular(amount: string, rate: string) {
+		return ((Number(amount) * (Number(rate) / 100)) / 12).toFixed(2);
+	}
+
+	function calculateProrated(
+		amount: string,
+		rate: string,
+		originationDate: string
+	) {
+		const date = originationDate
+			? moment(originationDate, "MM-DD-YYYY")
+			: moment();
+		const lastDayOfMonth = date.clone().endOf("month");
+		const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days") + 1;
+		const dailyRate = Number(rate) / 100 / 365;
+
+		return (Number(amount) * dailyRate * daysUntilEndOfMonth).toFixed(2);
+	}
+
 	const onSubmit: SubmitHandler<Loan> = (data: Loan): void => {
 		const phoneNumber = unFormatPhone(data.borrower?.user?.phoneNumber || "");
+		const fundingBreakdown = data.fundingBreakdown.map((breakdown) => ({
+			...breakdown,
+			prorated: calculateProrated(
+				breakdown.amount,
+				breakdown.rate,
+				data.originationDate
+			),
+			regular: calculateRegular(breakdown.amount, breakdown.rate),
+		}));
+		const participationBreakdown = data.participationBreakdown.map(
+			(breakdown) => ({
+				...breakdown,
+				prorated: calculateProrated(
+					breakdown.amount,
+					breakdown.rate,
+					data.originationDate
+				),
+				regular: calculateRegular(breakdown.amount, breakdown.rate),
+			})
+		);
 
 		const formatData = {
 			...data,
@@ -74,6 +114,8 @@ export const CreateLoan: FC = () => {
 					phoneNumber: `+1${phoneNumber}`,
 				},
 			},
+			fundingBreakdown,
+			participationBreakdown,
 		};
 
 		mutate(formatData);
@@ -96,6 +138,10 @@ export const CreateLoan: FC = () => {
 		}
 	}, [isError]);
 
+	useEffect(() => {
+		console.log(errors);
+	}, [errors]);
+
 	return (
 		<>
 			<form
@@ -107,6 +153,7 @@ export const CreateLoan: FC = () => {
 						control={control}
 						errors={errors}
 						register={register}
+						setValue={setValue}
 					/>
 
 					<div className="flex flex-col gap-6 divide-y divide-gray-200 pl-6">
@@ -129,7 +176,10 @@ export const CreateLoan: FC = () => {
 				</div>
 
 				<FundingBreakdown
+					calculateProrated={calculateProrated}
+					calculateRegular={calculateRegular}
 					control={control}
+					errors={errors}
 					remove={removeParticipant}
 					setOpenLenderModal={setOpenLenderModal}
 					setOpenParticipantModal={setOpenParticipantModal}

@@ -39,10 +39,9 @@ export const AddParticipant: FC<Props> = ({
 				lenderName: nameFormat(
 					`${participant.user?.firstName} ${participant.user?.lastName}`
 				),
-				prorate: "",
+        prorated: "0",
 				rate: "",
-				regular: "",
-				type: "participant",
+				regular: "0",
 			});
 			setSelectedParticipant("");
 			setOpenModal(false);

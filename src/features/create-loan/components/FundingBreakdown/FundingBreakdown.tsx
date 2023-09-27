@@ -1,8 +1,11 @@
 import type { FC } from "react";
-import { useEffect } from "react";
-import { Control, UseFieldArrayRemove, useWatch } from "react-hook-form";
+import {
+	Control,
+	FieldErrors,
+	UseFieldArrayRemove,
+	useWatch,
+} from "react-hook-form";
 import { TableColumn } from "react-data-table-component";
-import moment from "moment";
 import { Cell } from "@/components/table/Cell";
 import { FormatInput } from "@/components/table/FormatInput";
 import { Button } from "@/components/ui/Button";
@@ -17,21 +20,36 @@ import {
 import { LENDERS } from "@/features/create-loan/utils/selects";
 
 interface Props {
+	calculateProrated: (
+		amount: string,
+		rate: string,
+		originationDate: string
+	) => string;
+	calculateRegular: (amount: string, rate: string) => string;
 	control: Control<Loan>;
+	errors: FieldErrors<Loan>;
+	remove: UseFieldArrayRemove;
 	setOpenLenderModal: (openLenderModal: boolean) => void;
 	setOpenParticipantModal: (openParticipantModal: boolean) => void;
-	remove: UseFieldArrayRemove;
 }
 
 export const FundingBreakdown: FC<Props> = ({
+	calculateProrated,
+	calculateRegular,
 	control,
+	errors,
+	remove,
 	setOpenLenderModal,
 	setOpenParticipantModal,
-	remove,
 }) => {
 	const [fundingBreakdown, originationDate, participationBreakdown] = useWatch({
 		control,
-		name: ["fundingBreakdown", "originationDate", "participationBreakdown"],
+		name: [
+			"fundingBreakdown",
+			"originationDate",
+			"participationBreakdown",
+			"totalLoanAmount",
+		],
 	});
 
 	const columns: TableColumn<FundingBreakdownType>[] = [
@@ -61,10 +79,17 @@ export const FundingBreakdown: FC<Props> = ({
 			cell: (_, rowIndex) => (
 				<FormatInput
 					control={control}
+					error={
+						rowIndex > 2
+							? errors?.participationBreakdown?.[rowIndex - 3]?.amount?.message
+							: errors?.fundingBreakdown?.[rowIndex]?.amount?.message
+					}
 					format="money"
-					name={`${
-						rowIndex > 2 ? "participationBreakdown" : "fundingBreakdown"
-					}.${rowIndex}.amount`}
+					name={
+						rowIndex > 2
+							? `participationBreakdown.${rowIndex - 3}.amount`
+							: `fundingBreakdown.${rowIndex}.amount`
+					}
 				/>
 			),
 			name: "Amount",
@@ -74,10 +99,17 @@ export const FundingBreakdown: FC<Props> = ({
 			cell: (_, rowIndex) => (
 				<FormatInput
 					control={control}
+					error={
+						rowIndex > 2
+							? errors?.participationBreakdown?.[rowIndex - 3]?.rate?.message
+							: errors?.fundingBreakdown?.[rowIndex]?.rate?.message
+					}
 					format="percentage"
-					name={`${
-						rowIndex > 2 ? "participationBreakdown" : "fundingBreakdown"
-					}.${rowIndex}.rate`}
+					name={
+						rowIndex > 2
+							? `participationBreakdown.${rowIndex - 3}.rate`
+							: `fundingBreakdown.${rowIndex}.rate`
+					}
 				/>
 			),
 			name: "Rate",
@@ -88,7 +120,7 @@ export const FundingBreakdown: FC<Props> = ({
 				<Cell
 					className="px-4"
 					format="money"
-					value={calculateProrated(row.amount, row.rate)}
+					value={calculateProrated(row.amount, row.rate, originationDate)}
 				/>
 			),
 			name: "Prorated",
@@ -106,13 +138,13 @@ export const FundingBreakdown: FC<Props> = ({
 			style: { padding: 0 },
 		},
 		{
-			cell: (row, rowIndex) => (
+			cell: (_, rowIndex) => (
 				<>
-					{row.type === "participant" && (
+					{rowIndex > 2 && (
 						<Button
 							className="bg-white px-0 py-2 mr-2"
 							icon={<Icon name="trashBin" color="#FF0033" width="24" />}
-							onClick={() => remove(rowIndex)}
+							onClick={() => remove(rowIndex - 3)}
 							type="button"
 						/>
 					)}
@@ -125,34 +157,11 @@ export const FundingBreakdown: FC<Props> = ({
 		},
 	];
 
-	function calculateRegular(amount: string, rate: string) {
-		return (Number(amount) * (Number(rate) / 100)) / 12;
-	}
-
-	function calculateProrated(amount: string, rate: string) {
-		const date = originationDate
-			? moment(originationDate, "MM-DD-YYYY")
-			: moment();
-		const lastDayOfMonth = date.clone().endOf("month");
-		const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days");
-
-		return (
-			(Number(amount) * (Number(rate) / 100)) / (365 * daysUntilEndOfMonth)
-		);
-	}
-
 	function canAddParticipant() {
 		const lender = fundingBreakdown[0]?.lenderId === LENDERS[0]?.code;
-		const participants = fundingBreakdown.filter(
-			(field) => field.type === "participant"
-		);
 
-		return lender && participants.length < 4;
+		return lender && participationBreakdown.length < 4;
 	}
-
-	useEffect(() => {
-		console.log([...fundingBreakdown, ...participationBreakdown]);
-	}, [participationBreakdown]);
 
 	return (
 		<div className="pt-6">
@@ -176,7 +185,11 @@ export const FundingBreakdown: FC<Props> = ({
 				columns={columns}
 				data={[...fundingBreakdown, ...participationBreakdown]}
 			/>
-			<Footer />
+			<Footer
+				calculateProrated={calculateProrated}
+				calculateRegular={calculateRegular}
+				control={control}
+			/>
 		</div>
 	);
 };

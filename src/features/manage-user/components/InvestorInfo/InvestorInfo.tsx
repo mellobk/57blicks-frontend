@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable no-duplicate-imports */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useEffect } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
@@ -46,7 +42,6 @@ export const InvestorInfo: React.FC<InvestorInfoProps> = ({
 		}
 	}, []);
 
-	// eslint-disable-next-line unicorn/consistent-function-scoping
 	const onSubmit: SubmitHandler<FieldValues> = (data: any): void => {
 		if (handleInvestorInfo) {
 			handleInvestorInfo(data);
@@ -95,10 +90,7 @@ export const InvestorInfo: React.FC<InvestorInfoProps> = ({
 									placeholder="Enter Email"
 									register={register(addInvestorFields?.email)}
 									required
-									error={
-										errors?.[addInvestorFields?.email] &&
-										errors?.[addInvestorFields?.email]?.message
-									}
+									error={errors?.[addInvestorFields?.email]?.message}
 								/>
 
 								<div className="flex w-full gap-4">
@@ -109,10 +101,7 @@ export const InvestorInfo: React.FC<InvestorInfoProps> = ({
 											placeholder="(XXX) XXX-XXXX"
 											register={register(addInvestorFields?.phoneNumber)}
 											required={true}
-											error={
-												errors?.[addInvestorFields?.phoneNumber] &&
-												errors?.[addInvestorFields?.phoneNumber]?.message
-											}
+											error={errors?.[addInvestorFields?.phoneNumber]?.message}
 										/>
 									</div>
 									<div className="w-[40%]">

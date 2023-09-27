@@ -20,10 +20,9 @@ export type FundingBreakdown = {
 	amount: string;
 	lenderId?: string;
   lenderName: string;
-  prorate: string;
+  prorated: string;
 	rate: string;
 	regular: string;
-	type?: "lender" | "participant";
 };
 
 export type Loan = {

@@ -48,7 +48,6 @@ export const BankingInformation: FC<Props> = ({
 			label="Account Type"
 			name="borrower.accountType"
 			options={ACCOUNT_TYPES}
-			required
 		/>
 	</div>
 );

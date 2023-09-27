@@ -12,10 +12,12 @@ export const CollateralSchema = z.object({
 		.min(1, { message: errorMessages.required }),
 	link: z
 		.string()
-		.min(1, { message: errorMessages.required })
+		.url()
+		.nonempty({ message: errorMessages.required })
 		.max(100, { message: errorMessages.maxLength }),
 	taxUrl: z
 		.string()
-		.min(1, { message: errorMessages.required })
+		.url()
+		.nonempty({ message: errorMessages.required })
 		.max(100, { message: errorMessages.maxLength }),
 });

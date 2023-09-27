@@ -7,7 +7,7 @@ import { inputClassName } from "@/utils/class-names.ts";
 
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	clickIcon?: () => void;
-	error?: any;
+	error?: string;
 	iconColor?: string;
 	iconName?: (typeof IconNames)[number];
 	iconWidth?: string;
