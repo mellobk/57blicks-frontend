@@ -4,7 +4,7 @@ import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
 import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
-import { accountTypes } from "@/features/create-loan/utils/selects";
+import { ACCOUNT_TYPES } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	control: Control<Loan>;
@@ -47,7 +47,7 @@ export const BankingInformation: FC<Props> = ({
 			className="mt-6"
 			label="Account Type"
 			name="borrower.accountType"
-			options={accountTypes}
+			options={ACCOUNT_TYPES}
 			required
 		/>
 	</div>

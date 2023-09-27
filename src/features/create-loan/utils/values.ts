@@ -1,5 +1,5 @@
 import { Loan } from "@/features/create-loan/types/fields";
-import { lenders } from "@/features/create-loan/utils/selects";
+import { LENDERS } from "@/features/create-loan/utils/selects";
 
 export const defaultValues: Loan = {
 	amountDrawn: "",
@@ -31,8 +31,8 @@ export const defaultValues: Loan = {
 	fundingBreakdown: [
 		{
 			amount: "",
-			lenderId: lenders[0]?.code,
-      lenderName: lenders[0]?.name || "DKC Lending LLC",
+			lenderId: LENDERS[0]?.code,
+      lenderName: LENDERS[0]?.name || "DKC Lending LLC",
       prorate: "",
 			rate: "",
 			regular: "",

@@ -7,9 +7,9 @@ import { MaskInput } from "@/components/forms/MaskInput";
 import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
 import {
-	assetTypes,
-	leadSources,
-	types,
+	ASSET_TYPES,
+	LEAD_SOURCES,
+	LOAN_TYPES,
 } from "@/features/create-loan/utils/selects";
 
 interface Props {
@@ -27,7 +27,7 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 			className="mt-6"
 			label="Loan Type"
 			name="type"
-			options={types}
+			options={LOAN_TYPES}
 			required
 		/>
 		<Input
@@ -139,7 +139,7 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 			className="mt-6"
 			label="Asset Type"
 			name="collaterals.0.assetType"
-			options={assetTypes}
+			options={ASSET_TYPES}
 			required
 		/>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
@@ -167,7 +167,7 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 			className="mt-6"
 			label="Lead Origin"
 			name="leadSource"
-			options={leadSources}
+			options={LEAD_SOURCES}
 			required
 		/>
 	</div>

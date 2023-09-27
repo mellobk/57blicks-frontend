@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
-import { assetTypes } from "@/features/create-loan/utils/selects";
+import { ASSET_TYPES } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	append: UseFieldArrayAppend<Loan, "collaterals">;
@@ -107,7 +107,7 @@ export const MultipleCollateral: FC<Props> = ({
 									className="mt-6"
 									label="Asset Type"
 									name={`collaterals.${index}.assetType`}
-									options={assetTypes}
+									options={ASSET_TYPES}
 									required
 								/>
 							</div>

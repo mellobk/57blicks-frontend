@@ -4,7 +4,7 @@ import { Option, Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Loan } from "@/features/create-loan/types/fields";
-import { lenders } from "@/features/create-loan/utils/selects";
+import { LENDERS } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	fields: FieldArrayWithId<Loan, "fundingBreakdown">[];
@@ -22,7 +22,7 @@ export const SelectLender: FC<Props> = ({
 	const [selectedLender, setSelectedLender] = useState(fields[0]?.lenderId);
 
 	const selectLender = () => {
-		const lender = lenders.find(
+		const lender = LENDERS.find(
 			(lender: Option) => lender.code === selectedLender
 		);
 
@@ -44,7 +44,7 @@ export const SelectLender: FC<Props> = ({
 				className="mt-6"
 				label="Lender"
 				onChange={(e) => setSelectedLender(e.target.value)}
-				options={lenders}
+				options={LENDERS}
 				placeholder="Select Lender"
 				value={selectedLender}
 				required

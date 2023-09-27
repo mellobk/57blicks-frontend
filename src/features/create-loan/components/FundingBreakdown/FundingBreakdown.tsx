@@ -14,7 +14,7 @@ import {
 	FundingBreakdown as FundingBreakdownType,
 	Loan,
 } from "@/features/create-loan/types/fields";
-import { lenders } from "@/features/create-loan/utils/selects";
+import { LENDERS } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	control: Control<Loan>;
@@ -142,7 +142,7 @@ export const FundingBreakdown: FC<Props> = ({
 	}
 
 	function canAddParticipant() {
-		const lender = fundingBreakdown[0]?.lenderId === lenders[0]?.code;
+		const lender = fundingBreakdown[0]?.lenderId === LENDERS[0]?.code;
 		const participants = fundingBreakdown.filter(
 			(field) => field.type === "participant"
 		);

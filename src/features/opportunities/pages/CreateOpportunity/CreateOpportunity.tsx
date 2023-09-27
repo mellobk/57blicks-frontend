@@ -82,7 +82,11 @@ export const CreateOpportunity: FC = () => {
 				<div className="lg:col-span-2 col-span-1 flex flex-col gap-6 lg:pl-6">
 					<LoanDetails control={control} errors={errors} register={register} />
 					<ParticipantOpportunities control={control} errors={errors} />
-					<NotesOnTheBorrower errors={errors} register={register} />
+					<NotesOnTheBorrower
+						control={control}
+						errors={errors}
+						register={register}
+					/>
 					<AdditionalInformation errors={errors} register={register} />
 				</div>
 

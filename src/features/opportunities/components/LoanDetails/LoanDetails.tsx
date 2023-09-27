@@ -3,7 +3,7 @@ import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
 import { Title } from "@/components/ui/Title";
-import { types } from "@/features/create-loan/utils/selects";
+import { LOAN_TYPES } from "@/features/create-loan/utils/selects";
 import { Opportunity } from "@/features/opportunities/types/fields";
 import { FormatInput } from "@/components/forms/FormatInput";
 
@@ -62,7 +62,7 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 			className="mt-6"
 			label="Loan Type"
 			name="loanType"
-			options={types}
+			options={LOAN_TYPES}
 			required
 		/>
 		<Input

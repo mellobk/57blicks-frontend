@@ -1,11 +1,11 @@
-export const accountTypes = [
+export const ACCOUNT_TYPES = [
 	{ code: "personal_checking", name: "Personal Checking" },
 	{ code: "personal_savings", name: "Personal Savings" },
 	{ code: "business_checking", name: "Business Checking" },
 	{ code: "business_savings", name: "Business Savings" },
 ];
 
-export const assetTypes = [
+export const ASSET_TYPES = [
 	{ code: "sfr", name: "SFR" },
 	{ code: "mf_4_less", name: "MF (4 or less)" },
 	{ code: "mf_more_4", name: "MF (+4)" },
@@ -21,13 +21,13 @@ export const assetTypes = [
 	{ code: "comm_other", name: "Commercial-Other" },
 ];
 
-export const leadSources = [
+export const LEAD_SOURCES = [
 	{ code: "MARKETING_LEAD", name: "Marketing Lead" },
 	{ code: "PARTNER_LEAD", name: "Partner Lead" },
 	{ code: "LC_LEAD", name: "LC Lead" },
 ];
 
-export const lenders = [
+export const LENDERS = [
 	{ code: "dkc_lending_llc", name: "DKC Lending LLC" },
 	{ code: "dkc_lending_fl", name: "DKC Lending FL" },
 	{ code: "dkc_lending_iv", name: "DKC Lending IV" },
@@ -35,7 +35,7 @@ export const lenders = [
 	{ code: "first_capital_trust", name: "First Capital Trust" },
 ];
 
-export const types = [
+export const LOAN_TYPES = [
 	{
 		code: "fix_and_flip",
 		name: "Fix and Flip Loans",
@@ -74,9 +74,7 @@ export const types = [
 	},
 ];
 
-export const participants = [
-	{ code: "participant_1", name: "Participant 1" },
-	{ code: "participant_2", name: "Participant 2" },
-	{ code: "participant_3", name: "Participant 3" },
-	{ code: "participant_4", name: "Participant 4" },
+export const DKC_REPEAT_BORROWER = [
+  { code: "No", name: "No" },
+  { code: "Yes", name: "Yes" },
 ];
