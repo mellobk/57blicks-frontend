@@ -1,3 +1,4 @@
+/* eslint-disable no-unmodified-loop-condition */
 import type { DataEntry } from "../../types/chart-types";
 
 export const convertToHour = (minutes: number): number => {
@@ -10,8 +11,6 @@ export function fillMissingDates(
 	data: Array<DataEntry>,
 	dateSelect: Date
 ): Array<DataEntry> {
-	const currentDate = new Date();
-
 	const endDate = new Date(
 		dateSelect.getFullYear(),
 		dateSelect.getMonth(),
@@ -36,7 +35,9 @@ export function fillMissingDates(
 		if (dateString && dateMap[dateString]) {
 			filledData.push({
 				hour: convertToHour(
-					Number.parseInt(dateMap[dateString].minutes as string) || 0
+					Number.parseInt(
+						(dateMap[dateString]?.minutes as string | undefined) || "0"
+					)
 				),
 
 				date: dateString?.slice(5).replace("-", "/"),

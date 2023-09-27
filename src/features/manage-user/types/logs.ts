@@ -1,4 +1,3 @@
-import { accessToken } from "./../../../utils/constant";
 export interface NumberOfLogin {
 	logins: string;
 	date: string;
@@ -31,10 +30,4 @@ export enum LogAction {
 export interface Log {
 	event: LogAction;
 	entity: LogTable;
-}
-
-export interface LogLoign {
-	event: LogAction;
-	entity: LogTable;
-	accessToken: string;
 }

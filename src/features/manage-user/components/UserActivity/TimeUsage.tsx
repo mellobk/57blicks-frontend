@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { type BarDatum, ResponsiveBar } from "@nivo/bar";
+
 import type { DataEntry } from "../../types/chart-types";
 import { Icon } from "@/components/ui/Icon";
 import type React from "react";
-import { ResponsiveBar } from "@nivo/bar";
 import type { UserActivity } from "../../types/logs";
 import { fillMissingDates } from "./UserActivityUtils";
 import { formatDate } from "@/utils/date-format";
@@ -29,7 +31,7 @@ const TimeUsage: React.FC<TimeUsageProps> = ({ data, date }) => {
 
 			<ResponsiveBar
 				animate={true}
-				data={newData}
+				data={newData as unknown as Array<BarDatum>}
 				keys={["hour", "shadow"]}
 				indexBy="date"
 				margin={{ top: 50, right: 10, bottom: 50, left: 30 }}
@@ -41,11 +43,11 @@ const TimeUsage: React.FC<TimeUsageProps> = ({ data, date }) => {
 				tooltip={({ data }) => (
 					<div className="shadow-lg rounded-[22px] bg-black text-white  align-middle  p-1 w-32	items-center">
 						<div className="items-center w-full text-center text-gray-600 text-xs	font-medium	">
-							{data.hour}
+							{data["hour"]}
 							hours
 						</div>
 						<div className="items-center w-full text-center text-sm font-medium	">
-							{formatDate(data.fullDate)}
+							{formatDate(data["fullDate"] as string)}
 						</div>
 					</div>
 				)}
@@ -79,7 +81,7 @@ const TimeUsage: React.FC<TimeUsageProps> = ({ data, date }) => {
 				labelSkipHeight={12}
 				labelTextColor={{
 					from: "color",
-					modifiers: [["darker", "0.7"]],
+					modifiers: [["darker", 0.7]],
 				}}
 				legends={[]}
 				motionConfig="stiff"
