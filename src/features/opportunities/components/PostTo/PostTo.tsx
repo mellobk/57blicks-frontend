@@ -307,6 +307,7 @@ export const PostTo: FC<Props> = ({
 								buttonText="Post"
 								className="bg-primary-500 w-full mt-6 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
 								onClick={onPost}
+								disabled={investorsNotifications.length < 1}
 								type="button"
 							/>
 						</div>
