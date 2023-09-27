@@ -27,6 +27,7 @@ import Search from "@/assets/icons/search";
 import Shield from "@/assets/icons/shield";
 import Star from "@/assets/icons/star";
 import Success from "@/assets/icons/success";
+import TimeUsage from "@/assets/icons/time-usage";
 import TrashBin from "@/assets/icons/trash-bin";
 import Upload from "@/assets/icons/upload";
 import User from "@/assets/icons/user";
@@ -72,6 +73,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 		"clock-reverse": {
 			name: "clock-reverse",
 			icon: <ClockReverse width={width} color={color} />,
+		},
+		"time-usage": {
+			name: "time-usage",
+			icon: <TimeUsage width={width} color={color} />,
 		},
 		closeEye: {
 			name: "closeEye",
