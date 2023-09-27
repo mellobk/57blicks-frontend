@@ -8,6 +8,7 @@ import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
 import { Icon } from "@/components/ui/Icon";
 import { inputClassName } from "@/utils/class-names";
+import { placeholderFormat } from "@/utils/formats";
 
 export type Option = {
 	name: string;
@@ -24,7 +25,16 @@ interface SelectProps extends DropdownProps {
 export const Dropdown: ForwardRefRenderFunction<
 	HTMLSelectElement,
 	SelectProps
-> = ({ className, control, error, label, name, required, ...props }) => {
+> = ({
+	className,
+	control,
+	error,
+	label,
+	name,
+	placeholder,
+	required,
+	...props
+}) => {
 	return (
 		<Controller
 			control={control}
@@ -35,11 +45,11 @@ export const Dropdown: ForwardRefRenderFunction<
 
 					<div className="relative">
 						<PrimereactDropdown
-							{...field}
-							optionLabel="name"
-							optionValue="code"
 							className={inputClassName(error)}
 							dropdownIcon={<Icon name="arrowDown" width="6" color="#656A74" />}
+							optionLabel="name"
+							optionValue="code"
+							placeholder={placeholderFormat(label, placeholder, true)}
 							pt={{
 								input: {
 									className:
@@ -52,6 +62,7 @@ export const Dropdown: ForwardRefRenderFunction<
 									className: "text-[13px] text-primary-300 hover:bg-gray-300",
 								},
 							}}
+							{...field}
 							{...props}
 						/>
 					</div>

@@ -1,9 +1,9 @@
 import type { FC } from "react";
 import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import { Dropdown } from "@/components/forms/Dropdown";
 import { FormatInput } from "@/components/forms/FormatInput";
 import { Input } from "@/components/forms/Input";
 import { MaskInput } from "@/components/forms/MaskInput";
-import { Select } from "@/components/forms/Select";
 import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
 import {
@@ -21,13 +21,13 @@ interface Props {
 export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 	<div>
 		<Title text="Loan Information" />
-		<Select
-			className="mt-6"
+		<Dropdown
+			control={control}
 			error={errors?.type?.message}
+			className="mt-6"
 			label="Loan Type"
+			name="type"
 			options={types}
-			placeholder="Select Loan Type"
-			register={register("type")}
 			required
 		/>
 		<Input
@@ -137,13 +137,13 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 			wrapperClassName="mt-6"
 			required
 		/>
-		<Select
+		<Dropdown
+			control={control}
 			error={errors?.collaterals?.[0]?.assetType?.message}
 			className="mt-6"
 			label="Asset Type"
+			name="collaterals.0.assetType"
 			options={assetTypes}
-			placeholder="Select Asset Type"
-			register={register("collaterals.0.assetType")}
 			required
 		/>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
@@ -166,13 +166,13 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 				required
 			/>
 		</div>
-		<Select
+		<Dropdown
+			control={control}
 			error={errors?.leadSource?.message}
 			className="mt-6"
 			label="Lead Origin"
+			name="leadSource"
 			options={leadSources}
-			placeholder="Select Lead Origin"
-      register={register("leadSource")}
 			required
 		/>
 	</div>

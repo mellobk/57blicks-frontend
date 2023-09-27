@@ -1,17 +1,18 @@
 import type { FC } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
-import { Title } from "@/components/ui/Title/Title";
+import { Title } from "@/components/ui/Title";
+import { types } from "@/features/create-loan/utils/selects";
 import { Opportunity } from "@/features/opportunities/types/fields";
-import { Select } from "@/components/forms/Select";
-import { types } from "@/features/create-loan/utils/selects.ts";
 
 interface Props {
+	control: Control<Opportunity>;
 	errors: FieldErrors<Opportunity>;
 	register: UseFormRegister<Opportunity>;
 }
 
-export const LoanDetails: FC<Props> = ({ errors, register }) => (
+export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 	<div>
 		<Title text="Loan Details" />
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
@@ -56,13 +57,13 @@ export const LoanDetails: FC<Props> = ({ errors, register }) => (
 				required
 			/>
 		</div>
-		<Select
-			className="mt-6"
+		<Dropdown
+			control={control}
 			error={errors?.loanType?.message}
+			className="mt-6"
 			label="Loan Type"
+			name="loanType"
 			options={types}
-			placeholder="Select Loan Type"
-			register={register("loanType")}
 			required
 		/>
 		<Input

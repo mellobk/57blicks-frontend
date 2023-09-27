@@ -17,6 +17,14 @@ export const percentageFormat = (value: number) => {
 	return `${value}%`;
 };
 
+export const placeholderFormat = (
+	label: string,
+	placeholder?: string,
+	dropdown = false
+) => {
+	return placeholder ?? `${dropdown ? "Select" : "Enter"} ${label}`;
+};
+
 export const formatValue = (value: number, format: "money" | "percentage") => {
 	return format === "money"
 		? moneyFormat(Number(value))

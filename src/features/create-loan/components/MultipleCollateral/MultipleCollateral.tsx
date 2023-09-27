@@ -1,13 +1,14 @@
 import type { FC } from "react";
 import {
+	Control,
 	FieldArrayWithId,
 	FieldErrors,
 	UseFieldArrayAppend,
 	UseFieldArrayRemove,
 	UseFormRegister,
 } from "react-hook-form";
+import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
-import { Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title/Title";
@@ -16,6 +17,7 @@ import { assetTypes } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	append: UseFieldArrayAppend<Loan, "collaterals">;
+	control: Control<Loan>;
 	errors: FieldErrors<Loan>;
 	fields: FieldArrayWithId<Loan, "collaterals">[];
 	register: UseFormRegister<Loan>;
@@ -24,6 +26,7 @@ interface Props {
 
 export const MultipleCollateral: FC<Props> = ({
 	append,
+	control,
 	errors,
 	fields,
 	register,
@@ -98,13 +101,13 @@ export const MultipleCollateral: FC<Props> = ({
 									wrapperClassName="mt-6"
 									required
 								/>
-								<Select
-									className="mt-6"
+								<Dropdown
+									control={control}
 									error={errors?.collaterals?.[index]?.assetType?.message}
+									className="mt-6"
 									label="Asset Type"
+									name={`collaterals.${index}.assetType`}
 									options={assetTypes}
-									placeholder="Select Asset Type"
-									register={register(`collaterals.${index}.assetType`)}
 									required
 								/>
 							</div>
