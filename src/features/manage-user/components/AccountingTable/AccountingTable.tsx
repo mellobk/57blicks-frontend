@@ -84,12 +84,8 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 		setSelectedUser(row as User);
 	};
 
-	/* 	const accountMutation = useMutation(() => {
-		return ManageUsersService.filterAllAccounting(searchValue);
-	}); */
-
 	useEffect(() => {
-		accountQuery.refetch;
+		void accountQuery.refetch();
 	}, [searchValue]);
 
 	const conditionalRowStyles = [
@@ -194,7 +190,7 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 				visible={openDeleteModal}
 				onHide={closeDeleteAdminModal}
 				title="Delete User"
-				width="25vw"
+				width="450px"
 			>
 				<DeleteAdmin id={deleteId} handleDeleteAdmin={handleDeleteUser} />
 			</Modal>

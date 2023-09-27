@@ -277,7 +277,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 				visible={openDeleteModal}
 				onHide={closeDeleteAdminModal}
 				title="Disable User"
-				width="25vw"
+				width="450px"
 			>
 				<DisableInvestor id={deleteId} handleDeleteUser={handleDeleteUser} />
 			</Modal>

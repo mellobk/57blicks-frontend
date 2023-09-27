@@ -1,22 +1,48 @@
 import { useState } from "react";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
-import type { DkcServicing } from "../../types/api";
+import type { DkcServicing, FundingBreakdown } from "../../types/api";
 import { servicingTabs } from "../../utils/tabs";
 import { ServicingTable } from "../ServicingTable";
 import { Toggle } from "@/components/ui/Toggle";
 import { ServicingModal } from "../ServicingModal/ServicingModal";
+import servicingStore from "../../stores/servicing-store";
+import { useQuery } from "@tanstack/react-query";
+import DkcLendersService from "../../api/servicing";
 
 interface SuccessProps {}
 
 export const DkcLlcTable: React.FC<SuccessProps> = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
+	const [openModal, setOpenModal] = useState<boolean>(false);
+	const lenderData = servicingStore((state) => state.lenders);
+
 	console.log(searchValue);
+
+	const findDkcLender = (): string => {
+		const findLender = lenderData.find(
+			(data) => data.name === "DKC lending LLC"
+		);
+
+		return findLender?.id || "";
+	};
+
+	const dkcLendersQuery = useQuery(
+		["dkc-lenders-by-id-query"],
+		() => {
+			return DkcLendersService.getLenderById(findDkcLender() || "");
+		},
+		{ enabled: true }
+	);
 
 	const handleSearch = (data: string) => {
 		setSearchValue(data);
 		return data;
 	};
+
+	/* 	useEffect(() => {
+		console.log("dkcLendersQuery.data", dkcLendersQuery.data);
+	}, [dkcLendersQuery]); */
 
 	const validateDate = (date: string): boolean => {
 		console.log(date);
@@ -40,13 +66,27 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 			name: "Borrower",
 			maxWidth: "230px",
 			minWidth: "230px",
-			selector: (row: DkcServicing): JSX.Element => <div>{row?.borrower}</div>,
+			selector: (row: FundingBreakdown): JSX.Element => (
+				<div
+					onClick={(): void => {
+						setOpenModal(true);
+					}}
+				>
+					{`${row?.loan.borrower.user.firstName} ${row?.loan.borrower.user.lastName}`}
+				</div>
+			),
 			omit: false,
 		},
 		{
 			name: "Collateral Address",
-			selector: (row: DkcServicing): JSX.Element => (
-				<div>{row?.collateralAddress}</div>
+			selector: (row: FundingBreakdown): JSX.Element => (
+				<div
+					onClick={(): void => {
+						setOpenModal(true);
+					}}
+				>
+					{row?.loan?.collaterals[0]?.address || ""}
+				</div>
 			),
 			sortable: true,
 			omit: false,
@@ -55,7 +95,15 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 		},
 		{
 			name: "Total Loan",
-			selector: (row: DkcServicing): JSX.Element => <div>{row?.totalLoan}</div>,
+			selector: (row: FundingBreakdown): JSX.Element => (
+				<div
+					onClick={(): void => {
+						setOpenModal(true);
+					}}
+				>
+					{row?.loan.totalLoanAmount}
+				</div>
+			),
 			sortable: true,
 			omit: false,
 			maxWidth: "150px",
@@ -63,15 +111,29 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 		},
 		{
 			name: "Rate",
-			selector: (row: DkcServicing): JSX.Element => <div>{row?.rate}</div>,
+			selector: (row: FundingBreakdown): JSX.Element => (
+				<div
+					onClick={(): void => {
+						setOpenModal(true);
+					}}
+				>
+					{row?.rate}
+				</div>
+			),
 			omit: false,
 			maxWidth: "100px",
 			minWidth: "100px",
 		},
 		{
 			name: "Monthly Payment",
-			selector: (row: DkcServicing): JSX.Element => (
-				<div>{row?.monthlyPayment}</div>
+			selector: (): JSX.Element => (
+				<div
+					onClick={(): void => {
+						setOpenModal(true);
+					}}
+				>
+					{""}
+				</div>
 			),
 			omit: false,
 			maxWidth: "200px",
@@ -79,21 +141,37 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 		},
 		{
 			name: "Origin Date",
-			selector: (row: DkcServicing): JSX.Element =>
-				<div>{row?.originDate}</div> || "",
+			selector: (row: FundingBreakdown): JSX.Element =>
+				(
+					<div
+						onClick={(): void => {
+							setOpenModal(true);
+						}}
+					>
+						{row?.loan?.originationDate.toString()}
+					</div>
+				) || "",
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: DkcServicing): JSX.Element =>
-				<div>{row?.maturityDate}</div> || "",
+			selector: (row: FundingBreakdown): JSX.Element =>
+				(
+					<div
+						onClick={(): void => {
+							setOpenModal(true);
+						}}
+					>
+						{row?.loan?.maturityDate.toString()}
+					</div>
+				) || "",
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
-			when: (row: DkcServicing): boolean => {
-				return validateDate(row?.maturityDate || "");
+			when: (row: FundingBreakdown): boolean => {
+				return validateDate(row?.loan?.maturityDate.toString() || "");
 			},
 			style: {
 				background: "#fbf4f7",
@@ -102,7 +180,8 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 		},
 		{
 			name: "Insurance Expiration Date",
-			selector: (row: DkcServicing): string => row?.maturityDate || "",
+			selector: (row: FundingBreakdown): string =>
+				row?.loan.collaterals[0]?.insuranceExpirationDate.toString() || "",
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
@@ -131,114 +210,13 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 		},
 	];
 
-	const data = [
-		{
-			id: "v1w2x3y4z5",
-			borrower: "Sunrise Bakery",
-			collateralAddress:
-				"2001 Bread St, San Diego, CA 92000 & 2002 Pastry Ln, San Diego, CA 92001",
-			totalLoan: "$90,000.00",
-			rate: "6%",
-			monthlyPayment: "$1,080.00",
-			originDate: "03-11-2022",
-			maturityDate: "03-11-2023",
-		},
-		{
-			id: "a1b2c3d4e6",
-			borrower: "Outdoor Adventure Co.",
-			collateralAddress:
-				"3003 Mountain Rd, Denver, CO 80100 & 3004 River Ln, Denver, CO 80101",
-			totalLoan: "$110,000.00",
-			rate: "7%",
-			monthlyPayment: "$1,320.00",
-			originDate: "07-14-2022",
-			maturityDate: "07-14-2023",
-		},
-		{
-			id: "f1g2h3i4j6",
-			borrower: "Family Dentistry",
-			collateralAddress:
-				"4005 Cavity Blvd, Houston, TX 77000 & 4006 Smile Rd, Houston, TX 77001",
-			totalLoan: "$80,000.00",
-			rate: "5%",
-			monthlyPayment: "$800.00",
-			originDate: "11-21-2022",
-			maturityDate: "11-21-2023",
-		},
-		{
-			id: "k1l2m3n4o6",
-			borrower: "PetCare Store",
-			collateralAddress:
-				"5007 Paw St, Dallas, TX 75000 & 5008 Fur Ln, Dallas, TX 75001",
-			totalLoan: "$65,000.00",
-			rate: "4%",
-			monthlyPayment: "$520.00",
-			originDate: "05-09-2022",
-			maturityDate: "05-09-2023",
-		},
-		{
-			id: "p1q2r3s4t6",
-			borrower: "FreshFruits Market",
-			collateralAddress:
-				"6009 Apple Rd, Atlanta, GA 30300 & 6010 Orange Ln, Atlanta, GA 30301",
-			totalLoan: "$95,000.00",
-			rate: "6%",
-			monthlyPayment: "$1,140.00",
-			originDate: "04-22-2022",
-			maturityDate: "04-22-2023",
-		},
-		{
-			id: "u1v2w3x4y6",
-			borrower: "BookNook Store",
-			collateralAddress:
-				"7001 Page Blvd, Orlando, FL 32800 & 7002 Novel Rd, Orlando, FL 32801",
-			totalLoan: "$70,000.00",
-			rate: "5%",
-			monthlyPayment: "$700.00",
-			originDate: "08-13-2022",
-			maturityDate: "08-13-2023",
-		},
-		{
-			id: "z1a2b3c4d6",
-			borrower: "CoffeeCup Café",
-			collateralAddress:
-				"8003 Java St, Seattle, WA 98000 & 8004 Brew Ln, Seattle, WA 98001",
-			totalLoan: "$120,000.00",
-			rate: "8%",
-			monthlyPayment: "$1,440.00",
-			originDate: "09-25-2022",
-			maturityDate: "09-25-2023",
-		},
-		{
-			id: "e1f2g3h4i6",
-			borrower: "QuickClean Laundromat",
-			collateralAddress:
-				"9005 Wash St, Las Vegas, NV 89000 & 9006 Soap Ln, Las Vegas, NV 89001",
-			totalLoan: "$40,000.00",
-			rate: "3%",
-			monthlyPayment: "$400.00",
-			originDate: "10-11-2022",
-			maturityDate: "10-11-2023",
-		},
-		{
-			id: "j1k2l3m4n6",
-			borrower: "eGadget Store",
-			collateralAddress:
-				"10007 Tech Blvd, San Francisco, CA 94000 & 10008 Gadget Rd, San Francisco, CA 94001",
-			totalLoan: "$150,000.00",
-			rate: "9%",
-			monthlyPayment: "$1,800.00",
-			originDate: "12-15-2022",
-			maturityDate: "12-15-2023",
-		},
-	];
-
 	return (
 		<>
 			<ServicingTable
 				handleSearchValue={handleSearch}
 				columns={columns}
-				data={data}
+				data={dkcLendersQuery?.data?.fundingBreakdowns}
+				loading={dkcLendersQuery.isLoading}
 				widthSearch="60px"
 			>
 				<>
@@ -255,7 +233,12 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 				</>
 			</ServicingTable>
 
-			<ServicingModal />
+			<ServicingModal
+				openModal={openModal}
+				handleOnCLose={(): void => {
+					setOpenModal(false);
+				}}
+			/>
 		</>
 	);
 };

@@ -1,4 +1,8 @@
-import type { CreatePassWordFields, LoginFields } from "../types/validations";
+import type {
+	ChangePassWordFields,
+	CreatePassWordFields,
+	LoginFields,
+} from "../types/validations";
 
 const createPassWordFields: CreatePassWordFields = {
 	password: "password",
@@ -7,6 +11,11 @@ const createPassWordFields: CreatePassWordFields = {
 export const loginFields: LoginFields = {
 	email: "email",
 	password: "password",
+};
+
+export const changePassWordFields: ChangePassWordFields = {
+	oldPassword: "oldPassword",
+	newPassword: "newPassword",
 };
 
 export default createPassWordFields;

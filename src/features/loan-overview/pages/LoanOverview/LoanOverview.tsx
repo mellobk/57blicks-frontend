@@ -1,7 +1,7 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { OverviewByInvestor } from "@/features/loan-overview/components/OverviewByInvestor/OverviewByInvestor";
 import { Overviews } from "@/features/loan-overview/components/Overviews/Overviews";
-import { LoanOverviewFields } from "@/features/loan-overview/types/fields";
+import type { LoanOverviewFields } from "@/features/loan-overview/types/fields";
 
 export const LoanOverview: FC = () => {
 	const data: LoanOverviewFields = {
@@ -45,7 +45,7 @@ export const LoanOverview: FC = () => {
 				loanAddress: "Some Address",
 			},
 		],
-		dueToDraws: 774500,
+		dueToDraws: 774_500,
 		fundingBreakdown: [
 			{
 				dueToDraws: 0,
@@ -54,53 +54,53 @@ export const LoanOverview: FC = () => {
 					{
 						dueToDraws: 0,
 						lender: "Scott Harper",
-						totalDrawn: 178000,
-						totalFunds: 178000,
-						totalLoan: 178000,
+						totalDrawn: 178_000,
+						totalFunds: 178_000,
+						totalLoan: 178_000,
 						trustUnallocated: 0,
 						trustAllocated: 0,
 					},
 					{
 						dueToDraws: 0,
 						lender: "Chad Ricketts",
-						totalDrawn: 178000,
-						totalFunds: 178000,
-						totalLoan: 178000,
+						totalDrawn: 178_000,
+						totalFunds: 178_000,
+						totalLoan: 178_000,
 						trustUnallocated: 0,
 						trustAllocated: 0,
 					},
 				],
-				totalDrawn: 178000,
-				totalFunds: 178000,
-				totalLoan: 178000,
+				totalDrawn: 178_000,
+				totalFunds: 178_000,
+				totalLoan: 178_000,
 				trustUnallocated: 0,
 				trustAllocated: 0,
 			},
 			{
 				dueToDraws: 0,
 				lender: "DKC Lending FL LLC",
-				totalDrawn: 178000,
-				totalFunds: 178000,
-				totalLoan: 178000,
+				totalDrawn: 178_000,
+				totalFunds: 178_000,
+				totalLoan: 178_000,
 				trustUnallocated: 0,
 				trustAllocated: 0,
 			},
 			{
 				dueToDraws: 0,
 				lender: "DKC Lending IV",
-				totalDrawn: 178000,
-				totalFunds: 178000,
-				totalLoan: 178000,
+				totalDrawn: 178_000,
+				totalFunds: 178_000,
+				totalLoan: 178_000,
 				trustUnallocated: 0,
 				trustAllocated: 0,
 			},
 		],
-		loansDrawnDown: 37837000,
-		servicingFee: 24929.94,
-		totalCollectibles: 407684.33,
-		totalLoans: 38612000,
-		totalParticipantsPayable: 375945.22,
-		trustAccountBalance: 406500,
+		loansDrawnDown: 37_837_000,
+		servicingFee: 24_929.94,
+		totalCollectibles: 407_684.33,
+		totalLoans: 38_612_000,
+		totalParticipantsPayable: 375_945.22,
+		trustAccountBalance: 406_500,
 		yieldSpread: 6809.17,
 	};
 

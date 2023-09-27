@@ -25,7 +25,7 @@ export function getCurrentUser(): CognitoUser | null {
 	return currentUser;
 }
 
-function getCognitoUser(username: string): CognitoUser {
+export function getCognitoUser(username: string): CognitoUser {
 	const userData = {
 		Username: username,
 		Pool: userPool,
