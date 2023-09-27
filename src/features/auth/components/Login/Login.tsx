@@ -52,11 +52,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 	): Promise<void> => {
 		try {
 			await signInWithEmail(data.email, data.password, "");
-			/* 			if (handleSuccessLogin) {
-				handleSuccessLogin({ email: data.email, password: data.password });
-			} */
 			const sessionData: any = await getSession();
-			console.log(sessionData);
 			sendToLocalStorage(accessToken, `${sessionData?.idToken?.jwtToken}`);
 			sendToLocalStorage(sub, `${sessionData?.idToken?.payload?.sub}`);
 			createLoginLog.mutate();

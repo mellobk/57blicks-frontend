@@ -30,7 +30,9 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const errorMessage = useStore((state) => state.errorMessage);
+	const successMessage = useStore((state) => state.successMessage);
 	const clearErrorMessage = useStore((state) => state.clearErrorMessage);
+	const clearSuccessMessage = useStore((state) => state.clearSuccessMessage);
 	const toast = useRef(null) || <div></div>;
 	const [user, setUser] = useState<CognitoUser | null>(null);
 	const [session, setSession] = useState<CognitoUserSession | null>(null);
@@ -53,6 +55,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	};
 
 	useEffect(() => {
+		if (successMessage && toast?.current) {
+			(toast?.current as any)?.show({
+				severity: "success",
+				summary: "Success",
+				detail: successMessage,
+				life: 3000,
+			});
+			clearErrorMessage();
+		}
+	}, [successMessage]);
+
+	useEffect(() => {
 		if (errorMessage && toast?.current) {
 			(toast?.current as any)?.show({
 				severity: "error",
@@ -60,8 +74,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 				detail: errorMessage,
 				life: 3000,
 			});
-			clearErrorMessage();
 		}
+		clearSuccessMessage();
 	}, [errorMessage]);
 
 	return (

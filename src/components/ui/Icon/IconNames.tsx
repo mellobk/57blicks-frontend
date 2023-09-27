@@ -28,6 +28,9 @@ const IconNames: Array<string> = [
 	"user",
 	"wrong",
 	"doorOut",
+	"linkCopy",
+	"passwordProfile",
+	"userProfile",
 ];
 
 export default IconNames;
