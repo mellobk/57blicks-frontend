@@ -1,25 +1,22 @@
-import type { ForwardRefRenderFunction, TextareaHTMLAttributes } from "react";
+import type { FC, TextareaHTMLAttributes } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
 import { Icon, type IconNames } from "@/components/ui/Icon";
-import {inputClassName} from "@/utils/class-names.ts";
+import { inputClassName } from "@/utils/class-names.ts";
 
-interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	clickIcon?: () => void;
 	error?: any;
 	iconColor?: string;
 	iconName?: (typeof IconNames)[number];
 	iconWidth?: string;
-	label?: string;
+	label: string;
 	register?: UseFormRegisterReturn;
 	wrapperClassName?: string;
 }
 
-export const TextArea: ForwardRefRenderFunction<
-	HTMLTextAreaElement,
-	TextAreaProps
-> = ({
+export const TextArea: FC<Props> = ({
 	error,
 	className = inputClassName(error),
 	clickIcon,
@@ -29,7 +26,6 @@ export const TextArea: ForwardRefRenderFunction<
 	label,
 	required,
 	register,
-	rows = 7,
 	wrapperClassName,
 	...props
 }) => (
@@ -54,7 +50,6 @@ export const TextArea: ForwardRefRenderFunction<
 
 			<textarea
 				className={`h-36 ${className} ${iconName && "pr-[30px]"}`}
-				rows={rows}
 				{...props}
 				{...register}
 			/>
