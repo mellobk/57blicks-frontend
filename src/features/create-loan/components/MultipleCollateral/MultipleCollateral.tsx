@@ -1,21 +1,23 @@
 import type { FC } from "react";
 import {
+	Control,
 	FieldArrayWithId,
 	FieldErrors,
 	UseFieldArrayAppend,
 	UseFieldArrayRemove,
 	UseFormRegister,
 } from "react-hook-form";
+import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
-import { Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
-import { assetTypes } from "@/features/create-loan/utils/selects";
+import { ASSET_TYPES } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	append: UseFieldArrayAppend<Loan, "collaterals">;
+	control: Control<Loan>;
 	errors: FieldErrors<Loan>;
 	fields: FieldArrayWithId<Loan, "collaterals">[];
 	register: UseFormRegister<Loan>;
@@ -24,6 +26,7 @@ interface Props {
 
 export const MultipleCollateral: FC<Props> = ({
 	append,
+	control,
 	errors,
 	fields,
 	register,
@@ -55,16 +58,12 @@ export const MultipleCollateral: FC<Props> = ({
 					<div className="flex flex-col gap-4 divide-y divide-gray-200">
 						{collaterals.map((item, index) => (
 							<div key={item.id}>
-								<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
+								<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 									<Input
-										error={
-											errors?.collaterals?.[index]?.address?.message
-										}
+										error={errors?.collaterals?.[index]?.address?.message}
 										label="Collateral Address"
 										placeholder="Enter Collateral Address"
-										register={register(
-											`collaterals.${index}.address`
-										)}
+										register={register(`collaterals.${index}.address`)}
 										wrapperClassName="lg:mt-4 mt-6"
 										required
 									/>
@@ -102,13 +101,13 @@ export const MultipleCollateral: FC<Props> = ({
 									wrapperClassName="mt-6"
 									required
 								/>
-								<Select
-									className="mt-6"
+								<Dropdown
+									control={control}
 									error={errors?.collaterals?.[index]?.assetType?.message}
+									className="mt-6"
 									label="Asset Type"
-									options={assetTypes}
-									placeholder="Select Dropdown"
-									register={register(`collaterals.${index}.assetType`)}
+									name={`collaterals.${index}.assetType`}
+									options={ASSET_TYPES}
 									required
 								/>
 							</div>
@@ -124,7 +123,7 @@ export const MultipleCollateral: FC<Props> = ({
 							className="rounded-lg bg-primary-500 mt-4 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
 							onClick={() =>
 								append({
-                  address: "",
+									address: "",
 									assetType: "",
 									insuranceExpirationDate: "",
 									link: "",

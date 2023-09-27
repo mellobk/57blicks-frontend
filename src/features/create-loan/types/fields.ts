@@ -18,10 +18,11 @@ export type Collateral = {
 
 export type FundingBreakdown = {
 	amount: string;
-	lender: string;
 	lenderId?: string;
+  lenderName: string;
+  prorated: string;
 	rate: string;
-	type?: "lender" | "participant";
+	regular: string;
 };
 
 export type Loan = {
@@ -31,8 +32,12 @@ export type Loan = {
 	constructionHoldback: string;
 	fundingBreakdown: FundingBreakdown[];
 	interestRate: string;
+	leadSource: string;
+	loanConsultant: string;
+	ltv: string;
 	maturityDate: string;
 	originationDate: string;
+	participationBreakdown: FundingBreakdown[];
 	prepaymentPenalty: string;
 	totalLoanAmount: string;
 	type: string;

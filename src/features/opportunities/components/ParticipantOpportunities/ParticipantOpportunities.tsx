@@ -1,36 +1,42 @@
 import type { FC } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { Input } from "@/components/forms/Input";
-import { Title } from "@/components/ui/Title/Title";
+import { Control, FieldErrors } from "react-hook-form";
+import { FormatInput } from "@/components/forms/FormatInput";
+import { Title } from "@/components/ui/Title";
 import { Opportunity } from "@/features/opportunities/types/fields";
 
 interface Props {
+	control: Control<Opportunity>;
 	errors: FieldErrors<Opportunity>;
-	register: UseFormRegister<Opportunity>;
 }
 
-export const ParticipantOpportunities: FC<Props> = ({ errors, register }) => (
+export const ParticipantOpportunities: FC<Props> = ({ control, errors }) => (
 	<div>
 		<Title text="Participant Opportunities" />
-		<div className="grid xl:grid-cols-3 grid-cols-1 xl:gap-6 items-end">
-			<Input
+		<div className="grid xl:grid-cols-3 grid-cols-1 xl:gap-6">
+			<FormatInput
+				control={control}
 				error={errors?.participantOpportunities?.["99%"]?.message}
+				format="money"
+				name="participantOpportunities.99%"
 				placeholder="99%"
-				register={register("participantOpportunities.99%")}
 				wrapperClassName="mt-6"
 				required
 			/>
-			<Input
+			<FormatInput
+				control={control}
 				error={errors?.participantOpportunities?.["75%"]?.message}
+				format="money"
+				name="participantOpportunities.75%"
 				placeholder="75%"
-				register={register("participantOpportunities.75%")}
 				wrapperClassName="mt-6"
 				required
 			/>
-			<Input
+			<FormatInput
+				control={control}
 				error={errors?.participantOpportunities?.["50%"]?.message}
+				format="money"
+				name="participantOpportunities.50%"
 				placeholder="50%"
-				register={register("participantOpportunities.50%")}
 				wrapperClassName="mt-6"
 				required
 			/>

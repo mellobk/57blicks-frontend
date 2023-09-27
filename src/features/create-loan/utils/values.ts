@@ -1,5 +1,5 @@
 import { Loan } from "@/features/create-loan/types/fields";
-import { lenders } from "@/features/create-loan/utils/selects";
+import { LENDERS } from "@/features/create-loan/utils/selects";
 
 export const defaultValues: Loan = {
 	amountDrawn: "",
@@ -31,25 +31,34 @@ export const defaultValues: Loan = {
 	fundingBreakdown: [
 		{
 			amount: "",
-			lender: lenders[0]?.name || "DKC Lending LLC",
-			lenderId: lenders[0]?.code,
+			lenderId: LENDERS[0]?.code,
+      lenderName: LENDERS[0]?.name || "DKC Lending LLC",
+      prorated: "0",
 			rate: "",
-			type: "lender",
+			regular: "0",
 		},
 		{
 			amount: "",
-			lender: "DKC Servicing Fee Income",
-			rate: "",
+			lenderName: "DKC Servicing Fee Income",
+      prorated: "0",
+      rate: "",
+      regular: "0",
 		},
 		{
 			amount: "",
-			lender: "Yield Spread (optional)",
-			rate: "",
+      lenderName: "Yield Spread",
+      prorated: "0",
+      rate: "",
+      regular: "0",
 		},
 	],
 	interestRate: "",
+  leadSource: "",
+  loanConsultant: "",
+  ltv: "",
 	maturityDate: "",
 	originationDate: "",
+  participationBreakdown: [],
 	prepaymentPenalty: "",
 	totalLoanAmount: "",
 	type: "",

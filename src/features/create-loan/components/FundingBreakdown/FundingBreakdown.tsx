@@ -1,41 +1,57 @@
 import type { FC } from "react";
-import { Control, UseFieldArrayRemove, useWatch } from "react-hook-form";
+import {
+	Control,
+	FieldErrors,
+	UseFieldArrayRemove,
+	useWatch,
+} from "react-hook-form";
 import { TableColumn } from "react-data-table-component";
-import moment from "moment";
+import { Cell } from "@/components/table/Cell";
 import { FormatInput } from "@/components/table/FormatInput";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title/Title";
 import { Table } from "@/components/ui/Table/Table";
+import { Footer } from "@/features/create-loan/components/FundingBreakdown/Footer/Footer";
 import {
 	FundingBreakdown as FundingBreakdownType,
 	Loan,
 } from "@/features/create-loan/types/fields";
-import { lenders } from "@/features/create-loan/utils/selects";
-import { moneyFormat } from "@/utils/formats";
+import { LENDERS } from "@/features/create-loan/utils/selects";
 
 interface Props {
+	calculateProrated: (
+		amount: string,
+		rate: string,
+		originationDate: string
+	) => string;
+	calculateRegular: (amount: string, rate: string) => string;
 	control: Control<Loan>;
+	errors: FieldErrors<Loan>;
+	remove: UseFieldArrayRemove;
 	setOpenLenderModal: (openLenderModal: boolean) => void;
 	setOpenParticipantModal: (openParticipantModal: boolean) => void;
-	remove: UseFieldArrayRemove;
 }
 
 export const FundingBreakdown: FC<Props> = ({
+	calculateProrated,
+	calculateRegular,
 	control,
+	errors,
+	remove,
 	setOpenLenderModal,
 	setOpenParticipantModal,
-	remove,
 }) => {
-	const fundingBreakdown = useWatch({
+	const [fundingBreakdown, originationDate, participationBreakdown] = useWatch({
 		control,
-		name: "fundingBreakdown",
-		defaultValue: [],
+		name: [
+			"fundingBreakdown",
+			"originationDate",
+			"participationBreakdown",
+			"totalLoanAmount",
+		],
 	});
-	const originationDate = useWatch({
-		control,
-		name: "originationDate",
-	});
+
 	const columns: TableColumn<FundingBreakdownType>[] = [
 		{
 			cell: (row, rowIndex) => {
@@ -47,14 +63,14 @@ export const FundingBreakdown: FC<Props> = ({
 							type="button"
 						>
 							<div className="flex flex-row justify-between items-center">
-								{row.lender}
+								{row.lenderName}
 								<Icon name="arrowDown" width="6" color="#656A74" />
 							</div>
 						</button>
 					);
 				}
 
-				return <div className="px-4">{row.lender}</div>;
+				return <Cell className="px-4" format="text" value={row.lenderName} />;
 			},
 			name: "Lender",
 			style: { padding: 0 },
@@ -63,8 +79,17 @@ export const FundingBreakdown: FC<Props> = ({
 			cell: (_, rowIndex) => (
 				<FormatInput
 					control={control}
+					error={
+						rowIndex > 2
+							? errors?.participationBreakdown?.[rowIndex - 3]?.amount?.message
+							: errors?.fundingBreakdown?.[rowIndex]?.amount?.message
+					}
 					format="money"
-					name={`fundingBreakdown.${rowIndex}.amount`}
+					name={
+						rowIndex > 2
+							? `participationBreakdown.${rowIndex - 3}.amount`
+							: `fundingBreakdown.${rowIndex}.amount`
+					}
 				/>
 			),
 			name: "Amount",
@@ -74,8 +99,17 @@ export const FundingBreakdown: FC<Props> = ({
 			cell: (_, rowIndex) => (
 				<FormatInput
 					control={control}
+					error={
+						rowIndex > 2
+							? errors?.participationBreakdown?.[rowIndex - 3]?.rate?.message
+							: errors?.fundingBreakdown?.[rowIndex]?.rate?.message
+					}
 					format="percentage"
-					name={`fundingBreakdown.${rowIndex}.rate`}
+					name={
+						rowIndex > 2
+							? `participationBreakdown.${rowIndex - 3}.rate`
+							: `fundingBreakdown.${rowIndex}.rate`
+					}
 				/>
 			),
 			name: "Rate",
@@ -83,58 +117,50 @@ export const FundingBreakdown: FC<Props> = ({
 		},
 		{
 			cell: (row: FundingBreakdownType) => (
-				<div className="px-4">{calculateProrated(row.amount, row.rate)}</div>
+				<Cell
+					className="px-4"
+					format="money"
+					value={calculateProrated(row.amount, row.rate, originationDate)}
+				/>
 			),
 			name: "Prorated",
 			style: { padding: 0 },
 		},
 		{
 			cell: (row: FundingBreakdownType) => (
-				<div className="px-4">{calculateRegular(row.amount, row.rate)}</div>
+				<Cell
+					className="px-4"
+					format="money"
+					value={calculateRegular(row.amount, row.rate)}
+				/>
 			),
 			name: "Regular",
 			style: { padding: 0 },
 		},
 		{
-			cell: (row, rowIndex) => (
+			cell: (_, rowIndex) => (
 				<>
-					{row.type === "participant" && (
+					{rowIndex > 2 && (
 						<Button
 							className="bg-white px-0 py-2 mr-2"
 							icon={<Icon name="trashBin" color="#FF0033" width="24" />}
-							onClick={() => remove(rowIndex)}
+							onClick={() => remove(rowIndex - 3)}
 							type="button"
 						/>
 					)}
 				</>
 			),
-			maxWidth: "50px",
+			width: "48px",
 			name: "",
 			style: { padding: 0 },
 			right: true,
 		},
 	];
 
-	function calculateRegular(amount: string, rate: string) {
-		return moneyFormat((Number(amount) * (Number(rate) / 100)) / 12);
-	}
-
-	function calculateProrated(amount: string, rate: string) {
-		const date = originationDate
-			? moment(originationDate, "MM-DD-YYYY")
-			: moment();
-		const lastDayOfMonth = date.clone().endOf("month");
-		const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days");
-
-		return moneyFormat((Number(amount) * (Number(rate) / 100)) / (365 * daysUntilEndOfMonth));
-	}
-
 	function canAddParticipant() {
-		const lender = fundingBreakdown[0]?.lenderId === lenders[0]?.code;
-		const participants = fundingBreakdown.filter(
-			(field) => field.type === "participant"
-		);
-		return lender && participants.length < 4;
+		const lender = fundingBreakdown[0]?.lenderId === LENDERS[0]?.code;
+
+		return lender && participationBreakdown.length < 4;
 	}
 
 	return (
@@ -155,9 +181,14 @@ export const FundingBreakdown: FC<Props> = ({
 				/>
 			</div>
 			<Table
-				className="my-6 rounded-3xl"
+				className="mt-6 rounded-3xl"
 				columns={columns}
-				data={fundingBreakdown}
+				data={[...fundingBreakdown, ...participationBreakdown]}
+			/>
+			<Footer
+				calculateProrated={calculateProrated}
+				calculateRegular={calculateRegular}
+				control={control}
 			/>
 		</div>
 	);

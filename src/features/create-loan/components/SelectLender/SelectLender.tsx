@@ -1,10 +1,10 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { FieldArrayWithId, UseFormSetValue } from "react-hook-form";
 import { Option, Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Loan } from "@/features/create-loan/types/fields";
-import { lenders } from "@/features/create-loan/utils/selects";
+import { LENDERS } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	fields: FieldArrayWithId<Loan, "fundingBreakdown">[];
@@ -19,19 +19,17 @@ export const SelectLender: FC<Props> = ({
 	setOpenModal,
 	setValue,
 }) => {
-	const [selectedLender, setSelectedLender] = useState<Option>();
-
-	useEffect(() => {
-		const lender = lenders.find(
-			(lender: Option) => lender.code === fields[0]?.lenderId
-		);
-		setSelectedLender(lender);
-	}, []);
+	const [selectedLender, setSelectedLender] = useState(fields[0]?.lenderId);
 
 	const selectLender = () => {
-		if (selectedLender) {
-			setValue("fundingBreakdown.0.lender", selectedLender.name);
-			setValue("fundingBreakdown.0.lenderId", selectedLender.code);
+		const lender = LENDERS.find(
+			(lender: Option) => lender.code === selectedLender
+		);
+
+		if (lender) {
+			setValue("fundingBreakdown.0.lenderName", lender.name);
+			setValue("fundingBreakdown.0.lenderId", lender.code);
+			setValue("participationBreakdown", []);
 			setOpenModal(false);
 		}
 	};
@@ -46,7 +44,7 @@ export const SelectLender: FC<Props> = ({
 				className="mt-6"
 				label="Lender"
 				onChange={(e) => setSelectedLender(e.target.value)}
-				options={lenders}
+				options={LENDERS}
 				placeholder="Select Lender"
 				value={selectedLender}
 				required

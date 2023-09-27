@@ -4,10 +4,11 @@ import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
 import { Icon } from "@/components/ui/Icon";
 import { inputClassName } from "@/utils/class-names";
+import "./styles.css";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	error?: any;
-	label?: string;
+	label: string;
 	register?: UseFormRegisterReturn;
 	wrapperClassName?: string;
 }
@@ -38,6 +39,7 @@ export const FileUpload: ForwardRefRenderFunction<
 			<input
 				className={`${className} pr-[30px]`}
 				type="file"
+        placeholder="Upload Image"
 				{...props}
 				{...register}
 			/>

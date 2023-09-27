@@ -1,32 +1,38 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
 	Control,
 	useFieldArray,
+	UseFormReset,
 	UseFormSetValue,
 	useWatch,
 } from "react-hook-form";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
-import OpportunitiesService from "@/features/opportunities/api/opportunities";
+import OpportunitiesService from "@/features/opportunities/api/investors";
 import { Investor } from "@/features/opportunities/types/api";
 import { Opportunity } from "@/features/opportunities/types/fields";
 import { nameFormat } from "@/utils/formats";
+import useStore from "@/stores/app-store";
 
 interface Props {
 	control: Control<Opportunity>;
 	openModal: boolean;
+	reset: UseFormReset<Opportunity>;
 	setOpenModal: (openModal: boolean) => void;
+	setOpenSuccessModal: (openModal: boolean) => void;
 	setValue: UseFormSetValue<Opportunity>;
 }
 
 export const PostTo: FC<Props> = ({
 	control,
 	openModal,
+	reset,
 	setOpenModal,
+	setOpenSuccessModal,
 	setValue,
 }) => {
 	const [searchValue, setSearchValue] = useState<string>("");
@@ -36,28 +42,61 @@ export const PostTo: FC<Props> = ({
 	} | null>(null);
 	const { append, remove } = useFieldArray({
 		control,
-		name: "investors",
+		name: "investorsNotifications",
 	});
-	const opportunityInvestors = useWatch({
+	const investorsNotifications = useWatch({
 		control,
-		name: "investors",
+		name: "investorsNotifications",
 		defaultValue: [],
 	});
+	const form = useWatch({ control });
 	const investorQuery = useQuery(
 		["investor-query", searchValue],
 		() => OpportunitiesService.getInvestors(searchValue),
 		{ enabled: openModal }
 	);
+	const {
+		error,
+		isError,
+		isSuccess,
+		mutate,
+		reset: resetMutation,
+	} = useMutation((data: Opportunity) => {
+		return OpportunitiesService.createOpportunity(data);
+	});
+	const setErrorMessage = useStore((state) => state.setErrorMessage);
+
+	const allEmail = () => {
+		investorsNotifications.map((_, index) =>
+			setValue(`investorsNotifications.${index}.email`, true)
+		);
+	};
+
+	const allSMS = () => {
+		investorsNotifications.map((_, index) =>
+			setValue(`investorsNotifications.${index}.sms`, true)
+		);
+	};
 
 	const findIndex = (investorId: string) =>
-		opportunityInvestors.findIndex(
+		investorsNotifications.findIndex(
 			(opportunityInvestor) => opportunityInvestor.investorId === investorId
 		);
+
+	const onPost = (): void => {
+		const formData = form as Opportunity;
+
+		setValue(
+			"documentS3Path",
+			"opportunities/aaa52541-143e-4e6d-a7e2-a5706c85bd89.pdf"
+		);
+		mutate(formData);
+	};
 
 	const openNote = (investor: Investor) => {
 		const index = findIndex(investor.id);
 		const opportunityInvestorIndex =
-			index < 0 ? opportunityInvestors.length : index;
+			index < 0 ? investorsNotifications.length : index;
 		const note =
 			`Hi (${investor.user?.firstName}),\n` +
 			"\n" +
@@ -72,17 +111,24 @@ export const PostTo: FC<Props> = ({
 
 		if (index < 0) {
 			append({
-				email: false,
+				email: true,
 				sms: false,
 				note,
 				investorId: investor.id,
 			});
+		} else {
+			setValue(`investorsNotifications.${index}.email`, true);
+			setValue(`investorsNotifications.${index}.note`, note);
 		}
 
 		setSelectedInvestor({
 			investor,
 			opportunityInvestorIndex,
 		});
+	};
+
+	const setNote = (index: number, note: string) => {
+		setValue(`investorsNotifications.${index}.note`, note);
 	};
 
 	const toggleEmail = (investorId: string) => {
@@ -95,7 +141,10 @@ export const PostTo: FC<Props> = ({
 				investorId,
 			});
 		} else {
-			setValue(`investors.${index}.email`, !opportunityInvestors[index]?.email);
+			setValue(
+				`investorsNotifications.${index}.email`,
+				!investorsNotifications[index]?.email
+			);
 		}
 	};
 
@@ -111,13 +160,11 @@ export const PostTo: FC<Props> = ({
 		} else {
 			remove(index);
 		}
+
+		setSelectedInvestor(null);
 	};
 
-	const toggleNote = (index: number, note: string) => {
-		setValue(`investors.${index}.note`, note);
-	};
-
-	const toggleSms = (investorId: string) => {
+	const toggleSMS = (investorId: string) => {
 		const index = findIndex(investorId);
 
 		if (index < 0) {
@@ -127,9 +174,30 @@ export const PostTo: FC<Props> = ({
 				investorId,
 			});
 		} else {
-			setValue(`investors.${index}.sms`, !opportunityInvestors[index]?.sms);
+			setValue(
+				`investorsNotifications.${index}.sms`,
+				!investorsNotifications[index]?.sms
+			);
 		}
 	};
+
+	useEffect(() => {
+		if (isSuccess) {
+			reset();
+			resetMutation();
+			setOpenModal(false);
+			setOpenSuccessModal(true);
+		}
+	}, [isSuccess]);
+
+	useEffect(() => {
+		if (isError && (error as Error)) {
+			const currentError = error as Error;
+
+			setErrorMessage(currentError?.message);
+			resetMutation();
+		}
+	}, [isError]);
 
 	return (
 		openModal && (
@@ -164,12 +232,16 @@ export const PostTo: FC<Props> = ({
 							<div className="flex flex-col gap-2 divide-y divide-gray-200 h-full">
 								<div className="grid grid-cols-7 gap-1 mr-3 divide-x divide-gray-200 font-inter font-semibold text-blue-200 text-xs leading-[15px] tracking-[-0.6]">
 									<div className="col-span-5">Select Investors</div>
-									<div className="pl-1">All SMS</div>
-									<div className="pl-1">All Email</div>
+									<button className="pl-1" onClick={allSMS}>
+										All SMS
+									</button>
+									<button className="pl-1" onClick={allEmail}>
+										All SMS
+									</button>
 								</div>
 								<div className="grid grid-cols-1 divide-y divide-gray-200 overflow-y-auto">
 									{investorQuery.data?.map((investor, index) => {
-										const opportunityInvestor = opportunityInvestors.find(
+										const opportunityInvestor = investorsNotifications.find(
 											(opportunityInvestor) =>
 												investor.id === opportunityInvestor.investorId
 										);
@@ -213,7 +285,7 @@ export const PostTo: FC<Props> = ({
 														checked={!!opportunityInvestor?.sms}
 														offIconName="cellphone"
 														offLabel="SMS"
-														onChange={() => toggleSms(investor.id)}
+														onChange={() => toggleSMS(investor.id)}
 														lineThrough
 													/>
 												</div>
@@ -234,6 +306,9 @@ export const PostTo: FC<Props> = ({
 							<Button
 								buttonText="Post"
 								className="bg-primary-500 w-full mt-6 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
+								onClick={onPost}
+								disabled={investorsNotifications.length < 1}
+								type="button"
 							/>
 						</div>
 					</div>
@@ -267,13 +342,13 @@ export const PostTo: FC<Props> = ({
 								<textarea
 									className="h-full rounded-lg py-3 px-4 bg-gray-1300 resize-none focus:outline-none font-inter text-white text-[13px] leading-4 tracking-[-0.65]"
 									onChange={(e) =>
-										toggleNote(
+										setNote(
 											selectedInvestor.opportunityInvestorIndex,
 											e.target.value
 										)
 									}
 									value={
-										opportunityInvestors[
+										investorsNotifications[
 											selectedInvestor.opportunityInvestorIndex
 										]?.note
 									}

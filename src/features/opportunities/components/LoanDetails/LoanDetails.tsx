@@ -1,50 +1,50 @@
 import type { FC } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
-import { Title } from "@/components/ui/Title/Title";
+import { Title } from "@/components/ui/Title";
+import { LOAN_TYPES } from "@/features/create-loan/utils/selects";
 import { Opportunity } from "@/features/opportunities/types/fields";
-import { Select } from "@/components/forms/Select";
-import { types } from "@/features/create-loan/utils/selects.ts";
+import { FormatInput } from "@/components/forms/FormatInput";
 
 interface Props {
+	control: Control<Opportunity>;
 	errors: FieldErrors<Opportunity>;
 	register: UseFormRegister<Opportunity>;
 }
 
-export const LoanDetails: FC<Props> = ({ errors, register }) => (
+export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 	<div>
 		<Title text="Loan Details" />
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6 items-end">
-			<Input
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
+			<FormatInput
+				control={control}
 				error={errors?.assetValue?.message}
+				format="money"
 				label="Asset Value"
-				min={0}
-				placeholder="Enter Asset Value"
-				register={register("assetValue")}
-				type="number"
+				name="assetValue"
 				wrapperClassName="mt-6"
 				required
 			/>
-			<Input
+			<FormatInput
+				control={control}
 				error={errors?.loanAmount?.message}
+				format="money"
 				label="Loan Amount"
-				min={0}
-				placeholder="Enter Loan Amount"
-				register={register("loanAmount")}
-				type="number"
+				name="loanAmount"
 				wrapperClassName="mt-6"
 				required
 			/>
 		</div>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6  items-end">
-			<Input
+		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
+			<FormatInput
+				control={control}
 				error={errors?.loanToValue?.message}
+				format="percentage"
 				label="Loan to Value"
-				min={0}
-				placeholder="Enter Loan to Value"
-				register={register("loanToValue")}
-				type="number"
+				name="loanToValue"
 				wrapperClassName="mt-6"
+				disabled
 				required
 			/>
 			<Input
@@ -56,13 +56,13 @@ export const LoanDetails: FC<Props> = ({ errors, register }) => (
 				required
 			/>
 		</div>
-		<Select
-			className="mt-6"
+		<Dropdown
+			control={control}
 			error={errors?.loanType?.message}
+			className="mt-6"
 			label="Loan Type"
-			options={types}
-			placeholder="Select Loan Type"
-			register={register("loanType")}
+			name="loanType"
+			options={LOAN_TYPES}
 			required
 		/>
 		<Input

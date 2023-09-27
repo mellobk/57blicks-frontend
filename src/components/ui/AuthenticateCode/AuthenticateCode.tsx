@@ -4,7 +4,7 @@ import AuthCode, { type AuthCodeRef } from "react-auth-code-input";
 interface AuthenticateProps {
 	handleOnChange?: (result: string) => void | undefined;
 	required?: boolean;
-	label?: string;
+	label: string;
 }
 
 export const AuthenticateCode: FC<AuthenticateProps> = ({

@@ -7,7 +7,6 @@ import { Icon } from "@/components/ui/Icon";
 
 interface Props extends ButtonProps {
 	buttonText?: string | ReactElement;
-	className?: string;
 	deepClassName?: string;
 	disabled?: boolean;
 	loading?: boolean;

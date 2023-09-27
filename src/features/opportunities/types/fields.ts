@@ -1,4 +1,4 @@
-export type Investor = {
+export type InvestorsNotifications = {
 	email: boolean;
 	investorId: string;
 	note?: string;
@@ -9,6 +9,7 @@ export type Opportunity = {
 	additionalInformation: string;
 	assetValue: string;
 	dkcRepeatBorrower: string;
+  documentS3Path: string;
 	googleDriveLink: string;
 	image: any;
 	investmentBorrower: string;
@@ -17,7 +18,7 @@ export type Opportunity = {
 	investmentMonthlyInterestedOfferedToParticipant: string;
 	investmentPermanentPenalty: string;
 	investmentSummary: string;
-	investors: Investor[];
+	investorsNotifications: InvestorsNotifications[];
 	loanAmount: string;
 	loanTerm: string;
 	loanToValue: string;

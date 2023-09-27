@@ -1,11 +1,11 @@
 import { type FC, useState } from "react";
 import type { TableColumn } from "react-data-table-component";
 import { Input } from "@/components/forms/Input";
+import { Cell } from "@/components/table/Cell";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Table } from "@/components/ui/Table";
-import { Title } from "@/components/ui/Title/Title";
-import { Cell } from "@/features/loan-overview/components/Cell/Cell";
+import { Title } from "@/components/ui/Title";
 import { CellInput } from "@/features/loan-overview/components/CellInput/CellInput";
 import { ExpandedComponent } from "@/features/loan-overview/components/ExpandedComponent/ExpandedComponent";
 import type {
@@ -23,19 +23,19 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const columns: Array<TableColumn<FundingBreakdown>> = [
 		{
-			cell: (row) => <Cell type="text" value={row.lender} />,
+			cell: (row) => <Cell format="text" value={row.lender} />,
 			name: "Lenders and Participants",
 			selector: (row) => row.lender,
 			sortable: true,
 		},
 		{
-			cell: (row) => <Cell type="number" value={row.totalLoan} />,
+			cell: (row) => <Cell format="money" value={row.totalLoan} />,
 			name: "Total Loan",
 			selector: (row) => row.totalLoan,
 			sortable: true,
 		},
 		{
-			cell: (row) => <Cell type="number" value={row.totalDrawn} />,
+			cell: (row) => <Cell format="money" value={row.totalDrawn} />,
 			name: "Total Drawn to Date",
 			selector: (row) => row.totalDrawn,
 			sortable: true,
@@ -53,13 +53,13 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 			sortable: true,
 		},
 		{
-			cell: (row) => <Cell type="number" value={row.dueToDraws} />,
+			cell: (row) => <Cell format="money" value={row.dueToDraws} />,
 			name: "Due to Draws",
 			selector: (row) => row.dueToDraws,
 			sortable: true,
 		},
 		{
-			cell: (row) => <Cell type="number" value={row.totalFunds} />,
+			cell: (row) => <Cell format="money" value={row.totalFunds} />,
 			name: "Total Funds",
 			selector: (row) => row.totalFunds,
 			sortable: true,
@@ -83,12 +83,8 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 								? "w-[200px] bg-transparent"
 								: "bg-transparent w-[30px]"
 						} transition duration-500`}
-						onMouseEnter={() => {
-							setSearchVisible(true);
-						}}
-						onMouseLeave={() => {
-							setSearchVisible(false);
-						}}
+						onMouseEnter={() => setSearchVisible(true)}
+						onMouseLeave={() => setSearchVisible(false)}
 					>
 						<Input
 							type="text"
@@ -101,12 +97,8 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 							}
 							iconWidth={searchValue ? "10" : "18"}
 							iconName={searchValue ? "wrong" : "search"}
-							onChange={(data) => {
-								setSearchValue(data.target.value);
-							}}
-							clickIcon={() => {
-								setSearchValue("");
-							}}
+							onChange={(data) => setSearchValue(data.target.value)}
+							clickIcon={() => setSearchValue("")}
 							className={`${
 								searchVisible || searchValue ? "bg-gray-200" : "bg-transparent"
 							} rounded-2xl w-full px-4 py-2 placeholder-primary-500/[.5] text-primary-500 text-[13px] leading-[18px] tracking-[-0.65px] caret-blue-200 items-center outline-none`}

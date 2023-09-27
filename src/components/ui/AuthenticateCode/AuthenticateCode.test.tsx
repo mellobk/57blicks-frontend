@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { AuthenticateCode } from "./AuthCode";
+import { AuthenticateCode } from "./AuthenticateCode.tsx";
 
 describe("AuthenticateCode", () => {
 	test("calls handleOnChange when input changes", () => {

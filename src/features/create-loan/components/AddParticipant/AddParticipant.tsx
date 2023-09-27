@@ -1,13 +1,15 @@
 import { FC, useState } from "react";
 import { UseFieldArrayAppend } from "react-hook-form";
-import { Option, Select } from "@/components/forms/Select";
+import { useQuery } from "@tanstack/react-query";
+import { Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
+import OpportunitiesService from "@/features/create-loan/api/investors";
 import { Loan } from "@/features/create-loan/types/fields";
-import { participants } from "@/features/create-loan/utils/selects";
+import { nameFormat } from "@/utils/formats";
 
 interface Props {
-	append: UseFieldArrayAppend<Loan, "fundingBreakdown">;
+	append: UseFieldArrayAppend<Loan, "participationBreakdown">;
 	openModal: boolean;
 	setOpenModal: (openModal: boolean) => void;
 }
@@ -17,20 +19,31 @@ export const AddParticipant: FC<Props> = ({
 	openModal,
 	setOpenModal,
 }) => {
-	const [selectedParticipant, setSelectedParticipant] = useState<Option | null>(
-		null
+	const [selectedParticipant, setSelectedParticipant] = useState<string>();
+
+	const investorQuery = useQuery(
+		["investor-query"],
+		() => OpportunitiesService.getInvestors(),
+		{ enabled: openModal }
 	);
 
 	const addParticipant = () => {
-		if (selectedParticipant) {
+		const participant = investorQuery?.data?.find(
+			(participant) => participant.id === selectedParticipant
+		);
+
+		if (participant) {
 			append({
 				amount: "",
-				lender: selectedParticipant.name,
-				lenderId: selectedParticipant.code,
+				lenderId: participant.id,
+				lenderName: nameFormat(
+					`${participant.user?.firstName} ${participant.user?.lastName}`
+				),
+        prorated: "0",
 				rate: "",
-				type: "participant",
+				regular: "0",
 			});
-			setSelectedParticipant(null);
+			setSelectedParticipant("");
 			setOpenModal(false);
 		}
 	};
@@ -45,7 +58,10 @@ export const AddParticipant: FC<Props> = ({
 				className="mt-6"
 				label="Participant"
 				onChange={(e) => setSelectedParticipant(e.target.value)}
-				options={participants}
+				options={investorQuery?.data?.map(({ id, user }) => ({
+					code: id,
+					name: nameFormat(`${user?.firstName} ${user?.lastName}`),
+				}))}
 				placeholder="Select Participant"
 				required
 			/>

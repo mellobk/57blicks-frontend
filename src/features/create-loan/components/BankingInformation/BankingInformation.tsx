@@ -1,17 +1,22 @@
 import type { FC } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
-import { Select } from "@/components/forms/Select";
 import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
-import { accountTypes } from "@/features/create-loan/utils/selects";
+import { ACCOUNT_TYPES } from "@/features/create-loan/utils/selects";
 
 interface Props {
+	control: Control<Loan>;
 	errors: FieldErrors<Loan>;
 	register: UseFormRegister<Loan>;
 }
 
-export const BankingInformation: FC<Props> = ({ errors, register }) => (
+export const BankingInformation: FC<Props> = ({
+	control,
+	errors,
+	register,
+}) => (
 	<div className="pt-6">
 		<Title text="Banking Information" />
 		<Input
@@ -36,13 +41,13 @@ export const BankingInformation: FC<Props> = ({ errors, register }) => (
 			type="number"
 			wrapperClassName="mt-6"
 		/>
-		<Select
-			className="mt-6"
+		<Dropdown
+			control={control}
 			error={errors?.borrower?.accountType?.message}
+			className="mt-6"
 			label="Account Type"
-			options={accountTypes}
-			placeholder="Select Account Type"
-			register={register("borrower.accountType")}
+			name="borrower.accountType"
+			options={ACCOUNT_TYPES}
 		/>
 	</div>
 );

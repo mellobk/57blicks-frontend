@@ -1,9 +1,10 @@
-import { type ForwardRefRenderFunction, useEffect, useState } from "react";
+import { type ForwardRefRenderFunction, useState } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { Dropdown, type DropdownProps } from "primereact/dropdown";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
 import { Icon } from "@/components/ui/Icon";
+import { inputClassName } from "@/utils/class-names";
 
 export type Option = {
 	name: string;
@@ -12,73 +13,52 @@ export type Option = {
 
 interface SelectProps extends DropdownProps {
 	error?: string;
-	iconName?: string;
-	label?: string;
+	label: string;
 	register?: UseFormRegisterReturn;
-	className?: string;
-	value?: Option;
 }
 
 export const Select: ForwardRefRenderFunction<
 	HTMLSelectElement,
 	SelectProps
 > = ({
+	className,
 	error,
-	iconName,
 	label,
+	onChange,
 	register,
 	required,
-	className,
-	onChange,
 	value,
 	...props
 }) => {
-	const [selectedData, setSelectedData] = useState<Option>();
-
-	useEffect(() => {
-		if (value) {
-			setSelectedData(value);
-		}
-	}, []);
+	const [selectedData, setSelectedData] = useState<string>(value);
 
 	return (
 		<div className={`flex flex-col gap-2 ${className}`}>
 			<Label label={label} required={required} />
 
 			<div className="relative">
-				{iconName && (
-					<div
-						className="absolute top-0 right-2 bottom-0 flex items-center justify-center"
-						data-testid="icon"
-					>
-						<Icon name={iconName} width="20" color="#000" />
-					</div>
-				)}
-
 				<Dropdown
+					{...props}
 					{...register}
 					value={selectedData}
-					onChange={(event): void => {
-						setSelectedData(event.value);
-						onChange?.(event);
+					onChange={(e): void => {
+						setSelectedData(e.target.value);
+						onChange?.(e);
 					}}
-					options={props.options}
 					optionLabel="name"
-					placeholder="Select Dropdown"
-					dropdownIcon={<Icon name="arrowDown" width="10" color="black" />}
-					className={`w-full md:w-14rem ${
-						error ? "text-red-ERROR bg-gray-100 " : "bg-gray-200"
-					} focus:outline-none border-none shadow-none tracking-wide flex w-full h-10 p-3 items-center self-stretch rounded-md`}
+					optionValue="code"
+					className={inputClassName(error)}
+					dropdownIcon={<Icon name="arrowDown" width="6" color="#656A74" />}
 					pt={{
 						input: {
 							className:
-								"p-2 font-inter text-[13px] text-primary-500 leading-4 tracking-[-0.65px]",
+								"p-0 font-inter text-[13px] text-primary-500 leading-4 tracking-[-0.65px]",
 						},
 						wrapper: { className: "bg-gray-200 rounded-b-lg p-0" },
 						trigger: { className: "w-auto" },
 						list: { className: "p-0" },
 						item: {
-							className: "text-[13px]  text-primary-300 hover:bg-gray-300",
+							className: "text-[13px] text-primary-300 hover:bg-gray-300",
 						},
 					}}
 				/>

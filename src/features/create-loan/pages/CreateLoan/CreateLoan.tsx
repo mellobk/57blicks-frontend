@@ -3,6 +3,7 @@ import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
+import { SuccessModal } from "@/components/ui/SuccessModal";
 import CreateLoanService from "@/features/create-loan/api/create-loan";
 import { AddParticipant } from "@/features/create-loan/components/AddParticipant/AddParticipant";
 import { BankingInformation } from "@/features/create-loan/components/BankingInformation/BankingInformation";
@@ -14,8 +15,9 @@ import { SelectLender } from "@/features/create-loan/components/SelectLender/Sel
 import { LoanSchema } from "@/features/create-loan/schemas/LoanSchema";
 import { Loan } from "@/features/create-loan/types/fields";
 import { defaultValues } from "@/features/create-loan/utils/values";
+import useStore from "@/stores/app-store";
 import { unFormatPhone } from "@/utils/common-funtions";
-import { SuccessModal } from "@/components/ui/SuccessModal";
+import moment from "moment/moment";
 
 export const CreateLoan: FC = () => {
 	const [openLenderModal, setOpenLenderModal] = useState<boolean>(false);
@@ -41,25 +43,67 @@ export const CreateLoan: FC = () => {
 		control,
 		name: "collaterals",
 	});
-	const {
-		append: appendParticipant,
-		fields: fundingBreakdown,
-		remove: removeParticipant,
-	} = useFieldArray({
+	const { fields: fundingBreakdown } = useFieldArray({
 		control,
 		name: "fundingBreakdown",
 	});
-
+	const { append: appendParticipant, remove: removeParticipant } =
+		useFieldArray({
+			control,
+			name: "participationBreakdown",
+		});
 	const {
-		mutate,
+		error,
+		isError,
 		isSuccess,
+		mutate,
 		reset: resetMutation,
 	} = useMutation((data: Loan) => {
 		return CreateLoanService.createLoan(data);
 	});
+	const setErrorMessage = useStore((state) => state.setErrorMessage);
+
+	function calculateRegular(amount: string, rate: string) {
+		return ((Number(amount) * (Number(rate) / 100)) / 12).toFixed(2);
+	}
+
+	function calculateProrated(
+		amount: string,
+		rate: string,
+		originationDate: string
+	) {
+		const date = originationDate
+			? moment(originationDate, "MM-DD-YYYY")
+			: moment();
+		const lastDayOfMonth = date.clone().endOf("month");
+		const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days") + 1;
+		const dailyRate = Number(rate) / 100 / 365;
+
+		return (Number(amount) * dailyRate * daysUntilEndOfMonth).toFixed(2);
+	}
 
 	const onSubmit: SubmitHandler<Loan> = (data: Loan): void => {
 		const phoneNumber = unFormatPhone(data.borrower?.user?.phoneNumber || "");
+		const fundingBreakdown = data.fundingBreakdown.map((breakdown) => ({
+			...breakdown,
+			prorated: calculateProrated(
+				breakdown.amount,
+				breakdown.rate,
+				data.originationDate
+			),
+			regular: calculateRegular(breakdown.amount, breakdown.rate),
+		}));
+		const participationBreakdown = data.participationBreakdown.map(
+			(breakdown) => ({
+				...breakdown,
+				prorated: calculateProrated(
+					breakdown.amount,
+					breakdown.rate,
+					data.originationDate
+				),
+				regular: calculateRegular(breakdown.amount, breakdown.rate),
+			})
+		);
 
 		const formatData = {
 			...data,
@@ -70,6 +114,8 @@ export const CreateLoan: FC = () => {
 					phoneNumber: `+1${phoneNumber}`,
 				},
 			},
+			fundingBreakdown,
+			participationBreakdown,
 		};
 
 		mutate(formatData);
@@ -83,6 +129,19 @@ export const CreateLoan: FC = () => {
 		}
 	}, [isSuccess]);
 
+	useEffect(() => {
+		if (isError && (error as Error)) {
+			const currentError = error as Error;
+
+			setErrorMessage(currentError?.message);
+			resetMutation();
+		}
+	}, [isError]);
+
+	useEffect(() => {
+		console.log(errors);
+	}, [errors]);
+
 	return (
 		<>
 			<form
@@ -90,15 +149,25 @@ export const CreateLoan: FC = () => {
 				onSubmit={handleSubmit(onSubmit)}
 			>
 				<div className="grid grid-cols-3 gap-6 divide-x divide-gray-200">
-					<LoanInformation control={control} errors={errors} register={register} />
+					<LoanInformation
+						control={control}
+						errors={errors}
+						register={register}
+						setValue={setValue}
+					/>
 
 					<div className="flex flex-col gap-6 divide-y divide-gray-200 pl-6">
 						<BorrowerInformation errors={errors} register={register} />
-						<BankingInformation errors={errors} register={register} />
+						<BankingInformation
+							control={control}
+							errors={errors}
+							register={register}
+						/>
 					</div>
 
 					<MultipleCollateral
 						append={appendCollateral}
+						control={control}
 						errors={errors}
 						fields={collaterals}
 						register={register}
@@ -107,7 +176,10 @@ export const CreateLoan: FC = () => {
 				</div>
 
 				<FundingBreakdown
+					calculateProrated={calculateProrated}
+					calculateRegular={calculateRegular}
 					control={control}
+					errors={errors}
 					remove={removeParticipant}
 					setOpenLenderModal={setOpenLenderModal}
 					setOpenParticipantModal={setOpenParticipantModal}

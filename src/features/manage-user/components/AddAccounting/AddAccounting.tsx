@@ -1,5 +1,3 @@
-/* eslint-disable no-duplicate-imports */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,7 +11,6 @@ import { useMutation } from "@tanstack/react-query";
 import type { User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 import { unFormatPhone } from "@/utils/common-funtions.ts";
-import type { CreateAdminError } from "../../types/errors";
 import useStore from "@/stores/app-store";
 
 interface AddAdminProps {
@@ -55,7 +52,7 @@ export const AddAccounting: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 			handleSuccess && handleSuccess();
 		}
 		if (createAccountingMutation.isError) {
-			const error = createAccountingMutation.error as CreateAdminError;
+			const error = createAccountingMutation.error as Error;
 			setErrorMessage(error.message);
 			createAccountingMutation.reset();
 		}

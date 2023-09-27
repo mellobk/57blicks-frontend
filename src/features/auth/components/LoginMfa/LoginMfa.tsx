@@ -1,12 +1,12 @@
 import { type FC, useState } from "react";
+import { Message } from "primereact/message";
+import { sendCode } from "@/lib/cognito";
 import { Input } from "@/components/forms/Input";
-import { AuthenticateCode } from "@/components/ui/AuthCode";
+import { AuthenticateCode } from "@/components/ui/AuthenticateCode";
 import { Button } from "@/components/ui/Button";
+import { useAuth } from "@/providers/AuthContextProvider";
 import { LoginTitle } from "../LoginTitle";
 import { ToastMfa } from "../ToastMfa";
-import { sendCode } from "@/lib/cognito";
-import { Message } from "primereact/message";
-import { useAuth } from "@/providers/AuthContextProvider";
 
 interface MfaProps {
 	data?: { email: string; password: string };
@@ -61,7 +61,7 @@ export const LoginMfaComponent: FC<MfaProps> = ({
 	};
 
 	const backTo = (): void => {
-		backRoute;
+		backRoute?.();
 	};
 
 	return (

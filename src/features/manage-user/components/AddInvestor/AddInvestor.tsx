@@ -11,7 +11,6 @@ import { unFormatPhone } from "@/utils/common-funtions.ts";
 import { useMutation } from "@tanstack/react-query";
 import ManageUsersService from "../../api/investors";
 import type { Investor } from "../../types/api";
-import type { CreateAdminError } from "../../types/errors";
 import useStore from "@/stores/app-store";
 
 interface AddInvestorProps {
@@ -69,7 +68,7 @@ export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
 			handleSuccess?.();
 		}
 		if (createInvestorMutation.isError) {
-			const error = createInvestorMutation.error as CreateAdminError;
+			const error = createInvestorMutation.error as Error;
 			setErrorMessage(error.message);
 			createInvestorMutation.reset();
 		}

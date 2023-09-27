@@ -1,1 +1,0 @@
-export { AuthenticateCode } from "./AuthCode";
