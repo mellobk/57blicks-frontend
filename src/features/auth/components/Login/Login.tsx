@@ -19,6 +19,8 @@ import { loginRoutesNames } from "../../routes/LoginRouter";
 import { getSession } from "@/lib/cognito";
 import { sendToLocalStorage } from "@/utils/local-storage.ts";
 import { accessToken, sub } from "@/utils/constant.ts";
+import { useMutation } from "@tanstack/react-query";
+import ManageLogService from "@/features/manage-user/api/logs";
 
 type LoginData = {
 	email: string;
@@ -41,6 +43,10 @@ export const LoginForm: FC<LoginFormProps> = () => {
 		resolver: zodResolver(LoginSchema),
 	});
 
+	const createLoginLog = useMutation(async () => {
+		await ManageLogService.createLoginLog();
+	});
+
 	const onSubmit: SubmitHandler<any> = async (
 		data: LoginFields
 	): Promise<void> => {
@@ -53,6 +59,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 			console.log(sessionData);
 			sendToLocalStorage(accessToken, `${sessionData?.idToken?.jwtToken}`);
 			sendToLocalStorage(sub, `${sessionData?.idToken?.payload?.sub}`);
+			createLoginLog.mutate();
 			window.location.href = "/manage-users/admins";
 		} catch (error) {
 			console.log(error);
