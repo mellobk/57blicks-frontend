@@ -51,7 +51,7 @@ export const CreateLoan: FC = () => {
 			control,
 			name: "participationBreakdown",
 		});
-	const {
+  const {
 		error,
 		isError,
 		isSuccess,
@@ -95,10 +95,6 @@ export const CreateLoan: FC = () => {
 			resetMutation();
 		}
 	}, [isError]);
-
-	useEffect(() => {
-		console.log(errors);
-	}, [errors]);
 
 	return (
 		<>

@@ -6,7 +6,7 @@ export const FundingBreakdownSchema = z.object({
 		.string()
 		.min(1, { message: errorMessages.required })
 		.max(12, { message: errorMessages.maxLength }),
-	lender: z.string().min(1, { message: errorMessages.required }),
+	// lender: z.string().min(1, { message: errorMessages.required }),
 	lenderId: z.string().max(100, { message: errorMessages.maxLength }).optional(),
 	rate: z
 		.string()

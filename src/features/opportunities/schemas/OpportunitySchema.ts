@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { InvestorsNotificationSchema } from "@/features/opportunities/schemas/InvestorNotificationSchema";
 import { errorMessages } from "@/utils/error-messages";
 
 export const OpportunitySchema = z.object({
@@ -14,6 +15,9 @@ export const OpportunitySchema = z.object({
 		.string()
 		.nonempty(errorMessages.required)
 		.max(50, errorMessages.maxLength),
+  documentS3Path: z
+		.string()
+		.nonempty(errorMessages.required),
 	googleDriveLink: z
 		.string()
 		.nonempty(errorMessages.required)
@@ -53,6 +57,7 @@ export const OpportunitySchema = z.object({
 		.string()
 		.nonempty(errorMessages.required)
 		.max(2000, errorMessages.maxLength),
+	investorsNotifications: z.array(InvestorsNotificationSchema).optional(),
 	loanAmount: z
 		.string()
 		.nonempty(errorMessages.required)

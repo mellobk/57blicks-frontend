@@ -1,9 +1,10 @@
 import type { FC } from "react";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Button } from "@/components/ui/Button";
+import { SuccessModal } from "@/components/ui/SuccessModal";
 import { Tabs } from "@/components/ui/Tabs";
 import { AdditionalInformation } from "@/features/opportunities/components/AdditionalInformation/AdditionalInformation";
 import { DocumentPreview } from "@/features/opportunities/components/DocumentPreview/DocumentPreview";
@@ -18,20 +19,25 @@ import { tabs } from "@/features/opportunities/utils/tabs";
 
 export const CreateOpportunity: FC = () => {
 	const [openPostToModal, setOpenPostToModal] = useState(false);
+	const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(false);
 	const {
 		control,
 		formState: { errors },
 		handleSubmit,
 		register,
+		reset,
 		setValue,
 	} = useForm<Opportunity>({
 		resolver: zodResolver(OpportunitySchema),
 	});
 
-	const onSubmit: SubmitHandler<Opportunity> = (data: Opportunity): void => {
+	const onSubmit: SubmitHandler<Opportunity> = (): void => {
 		setOpenPostToModal(true);
-		console.log(data);
 	};
+
+  useEffect(() => {
+    console.log(errors)
+  }, [errors])
 
 	return (
 		<form
@@ -76,8 +82,17 @@ export const CreateOpportunity: FC = () => {
 			<PostTo
 				control={control}
 				openModal={openPostToModal}
+				reset={reset}
 				setOpenModal={setOpenPostToModal}
+				setOpenSuccessModal={setOpenSuccessModal}
 				setValue={setValue}
+			/>
+
+			<SuccessModal
+				description="Opportunity information post to the selected investors"
+				openModal={openSuccessModal}
+				setOpenModal={setOpenSuccessModal}
+				title="Opportunity Created"
 			/>
 		</form>
 	);
