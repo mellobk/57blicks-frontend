@@ -29,19 +29,9 @@ export const FundingBreakdown: FC<Props> = ({
 	setOpenParticipantModal,
 	remove,
 }) => {
-	const fundingBreakdown = useWatch({
+	const [fundingBreakdown, originationDate, participationBreakdown] = useWatch({
 		control,
-		name: "fundingBreakdown",
-		defaultValue: [],
-	});
-	const originationDate = useWatch({
-		control,
-		name: "originationDate",
-	});
-	const participationBreakdown = useWatch({
-		control,
-		name: "participationBreakdown",
-		defaultValue: [],
+		name: ["fundingBreakdown", "originationDate", "participationBreakdown"],
 	});
 
 	const columns: TableColumn<FundingBreakdownType>[] = [

@@ -49,7 +49,7 @@ export const PostTo: FC<Props> = ({
 		name: "investorsNotifications",
 		defaultValue: [],
 	});
-	const data = useWatch({ control });
+	const form = useWatch({ control });
 	const investorQuery = useQuery(
 		["investor-query", searchValue],
 		() => OpportunitiesService.getInvestors(searchValue),
@@ -72,7 +72,7 @@ export const PostTo: FC<Props> = ({
 		);
 
 	const onPost = (): void => {
-    const formData = data as Opportunity;
+		const formData = form as Opportunity;
 
 		setValue(
 			"documentS3Path",

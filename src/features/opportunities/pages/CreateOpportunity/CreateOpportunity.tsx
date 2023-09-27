@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import {useEffect, useState} from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Button } from "@/components/ui/Button";
@@ -30,14 +30,23 @@ export const CreateOpportunity: FC = () => {
 	} = useForm<Opportunity>({
 		resolver: zodResolver(OpportunitySchema),
 	});
+	const [assetValue, loanAmount] = useWatch({
+		control,
+		name: ["assetValue", "loanAmount"],
+	});
 
 	const onSubmit: SubmitHandler<Opportunity> = (): void => {
 		setOpenPostToModal(true);
 	};
 
-  useEffect(() => {
-    console.log(errors)
-  }, [errors])
+	useEffect(() => {
+		setValue(
+			"loanToValue",
+			String(
+        (assetValue ? (Number(loanAmount) * 100) / Number(assetValue) || 0 : 0).toFixed(2)
+			)
+		);
+	}, [assetValue, loanAmount]);
 
 	return (
 		<form

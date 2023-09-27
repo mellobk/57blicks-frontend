@@ -45,7 +45,6 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 				format="money"
 				label="Total Loan Amount"
 				name="totalLoanAmount"
-				placeholder="$0.00"
 				wrapperClassName="mt-6"
 				required
 			/>
@@ -55,7 +54,6 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 				format="percentage"
 				label="Interest Rate"
 				name="interestRate"
-				placeholder="0%"
 				wrapperClassName="mt-6"
 				required
 			/>
@@ -87,7 +85,6 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 				format="money"
 				label="Construction Holdback"
 				name="constructionHoldback"
-				placeholder="$0.00"
 				wrapperClassName="mt-6"
 				required
 			/>
@@ -97,7 +94,6 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 				format="money"
 				label="Amount Drawn"
 				name="amountDrawn"
-				placeholder="$0.00"
 				wrapperClassName="mt-6"
 				required
 			/>
@@ -161,7 +157,6 @@ export const LoanInformation: FC<Props> = ({ control, errors, register }) => (
 				format="percentage"
 				label="LTV"
 				name="ltv"
-				placeholder="0%"
 				wrapperClassName="mt-6"
 				required
 			/>

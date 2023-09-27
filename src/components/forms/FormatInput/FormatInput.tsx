@@ -3,7 +3,7 @@ import { Control, Controller } from "react-hook-form";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
 import { inputClassName } from "@/utils/class-names";
-import { formatValue } from "@/utils/formats";
+import { formatPlaceholder, formatValue } from "@/utils/formats";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	control: Control<any>;
@@ -21,6 +21,7 @@ export const FormatInput: FC<Props> = ({
 	format,
 	label,
 	name,
+	placeholder,
 	required,
 	wrapperClassName,
 	...props
@@ -29,10 +30,10 @@ export const FormatInput: FC<Props> = ({
 
 	return (
 		<Controller
-      control={control}
-      name={name}
-      render={({ field: { onChange, onBlur, value } }) => (
-				<div className={`flex flex-col gap-2 ${wrapperClassName}`}>
+			control={control}
+			name={name}
+			render={({ field: { onChange, onBlur, value } }) => (
+				<div className={`flex flex-col gap-2 active: ${wrapperClassName}`}>
 					<Label label={label} required={required} />
 
 					<div className="relative">
@@ -53,6 +54,7 @@ export const FormatInput: FC<Props> = ({
 								onChange(inputValue);
 							}}
 							onFocus={() => setIsEditing(true)}
+							placeholder={formatPlaceholder(format, placeholder)}
 							type={isEditing ? "number" : "text"}
 							value={
 								isEditing
