@@ -6,3 +6,10 @@ export interface AxisChart {
 	id: string;
 	data: Array<AxisConfig>;
 }
+
+export interface DataEntry {
+	minutes?: number | string;
+	hour: number;
+	date: string;
+	fullDate: string;
+}
