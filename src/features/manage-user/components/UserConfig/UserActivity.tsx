@@ -58,15 +58,15 @@ const UserActivity: React.FC<UserActivityProps> = ({ user }) => {
 			</div>
 
 			<div className="flex mb-4 gap-10">
-				<div className="lg:w-1/2 md:w-full p-5 shadow-lg rounded-lg h-1/2 ">
+				<div className="lg:w-1/2 md:w-full p-5 shadow-lg rounded-lg h-1/2 bg-white ">
 					{userActivity.data && <LastLogin data={userActivity.data} />}
 				</div>
-				<div className="lg:w-1/2 md:w-full p-5 shadow-lg rounded-lg h-1/2">
+				<div className="lg:w-1/2 md:w-full p-5 shadow-lg rounded-lg h-1/2 bg-white">
 					{userActivity.data && <NumberOfLogin data={userActivity.data} />}
 				</div>
 			</div>
 			<div className="flex mb-4">
-				<div className="w-full p-5 shadow-lg rounded-lg h-1/2">
+				<div className="w-full p-5 shadow-lg rounded-lg h-1/2 bg-white">
 					{userActivity.data && (
 						<TimeUsage data={userActivity.data} date={date} />
 					)}
