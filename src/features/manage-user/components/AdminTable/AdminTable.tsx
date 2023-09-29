@@ -11,7 +11,7 @@ import { Table } from "@/features/manage-user/components/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { User } from "../../types/api";
-import UserConfig from "../UserActivity/UserConfig";
+import UserConfig from "../UserConfig/UserConfig";
 import { findIndex } from "@/utils/common-funtions";
 import { tabs } from "../../utils/tabs";
 
@@ -194,7 +194,11 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 				<DeleteAdmin id={deleteId} handleDeleteAdmin={handleDeleteUser} />
 			</Modal>
 			{selectedUser && (
-				<UserConfig user={selectedUser} setUser={setSelectedUser} />
+				<UserConfig
+					user={selectedUser}
+					setUser={setSelectedUser}
+					type="admin"
+				/>
 			)}
 		</>
 	);
