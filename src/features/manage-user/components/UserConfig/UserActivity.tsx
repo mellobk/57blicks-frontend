@@ -50,7 +50,7 @@ const UserActivity: React.FC<UserActivityProps> = ({ user }) => {
 		<>
 			<div
 				className="absolute top-10 right-10 cursor-pointer	 transform -translate-x-1/2 -translate-y-1/2 bg-gold-100 pt-1 pb-1.5 pl-4 pr-4 text-gold-500 text-sm font-semibold rounded-3xl hover:bg-gold-350"
-				onClick={() => {
+				onClick={(): void => {
 					setShowModal(true);
 				}}
 			>

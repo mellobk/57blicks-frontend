@@ -32,7 +32,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	const [idUpload, setIdUpload] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [bankInfo, setBankInfo] = useState<AddInvestorBankFields>();
-	const [selectedUser, setSelectedUser] = useState<User | null>(null);
+	const [selectedUser, setSelectedUser] = useState<Investor | null>(null);
 
 	const investorQuery = useQuery(
 		["investor-query"],
@@ -111,7 +111,11 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	};
 
 	const handleRowClicked = (row: unknown): void => {
-		setSelectedUser(row as User);
+		setSelectedUser(row as Investor);
+	};
+
+	const handleRefetch = async (): Promise<void> => {
+		await investorQuery.refetch();
 	};
 
 	const conditionalRowStyles = [
@@ -294,9 +298,10 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 
 			{selectedUser && (
 				<UserConfig
-					user={selectedUser}
+					investor={selectedUser}
 					setUser={setSelectedUser}
 					type="investor"
+					callBack={handleRefetch}
 				/>
 			)}
 		</>

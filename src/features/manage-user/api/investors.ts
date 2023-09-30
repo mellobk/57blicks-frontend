@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import { authApiClient } from "@/utils/api-client";
+import { AddAccountingFields, AddAdminFields } from "../types/fields";
 import type { Investor, User } from "../types/api";
 import {
 	createAccounting,
@@ -9,8 +8,14 @@ import {
 	filterData,
 	getUserData,
 	investors,
+	updateAccountingUrl,
+	updateAdminUrl,
 	userFilterData,
 } from "./backend-end-points";
+
+import { AxiosResponse } from "axios";
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { authApiClient } from "@/utils/api-client";
 
 const getUser = async (sub: string) => {
 	const response = await authApiClient.get<User>(getUserData(sub));
@@ -39,11 +44,31 @@ const filterAllAccounting = async (searchData: string) => {
 };
 
 const updateInvestors = async (body: Investor) => {
-	const response = await authApiClient.put<Array<User>>(
+	const response = await authApiClient.put<Array<Investor>>(
 		investors(body?.id || ""),
 		body
 	);
 	return response.data;
+};
+
+const updateAdmin = async (
+	body: AddAdminFields
+): Promise<AxiosResponse<Array<User>, unknown>> => {
+	const response = await authApiClient.put<Array<User>>(
+		updateAdminUrl(body.id || ""),
+		body
+	);
+	return response;
+};
+
+const updateAccounting = async (
+	body: AddAccountingFields
+): Promise<AxiosResponse<Array<User>, unknown>> => {
+	const response = await authApiClient.put<Array<User>>(
+		updateAccountingUrl(body.id || ""),
+		body
+	);
+	return response;
 };
 
 const createNewAdmin = async (body: Investor) => {
@@ -86,6 +111,8 @@ const ManageUsersService = {
 	createNewInvestor,
 	deleteUser,
 	getUser,
+	updateAdmin,
+	updateAccounting,
 };
 
 export default ManageUsersService;

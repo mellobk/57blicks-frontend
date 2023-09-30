@@ -83,6 +83,13 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 		setSelectedUser(row as User);
 	};
 
+	const handleRefetch = async (): Promise<void> => {
+		console.log(
+			"🚀 ~ file: AdminTable.tsx:87 ~ handleRefetch ~ handleRefetch:"
+		);
+		await adminQuery.refetch();
+	};
+
 	useEffect(() => {
 		void adminQuery.refetch();
 	}, [searchValue]);
@@ -198,6 +205,7 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 					user={selectedUser}
 					setUser={setSelectedUser}
 					type="admin"
+					callBack={handleRefetch}
 				/>
 			)}
 		</>

@@ -84,6 +84,10 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 		setSelectedUser(row as User);
 	};
 
+	const handleRefetch = async (): Promise<void> => {
+		await accountQuery.refetch();
+	};
+
 	useEffect(() => {
 		void accountQuery.refetch();
 	}, [searchValue]);
@@ -199,6 +203,7 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 					user={selectedUser}
 					setUser={setSelectedUser}
 					type="accounting"
+					callBack={handleRefetch}
 				/>
 			)}
 		</>

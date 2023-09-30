@@ -16,6 +16,14 @@ export const createAdmin = (): string => {
 	return `/users/admin`;
 };
 
+export const updateAdminUrl = (id: string): string => {
+	return `/users/admin/${id}`;
+};
+
+export const updateAccountingUrl = (id: string): string => {
+	return `/users/accounting/${id}`;
+};
+
 export const createAccounting = (): string => {
 	return `/users/accounting`;
 };
