@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Button } from "@/components/ui/Button";
@@ -59,8 +60,8 @@ export const EditAccounting: React.FC<EditAccountingProps> = ({
 					clearSuccessMessage();
 				}, 500);
 			},
-			onError: (error) => {
-				setErrorMessage(`${error.response.data.message}`);
+			onError: (error: any) => {
+				setErrorMessage(`${error?.response?.data.message}`);
 
 				setTimeout(() => {
 					clearErrorMessage();
@@ -75,8 +76,8 @@ export const EditAccounting: React.FC<EditAccountingProps> = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [errors]);
 
-	const onSubmit: SubmitHandler<FieldValues> = async (data): Promise<void> => {
-		updateAdmin.mutate({
+	const onSubmit: SubmitHandler<FieldValues> = async (): Promise<void> => {
+		await updateAdmin.mutateAsync({
 			id: user.id || "",
 			firstName: getValues("firstName") || "",
 			lastName: getValues("lastName") || "",

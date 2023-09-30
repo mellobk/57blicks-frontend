@@ -17,7 +17,6 @@ import { TableStatus } from "../TableStatus/TableStatus";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBakingInformation";
-import type { User } from "../../types/api";
 import UserConfig from "../UserConfig/UserConfig";
 import { tabs } from "../../utils/tabs";
 

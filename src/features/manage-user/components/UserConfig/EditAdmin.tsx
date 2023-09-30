@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Button } from "@/components/ui/Button";
@@ -55,8 +56,8 @@ export const EditAdmin: React.FC<EditAdminProps> = ({ user, setUser }) => {
 					clearSuccessMessage();
 				}, 500);
 			},
-			onError: (error) => {
-				setErrorMessage(`${error.response.data.message}`);
+			onError: (error: unknown) => {
+				setErrorMessage(`${(error as any).response.data.message}`);
 
 				setTimeout(() => {
 					clearErrorMessage();
@@ -71,7 +72,7 @@ export const EditAdmin: React.FC<EditAdminProps> = ({ user, setUser }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [errors]);
 
-	const onSubmit: SubmitHandler<FieldValues> = async (data): Promise<void> => {
+	const onSubmit: SubmitHandler<FieldValues> = (): void => {
 		updateAdmin.mutate({
 			id: user.id || "",
 			firstName: getValues("firstName") || "",

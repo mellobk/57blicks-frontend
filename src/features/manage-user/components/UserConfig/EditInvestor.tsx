@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Button } from "@/components/ui/Button";
@@ -12,7 +13,7 @@ import ManageUsersService from "../../api/investors";
 import { useMutation } from "@tanstack/react-query";
 
 import { userInvestorEditSchema } from "./general-schemas";
-import type { AddAdminFields, InvestorFields } from "../../types/fields";
+import type { InvestorFields } from "../../types/fields";
 import useStore from "@/stores/app-store";
 import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
 import { ACCOUNT_OPTIONS } from "../../utils/constant";
@@ -69,7 +70,7 @@ export const EditInvestor: React.FC<EditInvestorProps> = ({
 					clearSuccessMessage();
 				}, 500);
 			},
-			onError: (error) => {
+			onError: (error: any) => {
 				setErrorMessage(`${error.response.data.message}`);
 				setTimeout(() => {
 					clearErrorMessage();
@@ -84,7 +85,7 @@ export const EditInvestor: React.FC<EditInvestorProps> = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [errors]);
 
-	const onSubmit: SubmitHandler<FieldValues> = async (data): Promise<void> => {
+	const onSubmit: SubmitHandler<FieldValues> = async (): Promise<void> => {
 		updateAdmin.mutate({
 			id: investor.id || "",
 			ssnEin: getValues("ssnEin") || "",
