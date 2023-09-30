@@ -27,7 +27,6 @@ export const EditInvestor: React.FC<EditInvestorProps> = ({
 	investor,
 	setUser,
 }) => {
-	console.log("🚀 ~ file: EditInvestor.tsx:29 ~ user:", investor);
 	const {
 		register,
 		handleSubmit,
@@ -265,6 +264,10 @@ export const EditInvestor: React.FC<EditInvestorProps> = ({
 										register={register("accountType")}
 										className="flex flex-col gap-2"
 										label="Account Type"
+										error={
+											errors["accountType"] && errors["accountType"]?.message
+										}
+										required
 										placeholder="Select Account Type"
 										value={{
 											name: "",
