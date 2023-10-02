@@ -17,6 +17,9 @@ interface UserConfigProps {
 	setUser: (user: User | Investor | null) => void;
 	type: "admin" | "investor" | "accounting";
 	callBack: () => void;
+	deleteUser: (id: string) => void;
+	setOpenActivityModal?: (value: boolean) => void;
+	activityModal?: boolean;
 }
 const UserConfig: React.FC<UserConfigProps> = ({
 	user,
@@ -24,13 +27,15 @@ const UserConfig: React.FC<UserConfigProps> = ({
 	type,
 	setUser,
 	callBack,
+	deleteUser,
+	setOpenActivityModal,
+	activityModal,
 }) => {
 	const [actualTabData, setActualTabData] = useState<string>("activity");
-
-	const [openModal, setOpenModal] = useState<boolean>(true);
-
 	const closeModal = (): void => {
-		setOpenModal(false);
+		if (setOpenActivityModal) {
+			setOpenActivityModal(true);
+		}
 		setUser(null);
 	};
 
@@ -39,7 +44,9 @@ const UserConfig: React.FC<UserConfigProps> = ({
 	};
 
 	useEffect(() => {
-		setOpenModal(true);
+		if (setOpenActivityModal) {
+			setOpenActivityModal(true);
+		}
 	}, [user]);
 
 	const handleSetUser = (user: User | Investor): void => {
@@ -54,7 +61,7 @@ const UserConfig: React.FC<UserConfigProps> = ({
 				onHide={closeModal}
 				width="90%"
 				minHeight="80vh"
-				visible={openModal}
+				visible={activityModal}
 				title={
 					<>
 						<div className="top-0 flex justify-between items-center ">
@@ -80,9 +87,11 @@ const UserConfig: React.FC<UserConfigProps> = ({
 					</>
 				}
 			>
-				{actualTabData === "activity" && user && <UserActivity user={user} />}
+				{actualTabData === "activity" && user && (
+					<UserActivity user={user} deleteUser={deleteUser} />
+				)}
 				{actualTabData === "activity" && investor?.user && (
-					<UserActivity user={investor.user} />
+					<UserActivity user={investor.user} deleteUser={deleteUser} />
 				)}
 				{actualTabData === "permission" && <></>}
 				{actualTabData === "edit" && (

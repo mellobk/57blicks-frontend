@@ -5,5 +5,5 @@ export const generalInformationFields: GeneralInformationFields = {
 	lastName: "lastName",
 	email: "email",
 	phoneNumber: "phoneNumber",
-	company: "company",
+	companyName: "companyName",
 };

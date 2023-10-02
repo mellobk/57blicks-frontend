@@ -27,11 +27,8 @@ export const footerTabData: Array<{
 }> = [
 	{ label: "total: 200", width: "730px", justify: "center" },
 	{ label: "$33,000.00", width: "150px" },
-	{ label: "12% ", width: "100px" },
+	{ label: "", width: "100px" },
 	{ label: "$467.50", width: "200px" },
-	{ label: "03-23-2020", width: "200px" },
-	{ label: "01-04-2022", width: "200px" },
-	{ label: "01-04-2022 ", width: "250px" },
 ];
 
 export const userTabs = [

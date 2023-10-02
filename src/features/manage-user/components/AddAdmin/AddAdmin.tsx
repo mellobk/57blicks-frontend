@@ -14,7 +14,6 @@ import { useMutation } from "@tanstack/react-query";
 import type { User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 import { unFormatPhone } from "@/utils/common-funtions.ts";
-import useStore from "@/stores/app-store";
 
 interface AddAdminProps {
 	handleSuccess?: () => void;
@@ -29,8 +28,6 @@ export const AddAdmin: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 		resolver: zodResolver(AddAdminSchema),
 	});
 
-	const setErrorMessage = useStore((state) => state.setErrorMessage);
-
 	const createAdminMutation = useMutation((data: User) => {
 		return ManageUsersService.createNewAdmin(data);
 	});
@@ -41,6 +38,8 @@ export const AddAdmin: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 		const formatData = {
 			...data,
 			[addAdminFields?.phoneNumber]: `+1${phoneNumber}`,
+			[addAdminFields?.entityName || ""]: ``,
+			[addAdminFields?.companyName || ""]: ``,
 		};
 
 		createAdminMutation.mutate({
@@ -53,8 +52,6 @@ export const AddAdmin: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 			handleSuccess && handleSuccess();
 		}
 		if (createAdminMutation.isError) {
-			const error = createAdminMutation.error as Error;
-			setErrorMessage(error.message);
 			createAdminMutation.reset();
 		}
 	}, [createAdminMutation]);

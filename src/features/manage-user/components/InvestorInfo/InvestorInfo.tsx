@@ -86,6 +86,13 @@ export const InvestorInfo: React.FC<InvestorInfoProps> = ({
 								</div>
 
 								<Input
+									label="Entity Name"
+									placeholder="Enter Entity Name"
+									register={register(addInvestorFields?.entityName || "")}
+									error={errors?.[addInvestorFields?.entityName || ""]?.message}
+								/>
+
+								<Input
 									label="Email"
 									placeholder="Enter Email"
 									register={register(addInvestorFields?.email)}

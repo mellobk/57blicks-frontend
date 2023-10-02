@@ -10,6 +10,10 @@ import axios from "axios";
 import { getLocalStorage } from "./local-storage.ts";
 import sharedObject from "@/config/api-config";
 import { signOut } from "@/lib/cognito";
+import useStore from "@/stores/app-store.ts";
+import type { IErrorResponse } from "@/features/manage-user/types/api.ts";
+
+const store = useStore.getState();
 
 export const authApiClient = axios.create({
 	baseURL: sharedObject.api.ENDPOINT,
@@ -37,6 +41,14 @@ authApiClient.interceptors.response.use(
 			localStorage.clear();
 			window.location.href = "/login";
 		}
+
+		const clearErrorMessage = store.clearErrorMessage;
+		const setErrorMessage = store.setErrorMessage;
+
+		const errorResponse = error as IErrorResponse;
+
+		setErrorMessage(errorResponse.response.data.message);
+		setTimeout(clearErrorMessage, 2000);
 
 		return Promise.reject(error);
 	}

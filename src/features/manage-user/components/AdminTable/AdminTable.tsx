@@ -4,7 +4,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { AddAdmin } from "../AddAdmin/AddAdmin";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
-import { Icon } from "@/components/ui/Icon";
 import ManageUsersService from "../../api/investors";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { Table } from "@/features/manage-user/components/Table";
@@ -20,6 +19,7 @@ interface SuccessProps {}
 export const AdminTable: React.FC<SuccessProps> = () => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
+	const [detailModal, setDetailModal] = useState<boolean>(true);
 	const [deleteId, setDeleteId] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -39,6 +39,7 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 	const handleSuccessDelete = async (): Promise<void> => {
 		await adminQuery.refetch();
 		setOpenDeleteModal(false);
+		setDetailModal(false);
 		deleteAdminMutation.reset();
 	};
 
@@ -143,21 +144,6 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 			sortable: true,
 			omit: false,
 		},
-		{
-			name: "Delete",
-			maxWidth: "50px",
-			selector: (row: User): JSX.Element => (
-				<div
-					className="cursor-pointer"
-					onClick={(): void => {
-						handleDeleteAdmin(row?.id || "");
-					}}
-				>
-					<Icon name="trashBin" width="20" color="black" />
-				</div>
-			),
-			omit: false,
-		},
 	];
 
 	return (
@@ -206,6 +192,9 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 					setUser={setSelectedUser}
 					type="admin"
 					callBack={handleRefetch}
+					setOpenActivityModal={setDetailModal}
+					activityModal={detailModal}
+					deleteUser={handleDeleteAdmin}
 				/>
 			)}
 		</>

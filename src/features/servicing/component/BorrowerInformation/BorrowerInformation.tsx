@@ -1,35 +1,140 @@
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AddAdminSchema } from "@/features/manage-user/schemas/AddAdminSchemas";
 import { Input } from "@/components/forms/Input";
 import { useForm } from "react-hook-form";
-import {
-	addAdminFields,
-	addInvestorBankFields,
-} from "@/features/manage-user/utils/input-fields";
 import { Button } from "@/components/ui/Button";
 import { Select } from "@/components/forms/Select";
 import { ACCOUNT_OPTIONS } from "@/features/manage-user/utils/constant";
-import type { AddInvestorBankFields } from "@/features/manage-user/types/fields";
 import { MaskInput } from "@/components/forms/MaskInput";
+import type { IBorrowerInformation, FundingBreakdown } from "../../types/api";
+import { borrowerInformationFields } from "../../utils/input-fields";
+import { useMutation } from "@tanstack/react-query";
+import DkcLendersService from "../../api/servicing";
+import type { updateGeneralUserInformation } from "@/features/manage-user/types/fields";
+import ManageUsersService from "@/features/manage-user/api/investors";
+import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
+import useStore from "@/stores/app-store";
 
 interface InvestorBankInfoProps {
-	data?: AddInvestorBankFields;
+	data?: FundingBreakdown;
+	handleRefreshData?: () => void;
 }
 
-export const BorrowerInformation: FC<InvestorBankInfoProps> = ({ data }) => {
+export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
+	data,
+	handleRefreshData,
+}) => {
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
-	} = useForm<FieldValues>({
-		resolver: zodResolver(AddAdminSchema),
+	} = useForm<FieldValues>();
+
+	const setSuccessMessage = useStore((state) => state.setSuccessMessage);
+	const clearSuccessMessage = useStore((state) => state.clearSuccessMessage);
+
+	const updateBorrowerInfoMutation = useMutation(
+		(borrowerData: IBorrowerInformation) => {
+			return DkcLendersService.updateBorrowerInfo(
+				data?.loan?.borrower?.id || "",
+				borrowerData
+			);
+		}
+	);
+
+	const updateAdmin = useMutation((data: updateGeneralUserInformation) => {
+		return ManageUsersService.updateGeneralInformation(data);
 	});
 
-	const onSubmit: SubmitHandler<FieldValues> = (data: any): void => {
-		console.log(data);
+	const updateServicingData = async (
+		servicingData: IBorrowerInformation
+	): Promise<void> => {
+		try {
+			const borrowerData = {
+				accountNumber: servicingData.accountNumber || "",
+				routingNumber: servicingData.routingNumber || "",
+				accountType: servicingData.accountType || "",
+				bankingName: servicingData.bankingName || "",
+				llc: servicingData.llc || "",
+				ssnEin: servicingData.ssnEin || "",
+			};
+
+			await updateBorrowerInfoMutation.mutateAsync(borrowerData);
+			await updateAdmin.mutateAsync({
+				id: data?.loan?.borrower?.user?.id,
+				email: servicingData.email || "",
+				phoneNumber: `+1${unFormatPhone(servicingData.phoneNumber || "")}`,
+				mailingAddress: servicingData.mailingAddress || "",
+				firstName: servicingData.firstName || "",
+				lastName: servicingData.lastName || "",
+			});
+
+			if (handleRefreshData) {
+				handleRefreshData();
+			}
+
+			setSuccessMessage("data updated successfully");
+			setTimeout(() => {
+				clearSuccessMessage();
+			}, 500);
+			updateBorrowerInfoMutation.reset();
+			updateAdmin.reset();
+		} catch (error) {
+			console.log(error);
+		}
 	};
+
+	const onSubmit: SubmitHandler<FieldValues> = (
+		data: IBorrowerInformation
+	): void => {
+		void updateServicingData(data);
+	};
+
+	useEffect(() => {
+		setValue(borrowerInformationFields?.llc || "", data?.loan?.borrower.llc);
+		setValue(
+			borrowerInformationFields?.ssnEin || "",
+			data?.loan?.borrower.ssnEin
+		);
+		setValue(
+			borrowerInformationFields?.firstName || "",
+			data?.loan?.borrower?.user?.firstName
+		);
+		setValue(
+			borrowerInformationFields?.lastName || "",
+			data?.loan?.borrower?.user?.lastName
+		);
+		setValue(
+			borrowerInformationFields?.phoneNumber || "",
+			removeCountryCode(data?.loan?.borrower?.user?.phoneNumber || "")
+		);
+		setValue(
+			borrowerInformationFields?.email || "",
+			data?.loan?.borrower?.user?.email
+		);
+		setValue(
+			borrowerInformationFields?.mailingAddress || "",
+			data?.loan?.borrower?.user?.mailingAddress
+		);
+
+		setValue(
+			borrowerInformationFields?.bankingName || "",
+			data?.loan?.borrower.bankingName
+		);
+		setValue(
+			borrowerInformationFields?.accountNumber || "",
+			data?.loan?.borrower.accountNumber
+		);
+		setValue(
+			borrowerInformationFields?.accountType || "",
+			data?.loan?.borrower.accountType
+		);
+		setValue(
+			borrowerInformationFields?.routingNumber || "",
+			data?.loan?.borrower.routingNumber
+		);
+	}, []);
 
 	return (
 		<div
@@ -47,10 +152,10 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({ data }) => {
 								<Input
 									label="Borrower LLC"
 									placeholder="Enter Borrower LLC"
-									register={register(addAdminFields?.firstName)}
+									register={register(borrowerInformationFields?.llc || "")}
 									error={
-										errors?.[addAdminFields?.firstName] &&
-										errors?.[addAdminFields?.firstName]?.message
+										errors?.[borrowerInformationFields?.llc || ""] &&
+										errors?.[borrowerInformationFields?.llc || ""]?.message
 									}
 								/>
 							</div>
@@ -58,10 +163,10 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({ data }) => {
 								<Input
 									label="EIN/SSN"
 									placeholder="Enter EIN/SSN"
-									register={register(addAdminFields?.lastName)}
+									register={register(borrowerInformationFields?.ssnEin || "")}
 									error={
-										errors?.[addAdminFields?.lastName] &&
-										errors?.[addAdminFields?.lastName]?.message
+										errors?.[borrowerInformationFields?.ssnEin || ""] &&
+										errors?.[borrowerInformationFields?.ssnEin || ""]?.message
 									}
 								/>
 							</div>
@@ -71,10 +176,13 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({ data }) => {
 								<Input
 									label="First Name"
 									placeholder="Enter First Name"
-									register={register(addAdminFields?.firstName)}
+									register={register(
+										borrowerInformationFields?.firstName || ""
+									)}
 									error={
-										errors?.[addAdminFields?.firstName] &&
-										errors?.[addAdminFields?.firstName]?.message
+										errors?.[borrowerInformationFields?.firstName || ""] &&
+										errors?.[borrowerInformationFields?.firstName || ""]
+											?.message
 									}
 								/>
 							</div>
@@ -82,10 +190,10 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({ data }) => {
 								<Input
 									label="Last Name"
 									placeholder="Enter Last Name"
-									register={register(addAdminFields?.lastName)}
+									register={register(borrowerInformationFields?.lastName || "")}
 									error={
-										errors?.[addAdminFields?.lastName] &&
-										errors?.[addAdminFields?.lastName]?.message
+										errors?.[borrowerInformationFields?.lastName || ""] &&
+										errors?.[borrowerInformationFields?.lastName || ""]?.message
 									}
 								/>
 							</div>
@@ -96,10 +204,13 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({ data }) => {
 									mask="(999) 999-9999"
 									label="Phone Number"
 									placeholder="Enter Phone Number"
-									register={register(addAdminFields?.firstName)}
+									register={register(
+										borrowerInformationFields?.phoneNumber || ""
+									)}
 									error={
-										errors?.[addAdminFields?.firstName] &&
-										errors?.[addAdminFields?.firstName]?.message
+										errors?.[borrowerInformationFields?.phoneNumber || ""] &&
+										errors?.[borrowerInformationFields?.phoneNumber || ""]
+											?.message
 									}
 								/>
 							</div>
@@ -107,10 +218,10 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({ data }) => {
 								<Input
 									label="Email Address"
 									placeholder="Enter Email Address"
-									register={register(addAdminFields?.lastName)}
+									register={register(borrowerInformationFields?.email || "")}
 									error={
-										errors?.[addAdminFields?.lastName] &&
-										errors?.[addAdminFields?.lastName]?.message
+										errors?.[borrowerInformationFields?.email || ""] &&
+										errors?.[borrowerInformationFields?.email || ""]?.message
 									}
 								/>
 							</div>
@@ -120,21 +231,13 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({ data }) => {
 								<Input
 									label="Mailing Address"
 									placeholder="Enter Mailing Address"
-									register={register(addAdminFields?.firstName)}
+									register={register(
+										borrowerInformationFields?.mailingAddress || ""
+									)}
 									error={
-										errors?.[addAdminFields?.firstName] &&
-										errors?.[addAdminFields?.firstName]?.message
-									}
-								/>
-							</div>
-							<div className="w-full">
-								<Input
-									label="LTV"
-									placeholder="Enter LTV"
-									register={register(addAdminFields?.lastName)}
-									error={
-										errors?.[addAdminFields?.lastName] &&
-										errors?.[addAdminFields?.lastName]?.message
+										errors?.[borrowerInformationFields?.mailingAddress || ""] &&
+										errors?.[borrowerInformationFields?.mailingAddress || ""]
+											?.message
 									}
 								/>
 							</div>
@@ -146,39 +249,40 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({ data }) => {
 						<Input
 							label="Banking Name"
 							placeholder="Banking Name"
-							register={register(addInvestorBankFields?.bankingName)}
+							register={register(borrowerInformationFields?.bankingName || "")}
 						/>
 
 						<Input
 							label="Routing Number"
 							type="number"
 							placeholder="Enter Routing Number"
-							register={register(addInvestorBankFields?.routingNumber)}
+							register={register(
+								borrowerInformationFields?.routingNumber || ""
+							)}
 						/>
 
 						<Input
 							label="Account Number"
 							type="number"
 							placeholder="EnterAccount Number"
-							register={register(addInvestorBankFields?.accountNumber)}
+							register={register(
+								borrowerInformationFields?.accountNumber || ""
+							)}
 						/>
 
 						<Select
-							register={register(addInvestorBankFields?.accountType)}
+							register={register(borrowerInformationFields?.accountType || "")}
 							className="flex flex-col gap-2"
 							label="Account Type"
 							placeholder="Select Account Type"
-							value={{
-								name: data?.accountType || "",
-								code: data?.accountType || "",
-							}}
+							value={data?.loan?.borrower?.accountType || ""}
 							options={ACCOUNT_OPTIONS}
 						/>
 						<div className="absolute" style={{ top: "25px", right: "65px" }}>
 							<Button
 								loading={false}
 								buttonText={"Save"}
-								className={`bg-gray-200  text-black round-[15px] py-[3px] px-[10px]`}
+								className={`bg-gray-200  text-black round-[15px] py-[3px] px-[10px] z-50`}
 							/>
 						</div>
 					</div>

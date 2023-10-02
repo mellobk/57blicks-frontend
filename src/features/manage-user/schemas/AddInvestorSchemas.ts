@@ -12,6 +12,7 @@ export const AddInvestorSchemas = z.object({
 		.string()
 		.email()
 		.min(1, { message: "Required field" }),
+	[addInvestorFields?.entityName || ""]: z.string(),
 	[addInvestorFields?.phoneNumber]: z
 		.string()
 		.min(1, { message: "Required field" }),

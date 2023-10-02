@@ -11,7 +11,6 @@ import { unFormatPhone } from "@/utils/common-funtions.ts";
 import { useMutation } from "@tanstack/react-query";
 import ManageUsersService from "../../api/investors";
 import type { Investor } from "../../types/api";
-import useStore from "@/stores/app-store";
 
 interface AddInvestorProps {
 	handleSuccess?: () => void;
@@ -27,7 +26,6 @@ export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
 		setShowInvestorBankInfo(!showInvestorBankInfo);
 		setInvestorInfo(data);
 	};
-	const setErrorMessage = useStore((state) => state.setErrorMessage);
 
 	const handleInvestorBankInfo = (data: AddInvestorBankFields): void => {
 		setInvestorBankInfo(data);
@@ -52,7 +50,9 @@ export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
 			user: {
 				firstName: investorInfo?.firstName,
 				lastName: investorInfo?.lastName,
+				entityName: investorInfo?.entityName,
 				email: investorInfo?.email,
+				companyName: "",
 				phoneNumber: `+1${phoneNumber}`,
 				mailingAddress: "Mailing Address",
 			},
@@ -68,8 +68,6 @@ export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
 			handleSuccess?.();
 		}
 		if (createInvestorMutation.isError) {
-			const error = createInvestorMutation.error as Error;
-			setErrorMessage(error.message);
 			createInvestorMutation.reset();
 		}
 	}, [createInvestorMutation]);

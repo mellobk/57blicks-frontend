@@ -11,7 +11,6 @@ import { useMutation } from "@tanstack/react-query";
 import type { User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 import { unFormatPhone } from "@/utils/common-funtions.ts";
-import useStore from "@/stores/app-store";
 
 interface AddAdminProps {
 	handleSuccess?: () => void;
@@ -30,8 +29,6 @@ export const AddAccounting: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 		return ManageUsersService.createNewAccounting(data);
 	});
 
-	const setErrorMessage = useStore((state) => state.setErrorMessage);
-
 	// eslint-disable-next-line unicorn/consistent-function-scoping
 	const onSubmit: SubmitHandler<FieldValues> = (data: User): void => {
 		const phoneNumber = unFormatPhone(data?.phoneNumber || "");
@@ -39,6 +36,7 @@ export const AddAccounting: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 		const formatData = {
 			...data,
 			[addAdminFields?.phoneNumber]: `+1${phoneNumber}`,
+			[addAdminFields?.entityName || ""]: ``,
 		};
 
 		createAccountingMutation.mutate({
@@ -52,8 +50,6 @@ export const AddAccounting: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 			handleSuccess && handleSuccess();
 		}
 		if (createAccountingMutation.isError) {
-			const error = createAccountingMutation.error as Error;
-			setErrorMessage(error.message);
 			createAccountingMutation.reset();
 		}
 	}, [createAccountingMutation]);
@@ -94,6 +90,16 @@ export const AddAccounting: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 										/>
 									</div>
 								</div>
+
+								<Input
+									label="Company Name"
+									placeholder="Enter Company Name"
+									register={register(addAdminFields?.companyName || "")}
+									error={
+										errors?.[addAdminFields?.companyName || ""] &&
+										errors?.[addAdminFields?.companyName || ""]?.message
+									}
+								/>
 
 								<Input
 									label="Mailing Address"

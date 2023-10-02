@@ -31,3 +31,10 @@ export const findIndex = (data: Array<User>, id: string): number => {
 
 	return index + 1;
 };
+
+export const formatCurrency = (value: number): string => {
+	return new Intl.NumberFormat("en-US", {
+		style: "currency",
+		currency: "USD",
+	}).format(value);
+};

@@ -2,19 +2,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { type SubmitHandler, useForm, type FieldValues } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/forms/Input";
 
-import { useEffect } from "react";
-import { getLocalStorage } from "@/utils/local-storage";
+import { useEffect, useState } from "react";
+import { getLocalStorage, sendToLocalStorage } from "@/utils/local-storage";
 import { userBasicInformation } from "@/utils/constant";
 import type { User } from "@/features/manage-user/types/api";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { generalInformationSchema } from "../../utils/Schemas/general-schemas";
 import { generalInformationFields } from "../../utils/input-fields";
+import ManageUsersService from "@/features/manage-user/api/investors";
+import type { updateGeneralUserInformation } from "@/features/manage-user/types/fields";
+import { useMutation } from "@tanstack/react-query";
+import useStore from "@/stores/app-store";
+import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
 
 export const GeneralInformation: React.FC = () => {
+	const [userData, setUserData] = useState<User>();
 	const {
 		register,
 		handleSubmit,
@@ -23,6 +29,24 @@ export const GeneralInformation: React.FC = () => {
 	} = useForm({
 		resolver: zodResolver(generalInformationSchema),
 	});
+
+	const setSuccessMessage = useStore((state) => state.setSuccessMessage);
+	const clearSuccessMessage = useStore((state) => state.clearSuccessMessage);
+
+	const updateAdmin = useMutation((data: updateGeneralUserInformation) => {
+		return ManageUsersService.updateGeneralInformation(data);
+	});
+
+	useEffect(() => {
+		if (updateAdmin.isSuccess) {
+			setSuccessMessage("User updated successfully");
+			setTimeout(() => {
+				clearSuccessMessage();
+			}, 500);
+			updateAdmin.reset();
+			sendToLocalStorage(userBasicInformation, JSON.stringify(userData));
+		}
+	}, [updateAdmin]);
 
 	useEffect(() => {
 		const userData = getLocalStorage(userBasicInformation);
@@ -40,16 +64,32 @@ export const GeneralInformation: React.FC = () => {
 
 		setValue(
 			generalInformationFields?.phoneNumber || "phoneNumber",
-			parseData?.phoneNumber
+			removeCountryCode(parseData?.phoneNumber || "")
 		);
 
 		setValue(generalInformationFields?.email || "email", parseData?.email);
 
-		setValue(generalInformationFields?.company || "company", parseData?.sub);
+		setValue(
+			generalInformationFields?.companyName || "company",
+			parseData?.companyName
+		);
+
+		setUserData(parseData);
 	}, []);
 
-	const onSubmit: SubmitHandler<FieldValues> = async (data): Promise<void> => {
-		console.log(data);
+	const onSubmit: SubmitHandler<any> = async (
+		data: updateGeneralUserInformation
+	): Promise<void> => {
+		setUserData({
+			...userData,
+			...data,
+		});
+		await updateAdmin.mutateAsync({
+			id: userData?.id,
+			email: data.email,
+			phoneNumber: `+1${unFormatPhone(data.phoneNumber)}`,
+			companyName: data.companyName,
+		});
 	};
 
 	return (
@@ -75,6 +115,7 @@ export const GeneralInformation: React.FC = () => {
 							label="First Name"
 							placeholder="Enter First Name"
 							required
+							readOnly
 							register={register(generalInformationFields?.firstName)}
 							error={
 								errors?.[generalInformationFields?.firstName] &&
@@ -87,6 +128,7 @@ export const GeneralInformation: React.FC = () => {
 							label="Last Name"
 							placeholder="Enter Last Name"
 							required
+							readOnly
 							register={register(generalInformationFields?.lastName)}
 							error={
 								errors?.[generalInformationFields?.lastName] &&
@@ -127,10 +169,10 @@ export const GeneralInformation: React.FC = () => {
 					label="Company"
 					placeholder="Enter Company"
 					required
-					register={register(generalInformationFields?.company)}
+					register={register(generalInformationFields?.companyName)}
 					error={
-						errors?.[generalInformationFields?.company] &&
-						errors?.[generalInformationFields?.company]?.message
+						errors?.[generalInformationFields?.companyName] &&
+						errors?.[generalInformationFields?.companyName]?.message
 					}
 				/>
 			</form>

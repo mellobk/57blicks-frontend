@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
@@ -92,10 +93,7 @@ export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
 									className="flex flex-col gap-2"
 									label="Account Type"
 									placeholder="Select Account Type"
-									value={{
-										name: data?.accountType || "",
-										code: data?.accountType || "",
-									}}
+									value={data?.accountType}
 									options={ACCOUNT_OPTIONS}
 								/>
 								<div className="flex flex-col gap-1">

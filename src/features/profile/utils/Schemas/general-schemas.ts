@@ -5,9 +5,7 @@ export const generalInformationSchema = z.object({
 	[generalInformationFields?.email]: z
 		.string()
 		.min(1, { message: "Required field" }),
-	[generalInformationFields?.company]: z
-		.string()
-		.min(1, { message: "Required field" }),
+	[generalInformationFields?.companyName]: z.string(),
 	[generalInformationFields?.firstName]: z
 		.string()
 		.min(1, { message: "Required field" }),
