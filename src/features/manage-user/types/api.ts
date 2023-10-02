@@ -11,6 +11,7 @@ export interface User {
 	mailingAddress?: string;
 	company?: string;
 	isActive?: boolean;
+	companyName?: string;
 }
 
 export interface Investor {
@@ -26,4 +27,13 @@ export interface Investor {
 	accountNumber?: string;
 	accountType?: string;
 	user?: User;
+}
+
+export interface IErrorResponse {
+	response: {
+		data: {
+			statusCode: number;
+			message: string;
+		};
+	};
 }

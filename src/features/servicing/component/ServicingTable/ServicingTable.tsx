@@ -10,7 +10,8 @@ import { Modal } from "@/components/ui/Modal/Modal";
 import { useDebounce } from "@/hooks/debounce";
 import "./Table.css";
 import { FooterTable } from "@/components/ui/FooterTabs/FooterTabs";
-import { footerTabData } from "../../utils/tabs";
+import type { FundingBreakdown } from "../../types/api";
+import { formatCurrency } from "@/utils/common-funtions";
 
 interface Column {
 	name?: string;
@@ -31,6 +32,7 @@ interface TableProps {
 	onClickButton?: () => void;
 	widthSearch?: string;
 	loading?: boolean;
+	onRowClicked?: (row: FundingBreakdown) => void;
 }
 
 export const ServicingTable: FC<TableProps> = ({
@@ -45,6 +47,7 @@ export const ServicingTable: FC<TableProps> = ({
 	onClickButton,
 	widthSearch = "158px",
 	loading,
+	onRowClicked,
 }) => {
 	const [visible, setVisible] = useState(false);
 	const [stateColumns, setStateColumns] = useState<Array<Column>>(columns);
@@ -91,6 +94,31 @@ export const ServicingTable: FC<TableProps> = ({
 		});
 
 		setStateColumns(newColumns);
+	};
+
+	const createFooter = (data: Array<FundingBreakdown>) => {
+		const totalRow = data?.length || 0;
+		const totalLoanAmount = data?.map((data: FundingBreakdown) => {
+			return Number.parseFloat(data.loan.totalLoanAmount);
+		});
+
+		const total = totalLoanAmount?.reduce(
+			(accumulator, currentValue) => accumulator + currentValue,
+			0
+		);
+
+		const footerTabData: Array<{
+			label: string;
+			width: string;
+			justify?: string;
+		}> = [
+			{ label: `total: ${totalRow}`, width: "730px", justify: "center" },
+			{ label: formatCurrency(total), width: "150px" },
+			{ label: "", width: "100px" },
+			{ label: "$467.50", width: "200px" },
+		];
+
+		return footerTabData;
 	};
 
 	return (
@@ -207,12 +235,13 @@ export const ServicingTable: FC<TableProps> = ({
 						<DataTable
 							responsive={false}
 							columns={stateColumns}
-							data={data}
+							data={data || []}
 							progressPending={loading}
 							conditionalRowStyles={conditionalRowStyles}
+							onRowClicked={onRowClicked}
 						/>
 					</div>
-					<FooterTable tabs={footerTabData} />
+					<FooterTable tabs={createFooter(data as Array<FundingBreakdown>)} />
 				</div>
 			</div>
 

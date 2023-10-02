@@ -5,15 +5,20 @@ import { useEffect, useState } from "react";
 import { LoanInformation } from "../LoanInformation";
 import { BorrowerInformation } from "../BorrowerInformation";
 import "./ServicingModal.css";
+import type { FundingBreakdown } from "../../types/api";
 
 interface ServicingModalProps {
 	openModal?: boolean;
 	handleOnCLose?: () => void;
+	handleRefreshData?: () => void;
+	data?: FundingBreakdown;
 }
 
 export const ServicingModal: React.FC<ServicingModalProps> = ({
 	openModal,
 	handleOnCLose,
+	handleRefreshData,
+	data,
 }) => {
 	const [actualTabData, setActualTabData] = useState<string>("loan");
 	const [tabTitle, setTabTitle] = useState<string>("Loan Information");
@@ -70,8 +75,13 @@ export const ServicingModal: React.FC<ServicingModalProps> = ({
 						/>
 					</div>
 				</div>
-				{tabTitle === "Loan Information" && <LoanInformation />}
-				{tabTitle === "Borrower Information" && <BorrowerInformation />}
+				{tabTitle === "Loan Information" && <LoanInformation data={data} />}
+				{tabTitle === "Borrower Information" && (
+					<BorrowerInformation
+						data={data}
+						handleRefreshData={handleRefreshData}
+					/>
+				)}
 			</Modal>
 		</div>
 	);

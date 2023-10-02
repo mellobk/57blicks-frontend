@@ -3,5 +3,5 @@ export type GeneralInformationFields = {
 	lastName: string;
 	email: string;
 	phoneNumber: string;
-	company: string;
+	companyName: string;
 };

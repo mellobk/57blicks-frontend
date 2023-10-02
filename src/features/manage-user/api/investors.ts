@@ -1,4 +1,8 @@
-import { AddAccountingFields, AddAdminFields } from "../types/fields";
+import type {
+	AddAccountingFields,
+	AddAdminFields,
+	updateGeneralUserInformation,
+} from "../types/fields";
 import type { Investor, User } from "../types/api";
 import {
 	createAccounting,
@@ -13,7 +17,7 @@ import {
 	userFilterData,
 } from "./backend-end-points";
 
-import { AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { authApiClient } from "@/utils/api-client";
 
@@ -49,6 +53,16 @@ const updateInvestors = async (body: Investor) => {
 		body
 	);
 	return response.data;
+};
+
+const updateGeneralInformation = async (
+	body: updateGeneralUserInformation
+): Promise<AxiosResponse<Array<User>, unknown>> => {
+	const response = await authApiClient.put<Array<User>>(
+		updateAdminUrl(body.id || ""),
+		body
+	);
+	return response;
 };
 
 const updateAdmin = async (
@@ -113,6 +127,7 @@ const ManageUsersService = {
 	getUser,
 	updateAdmin,
 	updateAccounting,
+	updateGeneralInformation,
 };
 
 export default ManageUsersService;

@@ -32,6 +32,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [bankInfo, setBankInfo] = useState<AddInvestorBankFields>();
 	const [selectedUser, setSelectedUser] = useState<Investor | null>(null);
+	const [detailModal, setDetailModal] = useState<boolean>(true);
 
 	const investorQuery = useQuery(
 		["investor-query"],
@@ -48,6 +49,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	const handleSuccessDelete = async (): Promise<void> => {
 		await investorQuery.refetch();
 		setOpenDeleteModal(false);
+		setDetailModal(false);
 		deleteAdminMutation.reset();
 	};
 
@@ -219,23 +221,6 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 			),
 			omit: false,
 		},
-		{
-			name: "Disable",
-			maxWidth: "50px",
-			selector: (row: Investor): any => (
-				<div
-					className="cursor-pointer"
-					onClick={(): void => {
-						if (row?.user?.isActive) {
-							handleDeleteAdmin(row?.user.id || "");
-						}
-					}}
-				>
-					<Icon name="deleteBack" width="20" color="black" />
-				</div>
-			),
-			omit: false,
-		},
 	];
 
 	return (
@@ -301,6 +286,9 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 					setUser={setSelectedUser}
 					type="investor"
 					callBack={handleRefetch}
+					setOpenActivityModal={setDetailModal}
+					activityModal={detailModal}
+					deleteUser={handleDeleteAdmin}
 				/>
 			)}
 		</>

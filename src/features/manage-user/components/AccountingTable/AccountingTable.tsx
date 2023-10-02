@@ -4,7 +4,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { AddAccounting } from "../AddAccounting/AddAccounting";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
-import { Icon } from "@/components/ui/Icon";
 import ManageUsersService from "../../api/investors";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { Table } from "@/features/manage-user/components/Table";
@@ -23,6 +22,7 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 	const [deleteId, setDeleteId] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
+	const [detailModal, setDetailModal] = useState<boolean>(true);
 
 	const accountQuery = useQuery(
 		["account-query"],
@@ -39,6 +39,7 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 	const handleSuccessDelete = async (): Promise<void> => {
 		await accountQuery.refetch();
 		setOpenDeleteModal(false);
+		setDetailModal(false);
 		deleteAdminMutation.reset();
 	};
 
@@ -141,21 +142,6 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 			sortable: true,
 			omit: false,
 		},
-		{
-			name: "Delete",
-			maxWidth: "50px",
-			selector: (row: User): JSX.Element => (
-				<div
-					className="cursor-pointer"
-					onClick={(): void => {
-						handleDeleteAdmin(row?.id || "");
-					}}
-				>
-					<Icon name="trashBin" width="20" color="black" />
-				</div>
-			),
-			omit: false,
-		},
 	];
 
 	return (
@@ -204,6 +190,9 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 					setUser={setSelectedUser}
 					type="accounting"
 					callBack={handleRefetch}
+					setOpenActivityModal={setDetailModal}
+					activityModal={detailModal}
+					deleteUser={handleDeleteAdmin}
 				/>
 			)}
 		</>

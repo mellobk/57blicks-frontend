@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { DkcServicing, FundingBreakdown } from "../../types/api";
@@ -9,12 +9,14 @@ import { ServicingModal } from "../ServicingModal/ServicingModal";
 import servicingStore from "../../stores/servicing-store";
 import { useQuery } from "@tanstack/react-query";
 import DkcLendersService from "../../api/servicing";
+import { formatCurrency } from "@/utils/common-funtions";
 
 interface SuccessProps {}
 
 export const DkcFlTable: React.FC<SuccessProps> = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [openModal, setOpenModal] = useState<boolean>(false);
+	const [modalData, setModalData] = useState<FundingBreakdown>();
 	const lenderData = servicingStore((state) => state.lenders);
 
 	console.log(searchValue);
@@ -27,12 +29,15 @@ export const DkcFlTable: React.FC<SuccessProps> = () => {
 		return findLender?.id || "";
 	};
 
-	const dkcLendersQuery = useQuery(
+	const dkcLendersFlQuery = useQuery(
 		["dkc-lenders-by-id-query"],
 		() => {
-			return DkcLendersService.getLenderById(findDkcLender() || "");
+			return DkcLendersService.getLenderById(
+				findDkcLender() || "",
+				searchValue
+			);
 		},
-		{ enabled: true }
+		{ enabled: true, staleTime: 1000 * 60 }
 	);
 
 	const handleSearch = (data: string) => {
@@ -57,33 +62,39 @@ export const DkcFlTable: React.FC<SuccessProps> = () => {
 		return false;
 	};
 
+	useEffect(() => {
+		void dkcLendersFlQuery.refetch();
+	}, [lenderData]);
+
+	const handleRefreshData = (): void => {
+		void dkcLendersFlQuery.refetch();
+	};
+	const findDkcLenderData = (data: FundingBreakdown) => {
+		setModalData(data);
+	};
+
+	const handleRowClicked = (row: FundingBreakdown): void => {
+		findDkcLenderData(row);
+		setOpenModal(true);
+	};
+
+	useEffect(() => {
+		void dkcLendersFlQuery.refetch();
+	}, [searchValue]);
+
 	const columns = [
 		{
 			name: "Borrower",
 			maxWidth: "230px",
 			minWidth: "230px",
-			selector: (row: FundingBreakdown): JSX.Element => (
-				<div
-					onClick={(): void => {
-						setOpenModal(true);
-					}}
-				>
-					{`${row?.loan.borrower.user.firstName} ${row?.loan.borrower.user.lastName}`}
-				</div>
-			),
+			selector: (row: FundingBreakdown): string =>
+				`${row?.loan.borrower.user.firstName} ${row?.loan.borrower.user.lastName}`,
 			omit: false,
 		},
 		{
 			name: "Collateral Address",
-			selector: (row: FundingBreakdown): JSX.Element => (
-				<div
-					onClick={(): void => {
-						setOpenModal(true);
-					}}
-				>
-					{row?.loan?.collaterals[0]?.address || ""}
-				</div>
-			),
+			selector: (row: FundingBreakdown): string =>
+				row?.loan?.collaterals[0]?.address || "",
 			sortable: true,
 			omit: false,
 			maxWidth: "500px",
@@ -91,15 +102,8 @@ export const DkcFlTable: React.FC<SuccessProps> = () => {
 		},
 		{
 			name: "Total Loan",
-			selector: (row: FundingBreakdown): JSX.Element => (
-				<div
-					onClick={(): void => {
-						setOpenModal(true);
-					}}
-				>
-					{row?.loan.totalLoanAmount}
-				</div>
-			),
+			selector: (row: FundingBreakdown): string =>
+				formatCurrency(Number.parseInt(row?.loan?.totalLoanAmount)),
 			sortable: true,
 			omit: false,
 			maxWidth: "150px",
@@ -107,62 +111,30 @@ export const DkcFlTable: React.FC<SuccessProps> = () => {
 		},
 		{
 			name: "Rate",
-			selector: (row: FundingBreakdown): JSX.Element => (
-				<div
-					onClick={(): void => {
-						setOpenModal(true);
-					}}
-				>
-					{row?.rate}
-				</div>
-			),
+			selector: (row: FundingBreakdown): string => row?.rate,
 			omit: false,
 			maxWidth: "100px",
 			minWidth: "100px",
 		},
 		{
-			name: "Monthly Payment",
-			selector: (): JSX.Element => (
-				<div
-					onClick={(): void => {
-						setOpenModal(true);
-					}}
-				>
-					{""}
-				</div>
-			),
+			name: "Regular Payment",
+			selector: (): string => "",
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
 		},
 		{
 			name: "Origin Date",
-			selector: (row: FundingBreakdown): JSX.Element =>
-				(
-					<div
-						onClick={(): void => {
-							setOpenModal(true);
-						}}
-					>
-						{row?.loan?.originationDate.toString()}
-					</div>
-				) || "",
+			selector: (row: FundingBreakdown): string =>
+				row?.loan?.originationDate.toString(),
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: FundingBreakdown): JSX.Element =>
-				(
-					<div
-						onClick={(): void => {
-							setOpenModal(true);
-						}}
-					>
-						{row?.loan?.maturityDate.toString()}
-					</div>
-				) || "",
+			selector: (row: FundingBreakdown): string =>
+				row?.loan?.maturityDate.toString(),
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
@@ -211,9 +183,10 @@ export const DkcFlTable: React.FC<SuccessProps> = () => {
 			<ServicingTable
 				handleSearchValue={handleSearch}
 				columns={columns}
-				data={dkcLendersQuery?.data?.fundingBreakdowns}
-				loading={dkcLendersQuery.isLoading}
+				data={dkcLendersFlQuery?.data?.fundingBreakdowns}
+				loading={dkcLendersFlQuery.isLoading}
 				widthSearch="60px"
+				onRowClicked={handleRowClicked}
 			>
 				<>
 					<div className="relative w-[115px]">
@@ -228,7 +201,9 @@ export const DkcFlTable: React.FC<SuccessProps> = () => {
 				</>
 			</ServicingTable>
 			<ServicingModal
+				data={modalData}
 				openModal={openModal}
+				handleRefreshData={handleRefreshData}
 				handleOnCLose={(): void => {
 					setOpenModal(false);
 				}}

@@ -5,6 +5,18 @@ export type AddAdminFields = {
 	mailingAddress: string;
 	email: string;
 	phoneNumber: string;
+	entityName?: string;
+	companyName?: string;
+};
+
+export type updateGeneralUserInformation = {
+	id?: string;
+	email: string;
+	phoneNumber: string;
+	companyName?: string;
+	firstName?: string;
+	lastName?: string;
+	mailingAddress?: string;
 };
 
 export type AddAccountingFields = {
@@ -23,9 +35,13 @@ export type AddInvestorFields = {
 	lastName: string;
 	email: string;
 	phoneNumber: string;
+	mailingAddress: string;
 	einSsn?: string;
 	zip?: string;
 	streetAddress?: string;
+	llc?: string;
+	entityName?: string;
+	companyName?: string;
 };
 
 export type AddInvestorBankFields = {

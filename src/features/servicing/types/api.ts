@@ -86,6 +86,7 @@ export interface Loan {
 	leadSource: string;
 	borrower: Borrower;
 	collaterals: Array<Collateral>;
+	ltv: string;
 }
 
 export interface FundingBreakdown {
@@ -107,4 +108,23 @@ export interface DkcLenders {
 	name: string;
 	isSpecialCase: boolean;
 	fundingBreakdowns: Array<FundingBreakdown>;
+}
+
+export interface IBorrowerInformation {
+	id?: string;
+	ssnEin?: string;
+	zip?: string;
+	llc?: string;
+	streetAddress?: string;
+	accountNumber?: string;
+	routingNumber?: string;
+	accountType?: string;
+	bankingName?: string;
+	firstName?: string;
+	lastName?: string;
+	mailingAddress?: string;
+	email?: string;
+	phoneNumber?: string;
+	entityName?: string;
+	companyName?: string;
 }
