@@ -7,7 +7,7 @@ import {
 } from "react-hook-form";
 import { TableColumn } from "react-data-table-component";
 import { Cell } from "@/components/table/Cell";
-import { FormatInput } from "@/components/table/FormatInput";
+import { CellInput } from "@/components/table/CellInput";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title/Title";
@@ -70,14 +70,14 @@ export const FundingBreakdown: FC<Props> = ({
 					);
 				}
 
-				return <Cell className="px-4" format="text" value={row.lenderName} />;
+				return <Cell format="text" value={row.lenderName} />;
 			},
 			name: "Lender",
 			style: { padding: 0 },
 		},
 		{
 			cell: (_, rowIndex) => (
-				<FormatInput
+				<CellInput
 					control={control}
 					error={
 						rowIndex > 2
@@ -97,7 +97,7 @@ export const FundingBreakdown: FC<Props> = ({
 		},
 		{
 			cell: (_, rowIndex) => (
-				<FormatInput
+				<CellInput
 					control={control}
 					error={
 						rowIndex > 2
@@ -118,7 +118,6 @@ export const FundingBreakdown: FC<Props> = ({
 		{
 			cell: (row: FundingBreakdownType) => (
 				<Cell
-					className="px-4"
 					format="money"
 					value={calculateProrated(row.amount, row.rate, originationDate)}
 				/>
@@ -128,11 +127,7 @@ export const FundingBreakdown: FC<Props> = ({
 		},
 		{
 			cell: (row: FundingBreakdownType) => (
-				<Cell
-					className="px-4"
-					format="money"
-					value={calculateRegular(row.amount, row.rate)}
-				/>
+				<Cell format="money" value={calculateRegular(row.amount, row.rate)} />
 			),
 			name: "Regular",
 			style: { padding: 0 },

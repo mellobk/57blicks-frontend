@@ -1,18 +1,20 @@
 import { type FC, useState } from "react";
-import type { TableColumn } from "react-data-table-component";
+import { createTheme, type TableColumn } from "react-data-table-component";
+import { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
+import { useForm, useWatch } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { Cell } from "@/components/table/Cell";
+import { CellInput } from "@/components/table/CellInput";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Table } from "@/components/ui/Table";
 import { Title } from "@/components/ui/Title";
-import { CellInput } from "@/features/loan-overview/components/CellInput/CellInput";
 import { ExpandedComponent } from "@/features/loan-overview/components/ExpandedComponent/ExpandedComponent";
+import { Footer } from "@/features/loan-overview/components/Footer/Footer";
 import type {
 	FundingBreakdown,
 	LoanOverviewFields,
 } from "@/features/loan-overview/types/fields";
-import { Footer } from "@/features/loan-overview/components/Footer/Footer.tsx";
 
 type Props = {
 	data: LoanOverviewFields;
@@ -21,50 +23,82 @@ type Props = {
 export const OverviewByInvestor: FC<Props> = ({ data }) => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
+	const { control } = useForm<LoanOverviewFields>({
+		defaultValues: data,
+	});
+	const fundingBreakdown = useWatch({
+		control,
+		name: "fundingBreakdown",
+	});
 	const columns: Array<TableColumn<FundingBreakdown>> = [
 		{
 			cell: (row) => <Cell format="text" value={row.lender} />,
 			name: "Lenders and Participants",
 			selector: (row) => row.lender,
 			sortable: true,
+			style: { padding: 0 },
 		},
 		{
 			cell: (row) => <Cell format="money" value={row.totalLoan} />,
 			name: "Total Loan",
 			selector: (row) => row.totalLoan,
 			sortable: true,
+			style: { padding: 0 },
 		},
 		{
 			cell: (row) => <Cell format="money" value={row.totalDrawn} />,
 			name: "Total Drawn to Date",
 			selector: (row) => row.totalDrawn,
 			sortable: true,
+			style: { padding: 0 },
 		},
 		{
-			cell: (row) => <CellInput value={row.trustUnallocated} />,
+			cell: (_, rowIndex) => (
+				<CellInput
+					control={control}
+					format="money"
+					name={`fundingBreakdown.${rowIndex}.trustUnallocated`}
+				/>
+			),
 			name: "Trust-Unallocated",
 			selector: (row) => row.trustUnallocated,
 			sortable: true,
+			style: { padding: 0 },
 		},
 		{
-			cell: (row) => <CellInput value={row.trustAllocated} />,
+			cell: (_, rowIndex) => (
+				<CellInput
+					control={control}
+					format="money"
+					name={`fundingBreakdown.${rowIndex}.trustAllocated`}
+				/>
+			),
 			name: "Trust-Allocated",
 			selector: (row) => row.trustAllocated,
 			sortable: true,
+			style: { padding: 0 },
 		},
 		{
 			cell: (row) => <Cell format="money" value={row.dueToDraws} />,
 			name: "Due to Draws",
 			selector: (row) => row.dueToDraws,
 			sortable: true,
+			style: { padding: 0 },
 		},
 		{
 			cell: (row) => <Cell format="money" value={row.totalFunds} />,
 			name: "Total Funds",
 			selector: (row) => row.totalFunds,
 			sortable: true,
+			style: { padding: 0 },
 		},
 	];
+
+	createTheme("overview", {
+		background: {
+			default: "rgba(237, 243, 245, 0.35)",
+		},
+	});
 
 	return (
 		<div className="flex flex-col h-full">
@@ -109,14 +143,20 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 
 			<div className="flex flex-col h-full justify-between">
 				<Table
+					className="p-0 m-0"
 					columns={columns}
 					data={data.fundingBreakdown}
 					expandableRows
 					expandableRowDisabled={(row) => !row.participants?.length}
-					expandableRowsComponent={ExpandedComponent}
+					expandableRowsComponent={({
+						...props
+					}: ExpanderComponentProps<FundingBreakdown>) => (
+						<ExpandedComponent control={control} {...props} />
+					)}
+					theme="overview"
 				/>
 
-				<Footer data={data} />
+				<Footer data={fundingBreakdown} />
 			</div>
 		</div>
 	);

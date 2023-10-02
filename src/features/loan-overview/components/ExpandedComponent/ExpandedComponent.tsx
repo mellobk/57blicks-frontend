@@ -1,14 +1,18 @@
 import { ComponentType } from "react";
+import { Control } from "react-hook-form";
 import { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
 import { Cell } from "@/components/table/Cell";
-import { CellInput } from "@/features/loan-overview/components/CellInput/CellInput";
-import { FundingBreakdown } from "@/features/loan-overview/types/fields";
+import { CellInput } from "@/components/table/CellInput";
+import {
+	FundingBreakdown,
+	LoanOverviewFields,
+} from "@/features/loan-overview/types/fields";
 
-interface Props extends ExpanderComponentProps<any> {
-	data: FundingBreakdown;
+interface Props extends ExpanderComponentProps<FundingBreakdown> {
+	control: Control<LoanOverviewFields>;
 }
 
-export const ExpandedComponent: ComponentType<Props> = ({ data }) => {
+export const ExpandedComponent: ComponentType<Props> = ({ control, data }) => {
 	let subtotals = {
 		dueToDraws: 0,
 		lender: "Subtotals",
@@ -20,12 +24,12 @@ export const ExpandedComponent: ComponentType<Props> = ({ data }) => {
 	};
 	subtotals =
 		data.participants?.reduce((acc, participant) => {
-			acc.dueToDraws += participant.dueToDraws;
-			acc.totalDrawn += participant.totalDrawn;
-			acc.totalFunds += participant.totalFunds;
-			acc.totalLoan += participant.totalLoan;
-			acc.trustAllocated += participant.trustAllocated;
-			acc.trustUnallocated += participant.trustUnallocated;
+			acc.dueToDraws += Number(participant.dueToDraws);
+			acc.totalDrawn += Number(participant.totalDrawn);
+			acc.totalFunds += Number(participant.totalFunds);
+			acc.totalLoan += Number(participant.totalLoan);
+			acc.trustAllocated += Number(participant.trustAllocated);
+			acc.trustUnallocated += Number(participant.trustUnallocated);
 			return acc;
 		}, subtotals) || subtotals;
 
@@ -34,23 +38,31 @@ export const ExpandedComponent: ComponentType<Props> = ({ data }) => {
 			{data.participants?.length && (
 				<>
 					{data.participants?.map((participant) => (
-						<div className="flex flex-row h-12 bg-gold-500/[.06]">
+						<div className="flex flex-row h-12 bg-white">
 							<div className="w-12" />
-							<div className="grid grid-cols-7 gap-8 px-4 w-full items-center">
+							<div className="grid grid-cols-7 w-full items-center">
 								<Cell format="text" value={participant.lender} />
 								<Cell format="money" value={participant.totalLoan} />
 								<Cell format="money" value={participant.totalDrawn} />
-								<CellInput value={participant.trustUnallocated} gold />
-								<CellInput value={participant.trustAllocated} gold />
+								<CellInput
+									control={control}
+									format="money"
+									name="trustUnallocated"
+								/>
+								<CellInput
+									control={control}
+									format="money"
+									name="trustAllocated"
+								/>
 								<Cell format="money" value={participant.dueToDraws} />
 								<Cell format="money" value={participant.totalFunds} />
 							</div>
 						</div>
 					))}
 
-					<div className="flex flex-row h-12 bg-gold-500/[.06]">
+					<div className="flex flex-row h-12 bg-gray-200">
 						<div className="w-12" />
-						<div className="grid grid-cols-7 gap-8 px-4 w-full items-center">
+						<div className="grid grid-cols-7 w-full items-center">
 							<Cell format="text" value={subtotals.lender} bold />
 							<Cell format="money" value={subtotals.totalLoan} bold />
 							<Cell format="money" value={subtotals.totalDrawn} bold />
