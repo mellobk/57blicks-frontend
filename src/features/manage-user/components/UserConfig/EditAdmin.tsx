@@ -20,9 +20,14 @@ import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
 interface EditAdminProps {
 	user: User;
 	setUser?: (user: User) => void;
+	role?: string;
 }
 
-export const EditAdmin: React.FC<EditAdminProps> = ({ user, setUser }) => {
+export const EditAdmin: React.FC<EditAdminProps> = ({
+	user,
+	role,
+	setUser,
+}) => {
 	const {
 		register,
 		handleSubmit,
@@ -66,11 +71,7 @@ export const EditAdmin: React.FC<EditAdminProps> = ({ user, setUser }) => {
 		}
 	);
 
-	useEffect(() => {
-		console.log("🚀 ~ file: EditAdmin.tsx:27 ~ errors:", errors);
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [errors]);
+	useEffect(() => {}, [errors]);
 
 	const onSubmit: SubmitHandler<FieldValues> = (): void => {
 		updateAdmin.mutate({
@@ -83,6 +84,7 @@ export const EditAdmin: React.FC<EditAdminProps> = ({ user, setUser }) => {
 				`+1` + removeCountryCode(unFormatPhone(getValues("phoneNumber") || "")),
 		});
 	};
+	if (role && !role.includes("admin")) return <></>;
 
 	return (
 		<div className="h-full w-full rounded-3xl border border-gray-200 p-2 bg-white">

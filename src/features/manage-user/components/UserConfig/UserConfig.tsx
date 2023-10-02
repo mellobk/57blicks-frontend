@@ -6,9 +6,13 @@ import { useEffect, useState } from "react";
 import { EditAccounting } from "./EditAccounting";
 import { EditAdmin } from "./EditAdmin";
 import { EditInvestor } from "./EditInvestor";
+import ManageRoleService from "../../api/roles";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { Tabs } from "@/features/servicing/component/Tabs";
 import UserActivity from "./UserActivity";
+import { getLocalStorage } from "@/utils/local-storage";
+import { useQuery } from "@tanstack/react-query";
+import { userBasicInformation } from "@/utils/constant";
 import { userTabs } from "@/features/servicing/utils/tabs";
 
 interface UserConfigProps {
@@ -31,6 +35,19 @@ const UserConfig: React.FC<UserConfigProps> = ({
 	setOpenActivityModal,
 	activityModal,
 }) => {
+	const [searchValue, setSearchValue] = useState<string>("");
+	const [role, setRole] = useState<string>();
+	const userData = getLocalStorage(userBasicInformation);
+	const parseData = JSON.parse(userData) as User;
+
+	const dkcRoleQuery = useQuery(
+		["dkc-role-by-id-query"],
+		() => {
+			return ManageRoleService.getRoleByUser(searchValue);
+		},
+		{ enabled: false, staleTime: 1000 * 60 }
+	);
+
 	const [actualTabData, setActualTabData] = useState<string>("activity");
 	const closeModal = (): void => {
 		if (setOpenActivityModal) {
@@ -42,6 +59,25 @@ const UserConfig: React.FC<UserConfigProps> = ({
 	const tabHandlerData = (value: string): void => {
 		setActualTabData(value);
 	};
+
+	useEffect(() => {
+		//TODO: change roles are defined in the backend
+		if (parseData) {
+			setSearchValue(parseData.id || "");
+			void dkcRoleQuery.refetch();
+		}
+	}, [parseData]);
+
+	useEffect(() => {
+		//TODO: change roles are defined in the backend
+		if (dkcRoleQuery.data) {
+			console.log(
+				"🚀 ~ file: UserConfig.tsx:75 ~ useEffect ~ dkcRoleQuery.data:",
+				dkcRoleQuery.data.name
+			);
+			setRole(dkcRoleQuery.data.name || "");
+		}
+	}, [dkcRoleQuery.data]);
 
 	useEffect(() => {
 		if (setOpenActivityModal) {
@@ -97,13 +133,25 @@ const UserConfig: React.FC<UserConfigProps> = ({
 				{actualTabData === "edit" && (
 					<>
 						{type === "admin" && user && (
-							<EditAdmin user={user} setUser={handleSetUser} />
+							<EditAdmin
+								user={user}
+								setUser={handleSetUser}
+								role={role || ""}
+							/>
 						)}
 						{type === "accounting" && user && (
-							<EditAccounting user={user} setUser={handleSetUser} />
+							<EditAccounting
+								user={user}
+								setUser={handleSetUser}
+								role={role || ""}
+							/>
 						)}
 						{type === "investor" && investor && (
-							<EditInvestor investor={investor} setUser={handleSetUser} />
+							<EditInvestor
+								investor={investor}
+								setUser={handleSetUser}
+								role={role || ""}
+							/>
 						)}
 					</>
 				)}
