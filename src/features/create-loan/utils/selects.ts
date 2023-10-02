@@ -1,24 +1,24 @@
 export const ACCOUNT_TYPES = [
-	{ code: "personal_checking", name: "Personal Checking" },
-	{ code: "personal_savings", name: "Personal Savings" },
-	{ code: "business_checking", name: "Business Checking" },
-	{ code: "business_savings", name: "Business Savings" },
+  { code: "Personal Checking", name: "Personal Checking" },
+  { code: "Personal Savings", name: "Personal Savings" },
+  { code: "Business Checking", name: "Business Checking" },
+  { code: "Business Savings", name: "Business Savings" },
 ];
 
 export const ASSET_TYPES = [
-	{ code: "sfr", name: "SFR" },
-	{ code: "mf_4_less", name: "MF (4 or less)" },
-	{ code: "mf_more_4", name: "MF (+4)" },
-	{ code: "duplex", name: "Duplex" },
-	{ code: "triplex", name: "Triplex" },
-	{ code: "comm_office", name: "Commercial Office" },
-	{ code: "vacant_land", name: "Vacant Land" },
-	{ code: "manufactured_mh", name: "Manufactured/MH" },
-	{ code: "condo", name: "Condo" },
-	{ code: "townhome", name: "Townhome" },
-	{ code: "villa", name: "Villa" },
-	{ code: "comm_warehouse", name: "Commercial-Warehouse" },
-	{ code: "comm_other", name: "Commercial-Other" },
+  { code: "SFR", name: "SFR" },
+  { code: "MF (4 or less)", name: "MF (4 or less)" },
+  { code: "MF (+4)", name: "MF (+4)" },
+  { code: "Duplex", name: "Duplex" },
+  { code: "Triplex", name: "Triplex" },
+  { code: "Commercial Office", name: "Commercial Office" },
+  { code: "Vacant Land", name: "Vacant Land" },
+  { code: "Manufactured/MH", name: "Manufactured/MH" },
+  { code: "Condo", name: "Condo" },
+  { code: "Townhome", name: "Townhome" },
+  { code: "Villa", name: "Villa" },
+  { code: "Commercial-Warehouse", name: "Commercial-Warehouse" },
+  { code: "Commercial-Other", name: "Commercial-Other" },
 ];
 
 export const LEAD_SOURCES = [
@@ -37,44 +37,44 @@ export const LENDERS = [
 
 export const LOAN_TYPES = [
 	{
-		code: "fix_and_flip",
+		code: "Fix and Flip Loans",
 		name: "Fix and Flip Loans",
 	},
 	{
-		code: "new_construction",
+		code: "New Construction Loans",
 		name: "New Construction Loans",
 	},
 	{
-		code: "cash_out_refinance",
+		code: "Cash Out Refinance Loans",
 		name: "Cash Out Refinance Loans",
 	},
 	{
-		code: "cash_out_refinance_tampa",
+		code: "Cash Out Refinance Loans in Tampa, Florida",
 		name: "Cash Out Refinance Loans in Tampa, Florida",
 	},
 	{
-		code: "fix_and_lease",
+		code: "Fix and Lease Loans",
 		name: "Fix and Lease Loans",
 	},
 	{
-		code: "non_recourse",
+		code: "Non-Recourse Loans",
 		name: "Non-Recourse Loans",
 	},
 	{
-		code: "manufactured_mobile_home",
+		code: "Manufactured Mobile Home Loan",
 		name: "Manufactured Mobile Home Loan",
 	},
 	{
-		code: "transactional_funding",
+		code: "Transactional Funding",
 		name: "Transactional Funding",
 	},
 	{
-		code: "capital_markets",
+		code: "Capital Markets",
 		name: "Capital Markets",
 	},
 ];
 
 export const DKC_REPEAT_BORROWER = [
-  { code: "No", name: "No" },
-  { code: "Yes", name: "Yes" },
+	{ code: "No", name: "No" },
+	{ code: "Yes", name: "Yes" },
 ];
