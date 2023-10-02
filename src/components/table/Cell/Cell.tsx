@@ -12,7 +12,7 @@ export const Cell: FC<Props> = ({ bold, className = "", format, value }) => (
 	<p
 		className={`${className} ${
 			bold ? "font-bold" : "font-normal"
-		} font-inter text-[13px] text-primary-300 leading-4 tracking-[-0.65px]`}
+		} flex h-full w-full px-4 items-center font-inter text-[13px] text-primary-300 leading-4 tracking-[-0.65px]`}
 	>
 		{format === "text" ? String(value) : formatValue(Number(value), format)}
 	</p>

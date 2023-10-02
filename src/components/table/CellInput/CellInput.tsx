@@ -9,7 +9,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	name: string;
 }
 
-export const FormatInput: FC<Props> = ({
+export const CellInput: FC<Props> = ({
 	control,
 	error,
 	format,
@@ -25,9 +25,9 @@ export const FormatInput: FC<Props> = ({
 			name={name}
 			render={({ field: { onChange, onBlur, value } }) => (
 				<input
-					className={`h-full w-full py-3 px-4 bg-white ${
+					className={`h-full w-full py-3 px-4 bg-transparent ${
 						error ? "border-2 border-red-ERROR" : ""
-					} hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none`}
+					} hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none items-center font-inter text-[13px] text-primary-300 leading-4 tracking-[-0.65px]`}
 					min={0}
 					onBlur={() => {
 						setIsEditing(false);
