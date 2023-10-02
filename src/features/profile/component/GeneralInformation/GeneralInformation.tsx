@@ -5,13 +5,14 @@ import { Icon } from "@/components/ui/Icon";
 import { type SubmitHandler, useForm, type FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/forms/Input";
-import { generalInformationSchema } from "../../utils/Schemas/general-schemas";
-import { generalInformationFields } from "../../utils/input-fields";
+
 import { useEffect } from "react";
 import { getLocalStorage } from "@/utils/local-storage";
 import { userBasicInformation } from "@/utils/constant";
 import type { User } from "@/features/manage-user/types/api";
 import { MaskInput } from "@/components/forms/MaskInput";
+import { generalInformationSchema } from "../../utils/Schemas/general-schemas";
+import { generalInformationFields } from "../../utils/input-fields";
 
 export const GeneralInformation: React.FC = () => {
 	const {

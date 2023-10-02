@@ -1,4 +1,5 @@
 export type AddAdminFields = {
+	id?: string;
 	firstName: string;
 	lastName: string;
 	mailingAddress: string;
@@ -6,7 +7,18 @@ export type AddAdminFields = {
 	phoneNumber: string;
 };
 
+export type AddAccountingFields = {
+	id?: string;
+	firstName: string;
+	lastName: string;
+	mailingAddress: string;
+	email: string;
+	phoneNumber: string;
+	company: string;
+};
+
 export type AddInvestorFields = {
+	id?: string;
 	firstName: string;
 	lastName: string;
 	email: string;
@@ -22,4 +34,16 @@ export type AddInvestorBankFields = {
 	routingNumber: string;
 	accountNumber: string;
 	accountType: string;
+};
+
+export type InvestorFields = {
+	id?: string;
+	ssnEin: string;
+	zip: string;
+	streetAddress: string;
+	accountNumber: string;
+	routingNumber: string;
+	accountType: string;
+	bankingName: string;
+	user: AddAdminFields;
 };

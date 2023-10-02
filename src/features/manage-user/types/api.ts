@@ -9,6 +9,7 @@ export interface User {
 	sub?: string;
 	phoneNumber?: string;
 	mailingAddress?: string;
+	company?: string;
 	isActive?: boolean;
 }
 

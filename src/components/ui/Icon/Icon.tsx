@@ -4,6 +4,7 @@ import Bank from "@/assets/icons/bank";
 import Cellphone from "@/assets/icons/cellphone";
 import Clock from "@/assets/icons/clock";
 import ClockReverse from "@/assets/icons/clock-reverse";
+import Close from "@/assets/icons/close";
 import CloseEye from "@/assets/icons/close-eye";
 import CloseEyes from "@/assets/icons/closes-eyes";
 import Column from "@/assets/icons/column";
@@ -13,6 +14,7 @@ import DoorOut from "@/assets/icons/door-out";
 import Email from "@/assets/icons/email";
 import Hamburger from "@/assets/icons/hamburger";
 import type IconNames from "./IconNames";
+import LinkCopy from "@/assets/icons/link-copy";
 import Loading from "@/assets/icons/loading";
 import MenuTable from "@/assets/icons/menu-table";
 import MoneyBag from "@/assets/icons/money-bag";
@@ -21,6 +23,7 @@ import Notification from "@/assets/icons/notification";
 import Ok from "@/assets/icons/ok";
 import Open from "@/assets/icons/open";
 import OpenEye from "@/assets/icons/open-eye";
+import PasswordProfile from "@/assets/icons/change-password-profile";
 import Plus from "@/assets/icons/plus";
 import type { ReactElement } from "react";
 import Search from "@/assets/icons/search";
@@ -31,10 +34,8 @@ import TimeUsage from "@/assets/icons/time-usage";
 import TrashBin from "@/assets/icons/trash-bin";
 import Upload from "@/assets/icons/upload";
 import User from "@/assets/icons/user";
-import Wrong from "@/assets/icons/wrong";
-import LinkCopy from "@/assets/icons/link-copy";
-import PasswordProfile from "@/assets/icons/change-password-profile";
 import UserProfile from "@/assets/icons/user-profile";
+import Wrong from "@/assets/icons/wrong";
 
 interface Props {
 	name: (typeof IconNames)[number];
@@ -72,6 +73,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 		clock: {
 			name: "clock",
 			icon: <Clock width={width} color={color} />,
+		},
+		close: {
+			name: "close",
+			icon: <Close width={width} color={color} />,
 		},
 		"clock-reverse": {
 			name: "clock-reverse",

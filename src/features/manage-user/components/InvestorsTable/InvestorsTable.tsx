@@ -1,22 +1,24 @@
+import { findIndex, statusSort } from "@/utils/common-funtions.ts";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+
+import { AddInvestor } from "../AddInvestor/AddInvestor";
+import type { AddInvestorBankFields } from "../../types/fields";
+import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
+import { DisableInvestor } from "../DisableInvestor/DisableInvestor";
+import { Icon } from "@/components/ui/Icon";
+import type { Investor } from "../../types/api";
+import ManageUsersService from "../../api/investors";
+import { Modal } from "@/components/ui/Modal/Modal";
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Table } from "@/features/manage-user/components/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
-import { Icon } from "@/components/ui/Icon";
-import { Modal } from "@/components/ui/Modal/Modal";
-import { useEffect, useState } from "react";
-import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
-import { DisableInvestor } from "../DisableInvestor/DisableInvestor";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
-import { AddInvestor } from "../AddInvestor/AddInvestor";
 import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBakingInformation";
+import UserConfig from "../UserConfig/UserConfig";
 import { tabs } from "../../utils/tabs";
-import type { Investor } from "../../types/api";
-import ManageUsersService from "../../api/investors";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import type { AddInvestorBankFields } from "../../types/fields";
-import { findIndex, statusSort } from "@/utils/common-funtions.ts";
 
 interface SuccessProps {}
 
@@ -29,6 +31,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	const [idUpload, setIdUpload] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [bankInfo, setBankInfo] = useState<AddInvestorBankFields>();
+	const [selectedUser, setSelectedUser] = useState<Investor | null>(null);
 
 	const investorQuery = useQuery(
 		["investor-query"],
@@ -105,6 +108,15 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		setSearchValue(data);
 		return data;
 	};
+
+	const handleRowClicked = (row: unknown): void => {
+		setSelectedUser(row as Investor);
+	};
+
+	const handleRefetch = async (): Promise<void> => {
+		await investorQuery.refetch();
+	};
+
 	const conditionalRowStyles = [
 		{
 			when: (row: Investor) => row.user?.isActive === false,
@@ -240,6 +252,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 					buttonText="Add Investor"
 					conditionalRowStyles={conditionalRowStyles}
 					widthSearch="160px"
+					onRowClicked={handleRowClicked}
 				>
 					<>
 						<div>
@@ -281,6 +294,15 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 			>
 				<DisableInvestor id={deleteId} handleDeleteUser={handleDeleteUser} />
 			</Modal>
+
+			{selectedUser && (
+				<UserConfig
+					investor={selectedUser}
+					setUser={setSelectedUser}
+					type="investor"
+					callBack={handleRefetch}
+				/>
+			)}
 		</>
 	);
 };

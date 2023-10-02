@@ -22,6 +22,10 @@ export const unFormatPhone = (number: string): string => {
 	return number.replace(/[\s()-]/g, "");
 };
 
+export const removeCountryCode = (number: string): string => {
+	return number.replace("+1", "");
+};
+
 export const findIndex = (data: Array<User>, id: string): number => {
 	const index = data.findIndex((object: User) => object.id === id);
 

@@ -50,7 +50,7 @@ const UserActivity: React.FC<UserActivityProps> = ({ user }) => {
 		<>
 			<div
 				className="absolute top-10 right-10 cursor-pointer	 transform -translate-x-1/2 -translate-y-1/2 bg-gold-100 pt-1 pb-1.5 pl-4 pr-4 text-gold-500 text-sm font-semibold rounded-3xl hover:bg-gold-350"
-				onClick={() => {
+				onClick={(): void => {
 					setShowModal(true);
 				}}
 			>
@@ -58,15 +58,15 @@ const UserActivity: React.FC<UserActivityProps> = ({ user }) => {
 			</div>
 
 			<div className="flex mb-4 gap-10">
-				<div className="lg:w-1/2 md:w-full p-5 shadow-lg rounded-lg h-1/2 ">
+				<div className="lg:w-1/2 md:w-full p-5 shadow-lg rounded-lg h-1/2 bg-white ">
 					{userActivity.data && <LastLogin data={userActivity.data} />}
 				</div>
-				<div className="lg:w-1/2 md:w-full p-5 shadow-lg rounded-lg h-1/2">
+				<div className="lg:w-1/2 md:w-full p-5 shadow-lg rounded-lg h-1/2 bg-white">
 					{userActivity.data && <NumberOfLogin data={userActivity.data} />}
 				</div>
 			</div>
 			<div className="flex mb-4">
-				<div className="w-full p-5 shadow-lg rounded-lg h-1/2">
+				<div className="w-full p-5 shadow-lg rounded-lg h-1/2 bg-white">
 					{userActivity.data && (
 						<TimeUsage data={userActivity.data} date={date} />
 					)}

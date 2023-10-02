@@ -6,6 +6,7 @@ export default {
 		fontFamily: {
 			inter: ["Inter"],
 		},
+
 		extend: {
 			colors: {
 				primary: {
@@ -50,6 +51,7 @@ export default {
 					DEFAULT: "#00BA35",
 				},
 				blue: {
+					50: "#D8EAFA",
 					100: "#0085EE",
 					200: "#0085FF",
 					300: "#2ab1eb",
@@ -57,6 +59,7 @@ export default {
 					DEFAULT: "#29ACE5",
 				},
 				gray: {
+					50: "#F8F9FD",
 					100: "#FBF4F7",
 					150: "#F4F8FA",
 					200: "#EDF3F5",

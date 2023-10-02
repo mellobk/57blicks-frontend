@@ -11,7 +11,7 @@ import { Table } from "@/features/manage-user/components/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { User } from "../../types/api";
-import UserConfig from "../UserActivity/UserConfig";
+import UserConfig from "../UserConfig/UserConfig";
 import { findIndex } from "@/utils/common-funtions";
 import { tabs } from "../../utils/tabs";
 
@@ -81,6 +81,13 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 
 	const handleRowClicked = (row: unknown): void => {
 		setSelectedUser(row as User);
+	};
+
+	const handleRefetch = async (): Promise<void> => {
+		console.log(
+			"🚀 ~ file: AdminTable.tsx:87 ~ handleRefetch ~ handleRefetch:"
+		);
+		await adminQuery.refetch();
 	};
 
 	useEffect(() => {
@@ -194,7 +201,12 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 				<DeleteAdmin id={deleteId} handleDeleteAdmin={handleDeleteUser} />
 			</Modal>
 			{selectedUser && (
-				<UserConfig user={selectedUser} setUser={setSelectedUser} />
+				<UserConfig
+					user={selectedUser}
+					setUser={setSelectedUser}
+					type="admin"
+					callBack={handleRefetch}
+				/>
 			)}
 		</>
 	);
