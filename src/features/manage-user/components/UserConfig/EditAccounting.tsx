@@ -20,10 +20,12 @@ import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
 interface EditAccountingProps {
 	user: User;
 	setUser?: (user: User) => void;
+	role?: string;
 }
 
 export const EditAccounting: React.FC<EditAccountingProps> = ({
 	user,
+	role,
 	setUser,
 }) => {
 	const {
@@ -89,6 +91,7 @@ export const EditAccounting: React.FC<EditAccountingProps> = ({
 		});
 	};
 
+	if (role && !role.includes("admin")) return <></>;
 	return (
 		<div className="h-full w-full rounded-3xl border border-gray-200 p-2 bg-white">
 			<form

@@ -21,10 +21,12 @@ import { ACCOUNT_OPTIONS } from "../../utils/constant";
 interface EditInvestorProps {
 	investor: Investor;
 	setUser?: (user: Investor) => void;
+	role?: string;
 }
 
 export const EditInvestor: React.FC<EditInvestorProps> = ({
 	investor,
+	role,
 	setUser,
 }) => {
 	const {
@@ -106,6 +108,7 @@ export const EditInvestor: React.FC<EditInvestorProps> = ({
 		});
 	};
 
+	if (role && !role.includes("admin")) return <></>;
 	return (
 		<div className="h-full w-full rounded-3xl border border-gray-200 p-2 bg-white">
 			<form onSubmit={handleSubmit(onSubmit)} className="">

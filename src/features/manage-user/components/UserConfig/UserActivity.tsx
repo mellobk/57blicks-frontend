@@ -2,13 +2,13 @@
 import { useEffect, useState } from "react";
 
 import { CalendarModal } from "@/components/ui/CalendarModal/CalendarModal";
+import { Icon } from "@/components/ui/Icon";
 import LastLogin from "./LastLogin";
 import ManageLogService from "../../api/logs";
 import NumberOfLogin from "./NumberOfLogin";
 import TimeUsage from "./TimeUsage";
 import type { User } from "../../types/api";
 import { useQuery } from "@tanstack/react-query";
-import { Icon } from "@/components/ui/Icon";
 
 interface UserActivityProps {
 	user: User;

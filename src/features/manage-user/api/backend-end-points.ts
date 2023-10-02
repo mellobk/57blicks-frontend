@@ -43,3 +43,7 @@ export const getUserData = (sub: string): string => {
 export const createLog = (): string => {
 	return `/logs`;
 };
+
+export const getRolesByUser = (id: string): string => {
+	return `users/user-rol/${id}`;
+};
