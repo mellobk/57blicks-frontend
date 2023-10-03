@@ -27,7 +27,7 @@ const LastLogin: React.FC<LastLoginProps> = ({ data }) => {
 				Last login
 			</div>
 			<div className="absolute top-16 text-2xl font-semibold z-40 ">
-				{lastLogin ? formatDate(lastLogin) : "The user has not logged in"}
+				{lastLogin ? formatDate(lastLogin) : "There is not activity to report"}
 			</div>
 		</div>
 	);
