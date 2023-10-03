@@ -5,13 +5,13 @@
 /* eslint-disable unicorn/prevent-abbreviations */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import type { IErrorResponse } from "@/features/manage-user/types/api.ts";
 import { accessToken } from "./constant.ts";
 import axios from "axios";
 import { getLocalStorage } from "./local-storage.ts";
 import sharedObject from "@/config/api-config";
 import { signOut } from "@/lib/cognito";
 import useStore from "@/stores/app-store.ts";
-import type { IErrorResponse } from "@/features/manage-user/types/api.ts";
 
 const store = useStore.getState();
 
@@ -40,6 +40,11 @@ authApiClient.interceptors.response.use(
 			signOut();
 			localStorage.clear();
 			window.location.href = "/login";
+		}
+		if (error?.response?.status === 403) {
+			signOut();
+			localStorage.clear();
+			window.location.href = "/403";
 		}
 
 		const clearErrorMessage = store.clearErrorMessage;
