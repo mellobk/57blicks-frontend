@@ -41,7 +41,6 @@ export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
 
 		const formatData = {
 			ssnEin: investorInfo?.einSsn,
-			streetAddress: investorInfo?.streetAddress,
 			zip: investorInfo?.zip,
 			bankingName: data?.bankingName,
 			routingNumber: data?.routingNumber,
@@ -54,7 +53,7 @@ export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
 				email: investorInfo?.email,
 				companyName: "",
 				phoneNumber: `+1${phoneNumber}`,
-				mailingAddress: "Mailing Address",
+				mailingAddress: investorInfo?.mailingAddress,
 			},
 		};
 

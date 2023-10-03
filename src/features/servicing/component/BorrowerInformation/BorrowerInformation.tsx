@@ -280,7 +280,8 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 						/>
 						<div className="absolute" style={{ top: "25px", right: "65px" }}>
 							<Button
-								loading={false}
+								iconColor="black"
+								loading={updateAdmin.isLoading}
 								buttonText={"Save"}
 								className={`bg-gray-200  text-black round-[15px] py-[3px] px-[10px] z-50`}
 							/>
