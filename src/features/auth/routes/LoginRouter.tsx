@@ -1,14 +1,14 @@
-import { LoginLayout } from "@/components/layout/Login";
 import { CreatePassWord } from "@/features/auth/pages/CreatePassword/CreatePassword";
-
-import UnauthenticatedRoute from "@/routes/routes";
 import { FirstLogin } from "../pages/FirstLogin";
-import { SuccessFirstLogin } from "../pages/SuccessFirstLogin";
+import { ForbiddenPage } from "../pages/forbidden/ForbiddenPage";
 import { Login } from "../pages/Login";
+import { LoginLayout } from "@/components/layout/Login";
+import { ResetCreatePassWord } from "../pages/ResetCreatePassword";
 import { ResetPassword } from "../pages/ResetPassword";
 import { ResetPasswordMfa } from "../pages/ResetPasswordMfa";
-import { ResetCreatePassWord } from "../pages/ResetCreatePassword";
+import { SuccessFirstLogin } from "../pages/SuccessFirstLogin";
 import { SuccessResetPassword } from "../pages/SuccessResetPassword";
+import UnauthenticatedRoute from "@/routes/routes";
 
 export const loginRoutesNames = {
 	firstLogin: "first-login",
