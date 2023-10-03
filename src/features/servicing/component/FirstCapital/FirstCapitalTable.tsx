@@ -118,7 +118,8 @@ export const FirstCapitalTable: React.FC<SuccessProps> = () => {
 		},
 		{
 			name: "Regular Payment",
-			selector: (): string => "",
+			selector: (row: FundingBreakdown): string =>
+				formatCurrency(Number.parseInt(row?.regular)),
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",

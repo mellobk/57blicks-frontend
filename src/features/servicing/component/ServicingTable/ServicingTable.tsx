@@ -101,8 +101,16 @@ export const ServicingTable: FC<TableProps> = ({
 		const totalLoanAmount = data?.map((data: FundingBreakdown) => {
 			return Number.parseFloat(data.loan.totalLoanAmount);
 		});
+		const totalRegularAmount = data?.map((data: FundingBreakdown) => {
+			return Number.parseFloat(data.regular);
+		});
 
 		const total = totalLoanAmount?.reduce(
+			(accumulator, currentValue) => accumulator + currentValue,
+			0
+		);
+
+		const totalRegular = totalRegularAmount?.reduce(
 			(accumulator, currentValue) => accumulator + currentValue,
 			0
 		);
@@ -115,7 +123,7 @@ export const ServicingTable: FC<TableProps> = ({
 			{ label: `total: ${totalRow}`, width: "730px", justify: "center" },
 			{ label: formatCurrency(total), width: "150px" },
 			{ label: "", width: "100px" },
-			{ label: "$467.50", width: "200px" },
+			{ label: formatCurrency(totalRegular), width: "200px" },
 		];
 
 		return footerTabData;
