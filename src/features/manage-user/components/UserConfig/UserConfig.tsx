@@ -22,7 +22,7 @@ interface UserConfigProps {
 	type: "admin" | "investor" | "accounting";
 	callBack: () => void;
 	deleteUser: (id: string) => void;
-	enableUser: (id: string) => void;
+	enableUser?: (id: string) => void;
 	setOpenActivityModal?: (value: boolean) => void;
 	activityModal?: boolean;
 }
