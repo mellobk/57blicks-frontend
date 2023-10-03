@@ -26,6 +26,7 @@ import OpenEye from "@/assets/icons/open-eye";
 import PasswordProfile from "@/assets/icons/change-password-profile";
 import Plus from "@/assets/icons/plus";
 import type { ReactElement } from "react";
+import SVG403 from "@/assets/images/svg/403";
 import Search from "@/assets/icons/search";
 import Shield from "@/assets/icons/shield";
 import Star from "@/assets/icons/star";
@@ -40,6 +41,7 @@ import Wrong from "@/assets/icons/wrong";
 interface Props {
 	name: (typeof IconNames)[number];
 	width?: string;
+	height?: string;
 	color?: string;
 }
 
@@ -52,7 +54,7 @@ interface IconMap {
 	[key: string]: IconProps;
 }
 
-const Icon = ({ name, width, color }: Props): ReactElement => {
+const Icon = ({ name, width, height, color }: Props): ReactElement => {
 	const icons: IconMap = {
 		arrowDown: {
 			name: "arrowDown",
@@ -197,6 +199,10 @@ const Icon = ({ name, width, color }: Props): ReactElement => {
 		userProfile: {
 			name: "userProfile",
 			icon: <UserProfile width={width} color={color} />,
+		},
+		svg403: {
+			name: "svg403",
+			icon: <SVG403 width={width} color={color} height={height} />,
 		},
 	};
 
