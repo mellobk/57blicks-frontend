@@ -20,7 +20,7 @@ export const UpdateBakingInformation: React.FC<
 		useState<boolean>(false);
 
 	const investorMutation = useMutation((data: Investor) => {
-		return ManageUsersService.updateInvestors(data);
+		return ManageUsersService.updateInvestorsBank(data);
 	});
 
 	useEffect(() => {
