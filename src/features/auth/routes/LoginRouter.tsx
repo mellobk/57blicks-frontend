@@ -1,6 +1,5 @@
 import { CreatePassWord } from "@/features/auth/pages/CreatePassword/CreatePassword";
 import { FirstLogin } from "../pages/FirstLogin";
-import { ForbiddenPage } from "../pages/forbidden/ForbiddenPage";
 import { Login } from "../pages/Login";
 import { LoginLayout } from "@/components/layout/Login";
 import { ResetCreatePassWord } from "../pages/ResetCreatePassword";
