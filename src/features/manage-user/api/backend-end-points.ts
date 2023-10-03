@@ -12,6 +12,10 @@ export const investors = (id: string): string => {
 	return `/investors/${id}`;
 };
 
+export const investorsBank = (id: string): string => {
+	return `/investors/investor-data/${id}`;
+};
+
 export const createAdmin = (): string => {
 	return `/users/admin`;
 };
@@ -34,6 +38,10 @@ export const createInvestor = (): string => {
 
 export const deleteUserData = (id: string): string => {
 	return `/users/${id}`;
+};
+
+export const restoreUserData = (id: string): string => {
+	return `/users/restore/${id}`;
 };
 
 export const getUserData = (sub: string): string => {

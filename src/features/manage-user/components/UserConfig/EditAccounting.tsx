@@ -16,17 +16,20 @@ import { userAccountingEditSchema } from "./general-schemas";
 import type { AddAccountingFields } from "../../types/fields";
 import useStore from "@/stores/app-store";
 import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
+import { Icon } from "@/components/ui/Icon";
 
 interface EditAccountingProps {
 	user: User;
 	setUser?: (user: User) => void;
 	role?: string;
+	deleteUser?: (id: string) => void;
 }
 
 export const EditAccounting: React.FC<EditAccountingProps> = ({
 	user,
 	role,
 	setUser,
+	deleteUser,
 }) => {
 	const {
 		register,
@@ -101,10 +104,22 @@ export const EditAccounting: React.FC<EditAccountingProps> = ({
 				<div className="flex justify-between items-center">
 					<div className="flex items-center gap-3">
 						<div className="text-[28px]">General Information</div>
+
+						<div
+							onClick={(): void => {
+								if (deleteUser) {
+									deleteUser(user.id || "");
+								}
+							}}
+							className="absolute w-8 h-8 text-gray-1200 border-0 bg-gray-100 rounded-full transition duration-200  flex items-center justify-center cursor-pointer"
+							style={{ right: "63px", top: "24px" }}
+						>
+							<Icon name="trashBin" width="14" color="#ff0033" />
+						</div>
 					</div>
 					<Button
 						buttonText="Save"
-						className="absolute top-6 right-20 py-1 px-[10px] bg-gray-250 text-white rounded-3xl"
+						className="absolute top-[25px] right-[102px] py-[3px] px-[10px] bg-gray-250 text-white rounded-3xl"
 					/>
 				</div>
 				<div className="w-full">

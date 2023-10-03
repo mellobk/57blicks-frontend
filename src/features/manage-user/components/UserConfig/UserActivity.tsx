@@ -13,8 +13,13 @@ import { useQuery } from "@tanstack/react-query";
 interface UserActivityProps {
 	user: User;
 	deleteUser?: (id: string) => void;
+	enableUser?: (id: string) => void;
 }
-const UserActivity: React.FC<UserActivityProps> = ({ user, deleteUser }) => {
+const UserActivity: React.FC<UserActivityProps> = ({
+	user,
+	deleteUser,
+	enableUser,
+}) => {
 	const [showModal, setShowModal] = useState(false);
 	const [date, setDate] = useState<Date>(new Date());
 
@@ -51,13 +56,28 @@ const UserActivity: React.FC<UserActivityProps> = ({ user, deleteUser }) => {
 	return (
 		<>
 			<div
-				className="absolute top-10 right-12 cursor-pointer	 transform -translate-x-1/2 -translate-y-1/2 bg-gold-100 pt-1 pb-1.5 pl-4 pr-4 text-gold-500 text-sm font-semibold rounded-3xl hover:bg-gold-350"
+				className={`absolute top-10 ${
+					user.isActive ? "right-[50px]" : "right-[160px]"
+				} cursor-pointer	 transform -translate-x-1/2 -translate-y-1/2 bg-gold-100 pt-1 pb-1.5 pl-4 pr-4 text-gold-500 text-sm font-semibold rounded-3xl hover:bg-gold-350`}
 				onClick={() => {
 					setShowModal(true);
 				}}
 			>
 				Select Dates
 			</div>
+
+			{!user.isActive && (
+				<div
+					className={`absolute top-10 right-[48px] cursor-pointer	 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 pt-1 pb-1.5 pl-4 pr-4 text-black-500 text-sm font-semibold rounded-3xl`}
+					onClick={() => {
+						if (enableUser) {
+							enableUser(user.id || "");
+						}
+					}}
+				>
+					Enable User
+				</div>
+			)}
 
 			<div
 				onClick={(): void => {
