@@ -1,5 +1,6 @@
 import { Admin } from "@/features/manage-user/pages/Admin/Admin";
 import { AuthenticatedRoute } from "@/routes/routes";
+import { BlankLayout } from "@/components/layout/BlankLayout";
 import { CreateLoan } from "@/features/create-loan/pages/CreateLoan/CreateLoan";
 import { CreateOpportunity } from "@/features/opportunities/pages/CreateOpportunity/CreateOpportunity";
 import { DashboardLayout } from "@/components/layout/Dashboard";
@@ -58,7 +59,7 @@ export const NavbarRoutes = [
 	{
 		path: "/403",
 		page: ForbiddenPage,
-		layout: DashboardLayout,
+		layout: BlankLayout,
 		name: "Support",
 	},
 ];
