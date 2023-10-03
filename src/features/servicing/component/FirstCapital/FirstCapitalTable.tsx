@@ -37,7 +37,7 @@ export const FirstCapitalTable: React.FC<SuccessProps> = () => {
 				searchValue
 			);
 		},
-		{ enabled: true, staleTime: 1000 * 60 }
+		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 	const handleSearch = (data: string) => {
 		setSearchValue(data);
@@ -185,7 +185,7 @@ export const FirstCapitalTable: React.FC<SuccessProps> = () => {
 				handleSearchValue={handleSearch}
 				columns={columns}
 				data={dkcLendersQuery?.data?.fundingBreakdowns}
-				loading={dkcLendersQuery.isLoading}
+				loading={dkcLendersQuery.isFetching}
 				widthSearch="60px"
 				onRowClicked={handleRowClicked}
 			>

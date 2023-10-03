@@ -37,7 +37,7 @@ export const DkcFlTable: React.FC<SuccessProps> = () => {
 				searchValue
 			);
 		},
-		{ enabled: true, staleTime: 1000 * 60 }
+		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
 	const handleSearch = (data: string) => {
@@ -185,7 +185,7 @@ export const DkcFlTable: React.FC<SuccessProps> = () => {
 				handleSearchValue={handleSearch}
 				columns={columns}
 				data={dkcLendersFlQuery?.data?.fundingBreakdowns}
-				loading={dkcLendersFlQuery.isLoading}
+				loading={dkcLendersFlQuery.isFetching}
 				widthSearch="60px"
 				onRowClicked={handleRowClicked}
 			>
