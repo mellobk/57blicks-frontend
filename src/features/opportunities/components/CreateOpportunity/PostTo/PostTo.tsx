@@ -12,11 +12,11 @@ import { Icon } from "@/components/ui/Icon";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
-import OpportunitiesService from "@/features/opportunities/api/investors";
-import { Investor } from "@/features/opportunities/types/api";
-import { Opportunity } from "@/features/opportunities/types/fields";
-import { nameFormat } from "@/utils/formats";
-import useStore from "@/stores/app-store";
+import OpportunitiesService from "@/features/opportunities/api/investors.ts";
+import { Investor } from "@/features/opportunities/types/api.ts";
+import { Opportunity } from "@/features/opportunities/types/fields.ts";
+import { nameFormat } from "@/utils/formats.ts";
+import useStore from "@/stores/app-store.ts";
 
 interface Props {
 	control: Control<Opportunity>;

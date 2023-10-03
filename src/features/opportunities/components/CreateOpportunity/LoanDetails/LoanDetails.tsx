@@ -3,8 +3,8 @@ import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
 import { Title } from "@/components/ui/Title";
-import { LOAN_TYPES } from "@/features/create-loan/utils/selects";
-import { Opportunity } from "@/features/opportunities/types/fields";
+import { LOAN_TYPES } from "@/features/create-loan/utils/selects.ts";
+import { Opportunity } from "@/features/opportunities/types/fields.ts";
 import { FormatInput } from "@/components/forms/FormatInput";
 
 interface Props {

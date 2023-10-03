@@ -26,3 +26,10 @@ export interface Investor {
 	accountType?: string;
 	user?: User;
 }
+
+export interface Opportunity {
+  created_at: string;
+  filename: string;
+  id: string;
+  investors: Investor[];
+}

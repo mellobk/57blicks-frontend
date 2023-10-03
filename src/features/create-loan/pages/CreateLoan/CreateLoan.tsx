@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import moment from "moment/moment";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
@@ -15,9 +16,7 @@ import { SelectLender } from "@/features/create-loan/components/SelectLender/Sel
 import { LoanSchema } from "@/features/create-loan/schemas/LoanSchema";
 import { Loan } from "@/features/create-loan/types/fields";
 import { defaultValues } from "@/features/create-loan/utils/values";
-import useStore from "@/stores/app-store";
 import { unFormatPhone } from "@/utils/common-funtions";
-import moment from "moment/moment";
 
 export const CreateLoan: FC = () => {
 	const [openLenderModal, setOpenLenderModal] = useState<boolean>(false);
@@ -53,7 +52,6 @@ export const CreateLoan: FC = () => {
 			name: "participationBreakdown",
 		});
 	const {
-		error,
 		isError,
 		isSuccess,
 		mutate,
@@ -61,7 +59,6 @@ export const CreateLoan: FC = () => {
 	} = useMutation((data: Loan) => {
 		return CreateLoanService.createLoan(data);
 	});
-	const setErrorMessage = useStore((state) => state.setErrorMessage);
 
 	function calculateRegular(amount: string, rate: string) {
 		return ((Number(amount) * (Number(rate) / 100)) / 12).toFixed(2);
@@ -130,17 +127,10 @@ export const CreateLoan: FC = () => {
 	}, [isSuccess]);
 
 	useEffect(() => {
-		if (isError && (error as Error)) {
-			const currentError = error as Error;
-
-			setErrorMessage(currentError?.message);
+		if (isError) {
 			resetMutation();
 		}
 	}, [isError]);
-
-	useEffect(() => {
-		console.log(errors);
-	}, [errors]);
 
 	return (
 		<>
