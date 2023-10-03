@@ -22,6 +22,7 @@ interface UserConfigProps {
 	type: "admin" | "investor" | "accounting";
 	callBack: () => void;
 	deleteUser: (id: string) => void;
+	enableUser: (id: string) => void;
 	setOpenActivityModal?: (value: boolean) => void;
 	activityModal?: boolean;
 }
@@ -34,6 +35,7 @@ const UserConfig: React.FC<UserConfigProps> = ({
 	deleteUser,
 	setOpenActivityModal,
 	activityModal,
+	enableUser,
 }) => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [role, setRole] = useState<string>();
@@ -127,7 +129,11 @@ const UserConfig: React.FC<UserConfigProps> = ({
 					<UserActivity user={user} deleteUser={deleteUser} />
 				)}
 				{actualTabData === "activity" && investor?.user && (
-					<UserActivity user={investor.user} deleteUser={deleteUser} />
+					<UserActivity
+						user={investor.user}
+						deleteUser={deleteUser}
+						enableUser={enableUser}
+					/>
 				)}
 				{actualTabData === "permission" && <></>}
 				{actualTabData === "edit" && (
@@ -137,6 +143,7 @@ const UserConfig: React.FC<UserConfigProps> = ({
 								user={user}
 								setUser={handleSetUser}
 								role={role || ""}
+								deleteUser={deleteUser}
 							/>
 						)}
 						{type === "accounting" && user && (
@@ -144,6 +151,7 @@ const UserConfig: React.FC<UserConfigProps> = ({
 								user={user}
 								setUser={handleSetUser}
 								role={role || ""}
+								deleteUser={deleteUser}
 							/>
 						)}
 						{type === "investor" && investor && (
@@ -151,6 +159,8 @@ const UserConfig: React.FC<UserConfigProps> = ({
 								investor={investor}
 								setUser={handleSetUser}
 								role={role || ""}
+								deleteUser={deleteUser}
+								enableUser={enableUser}
 							/>
 						)}
 					</>

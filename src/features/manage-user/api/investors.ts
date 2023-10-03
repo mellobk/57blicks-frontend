@@ -12,6 +12,8 @@ import {
 	filterData,
 	getUserData,
 	investors,
+	investorsBank,
+	restoreUserData,
 	updateAccountingUrl,
 	updateAdminUrl,
 	userFilterData,
@@ -50,6 +52,14 @@ const filterAllAccounting = async (searchData: string) => {
 const updateInvestors = async (body: Investor) => {
 	const response = await authApiClient.put<Array<Investor>>(
 		investors(body?.id || ""),
+		body
+	);
+	return response.data;
+};
+
+const updateInvestorsBank = async (body: Investor) => {
+	const response = await authApiClient.put<Array<Investor>>(
+		investorsBank(body?.id || ""),
 		body
 	);
 	return response.data;
@@ -110,6 +120,11 @@ const deleteUser = async (id: string) => {
 	const response = await authApiClient.delete<Array<User>>(deleteUserData(id));
 	return response.data;
 };
+
+const restoreUser = async (id: string) => {
+	const response = await authApiClient.put<Array<User>>(restoreUserData(id));
+	return response.data;
+};
 /* const updateInvestors = async (body: Investor) => {
 	const response = fetchData(investors(body?.id || ""), "PUT", body);
 	return response;
@@ -120,6 +135,7 @@ const ManageUsersService = {
 	filterAllAdmins,
 	filterAllAccounting,
 	updateInvestors,
+	updateInvestorsBank,
 	createNewAdmin,
 	createNewAccounting,
 	createNewInvestor,
@@ -128,6 +144,7 @@ const ManageUsersService = {
 	updateAdmin,
 	updateAccounting,
 	updateGeneralInformation,
+	restoreUser,
 };
 
 export default ManageUsersService;

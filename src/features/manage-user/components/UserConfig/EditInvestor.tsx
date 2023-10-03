@@ -17,23 +17,27 @@ import type { InvestorFields } from "../../types/fields";
 import useStore from "@/stores/app-store";
 import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
 import { ACCOUNT_OPTIONS } from "../../utils/constant";
+import { Icon } from "@/components/ui/Icon";
 
 interface EditInvestorProps {
 	investor: Investor;
 	setUser?: (user: Investor) => void;
 	role?: string;
+	deleteUser?: (id: string) => void;
+	enableUser?: (id: string) => void;
 }
 
 export const EditInvestor: React.FC<EditInvestorProps> = ({
 	investor,
 	role,
 	setUser,
+	deleteUser,
+	enableUser,
 }) => {
 	const {
 		register,
 		handleSubmit,
 		getValues,
-
 		formState: { errors },
 	} = useForm({
 		resolver: zodResolver(userInvestorEditSchema),
@@ -283,9 +287,36 @@ export const EditInvestor: React.FC<EditInvestorProps> = ({
 						</div>
 					</div>
 
+					{!investor?.user?.isActive && (
+						<div
+							className="absolute top-10 right-[48px] cursor-pointer	 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 pt-1 pb-1.5 pl-4 pr-4 text-black-500 text-sm font-semibold rounded-3xl"
+							onClick={() => {
+								if (enableUser) {
+									enableUser(investor?.user?.id || "");
+								}
+							}}
+						>
+							Enable User
+						</div>
+					)}
+
+					<div
+						onClick={(): void => {
+							if (deleteUser) {
+								deleteUser(investor?.user?.id || "");
+							}
+						}}
+						className="absolute w-8 h-8 text-gray-1200 border-0 bg-gray-100 rounded-full transition duration-200  flex items-center justify-center cursor-pointer"
+						style={{ right: "63px", top: "24px" }}
+					>
+						<Icon name="trashBin" width="14" color="#ff0033" />
+					</div>
+
 					<Button
 						buttonText="Save"
-						className="absolute top-6 right-20 py-1 px-[10px] bg-gray-250 text-white rounded-3xl"
+						className={`absolute top-[25px] ${
+							investor?.user?.isActive ? "right-[103px]" : "right-[215px]"
+						} py-[3px] px-[10px] bg-gray-250 text-white rounded-3xl`}
 					/>
 				</div>
 			</form>

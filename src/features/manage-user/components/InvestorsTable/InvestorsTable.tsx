@@ -19,6 +19,7 @@ import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBakingInformation";
 import UserConfig from "../UserConfig/UserConfig";
 import { tabs } from "../../utils/tabs";
+import { EnableInvestor } from "../EnableInvestor/EnableInvestor";
 
 interface SuccessProps {}
 
@@ -33,6 +34,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 	const [bankInfo, setBankInfo] = useState<AddInvestorBankFields>();
 	const [selectedUser, setSelectedUser] = useState<Investor | null>(null);
 	const [detailModal, setDetailModal] = useState<boolean>(true);
+	const [enableOpenModal, setEnableOpenModal] = useState<boolean>(false);
 
 	const investorQuery = useQuery(
 		["investor-query"],
@@ -46,6 +48,10 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		return ManageUsersService.deleteUser(id);
 	});
 
+	const restoreInvestorMutation = useMutation((id: string) => {
+		return ManageUsersService.restoreUser(id);
+	});
+
 	const handleSuccessDelete = async (): Promise<void> => {
 		await investorQuery.refetch();
 		setOpenDeleteModal(false);
@@ -53,11 +59,24 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		deleteAdminMutation.reset();
 	};
 
+	const handleSuccessEnable = async (): Promise<void> => {
+		await investorQuery.refetch();
+		setEnableOpenModal(false);
+		setDetailModal(false);
+		restoreInvestorMutation.reset();
+	};
+
 	useEffect(() => {
 		if (deleteAdminMutation.isSuccess) {
 			void handleSuccessDelete();
 		}
 	}, [deleteAdminMutation]);
+
+	useEffect(() => {
+		if (restoreInvestorMutation.isSuccess) {
+			void handleSuccessEnable();
+		}
+	}, [restoreInvestorMutation]);
 
 	useEffect(() => {
 		void investorQuery.refetch();
@@ -72,8 +91,16 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 		setDeleteId(id);
 	};
 
+	const enableUser = (id: string) => {
+		setEnableOpenModal(!enableOpenModal);
+		setDeleteId(id);
+	};
 	const handleDeleteUser = (id: string) => {
 		deleteAdminMutation.mutate(id);
+	};
+
+	const handleEnableUser = (id: string) => {
+		restoreInvestorMutation.mutate(id);
 	};
 
 	const handleUploadModal = () => {
@@ -82,6 +109,10 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 
 	const closeDeleteAdminModal = (): void => {
 		setOpenDeleteModal(false);
+	};
+
+	const closeEnableModal = (): void => {
+		setEnableOpenModal(false);
 	};
 
 	const addAdmin = (): void => {
@@ -280,6 +311,15 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 				<DisableInvestor id={deleteId} handleDeleteUser={handleDeleteUser} />
 			</Modal>
 
+			<Modal
+				visible={enableOpenModal}
+				onHide={closeEnableModal}
+				title="Enable User"
+				width="450px"
+			>
+				<EnableInvestor id={deleteId} handleDeleteUser={handleEnableUser} />
+			</Modal>
+
 			{selectedUser && (
 				<UserConfig
 					investor={selectedUser}
@@ -289,6 +329,7 @@ export const InvestorsTable: React.FC<SuccessProps> = () => {
 					setOpenActivityModal={setDetailModal}
 					activityModal={detailModal}
 					deleteUser={handleDeleteAdmin}
+					enableUser={enableUser}
 				/>
 			)}
 		</>
