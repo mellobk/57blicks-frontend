@@ -1,7 +1,10 @@
+import { FC } from "react";
+
 import ArrowDown from "@/assets/icons/arrow-down";
 import ArrowLeft from "@/assets/icons/arrow-left";
 import Bank from "@/assets/icons/bank";
 import Cellphone from "@/assets/icons/cellphone";
+import Chart from "@/assets/icons/chart";
 import Clock from "@/assets/icons/clock";
 import ClockReverse from "@/assets/icons/clock-reverse";
 import Close from "@/assets/icons/close";
@@ -11,9 +14,9 @@ import Column from "@/assets/icons/column";
 import Date from "@/assets/icons/date";
 import DeleteBack from "@/assets/icons/delete-back";
 import DoorOut from "@/assets/icons/door-out";
+import Download from "@/assets/icons/download";
 import Email from "@/assets/icons/email";
 import Hamburger from "@/assets/icons/hamburger";
-import type IconNames from "./IconNames";
 import LinkCopy from "@/assets/icons/link-copy";
 import Loading from "@/assets/icons/loading";
 import MenuTable from "@/assets/icons/menu-table";
@@ -23,9 +26,8 @@ import Notification from "@/assets/icons/notification";
 import Ok from "@/assets/icons/ok";
 import Open from "@/assets/icons/open";
 import OpenEye from "@/assets/icons/open-eye";
-import PasswordProfile from "@/assets/icons/change-password-profile";
+import PasswordProfile from "@/assets/icons/password-profile";
 import Plus from "@/assets/icons/plus";
-import type { ReactElement } from "react";
 import Search from "@/assets/icons/search";
 import Shield from "@/assets/icons/shield";
 import Star from "@/assets/icons/star";
@@ -37,170 +39,55 @@ import User from "@/assets/icons/user";
 import UserProfile from "@/assets/icons/user-profile";
 import Wrong from "@/assets/icons/wrong";
 
-interface Props {
-	name: (typeof IconNames)[number];
-	width?: string;
-	color?: string;
-}
-
-interface IconProps {
-	name: string;
-	icon: ReactElement;
-}
-
-interface IconMap {
-	[key: string]: IconProps;
-}
-
-const Icon = ({ name, width, color }: Props): ReactElement => {
-	const icons: IconMap = {
-		arrowDown: {
-			name: "arrowDown",
-			icon: <ArrowDown width={width} color={color} />,
-		},
-		arrowLeft: {
-			name: "arrowLeft",
-			icon: <ArrowLeft width={width} color={color} />,
-		},
-		bank: {
-			name: "bank",
-			icon: <Bank width={width} color={color} />,
-		},
-		cellphone: {
-			name: "cellphone",
-			icon: <Cellphone width={width} color={color} />,
-		},
-		clock: {
-			name: "clock",
-			icon: <Clock width={width} color={color} />,
-		},
-		close: {
-			name: "close",
-			icon: <Close width={width} color={color} />,
-		},
-		"clock-reverse": {
-			name: "clock-reverse",
-			icon: <ClockReverse width={width} color={color} />,
-		},
-		"time-usage": {
-			name: "time-usage",
-			icon: <TimeUsage width={width} color={color} />,
-		},
-		closeEye: {
-			name: "closeEye",
-			icon: <CloseEye width={width} color={color} />,
-		},
-		closesEyes: {
-			name: "closesEyes",
-			icon: <CloseEyes width={width} color={color} />,
-		},
-		column: {
-			name: "column",
-			icon: <Column width={width} color={color} />,
-		},
-		date: {
-			name: "date",
-			icon: <Date width={width} color={color} />,
-		},
-		deleteBack: {
-			name: "deleteBack",
-			icon: <DeleteBack width={width} color={color} />,
-		},
-		email: {
-			name: "email",
-			icon: <Email width={width} color={color} />,
-		},
-		loading: {
-			name: "loading",
-			icon: <Loading width={width} color={color} />,
-		},
-		menuTable: {
-			name: "menuTable",
-			icon: <MenuTable width={width} color={color} />,
-		},
-		moneyBag: {
-			name: "moneyBag",
-			icon: <MoneyBag width={width} color={color} />,
-		},
-		note: {
-			name: "note",
-			icon: <Note width={width} color={color} />,
-		},
-		notification: {
-			name: "notification",
-			icon: <Notification width={width} color={color} />,
-		},
-		ok: {
-			name: "ok",
-			icon: <Ok width={width} color={color} />,
-		},
-		open: {
-			name: "open",
-			icon: <Open width={width} color={color} />,
-		},
-		openEye: {
-			name: "openEye",
-			icon: <OpenEye width={width} color={color} />,
-		},
-		plus: {
-			name: "plus",
-			icon: <Plus width={width} color={color} />,
-		},
-		search: {
-			name: "search",
-			icon: <Search width={width} color={color} />,
-		},
-		shield: {
-			name: "shield",
-			icon: <Shield width={width} color={color} />,
-		},
-		star: {
-			name: "star",
-			icon: <Star width={width} color={color} />,
-		},
-		success: {
-			name: "success",
-			icon: <Success width={width} color={color} />,
-		},
-		trashBin: {
-			name: "trashBin",
-			icon: <TrashBin width={width} color={color} />,
-		},
-		upload: {
-			name: "upload",
-			icon: <Upload width={width} color={color} />,
-		},
-		user: {
-			name: "user",
-			icon: <User width={width} color={color} />,
-		},
-		wrong: {
-			name: "wrong",
-			icon: <Wrong width={width} color={color} />,
-		},
-		doorOut: {
-			name: "doorOut",
-			icon: <DoorOut width={width} color={color} />,
-		},
-		hamburger: {
-			name: "hamburger",
-			icon: <Hamburger width={width} color={color} />,
-		},
-		linkCopy: {
-			name: "linkCopy",
-			icon: <LinkCopy width={width} color={color} />,
-		},
-		passwordProfile: {
-			name: "passwordProfile",
-			icon: <PasswordProfile width={width} color={color} />,
-		},
-		userProfile: {
-			name: "userProfile",
-			icon: <UserProfile width={width} color={color} />,
-		},
-	};
-
-	return icons[name]?.icon || <></>;
+export const ICONS = {
+	arrowDown: ArrowDown,
+	arrowLeft: ArrowLeft,
+	bank: Bank,
+	cellphone: Cellphone,
+	chart: Chart,
+	clock: Clock,
+	clockReverse: ClockReverse,
+	close: Close,
+	closeEye: CloseEye,
+	closesEyes: CloseEyes,
+	column: Column,
+	date: Date,
+	deleteBack: DeleteBack,
+	doorOut: DoorOut,
+  download: Download,
+	email: Email,
+	hamburger: Hamburger,
+	linkCopy: LinkCopy,
+	loading: Loading,
+	menuTable: MenuTable,
+	moneyBag: MoneyBag,
+	note: Note,
+	notification: Notification,
+	ok: Ok,
+	open: Open,
+	openEye: OpenEye,
+	passwordProfile: PasswordProfile,
+	plus: Plus,
+	search: Search,
+	shield: Shield,
+	star: Star,
+	success: Success,
+	timeUsage: TimeUsage,
+	trashBin: TrashBin,
+	upload: Upload,
+	user: User,
+	userProfile: UserProfile,
+	wrong: Wrong,
 };
 
-export default Icon;
+export interface IconProps {
+	color?: string;
+	name: keyof typeof ICONS;
+	width?: string;
+}
+
+export const Icon: FC<IconProps> = ({ color, name, width }) => {
+	const IconComponent = ICONS[name];
+
+	return IconComponent ? <IconComponent width={width} color={color} /> : <></>;
+};

@@ -8,9 +8,10 @@ interface Props {
 }
 
 export const Name: FC<Props> = ({ filename, selected }) => (
-	<div className="flex flex-row justify-between">
+	<div className="flex flex-row justify-between items-center">
 		<Subtitle subtitle={filename} selected={selected} />
-		<div className="flex flex-row gap-1 items-center bg-red-500/[.16] px-2 py-1 rounded-2xl justify-between font-inter text-[8px] text-red-500 leading-[10px] tracking-[-0.4px] font-semibold">
+
+		<div className="flex flex-row gap-1 items-center h-fit bg-red-500/[.16] px-2 py-1 rounded-2xl justify-between font-inter text-[8px] text-red-500 leading-[10px] tracking-[-0.4px] font-semibold">
 			<img height="10px" width="10px" src={PDF} alt="PDF Logo" />
 			PDF
 		</div>

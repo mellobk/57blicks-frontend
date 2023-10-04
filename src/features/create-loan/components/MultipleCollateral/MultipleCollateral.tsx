@@ -14,6 +14,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title/Title";
 import { Loan } from "@/features/create-loan/types/fields";
 import { ASSET_TYPES } from "@/features/create-loan/utils/selects";
+import { IconButton } from "@/components/ui/IconButton";
 
 interface Props {
 	append: UseFieldArrayAppend<Loan, "collaterals">;
@@ -38,9 +39,9 @@ export const MultipleCollateral: FC<Props> = ({
 		<div className="pl-6">
 			<div className="flex flex-row justify-between">
 				<Title text="Multiple Collateral" />
-				<Button
-					className="rounded-3xl pl-3 pr-1 h-[34px] bg-gray-200"
-					icon={<Icon name="plus" color="#0E2130" width="12" />}
+				<IconButton
+					color="#0E2130"
+					name="plus"
 					onClick={() =>
 						append({
 							address: "",
@@ -50,7 +51,7 @@ export const MultipleCollateral: FC<Props> = ({
 							taxUrl: "",
 						})
 					}
-					type="button"
+					width="12"
 				/>
 			</div>
 			<div className="max-h-[1000px] overflow-y-auto">

@@ -1,13 +1,12 @@
+import type React from "react";
 import { useEffect, useState } from "react";
 
 import type { AxisChart } from "../../types/chart-types";
 import type { FunctionComponent } from "@/types";
 import { Icon } from "@/components/ui/Icon";
-import type React from "react";
-/* eslint-disable no-use-before-define */
 import { ResponsiveLine } from "@nivo/line";
+import { dateFormat } from "@/utils/formats";
 import type { UserActivity } from "../../types/logs";
-import { formatDate } from "@/utils/date-format";
 
 interface NumberOfLoginProps {
 	data: UserActivity;
@@ -78,7 +77,7 @@ const NumberOfLogin: React.FC<NumberOfLoginProps> = ({ data }) => {
 		<div className="h-40 overflow-x-auto relative	">
 			<div className="absolute w-40 h-7  bg-green-800 pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-green-500 font-bold align-middle ">
 				<div className="pr-2 align-middle pt-0.5  ">
-					<Icon name="time-usage" width="12" color="#00BA35" />
+					<Icon name="timeUsage" width="12" color="#00BA35" />
 				</div>
 				Number of Logins
 			</div>
@@ -92,7 +91,7 @@ const NumberOfLogin: React.FC<NumberOfLoginProps> = ({ data }) => {
 					return (
 						<div className="shadow-lg rounded-[22px] bg-black text-white  align-middle  p-1 w-32	items-center">
 							<div className="items-center w-full text-center text-gray-600 text-xs	font-medium">
-								{formatDate(point.data.xFormatted as string)}
+								{dateFormat(point.data.xFormatted as string)}
 							</div>
 							<div className="items-center w-full text-center text-sm font-medium	">
 								{point.data.yFormatted} Logins

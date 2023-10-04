@@ -9,6 +9,10 @@ import { tabs } from "@/features/opportunities/utils/tabs";
 import { Table } from "@/components/ui/Table";
 import { TableColumn } from "react-data-table-component";
 import { Value } from "@/features/opportunities/components/PastOpportunities/Value/Value.tsx";
+import { useQuery } from "@tanstack/react-query";
+import OpportunitiesService from "@/features/opportunities/api/investors.ts";
+import { dateFormat } from "@/utils/formats.ts";
+import { IconButton } from "@/components/ui/IconButton";
 
 export const PastOpportunities: FC = () => {
 	const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity>();
@@ -35,247 +39,20 @@ export const PastOpportunities: FC = () => {
 			width: "100px",
 		},
 	];
-	const data: Opportunity[] = [
-		{
-			id: "421011",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_1.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "421012",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_2.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "421013",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_3.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "421014",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_4.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "421015",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_5.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "421016",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_6.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "421017",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_7.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "421018",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_8.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "421019",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_9.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "4210120",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_10.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "421021",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_11.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "421022",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_12.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-		{
-			id: "4210123",
-			created_at: "03-23-2020",
-			filename: "DKC_Opportunity_13.pdf",
-			investors: [
-				{
-					id: "1",
-					user: {
-						firstName: "Marco",
-						lastName: "Ohler",
-						email: "marco.ohler@revstarconsulting.com",
-					},
-				},
-			],
-		},
-	];
+
+	const opportunitiesQuery = useQuery(["opportunities-query"], () =>
+		OpportunitiesService.getOpportunities()
+	);
+
+	const extractFilename = (path: string) => {
+		const filename = path.split("/").pop();
+
+		return filename || "undefined.pdf";
+	};
 
 	useEffect(() => {
-		setSelectedOpportunity(data[0]);
-	}, []);
+		setSelectedOpportunity(opportunitiesQuery?.data?.[0]);
+	}, [opportunitiesQuery?.data]);
 
 	return (
 		<div className="flex flex-col w-full h-full">
@@ -293,7 +70,7 @@ export const PastOpportunities: FC = () => {
 			</div>
 			<div className="grid lg:grid-cols-9 gap-6 bg-white rounded-3xl p-6 w-screen h-full overflow-y-auto">
 				<div className="lg:col-span-2 col-span-1 flex flex-col gap-6 p-3 bg-gold-300 overflow-y-auto">
-					{data.map((opportunity) => (
+					{opportunitiesQuery?.data?.map((opportunity: Opportunity) => (
 						<div
 							className={`${
 								selectedOpportunity?.id === opportunity.id
@@ -303,7 +80,7 @@ export const PastOpportunities: FC = () => {
 							onClick={() => setSelectedOpportunity(opportunity)}
 						>
 							<Name
-								filename={opportunity.filename}
+								filename={extractFilename(opportunity.documentS3Path)}
 								selected={selectedOpportunity?.id === opportunity.id}
 							/>
 						</div>
@@ -313,35 +90,49 @@ export const PastOpportunities: FC = () => {
 				<div className="lg:col-span-4 col-span-1 flex flex-col gap-8 py-2">
 					{selectedOpportunity && (
 						<>
-							<div>
+							<div className="flex flex-row justify-between">
 								<Title text="Opportunity Details" />
+								<div className="flex flex-row gap-2">
+									<IconButton
+										bgColor="bg-green-500/[.12]"
+										color="#00BA35"
+										name="chart"
+										width="16"
+									/>
+									<IconButton
+										bgColor="bg-blue-200/[.12]"
+										color="#0085FF"
+										name="download"
+										width="16"
+									/>
+									<IconButton
+										bgColor="bg-red-500/[.12]"
+										color="#FF0033"
+										name="trashBin"
+										width="16"
+									/>
+								</div>
 							</div>
 							<div className="flex flex-col gap-3 divide-y divide-gray-200">
-								<div>
-									<Name filename={selectedOpportunity.filename} selected />
-								</div>
+								<Name
+									filename={extractFilename(selectedOpportunity.documentS3Path)}
+									selected
+								/>
 								<div>
 									<Value
 										label="Creation Date"
-										value={selectedOpportunity.created_at}
+										value={dateFormat(selectedOpportunity.createdAt)}
 									/>
-									<Value
-										label="ID Number"
-										value={`#${selectedOpportunity.id}`}
-									/>
+									<Value label="ID Number" value={selectedOpportunity.id} />
 								</div>
 							</div>
 							<div className="flex flex-col gap-3 divide-y divide-gray-200">
-								<div>
-									<Subtitle subtitle="Reached Investors" selected />
-								</div>
-								<div>
-									<Table
-										className="mt-3 rounded-lg"
-										columns={columns}
-										data={selectedOpportunity.investors}
-									/>
-								</div>
+								<Subtitle subtitle="Reached Investors" selected />
+								<Table
+									className="pt-3 rounded-lg"
+									columns={columns}
+									data={selectedOpportunity.investorsNotifications}
+								/>
 							</div>
 						</>
 					)}
