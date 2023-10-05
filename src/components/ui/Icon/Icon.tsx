@@ -32,6 +32,7 @@ import Search from "@/assets/icons/search";
 import Shield from "@/assets/icons/shield";
 import Star from "@/assets/icons/star";
 import Success from "@/assets/icons/success";
+import SVG403 from "@/assets/images/svg/403";
 import TimeUsage from "@/assets/icons/time-usage";
 import TrashBin from "@/assets/icons/trash-bin";
 import Upload from "@/assets/icons/upload";
@@ -72,6 +73,7 @@ export const ICONS = {
 	shield: Shield,
 	star: Star,
 	success: Success,
+	svg403: SVG403,
 	timeUsage: TimeUsage,
 	trashBin: TrashBin,
 	upload: Upload,
