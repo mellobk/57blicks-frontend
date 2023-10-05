@@ -17,6 +17,7 @@ import DoorOut from "@/assets/icons/door-out";
 import Download from "@/assets/icons/download";
 import Email from "@/assets/icons/email";
 import Hamburger from "@/assets/icons/hamburger";
+import Hidden from "@/assets/icons/hidden";
 import LinkCopy from "@/assets/icons/link-copy";
 import Loading from "@/assets/icons/loading";
 import MenuTable from "@/assets/icons/menu-table";
@@ -58,6 +59,7 @@ export const ICONS = {
 	download: Download,
 	email: Email,
 	hamburger: Hamburger,
+	hidden: Hidden,
 	linkCopy: LinkCopy,
 	loading: Loading,
 	menuTable: MenuTable,
