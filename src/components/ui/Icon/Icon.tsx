@@ -17,6 +17,7 @@ import DoorOut from "@/assets/icons/door-out";
 import Download from "@/assets/icons/download";
 import Email from "@/assets/icons/email";
 import Hamburger from "@/assets/icons/hamburger";
+import Hidden from "@/assets/icons/hidden";
 import LinkCopy from "@/assets/icons/link-copy";
 import Loading from "@/assets/icons/loading";
 import MenuTable from "@/assets/icons/menu-table";
@@ -32,6 +33,7 @@ import Search from "@/assets/icons/search";
 import Shield from "@/assets/icons/shield";
 import Star from "@/assets/icons/star";
 import Success from "@/assets/icons/success";
+import SVG403 from "@/assets/images/svg/403";
 import TimeUsage from "@/assets/icons/time-usage";
 import TrashBin from "@/assets/icons/trash-bin";
 import Upload from "@/assets/icons/upload";
@@ -57,6 +59,7 @@ export const ICONS = {
 	download: Download,
 	email: Email,
 	hamburger: Hamburger,
+	hidden: Hidden,
 	linkCopy: LinkCopy,
 	loading: Loading,
 	menuTable: MenuTable,
@@ -72,6 +75,7 @@ export const ICONS = {
 	shield: Shield,
 	star: Star,
 	success: Success,
+	svg403: SVG403,
 	timeUsage: TimeUsage,
 	trashBin: TrashBin,
 	upload: Upload,

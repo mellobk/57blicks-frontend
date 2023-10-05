@@ -2,10 +2,12 @@ import { type FC, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
+import { Loading } from "@/components/ui/Loading";
 import { Tabs } from "@/components/ui/Tabs";
 import OpportunitiesService from "@/features/opportunities/api/opportunities";
-import { List } from "@/features/opportunities/components/PastOpportunities/List/List";
 import { Details } from "@/features/opportunities/components/PastOpportunities/Details/Details";
+import { DocumentPreview } from "@/features/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview.tsx";
+import { List } from "@/features/opportunities/components/PastOpportunities/List/List";
 import { OpportunityMin } from "@/features/opportunities/types/api";
 import { tabs } from "@/features/opportunities/utils/tabs";
 
@@ -46,26 +48,34 @@ export const PastOpportunities: FC = () => {
 				<div></div>
 			</div>
 
-			<div className="grid lg:grid-cols-9 gap-6 bg-white rounded-3xl p-6 w-screen h-full overflow-y-auto">
-				<div className="lg:col-span-2 col-span-1 flex flex-col gap-6 p-3 bg-gold-300 overflow-y-auto">
-					<List
-						data={getOpportunitiesQuery.data}
-						getFilename={getFilename}
-						isLoading={getOpportunitiesQuery.isLoading}
-						selectedOpportunity={selectedOpportunity}
-						setSelectedOpportunity={setSelectedOpportunity}
-					/>
-				</div>
-
-				<div className="lg:col-span-4 col-span-1 flex flex-col gap-8 py-2">
-					<Details
-						data={getOpportunityQuery.data}
-						getFilename={getFilename}
-						isLoading={getOpportunitiesQuery.isLoading}
-					/>
-				</div>
-
-				<div className="lg:col-span-3 col-span-1"></div>
+			<div className="flex bg-white rounded-3xl p-6 w-screen h-full">
+				{getOpportunitiesQuery.isLoading ? (
+					<Loading />
+				) : (
+					<div className="grid lg:grid-cols-9 gap-6 w-full">
+						<div className="lg:col-span-2 col-span-1 flex flex-col gap-6 p-3 bg-gold-300 overflow-y-auto">
+							<List
+								data={getOpportunitiesQuery.data}
+								getFilename={getFilename}
+								selectedOpportunity={selectedOpportunity}
+								setSelectedOpportunity={setSelectedOpportunity}
+							/>
+						</div>
+						<div className="lg:col-span-4 col-span-1 flex flex-col gap-8 py-2">
+							<Details
+								data={getOpportunityQuery.data}
+								getFilename={getFilename}
+								isLoading={getOpportunityQuery.isLoading}
+							/>
+						</div>
+						<div className="lg:col-span-3 col-span-1">
+							<DocumentPreview
+								isLoading={getOpportunityQuery.isLoading}
+								url={getOpportunityQuery.data?.presignedDocumentUrl}
+							/>
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);
