@@ -54,7 +54,7 @@ export const ICONS = {
 	date: Date,
 	deleteBack: DeleteBack,
 	doorOut: DoorOut,
-  download: Download,
+	download: Download,
 	email: Email,
 	hamburger: Hamburger,
 	linkCopy: LinkCopy,
@@ -82,12 +82,13 @@ export const ICONS = {
 
 export interface IconProps {
 	color?: string;
+	height?: string;
 	name: keyof typeof ICONS;
 	width?: string;
 }
 
-export const Icon: FC<IconProps> = ({ color, name, width }) => {
+export const Icon: FC<IconProps> = ({ name, ...props }) => {
 	const IconComponent = ICONS[name];
 
-	return IconComponent ? <IconComponent width={width} color={color} /> : <></>;
+	return IconComponent ? <IconComponent {...props} /> : <></>;
 };

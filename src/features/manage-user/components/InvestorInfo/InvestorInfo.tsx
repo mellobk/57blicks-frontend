@@ -34,9 +34,10 @@ export const InvestorInfo: React.FC<InvestorInfoProps> = ({
 			setValue(addInvestorFields?.phoneNumber, data?.phoneNumber);
 			setValue(addInvestorFields?.email, data?.email);
 			setValue(
-				addInvestorFields?.streetAddress || "streetAddress",
-				data?.streetAddress
+				addInvestorFields?.mailingAddress || "mailingAddress",
+				data?.mailingAddress
 			);
+			setValue(addInvestorFields?.entityName || "entityName", data?.entityName);
 			setValue(addInvestorFields?.einSsn || "einSsn", data?.einSsn);
 			setValue(addInvestorFields?.zip || "zip", data?.zip);
 		}
@@ -124,10 +125,10 @@ export const InvestorInfo: React.FC<InvestorInfoProps> = ({
 								<div className="flex w-full gap-4">
 									<div className="w-full">
 										<Input
-											label="Street Address"
-											placeholder="Enter Street Address"
+											label="Mailing Address"
+											placeholder="Enter Mailing Address"
 											register={register(
-												addInvestorFields?.streetAddress || "streetAddress"
+												addInvestorFields?.mailingAddress || "mailingAddress"
 											)}
 										/>
 									</div>

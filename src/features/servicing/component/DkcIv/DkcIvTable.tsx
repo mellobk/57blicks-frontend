@@ -35,7 +35,7 @@ export const DkcIvTable: React.FC<SuccessProps> = () => {
 				searchValue
 			);
 		},
-		{ enabled: true, staleTime: 1000 * 60 }
+		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 	const handleSearch = (data: string) => {
 		setSearchValue(data);
@@ -116,7 +116,8 @@ export const DkcIvTable: React.FC<SuccessProps> = () => {
 		},
 		{
 			name: "Regular Payment",
-			selector: (): string => "",
+			selector: (row: FundingBreakdown): string =>
+				formatCurrency(Number.parseInt(row?.regular)),
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
@@ -182,7 +183,7 @@ export const DkcIvTable: React.FC<SuccessProps> = () => {
 				handleSearchValue={handleSearch}
 				columns={columns}
 				data={dkcLendersQuery?.data?.fundingBreakdowns}
-				loading={dkcLendersQuery.isLoading}
+				loading={dkcLendersQuery.isFetching}
 				widthSearch="60px"
 				onRowClicked={handleRowClicked}
 			>

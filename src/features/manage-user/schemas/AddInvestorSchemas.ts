@@ -18,5 +18,5 @@ export const AddInvestorSchemas = z.object({
 		.min(1, { message: "Required field" }),
 	[addInvestorFields?.einSsn || "einSsn"]: z.string(),
 	[addInvestorFields?.zip || "zip"]: z.string(),
-	[addInvestorFields?.streetAddress || "streetAddress"]: z.string(),
+	[addInvestorFields?.mailingAddress || "streetAddress"]: z.string().optional(),
 });
