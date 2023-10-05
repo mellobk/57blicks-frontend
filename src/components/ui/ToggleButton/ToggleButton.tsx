@@ -1,18 +1,19 @@
 import { FC } from "react";
-import { Icon, IconNames } from "@/components/ui/Icon";
+import { Icon } from "@/components/ui/Icon";
+import { ICONS } from "@/components/ui/Icon";
 
 interface AvatarProps {
 	checked: boolean;
 	lineThrough?: boolean;
 	offColor?: string;
 	offIconColor?: string;
-	offIconName: (typeof IconNames)[number];
+	offIconName: keyof typeof ICONS;
 	offLabel: string;
 	offTextColor?: string;
 	onChange: (value: boolean) => void;
 	onColor?: string;
 	onIconColor?: string;
-	onIconName?: (typeof IconNames)[number];
+	onIconName?: keyof typeof ICONS;
 	onLabel?: string;
 	onTextColor?: string;
 }

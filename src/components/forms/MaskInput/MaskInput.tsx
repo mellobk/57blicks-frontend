@@ -3,14 +3,15 @@ import type { UseFormRegisterReturn } from "react-hook-form";
 import { InputMask } from "primereact/inputmask";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
-import { Icon, type IconNames } from "@/components/ui/Icon";
+import { Icon } from "@/components/ui/Icon";
+import { ICONS } from "@/components/ui/Icon";
 import { inputClassName } from "@/utils/class-names";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label: string;
 	placeholder?: string;
 	error?: any;
-	iconName?: (typeof IconNames)[number];
+	iconName?: keyof typeof ICONS;
 	register?: UseFormRegisterReturn;
 	defaultValue?: string;
 	iconWidth?: string;

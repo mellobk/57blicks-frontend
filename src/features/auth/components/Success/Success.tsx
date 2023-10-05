@@ -3,13 +3,14 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { LoginTitle } from "../LoginTitle";
 import { useNavigate } from "@tanstack/router";
+import { ICONS } from "@/components/ui/Icon";
 
 interface SuccessProps {
 	title?: string;
 	subTitle?: string;
 	navigateTo?: string | null;
 	buttonText?: string;
-	iconName?: string;
+	iconName?: keyof typeof ICONS;
 }
 
 export const Success: FC<SuccessProps> = ({

@@ -45,7 +45,6 @@ export const FirstCapitalTable: React.FC<SuccessProps> = () => {
 	};
 
 	const validateDate = (date: string): boolean => {
-		console.log(date);
 		const dateObject = new Date(date);
 		const now = new Date();
 
@@ -55,10 +54,7 @@ export const FirstCapitalTable: React.FC<SuccessProps> = () => {
 		const dateInMillie = dateObject.getTime();
 		const nowInMillie = now.getTime();
 
-		if (dateInMillie < nowInMillie) {
-			return true;
-		}
-		return false;
+		return dateInMillie < nowInMillie;
 	};
 
 	const findDkcLenderData = (data: FundingBreakdown) => {
