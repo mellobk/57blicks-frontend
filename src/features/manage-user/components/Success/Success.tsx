@@ -1,13 +1,14 @@
 import type { FC } from "react";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { ICONS } from "@/components/ui/Icon";
 
 interface SuccessProps {
 	title?: string;
 	subTitle?: string;
 	navigateTo?: string | null;
 	buttonText?: string;
-	iconName?: string;
+	iconName?: keyof typeof ICONS;
 	handleClick?: () => void;
 }
 

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import OpportunitiesService from "@/features/create-loan/api/investors";
+import InvestorsService from "@/features/create-loan/api/investors";
 import { Loan } from "@/features/create-loan/types/fields";
 import { nameFormat } from "@/utils/formats";
 
@@ -23,7 +23,7 @@ export const AddParticipant: FC<Props> = ({
 
 	const investorQuery = useQuery(
 		["investor-query"],
-		() => OpportunitiesService.getInvestors(),
+		() => InvestorsService.getInvestors(),
 		{ enabled: openModal }
 	);
 

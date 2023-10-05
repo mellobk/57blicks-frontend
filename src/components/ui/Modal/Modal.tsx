@@ -4,22 +4,22 @@ import { FC, ReactNode } from "react";
 
 import { Dialog } from "primereact/dialog";
 
-interface LoginTitleProps {
-	minHeight?: string;
-	width?: string;
-	onHide?: () => void;
-	visible?: boolean;
+export interface ModalProps {
 	children?: ReactNode;
+	minHeight?: string;
+	onHide?: () => void;
 	title?: string | ReactNode;
+	visible?: boolean;
+	width?: string;
 }
 
-export const Modal: FC<LoginTitleProps> = ({
-	minHeight,
-	width = "50vw",
-	onHide,
-	visible,
+export const Modal: FC<ModalProps> = ({
 	children,
+	minHeight,
+	onHide,
 	title,
+	visible,
+	width = "50vw",
 }) => {
 	return (
 		<div className="card flex justify-content-center">
@@ -27,7 +27,7 @@ export const Modal: FC<LoginTitleProps> = ({
 				header={title}
 				visible={visible}
 				onHide={() => onHide?.()}
-				style={{ width: width, minHeight: minHeight }}
+				style={{ width, minHeight }}
 				breakpoints={{ "960px": "75vw", "641px": "100vw" }}
 			>
 				<div className="h-[1px] bg-gray-1100 mb-6"></div>

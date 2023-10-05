@@ -15,7 +15,6 @@ export const NormalInput: Story = {
 		label: "Username",
 		placeholder: "Placeholder",
 		required: false,
-		iconName: "",
 		error: "",
 		defaultValue: "",
 		className:
@@ -45,7 +44,6 @@ export const ErrorInput: Story = {
 		label: "Username",
 		placeholder: "Placeholder",
 		required: false,
-		iconName: "",
 		error: "Error message",
 	},
 };
@@ -55,7 +53,6 @@ export const RequiredInput: Story = {
 		label: "Username",
 		placeholder: "Placeholder",
 		required: true,
-		iconName: "",
 		error: "",
 	},
 };

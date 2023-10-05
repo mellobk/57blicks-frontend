@@ -9,8 +9,8 @@ const getInvestors = async () => {
 	return response.data;
 };
 
-const OpportunitiesService = {
+const InvestorsService = {
 	getInvestors,
 };
 
-export default OpportunitiesService;
+export default InvestorsService;

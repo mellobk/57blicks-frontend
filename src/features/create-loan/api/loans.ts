@@ -1,14 +1,14 @@
 import { Loan } from "@/features/create-loan/types/fields";
 import { authApiClient } from "@/utils/api-client";
 
-const createLoan = async (body: Loan) => {
+const loans = async (body: Loan) => {
 	const response = await authApiClient.post<Array<Loan>>("/loans", body);
 
 	return response.data;
 };
 
-const CreateLoanService = {
-	createLoan,
+const LoansService = {
+	createLoan: loans,
 };
 
-export default CreateLoanService;
+export default LoansService;

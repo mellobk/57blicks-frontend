@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Icon from "./Icon";
-import IconNames from "./IconNames";
+import { Icon, ICONS } from "./Icon";
 
 const meta: Meta<typeof Icon> = {
 	component: Icon,
@@ -21,22 +20,20 @@ export const IconItem: Story = {
 export const IconLists: Story = {
 	render: () => (
 		<div style={{ display: "flex", gap: "5px", textAlign: "center" }}>
-			{IconNames?.map((value, key) => {
-				return (
-					<div
-						key={key}
-						style={{
-							display: "flex",
-							gap: "5px",
-							flexDirection: "column",
-							alignItems: "center",
-						}}
-					>
-						<Icon name={value} />
-						<div>{value}</div>
-					</div>
-				);
-			})}
+			{Object.keys(ICONS).map((value, key) => (
+				<div
+					key={key}
+					style={{
+						display: "flex",
+						gap: "5px",
+						flexDirection: "column",
+						alignItems: "center",
+					}}
+				>
+					<Icon name={value as keyof typeof ICONS} />
+					<div>{value}</div>
+				</div>
+			))}
 		</div>
 	),
 };
