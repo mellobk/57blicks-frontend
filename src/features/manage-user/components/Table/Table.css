@@ -39,3 +39,10 @@ display: flex !important;
   transition: opacity 0.3s ease, max-height 0.3s ease;
 }
 
+ .cgwNie{
+  max-height: 50vh !important;
+}
+
+.hNBumD{
+  height: 100%;
+}

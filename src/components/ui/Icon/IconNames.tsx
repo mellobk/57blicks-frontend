@@ -31,6 +31,9 @@ const IconNames: Array<string> = [
 	"linkCopy",
 	"passwordProfile",
 	"userProfile",
+	"credit",
+	"debit",
+	"pencil",
 ];
 
 export default IconNames;

@@ -33,8 +33,26 @@ export const findIndex = (data: Array<User>, id: string): number => {
 };
 
 export const formatCurrency = (value: number): string => {
-	return new Intl.NumberFormat("en-US", {
-		style: "currency",
-		currency: "USD",
-	}).format(value);
+	return value
+		? new Intl.NumberFormat("en-US", {
+				style: "currency",
+				currency: "USD",
+		  }).format(value)
+		: "";
+};
+
+export const validateDate = (date: string): boolean => {
+	const dateObject = new Date(date);
+	const now = new Date();
+
+	dateObject.setHours(0, 0, 0, 0);
+	now.setHours(0, 0, 0, 0);
+
+	const dateInMillie = dateObject.getTime();
+	const nowInMillie = now.getTime();
+
+	if (dateInMillie < nowInMillie) {
+		return true;
+	}
+	return false;
 };

@@ -236,14 +236,15 @@ export const ServicingTable: FC<TableProps> = ({
 			</div>
 			<div className="h-full w-full">
 				<div
-					className="h-full w-full rounded-3xl bg-white flex flex-col justify-between"
+					className="h-[100%] w-full rounded-3xl bg-white flex flex-col justify-between "
 					style={{ overflow: "overlay" }}
 				>
-					<div className="rounded-3xl">
+					<div className="rounded-3xl h-[100%] overflow-auto">
 						<DataTable
 							responsive={false}
 							columns={stateColumns}
 							data={data || []}
+							fixedHeader
 							progressPending={loading}
 							conditionalRowStyles={conditionalRowStyles}
 							onRowClicked={onRowClicked}

@@ -37,6 +37,9 @@ import Upload from "@/assets/icons/upload";
 import User from "@/assets/icons/user";
 import UserProfile from "@/assets/icons/user-profile";
 import Wrong from "@/assets/icons/wrong";
+import Debit from "@/assets/icons/debit";
+import Credit from "@/assets/icons/credit";
+import Pencil from "@/assets/icons/pencil";
 
 interface Props {
 	name: (typeof IconNames)[number];
@@ -203,6 +206,18 @@ const Icon = ({ name, width, height, color }: Props): ReactElement => {
 		svg403: {
 			name: "svg403",
 			icon: <SVG403 width={width} color={color} height={height} />,
+		},
+		debit: {
+			name: "debit",
+			icon: <Debit width={width} color={color} />,
+		},
+		credit: {
+			name: "credit",
+			icon: <Credit width={width} color={color} />,
+		},
+		pencil: {
+			name: "pencil",
+			icon: <Pencil width={width} color={color} />,
 		},
 	};
 

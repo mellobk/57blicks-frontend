@@ -6,6 +6,7 @@ import { LoanInformation } from "../LoanInformation";
 import { BorrowerInformation } from "../BorrowerInformation";
 import "./ServicingModal.css";
 import type { FundingBreakdown } from "../../types/api";
+import { Ledger } from "../Ledger";
 
 interface ServicingModalProps {
 	openModal?: boolean;
@@ -37,7 +38,7 @@ export const ServicingModal: React.FC<ServicingModalProps> = ({
 				break;
 			}
 			case "ledger": {
-				setTabTitle("Loan Information");
+				setTabTitle("ledger");
 				break;
 			}
 			case "funding": {
@@ -81,6 +82,9 @@ export const ServicingModal: React.FC<ServicingModalProps> = ({
 						data={data}
 						handleRefreshData={handleRefreshData}
 					/>
+				)}
+				{tabTitle === "ledger" && (
+					<Ledger data={data} handleRefreshData={handleRefreshData} />
 				)}
 			</Modal>
 		</div>
