@@ -36,12 +36,8 @@ export const Button: FC<Props> = ({
 				{loading ? (
 					<Icon name="loading" width="20" color={iconColor} />
 				) : (
-					<div className="flex flex-row">
-						{icon && (
-							<div className="pr-2">
-								<>{icon}</>
-							</div>
-						)}
+					<div className="flex flex-row gap-0.5">
+						{icon && <>{icon}</>}
 						{buttonText && <>{buttonText}</>}
 					</div>
 				)}

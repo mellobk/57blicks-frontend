@@ -12,6 +12,7 @@ import { Label } from "@/components/forms/Label";
 import { Icon } from "@/components/ui/Icon";
 import type { PasswordValidations } from "@/features/auth/types/validations";
 import { inputClassName } from "@/utils/class-names.ts";
+import { ICONS } from "@/components/ui/Icon";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label: string;
@@ -28,7 +29,7 @@ const PasswordInputComponent: ForwardRefRenderFunction<
 	ref
 ) => {
 	const [changeType, setChangeType] = useState<string>("password");
-	const [changeIcon, setChangeIcon] = useState<string>("closeEye");
+	const [changeIcon, setChangeIcon] = useState<keyof typeof ICONS>("closeEye");
 	const [statusLabel, setStatusLabel] = useState<string>("Bad");
 	const [statusColor, setStatusColor] = useState<string>("bg-red-ERROR");
 

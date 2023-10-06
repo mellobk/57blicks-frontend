@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
 import { SuccessModal } from "@/components/ui/SuccessModal";
-import CreateLoanService from "@/features/create-loan/api/create-loan";
+import LoansService from "@/features/create-loan/api/loans";
 import { AddParticipant } from "@/features/create-loan/components/AddParticipant/AddParticipant";
 import { BankingInformation } from "@/features/create-loan/components/BankingInformation/BankingInformation";
 import { BorrowerInformation } from "@/features/create-loan/components/BorrowerInformation/BorrowerInformation";
@@ -57,7 +57,7 @@ export const CreateLoan: FC = () => {
 		mutate,
 		reset: resetMutation,
 	} = useMutation((data: Loan) => {
-		return CreateLoanService.createLoan(data);
+		return LoansService.createLoan(data);
 	});
 
 	function calculateRegular(amount: string, rate: string) {

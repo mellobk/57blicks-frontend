@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { type BarDatum, ResponsiveBar } from "@nivo/bar";
-
-import type { DataEntry } from "../../types/chart-types";
-import { Icon } from "@/components/ui/Icon";
 import type React from "react";
-import type { UserActivity } from "../../types/logs";
+import { type BarDatum, ResponsiveBar } from "@nivo/bar";
+import { Icon } from "@/components/ui/Icon";
+import { dateFormat } from "@/utils/formats";
 import { fillMissingDates } from "./UserActivityUtils";
-import { formatDate } from "@/utils/date-format";
+import type { DataEntry } from "../../types/chart-types";
+import type { UserActivity } from "../../types/logs";
 
 interface TimeUsageProps {
 	data: UserActivity;
@@ -23,7 +21,7 @@ const TimeUsage: React.FC<TimeUsageProps> = ({ data, date }) => {
 		<div className="relative  w-full " style={{ height: "250px" }}>
 			<div className="absolute w-40 h-7  bg-green-800 pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-green-500 font-bold align-middle ">
 				<div className="pr-2 align-middle pt-0.5  ">
-					<Icon name="time-usage" width="12" color="#00BA35" />
+					<Icon name="timeUsage" width="12" color="#00BA35" />
 				</div>
 				Time of Usage
 			</div>
@@ -47,7 +45,7 @@ const TimeUsage: React.FC<TimeUsageProps> = ({ data, date }) => {
 							hours
 						</div>
 						<div className="items-center w-full text-center text-sm font-medium	">
-							{formatDate(data["fullDate"] as string)}
+							{dateFormat(data["fullDate"] as string)}
 						</div>
 					</div>
 				)}

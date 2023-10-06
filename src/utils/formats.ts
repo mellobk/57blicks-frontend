@@ -1,3 +1,15 @@
+import moment from "moment";
+
+export const dateFormat = (inputDate: string) => {
+	const formattedDate = moment(inputDate, "YYYY-MM-DD").format("MMM DD, YYYY");
+
+	if (!formattedDate || formattedDate === "Invalid date") {
+		return "Invalid date format";
+	}
+
+	return formattedDate;
+};
+
 export const moneyFormat = (value: number) => {
 	let USDollar = new Intl.NumberFormat("en-US", {
 		style: "currency",

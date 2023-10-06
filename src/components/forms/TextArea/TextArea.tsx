@@ -2,14 +2,15 @@ import type { FC, TextareaHTMLAttributes } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
-import { Icon, type IconNames } from "@/components/ui/Icon";
+import { Icon } from "@/components/ui/Icon";
+import { ICONS } from "@/components/ui/Icon";
 import { inputClassName } from "@/utils/class-names.ts";
 
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	clickIcon?: () => void;
 	error?: string;
 	iconColor?: string;
-	iconName?: (typeof IconNames)[number];
+	iconName?: keyof typeof ICONS;
 	iconWidth?: string;
 	label: string;
 	register?: UseFormRegisterReturn;

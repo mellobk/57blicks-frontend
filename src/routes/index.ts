@@ -1,6 +1,5 @@
 import { Router } from "@tanstack/router";
 import { rootRoute } from "./RootRoute";
-import IndexRouter from "./IndexRouter";
 import LoginRouter from "@/features/auth/routes/LoginRouter";
 import DashboardRouter from "@/features/dashboard/routes/DashboardRouter";
 import ManageUserRouter from "@/features/manage-user/routes/ManageUsersRouter";
@@ -10,7 +9,6 @@ import ProfileRouter from "@/features/profile/routes/ProfileRoutes";
 
 //array of all routes
 const allRoutes = [
-	...IndexRouter,
 	...LoginRouter,
 	...DashboardRouter,
 	...ManageUserRouter,

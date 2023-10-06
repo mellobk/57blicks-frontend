@@ -7,16 +7,17 @@ import {
 	useWatch,
 } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
+
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
-import OpportunitiesService from "@/features/opportunities/api/investors.ts";
-import { Investor } from "@/features/opportunities/types/api.ts";
-import { Opportunity } from "@/features/opportunities/types/fields.ts";
-import { nameFormat } from "@/utils/formats.ts";
-import useStore from "@/stores/app-store.ts";
+import InvestorsService from "@/features/opportunities/api/investors";
+import OpportunitiesService from "@/features/opportunities/api/opportunities";
+import { Investor } from "@/features/opportunities/types/api";
+import { Opportunity } from "@/features/opportunities/types/fields";
+import { nameFormat } from "@/utils/formats";
 
 interface Props {
 	control: Control<Opportunity>;
@@ -44,19 +45,22 @@ export const PostTo: FC<Props> = ({
 		control,
 		name: "investorsNotifications",
 	});
+
 	const investorsNotifications = useWatch({
 		control,
 		name: "investorsNotifications",
 		defaultValue: [],
 	});
+
 	const form = useWatch({ control });
-	const investorQuery = useQuery(
-		["investor-query", searchValue],
-		() => OpportunitiesService.getInvestors(searchValue),
+
+	const investorsQuery = useQuery(
+		["investors-query", searchValue],
+		() => InvestorsService.getInvestors(searchValue),
 		{ enabled: openModal }
 	);
+
 	const {
-		error,
 		isError,
 		isSuccess,
 		mutate,
@@ -64,7 +68,6 @@ export const PostTo: FC<Props> = ({
 	} = useMutation((data: Opportunity) => {
 		return OpportunitiesService.createOpportunity(data);
 	});
-	const setErrorMessage = useStore((state) => state.setErrorMessage);
 
 	const allEmail = () => {
 		investorsNotifications.map((_, index) =>
@@ -191,10 +194,7 @@ export const PostTo: FC<Props> = ({
 	}, [isSuccess]);
 
 	useEffect(() => {
-		if (isError && (error as Error)) {
-			const currentError = error as Error;
-
-			setErrorMessage(currentError?.message);
+		if (isError) {
 			resetMutation();
 		}
 	}, [isError]);
@@ -240,7 +240,7 @@ export const PostTo: FC<Props> = ({
 									</button>
 								</div>
 								<div className="grid grid-cols-1 divide-y divide-gray-200 overflow-y-auto">
-									{investorQuery.data?.map((investor, index) => {
+									{investorsQuery.data?.map((investor, index) => {
 										const opportunityInvestor = investorsNotifications.find(
 											(opportunityInvestor) =>
 												investor.id === opportunityInvestor.investorId

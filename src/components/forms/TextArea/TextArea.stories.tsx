@@ -15,7 +15,6 @@ export const NormalTextArea: Story = {
 		label: "Username",
 		placeholder: "Placeholder",
 		required: false,
-		iconName: "",
 		error: "",
 		defaultValue: "",
 		className:
@@ -45,7 +44,6 @@ export const ErrorTextArea: Story = {
 		label: "Username",
 		placeholder: "Placeholder",
 		required: false,
-		iconName: "",
 		error: "Error message",
 	},
 };
@@ -55,7 +53,6 @@ export const RequiredTextArea: Story = {
 		label: "Username",
 		placeholder: "Placeholder",
 		required: true,
-		iconName: "",
 		error: "",
 	},
 };
