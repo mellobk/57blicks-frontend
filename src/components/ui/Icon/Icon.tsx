@@ -40,6 +40,9 @@ import Upload from "@/assets/icons/upload";
 import User from "@/assets/icons/user";
 import UserProfile from "@/assets/icons/user-profile";
 import Wrong from "@/assets/icons/wrong";
+import Debit from "@/assets/icons/debit";
+import Credit from "@/assets/icons/credit";
+import Pencil from "@/assets/icons/pencil";
 
 export const ICONS = {
 	arrowDown: ArrowDown,
@@ -82,6 +85,9 @@ export const ICONS = {
 	user: User,
 	userProfile: UserProfile,
 	wrong: Wrong,
+	debit: Debit,
+	credit: Credit,
+	pencil: Pencil,
 };
 
 export interface IconProps {

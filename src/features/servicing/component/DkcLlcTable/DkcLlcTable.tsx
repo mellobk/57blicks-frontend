@@ -9,7 +9,7 @@ import { ServicingModal } from "../ServicingModal/ServicingModal";
 import servicingStore from "../../stores/servicing-store";
 import { useQuery } from "@tanstack/react-query";
 import DkcLendersService from "../../api/servicing";
-import { formatCurrency } from "@/utils/common-funtions";
+import { formatCurrency, validateDate } from "@/utils/common-funtions";
 
 interface SuccessProps {}
 
@@ -57,19 +57,6 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 
 	const handleRefreshData = (): void => {
 		void dkcLendersQuery.refetch();
-	};
-
-	const validateDate = (date: string): boolean => {
-		const dateObject = new Date(date);
-		const now = new Date();
-
-		dateObject.setHours(0, 0, 0, 0);
-		now.setHours(0, 0, 0, 0);
-
-		const dateInMillie = dateObject.getTime();
-		const nowInMillie = now.getTime();
-
-		return dateInMillie < nowInMillie;
 	};
 
 	const handleRowClicked = (row: FundingBreakdown): void => {
@@ -126,6 +113,16 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
+			conditionalCellStyles: [
+				{
+					when: (row: FundingBreakdown): boolean =>
+						validateDate(row?.loan?.originationDate.toString() || ""),
+					style: {
+						background: "#fbf4f7",
+						color: "#fe3d64",
+					},
+				},
+			],
 		},
 		{
 			name: "Maturity Date",
@@ -134,13 +131,16 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
-			when: (row: FundingBreakdown): boolean => {
-				return validateDate(row?.loan?.maturityDate.toString() || "");
-			},
-			style: {
-				background: "#fbf4f7",
-				color: "#fe3d64",
-			},
+			conditionalCellStyles: [
+				{
+					when: (row: DkcServicing): boolean =>
+						validateDate(row?.maturityDate || ""),
+					style: {
+						background: "#fbf4f7",
+						color: "#fe3d64",
+					},
+				},
+			],
 		},
 		{
 			name: "Insurance Expiration Date",
@@ -149,13 +149,18 @@ export const DkcLlcTable: React.FC<SuccessProps> = () => {
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
-			when: (row: DkcServicing): boolean => {
-				return validateDate(row?.maturityDate || "");
-			},
-			style: {
-				background: "#fbf4f7",
-				color: "#fe3d64",
-			},
+			conditionalCellStyles: [
+				{
+					when: (row: FundingBreakdown): boolean =>
+						validateDate(
+							row?.loan.collaterals[0]?.insuranceExpirationDate.toString() || ""
+						),
+					style: {
+						background: "#fbf4f7",
+						color: "#fe3d64",
+					},
+				},
+			],
 		},
 		{
 			name: "Taxed Paid",

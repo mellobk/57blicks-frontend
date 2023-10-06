@@ -127,6 +127,16 @@ export const FirstCapitalTable: React.FC<SuccessProps> = () => {
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
+			conditionalCellStyles: [
+				{
+					when: (row: FundingBreakdown): boolean =>
+						validateDate(row?.loan?.originationDate.toString() || ""),
+					style: {
+						background: "#fbf4f7",
+						color: "#fe3d64",
+					},
+				},
+			],
 		},
 		{
 			name: "Maturity Date",
@@ -135,13 +145,16 @@ export const FirstCapitalTable: React.FC<SuccessProps> = () => {
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
-			when: (row: FundingBreakdown): boolean => {
-				return validateDate(row?.loan?.maturityDate.toString() || "");
-			},
-			style: {
-				background: "#fbf4f7",
-				color: "#fe3d64",
-			},
+			conditionalCellStyles: [
+				{
+					when: (row: DkcServicing): boolean =>
+						validateDate(row?.maturityDate || ""),
+					style: {
+						background: "#fbf4f7",
+						color: "#fe3d64",
+					},
+				},
+			],
 		},
 		{
 			name: "Insurance Expiration Date",
@@ -150,13 +163,18 @@ export const FirstCapitalTable: React.FC<SuccessProps> = () => {
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
-			when: (row: DkcServicing): boolean => {
-				return validateDate(row?.maturityDate || "");
-			},
-			style: {
-				background: "#fbf4f7",
-				color: "#fe3d64",
-			},
+			conditionalCellStyles: [
+				{
+					when: (row: FundingBreakdown): boolean =>
+						validateDate(
+							row?.loan.collaterals[0]?.insuranceExpirationDate.toString() || ""
+						),
+					style: {
+						background: "#fbf4f7",
+						color: "#fe3d64",
+					},
+				},
+			],
 		},
 		{
 			name: "Taxed Paid",

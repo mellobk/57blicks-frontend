@@ -28,6 +28,13 @@ export const nameFormat = (name: string) => {
 export const percentageFormat = (value: number) => {
 	return `${value}%`;
 };
+export const dateFormatFormat = (inputString: string) => {
+	const month = inputString.slice(0, 2);
+	const day = inputString.slice(2, 4);
+	const year = inputString.slice(4, 8);
+
+	return `${month}-${day}-${year}`;
+};
 
 export const placeholderFormat = (
 	label: string,

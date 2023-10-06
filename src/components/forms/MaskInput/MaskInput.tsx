@@ -8,7 +8,7 @@ import { ICONS } from "@/components/ui/Icon";
 import { inputClassName } from "@/utils/class-names";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-	label: string;
+	label?: string;
 	placeholder?: string;
 	error?: any;
 	iconName?: keyof typeof ICONS;

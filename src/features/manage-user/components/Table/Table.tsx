@@ -201,7 +201,7 @@ export const Table: FC<TableProps> = ({
 				</div>
 			</div>
 			<div className="h-full w-full rounded-3xl bg-white">
-				<div className="rounded-3xl">
+				<div className="rounded-3xl h-[85vh] overflow-auto">
 					<DataTable
 						fixedHeader
 						columns={stateColumns}
