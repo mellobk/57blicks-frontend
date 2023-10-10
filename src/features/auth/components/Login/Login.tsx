@@ -54,7 +54,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 			await signInWithEmail(data.email, data.password, "");
 			const sessionData: any = await getSession();
 			const groupAws = JSON.stringify(
-				sessionData?.accessToken?.payload["cognito:groups"][0] || ""
+				sessionData?.accessToken?.payload["cognito:groups"][0] || "admin"
 			);
 			sendToLocalStorage(group, groupAws);
 			sendToLocalStorage(accessToken, `${sessionData?.idToken?.jwtToken}`);
