@@ -4,24 +4,27 @@ import { errorMessages } from "@/utils/error-messages";
 export const FundingBreakdownSchema = z.object({
 	amount: z
 		.string()
-		.nonempty({ message: errorMessages.required })
-		.max(12, { message: errorMessages.maxLength }),
-	lenderId: z
+		.nonempty(errorMessages.required)
+		.max(15, { message: errorMessages.maxLength }),
+	investorId: z
 		.string()
 		.max(100, { message: errorMessages.maxLength })
 		.optional(),
-	lenderName: z.string().nonempty({ message: errorMessages.required }),
+	lenderName: z
+		.string()
+		.nonempty(errorMessages.required)
+		.max(100, { message: errorMessages.maxLength }),
 	prorated: z
 		.string()
-		.nonempty({ message: errorMessages.required })
-		.max(12, { message: errorMessages.maxLength }),
+		.nonempty(errorMessages.required)
+		.max(15, { message: errorMessages.maxLength }),
 	rate: z
 		.string()
-		.nonempty({ message: errorMessages.required })
-		.max(3, { message: errorMessages.maxLength }),
+		.nonempty(errorMessages.required)
+		.max(5, { message: errorMessages.maxLength }),
 	regular: z
 		.string()
-		.nonempty({ message: errorMessages.required })
-		.max(12, { message: errorMessages.maxLength }),
+		.nonempty(errorMessages.required)
+		.max(15, { message: errorMessages.maxLength }),
 	type: z.string().max(100, { message: errorMessages.maxLength }).optional(),
 });

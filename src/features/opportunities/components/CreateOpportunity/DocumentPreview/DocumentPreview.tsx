@@ -45,45 +45,86 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 				<p className="text-primary-500 text-xs">{form.investmentSummary}</p>
 				<div className="grid grid-cols-2 my-4">
 					<div>
-						<Subtitle subtitle="Loan Details:" />
-						<Detail
-							title="Asset Value"
-							value={
-								Number(form.assetValue)
-									? moneyFormat(Number(form.assetValue))
-									: ""
-							}
-						/>
-						<Detail
-							title="Loan Amount"
-							value={
-								Number(form.loanAmount)
-									? moneyFormat(Number(form.loanAmount))
-									: ""
-							}
-						/>
-						<Detail
-							title="Loan to Value"
-							value={
-								Number(form.loanToValue) ? `${Number(form.loanToValue)}%` : ""
-							}
-						/>
-						<Detail title="Term" value={form.loanTerm} />
-						<Detail title="Type" value={form.loanType} />
-						<Detail
-							title="Prepayment Penalty"
-							value={form.investmentPermanentPenalty}
-						/>
-						<Detail
-							title="Interest Offered to Participant"
-							value={
-								Number(form.investmentMonthlyInterestedOfferedToParticipant)
-									? `${Number(
-											form.investmentMonthlyInterestedOfferedToParticipant
-									  )}%`
-									: ""
-							}
-						/>
+						<div>
+							<Subtitle subtitle="Loan Details:" />
+							<Detail
+								title="Asset Value"
+								value={
+									Number(form.assetValue)
+										? moneyFormat(Number(form.assetValue))
+										: ""
+								}
+							/>
+							<Detail
+								title="Loan Amount"
+								value={
+									Number(form.loanAmount)
+										? moneyFormat(Number(form.loanAmount))
+										: ""
+								}
+							/>
+							<Detail
+								title="Loan to Value"
+								value={
+									Number(form.loanToValue) ? `${Number(form.loanToValue)}%` : ""
+								}
+							/>
+							<Detail title="Term" value={form.loanTerm} />
+							<Detail title="Type" value={form.loanType} />
+							<Detail
+								title="Prepayment Penalty"
+								value={form.investmentPermanentPenalty}
+							/>
+							<Detail
+								title="Interest Offered to Participant"
+								value={
+									Number(form.investmentMonthlyInterestedOfferedToParticipant)
+										? `${Number(
+												form.investmentMonthlyInterestedOfferedToParticipant
+										  )}%`
+										: ""
+								}
+							/>
+						</div>
+						<div className="flex flex-col my-4">
+							<Subtitle subtitle="Participation Opportunities:" />
+							{form.participantOpportunities?.["99%"] && (
+								<div className="flex flex-row text-primary-500 text-xs">
+									<div className="font-semibold">99%</div>-{" "}
+									{moneyFormat(Number(form.participantOpportunities?.["99%"]))}
+								</div>
+							)}
+							{form.participantOpportunities?.["75%"] && (
+								<div className="flex flex-row text-primary-500 text-xs">
+									<div className="font-semibold">75%</div>-{" "}
+									{moneyFormat(Number(form.participantOpportunities?.["75%"]))}
+								</div>
+							)}
+							{form.participantOpportunities?.["50%"] && (
+								<div className="flex flex-row text-primary-500 text-xs">
+									<div className="font-semibold">50%</div>-{" "}
+									{moneyFormat(Number(form.participantOpportunities?.["50%"]))}
+								</div>
+							)}
+						</div>
+						<div className="flex flex-col my-4">
+							<Subtitle subtitle="Notes On The Borrower:" />
+							<Detail title="Borrower" value={form.investmentBorrower} />
+							<Detail
+								title="DKC Repeat Borrower"
+								value={form.dkcRepeatBorrower}
+							/>
+							<Detail
+								title="Borrower Background"
+								value={form.investmentBorrowerBackground}
+							/>
+						</div>
+						<div className="my-4">
+							<Subtitle subtitle="Additional Documents:" />
+							<p className="text-primary-500 text-xs">
+								{form.additionalInformation}
+							</p>
+						</div>
 					</div>
 					<div>
 						{imagePreview ? (
@@ -94,42 +135,6 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 							/>
 						) : null}
 					</div>
-				</div>
-				<div className="flex flex-col my-4">
-					<Subtitle subtitle="Participation Opportunities:" />
-					{form.participantOpportunities?.["99%"] && (
-						<div className="flex flex-row text-primary-500 text-xs">
-							<div className="font-semibold">99%</div> - {" "}
-							{moneyFormat(Number(form.participantOpportunities?.["99%"]))}
-						</div>
-					)}
-					{form.participantOpportunities?.["75%"] && (
-						<div className="flex flex-row text-primary-500 text-xs">
-							<div className="font-semibold">75%</div> - {" "}
-							{moneyFormat(Number(form.participantOpportunities?.["75%"]))}
-						</div>
-					)}
-					{form.participantOpportunities?.["50%"] && (
-						<div className="flex flex-row text-primary-500 text-xs">
-							<div className="font-semibold">50%</div> - {" "}
-							{moneyFormat(Number(form.participantOpportunities?.["50%"]))}
-						</div>
-					)}
-				</div>
-				<div className="flex flex-col my-4">
-					<Subtitle subtitle="Notes On The Borrower:" />
-					<Detail title="Borrower" value={form.investmentBorrower} />
-					<Detail title="DKC Repeat Borrower" value={form.dkcRepeatBorrower} />
-					<Detail
-						title="Borrower Background"
-						value={form.investmentBorrowerBackground}
-					/>
-				</div>
-				<div className="flex flex-col my-4">
-					<Subtitle subtitle="Additional Documents:" />
-					<p className="text-primary-500 text-xs">
-						{form.additionalInformation}
-					</p>
 				</div>
 			</div>
 		</div>
