@@ -22,6 +22,7 @@ export const Toggle: React.FC<AvatarProps> = ({
 					<input
 						type="checkbox"
 						checked={checked}
+						defaultChecked={checked}
 						onClick={(data): any => {
 							if (onChecked) {
 								onChecked(data);

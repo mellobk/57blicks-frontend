@@ -6,6 +6,8 @@ import ManageUserRouter from "@/features/manage-user/routes/ManageUsersRouter";
 import OpportunitiesRouter from "@/features/opportunities/routes/OpportunitiesRouter";
 import ServicingRouter from "@/features/servicing/routes/ServicingRoutes";
 import ProfileRouter from "@/features/profile/routes/ProfileRoutes";
+import appRouter from "./appRoutes";
+import investorRouter from "@/features/investor/routes/investorRouter";
 
 //array of all routes
 const allRoutes = [
@@ -15,6 +17,8 @@ const allRoutes = [
 	...OpportunitiesRouter,
 	...ServicingRouter,
 	...ProfileRouter,
+	...appRouter,
+	...investorRouter,
 ];
 
 const routeTree = rootRoute.addChildren([...allRoutes]);

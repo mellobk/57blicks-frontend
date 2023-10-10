@@ -29,7 +29,7 @@ export const AdminTable: React.FC<SuccessProps> = () => {
 		() => {
 			return ManageUsersService.filterAllAdmins(searchValue);
 		},
-		{ enabled: true, staleTime: 1000 * 60 }
+		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
 	const deleteAdminMutation = useMutation((id: string) => {

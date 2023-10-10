@@ -1,11 +1,9 @@
 import { Admin } from "@/features/manage-user/pages/Admin/Admin";
 import { AuthenticatedRoute } from "@/routes/routes";
-import { BlankLayout } from "@/components/layout/BlankLayout";
 import { CreateLoan } from "@/features/create-loan/pages/CreateLoan/CreateLoan";
 import { CreateOpportunity } from "@/features/opportunities/pages/CreateOpportunity/CreateOpportunity";
 import { DashboardLayout } from "@/components/layout/Dashboard";
 import { DkcLlc } from "@/features/servicing/pages/DkcLLC/DkcLlc";
-import { ForbiddenPage } from "@/features/auth/pages/forbidden/ForbiddenPage";
 import { InvestorPortals } from "../pages/InvestorPortals/InvestorPortals";
 import { LoanOverview } from "@/features/loan-overview/pages/LoanOverview/LoanOverview";
 import { Reporting } from "../pages/Reporting/Reporting";
@@ -54,12 +52,6 @@ export const NavbarRoutes = [
 		path: "/support",
 		page: Support,
 		layout: DashboardLayout,
-		name: "Support",
-	},
-	{
-		path: "/403",
-		page: ForbiddenPage,
-		layout: BlankLayout,
 		name: "Support",
 	},
 ];
