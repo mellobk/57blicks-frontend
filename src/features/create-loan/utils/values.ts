@@ -4,11 +4,7 @@ import { LENDERS } from "@/features/create-loan/utils/selects";
 export const defaultValues: Loan = {
 	amountDrawn: "",
 	borrower: {
-		accountNumber: "",
-		accountType: "",
-		bankingName: "",
 		llc: "",
-		routingNumber: "",
 		ssnEin: "",
 		user: {
 			email: "",
