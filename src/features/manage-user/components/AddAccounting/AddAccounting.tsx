@@ -1,4 +1,5 @@
-import type { FieldValues, SubmitHandler } from "react-hook-form";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { FieldValues } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
@@ -30,7 +31,7 @@ export const AddAccounting: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 	});
 
 	// eslint-disable-next-line unicorn/consistent-function-scoping
-	const onSubmit: SubmitHandler<FieldValues> = (data: User): void => {
+	const onSubmit: any = (data: User): void => {
 		const phoneNumber = unFormatPhone(data?.phoneNumber || "");
 
 		const formatData = {

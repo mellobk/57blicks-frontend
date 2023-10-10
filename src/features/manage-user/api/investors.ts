@@ -10,13 +10,15 @@ import {
 	createInvestor,
 	deleteUserData,
 	filterData,
+	getPermissionRoleById,
 	getUserData,
 	investors,
 	investorsBank,
 	restoreUserData,
 	updateAccountingUrl,
 	updateAdminUrl,
-	userFilterData,
+	userFilterAccountingData,
+	userFilterAdminData,
 } from "./backend-end-points";
 
 import type { AxiosResponse } from "axios";
@@ -37,14 +39,14 @@ const filterAllInvestors = async (searchData: string, showDisable: boolean) => {
 
 const filterAllAdmins = async (searchData: string) => {
 	const response = await authApiClient.get<Array<User>>(
-		userFilterData("admin", searchData)
+		userFilterAdminData("admin", searchData)
 	);
 	return response.data;
 };
 
 const filterAllAccounting = async (searchData: string) => {
 	const response = await authApiClient.get<Array<User>>(
-		userFilterData("accounting", searchData)
+		userFilterAccountingData("accounting", searchData)
 	);
 	return response.data;
 };
@@ -125,6 +127,13 @@ const restoreUser = async (id: string) => {
 	const response = await authApiClient.put<Array<User>>(restoreUserData(id));
 	return response.data;
 };
+
+const permissionRoleById = async (id: string) => {
+	const response = await authApiClient.get<Permissions>(
+		getPermissionRoleById(id)
+	);
+	return response.data;
+};
 /* const updateInvestors = async (body: Investor) => {
 	const response = fetchData(investors(body?.id || ""), "PUT", body);
 	return response;
@@ -145,6 +154,7 @@ const ManageUsersService = {
 	updateAccounting,
 	updateGeneralInformation,
 	restoreUser,
+	permissionRoleById,
 };
 
 export default ManageUsersService;

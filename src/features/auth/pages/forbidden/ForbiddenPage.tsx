@@ -1,8 +1,16 @@
 import type { FC } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Link } from "@tanstack/router";
+import { getLocalStorage } from "@/utils/local-storage";
+import { group } from "@/utils/constant";
 
 const ForbiddenPage: FC = () => {
+	const cognitoGroup = getLocalStorage(group)
+		? JSON?.parse(getLocalStorage(group))
+		: "";
+	const groupTo: string =
+		cognitoGroup === "investor" ? "/investors" : "/manage-users/admins";
+
 	return (
 		<div className="flex flex-col items-center h-full w-full bg-white text-primary ">
 			<div className="pt-24">
@@ -16,14 +24,14 @@ const ForbiddenPage: FC = () => {
 			</div>
 			<Link
 				key={"/"}
-				to={"/"}
+				to={groupTo}
 				className="link-text bg-primary text-white font-semibold rounded-lg w-40  h-8 text-center pt-2 pb-2 px-4 m-2"
 				params={{}}
 				search={{}}
 			>
 				Take Me Home
 			</Link>
-			<a href="/"></a>
+			<a href={"/"}></a>
 		</div>
 	);
 };
