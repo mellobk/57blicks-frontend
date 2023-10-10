@@ -35,7 +35,7 @@ export const AddParticipant: FC<Props> = ({
 		if (participant) {
 			append({
 				amount: "",
-				lenderId: participant.id,
+				investorId: participant.id,
 				lenderName: nameFormat(
 					`${participant.user?.firstName} ${participant.user?.lastName}`
 				),

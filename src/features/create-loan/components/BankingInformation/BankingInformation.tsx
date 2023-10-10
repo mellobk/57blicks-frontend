@@ -12,11 +12,7 @@ interface Props {
 	register: UseFormRegister<Loan>;
 }
 
-export const BankingInformation: FC<Props> = ({
-	control,
-	errors,
-	register,
-}) => (
+export const BankingInformation: FC<Props> = ({ control, errors, register }) => (
 	<div className="pt-6">
 		<Title text="Banking Information" />
 		<Input
@@ -31,6 +27,7 @@ export const BankingInformation: FC<Props> = ({
 			label="Routing Number"
 			placeholder="Enter Routing Number"
 			register={register("borrower.routingNumber")}
+			type="number"
 			wrapperClassName="mt-6"
 		/>
 		<Input
