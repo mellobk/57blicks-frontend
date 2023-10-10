@@ -4,8 +4,19 @@ export const filterData = (showDisable: boolean, data: string): string => {
 	}`;
 };
 
-export const userFilterData = (role: string, data: string): string => {
-	return `/users/filter-data?role=${role}${data && `&searchData=${data}`}`;
+export const userFilterAdminData = (role: string, data: string): string => {
+	return `/users/filter-data/admin?role=${role}${
+		data && `&searchData=${data}`
+	}`;
+};
+
+export const userFilterAccountingData = (
+	role: string,
+	data: string
+): string => {
+	return `/users/filter-data/accounting?role=${role}${
+		data && `&searchData=${data}`
+	}`;
 };
 
 export const investors = (id: string): string => {
@@ -54,4 +65,8 @@ export const createLog = (): string => {
 
 export const getRolesByUser = (id: string): string => {
 	return `users/user-rol/${id}`;
+};
+
+export const getPermissionRoleById = (id: string): string => {
+	return `permissions/role/${id}`;
 };
