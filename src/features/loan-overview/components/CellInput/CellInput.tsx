@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { Input } from "@/components/forms/Input";
 
 type Props = {

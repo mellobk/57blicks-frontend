@@ -28,16 +28,16 @@ export type FundingBreakdown = {
 export type Loan = {
 	amountDrawn: string;
 	borrower: Borrower;
-	collaterals: Collateral[];
+	collaterals: Array<Collateral>;
 	constructionHoldback: string;
-	fundingBreakdown: FundingBreakdown[];
+	fundingBreakdown: Array<FundingBreakdown>;
 	interestRate: string;
 	leadSource: string;
 	loanConsultant: string;
 	ltv: string;
 	maturityDate: string;
 	originationDate: string;
-	participationBreakdown: FundingBreakdown[];
+	participationBreakdown: Array<FundingBreakdown>;
 	prepaymentPenalty: string;
 	totalLoanAmount: string;
 	type: string;

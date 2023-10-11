@@ -1,15 +1,15 @@
 import {
 	forwardRef,
-	ForwardRefRenderFunction,
+	type ForwardRefRenderFunction,
 	type InputHTMLAttributes,
-	ReactElement,
+	type ReactElement,
 	useEffect,
 	useState,
 } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
-import { Icon, ICONS } from "@/components/ui/Icon";
+import { Icon, type ICONS } from "@/components/ui/Icon";
 import type { PasswordValidations } from "@/features/auth/types/validations";
 import { inputClassName } from "@/utils/class-names.ts";
 

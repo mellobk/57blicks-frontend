@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useEffect, useState } from "react";
-import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { type SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Button } from "@/components/ui/Button";
@@ -14,7 +14,7 @@ import { NotesOnTheBorrower } from "@/features/opportunities/components/CreateOp
 import { ParticipantOpportunities } from "@/features/opportunities/components/CreateOpportunity/ParticipantOpportunities/ParticipantOpportunities";
 import { PostTo } from "@/features/opportunities/components/CreateOpportunity/PostTo/PostTo";
 import { OpportunitySchema } from "@/features/opportunities/schemas/OpportunitySchema";
-import { Opportunity } from "@/features/opportunities/types/fields";
+import type { Opportunity } from "@/features/opportunities/types/fields";
 import { tabs } from "@/features/opportunities/utils/tabs";
 
 export const CreateOpportunity: FC = () => {

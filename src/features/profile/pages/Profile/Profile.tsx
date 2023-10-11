@@ -1,5 +1,5 @@
 import { DashboardInformation } from "../../component/DashboardInformation/DashboardInformation";
-import { FC } from "react";
+import type { FC } from "react";
 
 export const Profile: FC = () => {
 	return (

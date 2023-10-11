@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
 import { addInvestorBankFields } from "../../utils/input-fields";
-import { FC, useEffect } from "react";
+import { type FC, useEffect } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Select } from "@/components/forms/Select";
 import type { AddInvestorBankFields } from "../../types/fields";

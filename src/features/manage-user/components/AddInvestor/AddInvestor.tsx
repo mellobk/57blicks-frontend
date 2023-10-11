@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { InvestorInfo } from "../InvestorInfo/InvestorInfo";
 import type {
 	AddInvestorBankFields,

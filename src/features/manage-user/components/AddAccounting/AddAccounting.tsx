@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
 import { AddAdminSchema } from "@/features/manage-user/schemas/AddAdminSchemas";
 import { addAdminFields } from "../../utils/input-fields";
-import { FC, useEffect } from "react";
+import { type FC, useEffect } from "react";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { useMutation } from "@tanstack/react-query";
 import type { User } from "../../types/api";

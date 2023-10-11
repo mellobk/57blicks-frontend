@@ -1,9 +1,9 @@
-import { ComponentType } from "react";
-import { Control } from "react-hook-form";
-import { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
+import type { ComponentType } from "react";
+import type { Control } from "react-hook-form";
+import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
 import { Cell } from "@/components/table/Cell";
 import { CellInput } from "@/components/table/CellInput";
-import {
+import type {
 	FundingBreakdown,
 	LoanOverviewFields,
 } from "@/features/loan-overview/types/fields";
@@ -23,14 +23,14 @@ export const ExpandedComponent: ComponentType<Props> = ({ control, data }) => {
 		trustUnallocated: 0,
 	};
 	subtotals =
-		data.participants?.reduce((acc, participant) => {
-			acc.dueToDraws += Number(participant.dueToDraws);
-			acc.totalDrawn += Number(participant.totalDrawn);
-			acc.totalFunds += Number(participant.totalFunds);
-			acc.totalLoan += Number(participant.totalLoan);
-			acc.trustAllocated += Number(participant.trustAllocated);
-			acc.trustUnallocated += Number(participant.trustUnallocated);
-			return acc;
+		data.participants?.reduce((accumulator, participant) => {
+			accumulator.dueToDraws += Number(participant.dueToDraws);
+			accumulator.totalDrawn += Number(participant.totalDrawn);
+			accumulator.totalFunds += Number(participant.totalFunds);
+			accumulator.totalLoan += Number(participant.totalLoan);
+			accumulator.trustAllocated += Number(participant.trustAllocated);
+			accumulator.trustUnallocated += Number(participant.trustUnallocated);
+			return accumulator;
 		}, subtotals) || subtotals;
 
 	return (

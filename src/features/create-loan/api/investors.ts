@@ -1,4 +1,4 @@
-import { Investor } from "@/features/opportunities/types/api";
+import type { Investor } from "@/features/opportunities/types/api";
 import { authApiClient } from "@/utils/api-client";
 
 const getInvestors = async () => {

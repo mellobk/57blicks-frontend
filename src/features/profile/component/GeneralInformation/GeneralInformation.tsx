@@ -4,7 +4,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/forms/Input";
 
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { getLocalStorage, sendToLocalStorage } from "@/utils/local-storage";
 import { userBasicInformation } from "@/utils/constant";
 import type { User } from "@/features/manage-user/types/api";

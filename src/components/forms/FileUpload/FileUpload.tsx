@@ -1,4 +1,4 @@
-import { type ForwardRefRenderFunction, type InputHTMLAttributes } from "react";
+import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";

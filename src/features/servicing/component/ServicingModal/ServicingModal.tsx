@@ -1,7 +1,7 @@
 import { Modal } from "@/components/ui/Modal";
 import { servicingModalTabs } from "../../utils/tabs";
 import { Tabs } from "../Tabs";
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { LoanInformation } from "../LoanInformation";
 import { BorrowerInformation } from "../BorrowerInformation";
 import "./ServicingModal.css";

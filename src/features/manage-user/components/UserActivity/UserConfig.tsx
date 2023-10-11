@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 
 import { Modal } from "@/components/ui/Modal/Modal";
 import { Tabs } from "@/features/servicing/component/Tabs";

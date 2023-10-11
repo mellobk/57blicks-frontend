@@ -1,7 +1,7 @@
 import type { User } from "@/features/manage-user/types/api";
 import { userBasicInformation } from "@/utils/constant";
 import { getLocalStorage } from "@/utils/local-storage";
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { PasswordInformation } from "../PasswordInformation/PasswordInformation";
 import { GeneralInformation } from "../GeneralInformation/GeneralInformation";
 

@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useState } from "react";
+import { type FC, type ReactElement, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { AddAccounting } from "../AddAccounting/AddAccounting";

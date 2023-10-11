@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/forms/Input";
-import { FC, useEffect } from "react";
+import { type FC, useEffect } from "react";
 import type { User } from "@/features/manage-user/types/api";
 import { MaskInput } from "@/components/forms/MaskInput";
 

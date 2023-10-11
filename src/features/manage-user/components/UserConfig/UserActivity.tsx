@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 
 import { CalendarModal } from "@/components/ui/CalendarModal/CalendarModal";
 import { Icon } from "@/components/ui/Icon";

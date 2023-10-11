@@ -1,6 +1,6 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { Button } from "@/components/ui/Button";
-import { Icon, IconProps } from "@/components/ui/Icon";
+import { Icon, type IconProps } from "@/components/ui/Icon";
 
 interface Props extends IconProps {
 	bgColor?: string;

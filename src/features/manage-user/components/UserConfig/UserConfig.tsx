@@ -1,5 +1,5 @@
 import type { Investor, User } from "../../types/api";
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 
 import { EditAccounting } from "./EditAccounting";
 import { EditAdmin } from "./EditAdmin";

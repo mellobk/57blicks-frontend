@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import DataTable, { TableProps } from "react-data-table-component";
+import DataTable, { type TableProps } from "react-data-table-component";
 
 export interface Props extends TableProps<any> {
 	className?: string;

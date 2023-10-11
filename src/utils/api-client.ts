@@ -19,8 +19,8 @@ authApiClient.interceptors.request.use(
 
 		return config;
 	},
-	(err: any) => {
-		return Promise.reject(err);
+	(error: any) => {
+		return Promise.reject(error);
 	}
 );
 

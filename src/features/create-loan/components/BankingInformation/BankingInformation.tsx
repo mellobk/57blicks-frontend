@@ -1,9 +1,9 @@
 import type { FC } from "react";
-import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
 import { Title } from "@/components/ui/Title/Title";
-import { Loan } from "@/features/create-loan/types/fields";
+import type { Loan } from "@/features/create-loan/types/fields";
 import { ACCOUNT_TYPES } from "@/features/create-loan/utils/selects";
 
 interface Props {

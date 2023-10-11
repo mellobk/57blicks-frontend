@@ -1,5 +1,5 @@
 import { findIndex, statusSort } from "@/utils/common-funtions.ts";
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { AddInvestor } from "../AddInvestor/AddInvestor";

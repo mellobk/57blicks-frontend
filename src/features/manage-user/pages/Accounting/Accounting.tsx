@@ -1,5 +1,5 @@
 import { AccountingTable } from "@/features/manage-user/components/AccountingTable/AccountingTable";
-import { FC } from "react";
+import type { FC } from "react";
 
 export const Accounting: FC = () => {
 	return (

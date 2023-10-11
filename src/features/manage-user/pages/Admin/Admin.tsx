@@ -1,5 +1,5 @@
 import { AdminTable } from "@/features/manage-user/components/AdminTable/AdminTable";
-import { FC } from "react";
+import type { FC } from "react";
 
 export const Admin: FC = () => {
 	return (

@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { Button } from "@/components/ui/Button";
-import { Icon, ICONS } from "@/components/ui/Icon";
+import { Icon, type ICONS } from "@/components/ui/Icon";
 import { LoginTitle } from "../LoginTitle";
 import { useNavigate } from "@tanstack/router";
 

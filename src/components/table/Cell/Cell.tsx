@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { formatValue } from "@/utils/formats.ts";
 
 type Props = {

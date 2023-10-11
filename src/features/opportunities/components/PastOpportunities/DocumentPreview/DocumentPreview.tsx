@@ -22,7 +22,9 @@ export const DocumentPreview: FC<Props> = ({ isLoading, url }) => {
 		) : (
 			<div
 				className="flex justify-center items-center h-full bg-gray-500/[.08]"
-				onClick={() => setShowPreview(true)}
+				onClick={() => {
+					setShowPreview(true);
+				}}
 			>
 				<Icon color="#0E2130" name="hidden" width="48" />
 			</div>

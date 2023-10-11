@@ -18,7 +18,7 @@ export type Opportunity = {
 	investmentMonthlyInterestedOfferedToParticipant: string;
 	investmentPermanentPenalty: string;
 	investmentSummary: string;
-	investorsNotifications: InvestorsNotifications[];
+	investorsNotifications: Array<InvestorsNotifications>;
 	loanAmount: string;
 	loanTerm: string;
 	loanToValue: string;

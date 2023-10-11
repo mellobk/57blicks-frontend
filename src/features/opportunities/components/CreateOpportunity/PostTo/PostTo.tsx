@@ -1,9 +1,9 @@
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import {
-	Control,
+	type Control,
 	useFieldArray,
-	UseFormReset,
-	UseFormSetValue,
+	type UseFormReset,
+	type UseFormSetValue,
 	useWatch,
 } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -15,8 +15,8 @@ import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
 import InvestorsService from "@/features/opportunities/api/investors";
 import OpportunitiesService from "@/features/opportunities/api/opportunities";
-import { Investor } from "@/features/opportunities/types/api";
-import { Opportunity } from "@/features/opportunities/types/fields";
+import type { Investor } from "@/features/opportunities/types/api";
+import type { Opportunity } from "@/features/opportunities/types/fields";
 import { nameFormat } from "@/utils/formats";
 
 interface Props {
@@ -70,15 +70,15 @@ export const PostTo: FC<Props> = ({
 	});
 
 	const allEmail = () => {
-		investorsNotifications.map((_, index) =>
-			setValue(`investorsNotifications.${index}.email`, true)
-		);
+		investorsNotifications.map((_, index) => {
+			setValue(`investorsNotifications.${index}.email`, true);
+		});
 	};
 
 	const allSMS = () => {
-		investorsNotifications.map((_, index) =>
-			setValue(`investorsNotifications.${index}.sms`, true)
-		);
+		investorsNotifications.map((_, index) => {
+			setValue(`investorsNotifications.${index}.sms`, true);
+		});
 	};
 
 	const findIndex = (investorId: string) =>
@@ -223,7 +223,9 @@ export const PostTo: FC<Props> = ({
 										selectedInvestor ? "hidden" : ""
 									} rounded-3xl pl-3 pr-1 h-[34px] bg-gray-200`}
 									icon={<Icon name="wrong" color="#0E2130" width="12" />}
-									onClick={() => setOpenModal(false)}
+									onClick={() => {
+										setOpenModal(false);
+									}}
 									type="button"
 								/>
 							</div>
@@ -259,7 +261,9 @@ export const PostTo: FC<Props> = ({
 													<div className="flex flex-row items-center">
 														<input
 															checked={!!opportunityInvestor}
-															onChange={() => toggleInvestor(investor.id)}
+															onChange={() => {
+																toggleInvestor(investor.id);
+															}}
 															type="checkbox"
 														/>
 														<div className="ml-1 font-inter text-gray-1000 text-[13px] leading-4 tracking-[-0.65]">
@@ -275,7 +279,9 @@ export const PostTo: FC<Props> = ({
 														offIconName="plus"
 														offLabel="Add Notes"
 														offTextColor="text-green-500"
-														onChange={() => openNote(investor)}
+														onChange={() => {
+															openNote(investor);
+														}}
 														onIconName="note"
 														onLabel="Notes"
 													/>
@@ -285,7 +291,9 @@ export const PostTo: FC<Props> = ({
 														checked={!!opportunityInvestor?.sms}
 														offIconName="cellphone"
 														offLabel="SMS"
-														onChange={() => toggleSMS(investor.id)}
+														onChange={() => {
+															toggleSMS(investor.id);
+														}}
 														lineThrough
 													/>
 												</div>
@@ -294,7 +302,9 @@ export const PostTo: FC<Props> = ({
 														checked={!!opportunityInvestor?.email}
 														offIconName="email"
 														offLabel="EMAIL"
-														onChange={() => toggleEmail(investor.id)}
+														onChange={() => {
+															toggleEmail(investor.id);
+														}}
 														lineThrough
 													/>
 												</div>
@@ -307,7 +317,7 @@ export const PostTo: FC<Props> = ({
 								buttonText="Post"
 								className="bg-primary-500 w-full mt-6 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
 								onClick={onPost}
-								disabled={investorsNotifications.length < 1}
+								disabled={investorsNotifications.length === 0}
 								type="button"
 							/>
 						</div>
@@ -324,13 +334,17 @@ export const PostTo: FC<Props> = ({
 									<Button
 										className="rounded-3xl pl-3 pr-1 h-[34px] bg-gray-1300"
 										icon={<Icon name="arrowLeft" color="#FBFEFF" width="12" />}
-										onClick={() => setSelectedInvestor(null)}
+										onClick={() => {
+											setSelectedInvestor(null);
+										}}
 										type="button"
 									/>
 									<Button
 										className="rounded-3xl pl-3 pr-1 h-[34px] bg-gray-1300"
 										icon={<Icon name="wrong" color="#FBFEFF" width="12" />}
-										onClick={() => setOpenModal(false)}
+										onClick={() => {
+											setOpenModal(false);
+										}}
 										type="button"
 									/>
 								</div>
@@ -341,12 +355,12 @@ export const PostTo: FC<Props> = ({
 								</div>
 								<textarea
 									className="h-full rounded-lg py-3 px-4 bg-gray-1300 resize-none focus:outline-none font-inter text-white text-[13px] leading-4 tracking-[-0.65]"
-									onChange={(e) =>
+									onChange={(e) => {
 										setNote(
 											selectedInvestor.opportunityInvestorIndex,
 											e.target.value
-										)
-									}
+										);
+									}}
 									value={
 										investorsNotifications[
 											selectedInvestor.opportunityInvestorIndex

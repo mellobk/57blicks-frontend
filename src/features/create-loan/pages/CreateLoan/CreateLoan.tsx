@@ -1,5 +1,5 @@
-import { FC, useEffect, useState } from "react";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { type FC, useEffect, useState } from "react";
+import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import moment from "moment/moment";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -14,7 +14,7 @@ import { LoanInformation } from "@/features/create-loan/components/LoanInformati
 import { MultipleCollateral } from "@/features/create-loan/components/MultipleCollateral/MultipleCollateral";
 import { SelectLender } from "@/features/create-loan/components/SelectLender/SelectLender";
 import { LoanSchema } from "@/features/create-loan/schemas/LoanSchema";
-import { Loan } from "@/features/create-loan/types/fields";
+import type { Loan } from "@/features/create-loan/types/fields";
 import { defaultValues } from "@/features/create-loan/utils/values";
 import { unFormatPhone } from "@/utils/common-funtions";
 

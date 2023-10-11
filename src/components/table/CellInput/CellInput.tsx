@@ -1,5 +1,5 @@
-import { FC, InputHTMLAttributes, useState } from "react";
-import { Control, Controller } from "react-hook-form";
+import { type FC, type InputHTMLAttributes, useState } from "react";
+import { type Control, Controller } from "react-hook-form";
 import { formatPlaceholder, formatValue } from "@/utils/formats.ts";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
@@ -42,7 +42,9 @@ export const CellInput: FC<Props> = ({
 
 						onChange(inputValue);
 					}}
-					onFocus={() => setIsEditing(true)}
+					onFocus={() => {
+						setIsEditing(true);
+					}}
 					placeholder={formatPlaceholder(format, placeholder)}
 					type={isEditing ? "number" : "text"}
 					value={

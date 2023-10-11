@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal";
@@ -18,7 +18,9 @@ export const SuccessModal: FC<Props> = ({
 	setOpenModal,
 	title,
 }) => {
-	const closeModal = () => setOpenModal(false);
+	const closeModal = () => {
+		setOpenModal(false);
+	};
 
 	return (
 		<Modal onHide={closeModal} title={title} visible={openModal} width="30vm">

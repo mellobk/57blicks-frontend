@@ -1,10 +1,10 @@
-import { ComponentType } from "react";
-import { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
+import type { ComponentType } from "react";
+import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
 import { Cell } from "@/components/table/Cell";
-import { FundingBreakdown } from "@/features/loan-overview/types/fields";
+import type { FundingBreakdown } from "@/features/loan-overview/types/fields";
 
 interface Props extends ExpanderComponentProps<any> {
-	data: FundingBreakdown[];
+	data: Array<FundingBreakdown>;
 }
 
 export const Footer: ComponentType<Props> = ({ data }) => {
@@ -18,15 +18,15 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 		trustUnallocated: 0,
 	};
 	totals =
-		data?.reduce((acc, fundingBreakdown) => {
-			acc.dueToDraws += Number(fundingBreakdown.dueToDraws);
-			acc.total++;
-			acc.totalDrawn += Number(fundingBreakdown.totalDrawn);
-			acc.totalFunds += Number(fundingBreakdown.totalFunds);
-			acc.totalLoan += Number(fundingBreakdown.totalLoan);
-			acc.trustAllocated += Number(fundingBreakdown.trustAllocated);
-			acc.trustUnallocated += Number(fundingBreakdown.trustUnallocated);
-			return acc;
+		data?.reduce((accumulator, fundingBreakdown) => {
+			accumulator.dueToDraws += Number(fundingBreakdown.dueToDraws);
+			accumulator.total++;
+			accumulator.totalDrawn += Number(fundingBreakdown.totalDrawn);
+			accumulator.totalFunds += Number(fundingBreakdown.totalFunds);
+			accumulator.totalLoan += Number(fundingBreakdown.totalLoan);
+			accumulator.trustAllocated += Number(fundingBreakdown.trustAllocated);
+			accumulator.trustUnallocated += Number(fundingBreakdown.trustUnallocated);
+			return accumulator;
 		}, totals) || totals;
 
 	return (

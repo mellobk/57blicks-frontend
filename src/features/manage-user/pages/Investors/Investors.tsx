@@ -1,5 +1,5 @@
 import { InvestorsTable } from "@/features/manage-user/components/InvestorsTable/InvestorsTable";
-import { FC } from "react";
+import type { FC } from "react";
 
 export const Investors: FC = () => {
 	return (

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/Button";
-import { FC } from "react";
+import type { FC } from "react";
 
 interface EnableInvestorProps {
 	id?: string;

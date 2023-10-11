@@ -1,8 +1,8 @@
-import { FC } from "react";
-import { TableColumn } from "react-data-table-component";
+import type { FC } from "react";
+import type { TableColumn } from "react-data-table-component";
 import { Modal } from "@/components/ui/Modal";
 import { Table } from "@/components/ui/Table";
-import {
+import type {
 	DueToDrawDetails,
 	LoanOverviewFields,
 } from "@/features/loan-overview/types/fields";
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const DueToDraws: FC<Props> = ({ data, openModal, setOpenModal }) => {
-	const columns: TableColumn<DueToDrawDetails>[] = [
+	const columns: Array<TableColumn<DueToDrawDetails>> = [
 		{
 			name: "Loan Name",
 			selector: (row) => row.loanName,
@@ -48,7 +48,9 @@ export const DueToDraws: FC<Props> = ({ data, openModal, setOpenModal }) => {
 
 	return (
 		<Modal
-			onHide={() => setOpenModal(false)}
+			onHide={() => {
+				setOpenModal(false);
+			}}
 			minHeight="89%"
 			title={<ModalTitle />}
 			visible={openModal}

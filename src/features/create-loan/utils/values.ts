@@ -1,4 +1,4 @@
-import { Loan } from "@/features/create-loan/types/fields";
+import type { Loan } from "@/features/create-loan/types/fields";
 import { LENDERS } from "@/features/create-loan/utils/selects";
 
 export const defaultValues: Loan = {

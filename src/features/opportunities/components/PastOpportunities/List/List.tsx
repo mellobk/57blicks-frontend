@@ -1,9 +1,9 @@
 import type { FC } from "react";
 import { Name } from "@/features/opportunities/components/PastOpportunities/Name/Name";
-import { OpportunityMin } from "@/features/opportunities/types/api.ts";
+import type { OpportunityMin } from "@/features/opportunities/types/api.ts";
 
 interface Props {
-	data?: OpportunityMin[];
+	data?: Array<OpportunityMin>;
 	getFilename: (referenceId: number) => string;
 	selectedOpportunity?: OpportunityMin;
 	setSelectedOpportunity: (selectedOpportunity?: OpportunityMin) => void;
@@ -22,7 +22,9 @@ export const List: FC<Props> = ({
 					? "bg-gold-500/[.12]"
 					: "bg-white"
 			} p-4 rounded-lg cursor-pointer`}
-			onClick={() => setSelectedOpportunity(opportunity)}
+			onClick={() => {
+				setSelectedOpportunity(opportunity);
+			}}
 		>
 			<Name
 				filename={getFilename(opportunity.referenceId)}

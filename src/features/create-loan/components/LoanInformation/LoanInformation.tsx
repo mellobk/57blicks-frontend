@@ -1,9 +1,9 @@
 import { type FC, useEffect } from "react";
 import {
-	Control,
-	FieldErrors,
-	UseFormRegister,
-	UseFormSetValue,
+	type Control,
+	type FieldErrors,
+	type UseFormRegister,
+	type UseFormSetValue,
 	useWatch,
 } from "react-hook-form";
 import { Dropdown } from "@/components/forms/Dropdown";
@@ -11,7 +11,7 @@ import { FormatInput } from "@/components/forms/FormatInput";
 import { Input } from "@/components/forms/Input";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { Title } from "@/components/ui/Title/Title";
-import { Loan } from "@/features/create-loan/types/fields";
+import type { Loan } from "@/features/create-loan/types/fields";
 import {
 	ASSET_TYPES,
 	LEAD_SOURCES,

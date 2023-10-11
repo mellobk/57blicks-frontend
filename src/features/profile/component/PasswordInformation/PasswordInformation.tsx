@@ -9,7 +9,7 @@ import { changePassWordFields } from "@/features/auth/utils/input-fields";
 import { passwordInitialsValidations } from "@/features/auth/utils/constants";
 import { changePasswordSchema } from "@/features/auth/utils/Schemas/validations-change-password-schemas";
 import type { PasswordValidations } from "@/features/auth/types/validations";
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { validPasswordRules } from "@/features/auth/utils/functions";
 
 export const PasswordInformation: FC = () => {

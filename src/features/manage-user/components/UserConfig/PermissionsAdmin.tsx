@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/Button";
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import type { Permissions, User } from "@/features/manage-user/types/api";
 
 import ManageUsersService from "../../api/investors";

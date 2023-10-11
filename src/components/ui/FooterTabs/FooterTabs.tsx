@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 export interface FooterTableProps {
 	tabs?: Array<{ label: string; width: string; justify?: string }>;
