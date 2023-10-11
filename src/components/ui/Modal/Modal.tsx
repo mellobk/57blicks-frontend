@@ -11,6 +11,7 @@ export interface ModalProps {
 	title?: string | ReactNode;
 	visible?: boolean;
 	width?: string;
+	footer?: ReactNode;
 }
 
 export const Modal: FC<ModalProps> = ({
@@ -20,6 +21,7 @@ export const Modal: FC<ModalProps> = ({
 	title,
 	visible,
 	width = "50vw",
+	footer,
 }) => {
 	return (
 		<div className="card flex justify-content-center">
@@ -32,6 +34,7 @@ export const Modal: FC<ModalProps> = ({
 			>
 				<div className="h-[1px] bg-gray-1100 mb-6"></div>
 				{children}
+				{footer}
 			</Dialog>
 		</div>
 	);

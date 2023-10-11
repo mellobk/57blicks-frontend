@@ -68,8 +68,8 @@ export const CreateOpportunity: FC = () => {
 				</div>
 				<div>
 					<Button
+            buttonText="Post"
 						className="rounded-2xl h-9 bg-gold-500/[.16] text-gold-500"
-						label="Post"
 						type="submit"
 					/>
 				</div>

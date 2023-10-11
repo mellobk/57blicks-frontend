@@ -110,7 +110,8 @@ export const EditAdmin: FC<EditAdminProps> = ({
 					</div>
 					<Button
 						buttonText="Save"
-						className="absolute top-[25px] right-[102px] py-[3px] px-[10px] bg-gray-250 text-white rounded-3xl"
+						className="absolute top-[25px] right-[102px] py-[3px] px-[10px"
+						variant={"gray"}
 					/>
 				</div>
 				<div className="w-full">

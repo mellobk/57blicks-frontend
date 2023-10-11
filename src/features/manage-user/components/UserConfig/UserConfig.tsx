@@ -75,10 +75,6 @@ const UserConfig: FC<UserConfigProps> = ({
 	useEffect(() => {
 		//TODO: change roles are defined in the backend
 		if (dkcRoleQuery.data) {
-			console.log(
-				"🚀 ~ file: UserConfig.tsx:75 ~ useEffect ~ dkcRoleQuery.data:",
-				dkcRoleQuery.data.name
-			);
 			setRole(dkcRoleQuery.data.name || "");
 		}
 	}, [dkcRoleQuery.data]);

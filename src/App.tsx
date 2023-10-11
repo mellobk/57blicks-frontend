@@ -1,3 +1,5 @@
+import "react-toastify/dist/ReactToastify.css";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { AuthProvider } from "./providers/AuthContextProvider";
@@ -8,9 +10,16 @@ import { PrimeReactProvider } from "primereact/api";
 import { ReactQueryDevelopmentTools } from "@/utils/development-tools/ReactQueryDevelopmentTools";
 import { RouterProvider } from "@tanstack/router";
 import { TanStackRouterDevelopmentTools } from "@/utils/development-tools/TanStackRouterDevelopmentTools";
+import { ToastContainer } from "react-toastify";
 import { router } from "./routes";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false, // default: true
+		},
+	},
+});
 
 const App = (): FunctionComponent => {
 	return (
@@ -24,6 +33,7 @@ const App = (): FunctionComponent => {
 							initialIsOpen={false}
 							position="bottom-right"
 						/>
+						<ToastContainer />
 						<ReactQueryDevelopmentTools initialIsOpen={false} />
 					</AuthProvider>
 				</QueryClientProvider>

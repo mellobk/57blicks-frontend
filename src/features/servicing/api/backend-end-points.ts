@@ -9,3 +9,7 @@ export const lendersById = (id: string, search: string): string => {
 export const updateBorrowerData = (id: string): string => {
 	return `/borrowers/${id}`;
 };
+
+export const ledgers = (): string => {
+	return `/ledgers`;
+};
