@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { DkcServicing, FundingBreakdown } from "../../types/api";
@@ -13,7 +13,7 @@ import { formatCurrency } from "@/utils/common-funtions";
 
 interface SuccessProps {}
 
-export const DkcFlTable: React.FC<SuccessProps> = () => {
+export const DkcFlTable: FC<SuccessProps> = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [modalData, setModalData] = useState<FundingBreakdown>();

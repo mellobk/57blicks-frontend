@@ -6,7 +6,7 @@ export const UserSchema = z.object({
 		.string()
 		.nonempty(errorMessages.required)
 		.max(100, errorMessages.maxLength)
-    .email(),
+		.email(),
 	firstName: z
 		.string()
 		.nonempty(errorMessages.required)

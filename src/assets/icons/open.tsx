@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const Plus: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const Open: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			width={width}
@@ -25,4 +25,4 @@ const Plus: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	);
 };
 
-export default Plus;
+export default Open;

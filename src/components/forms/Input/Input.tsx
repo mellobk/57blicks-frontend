@@ -2,8 +2,7 @@ import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
-import { Icon } from "@/components/ui/Icon";
-import { ICONS } from "@/components/ui/Icon";
+import { Icon, ICONS } from "@/components/ui/Icon";
 import { inputClassName } from "@/utils/class-names";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {

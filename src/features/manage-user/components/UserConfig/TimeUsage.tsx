@@ -1,4 +1,4 @@
-import type React from "react";
+import type { FC } from "react";
 import { type BarDatum, ResponsiveBar } from "@nivo/bar";
 import { Icon } from "@/components/ui/Icon";
 import { dateFormat } from "@/utils/formats";
@@ -11,7 +11,7 @@ interface TimeUsageProps {
 	date: Date;
 }
 
-const TimeUsage: React.FC<TimeUsageProps> = ({ data, date }) => {
+const TimeUsage: FC<TimeUsageProps> = ({ data, date }) => {
 	const newData = fillMissingDates(
 		data.userActivity as unknown as Array<DataEntry>,
 		date

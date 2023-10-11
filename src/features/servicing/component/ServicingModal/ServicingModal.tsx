@@ -1,7 +1,7 @@
 import { Modal } from "@/components/ui/Modal";
 import { servicingModalTabs } from "../../utils/tabs";
 import { Tabs } from "../Tabs";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { LoanInformation } from "../LoanInformation";
 import { BorrowerInformation } from "../BorrowerInformation";
 import "./ServicingModal.css";
@@ -15,7 +15,7 @@ interface ServicingModalProps {
 	data?: FundingBreakdown;
 }
 
-export const ServicingModal: React.FC<ServicingModalProps> = ({
+export const ServicingModal: FC<ServicingModalProps> = ({
 	openModal,
 	handleOnCLose,
 	handleRefreshData,

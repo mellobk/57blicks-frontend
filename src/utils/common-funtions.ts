@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable unicorn/prefer-string-replace-all */
-
 import type { Investor, User } from "@/features/manage-user/types/api";
 
 export const statusSort = (rowA: Investor, rowB: Investor) => {

@@ -20,6 +20,6 @@ export const ClosedSearchBar: Story = {
 
 export const OpenedSearchBar: Story = {
 	args: {
-    value: "Opened",
+		value: "Opened",
 	},
 };

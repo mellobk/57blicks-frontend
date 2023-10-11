@@ -1,6 +1,5 @@
 import "./Table.css";
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FC, ReactElement } from "react";
 import { useEffect, useState } from "react";
 

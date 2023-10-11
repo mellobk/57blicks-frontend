@@ -1,5 +1,4 @@
-import type React from "react";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import type { AxisChart } from "../../types/chart-types";
 import type { FunctionComponent } from "@/types";
@@ -19,7 +18,7 @@ const initialData: Array<AxisChart> = [
 	},
 ];
 
-const NumberOfLogin: React.FC<NumberOfLoginProps> = ({ data }) => {
+const NumberOfLogin: FC<NumberOfLoginProps> = ({ data }) => {
 	const [dataLogins, setDataLogins] = useState<Array<AxisChart>>(initialData);
 	const [numberOfLogins, setNumberOfLogins] = useState<number>(0);
 	const [marginTop, setMarginTop] = useState<number>(0);

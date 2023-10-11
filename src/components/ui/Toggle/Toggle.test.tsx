@@ -1,4 +1,4 @@
-import { render, fireEvent } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect"; // For extended DOM matchers
 import { Toggle } from "./Toggle"; // Adjust the import path as needed
 

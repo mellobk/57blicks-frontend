@@ -3,9 +3,9 @@ import { Mfa } from "@/features/auth/components/Mfa";
 import { useSearch } from "@tanstack/router";
 import { sendCode } from "@/lib/cognito";
 import {
-	sendToLocalStorage,
 	getLocalStorage,
 	removeLocalStorage,
+	sendToLocalStorage,
 } from "@/utils/local-storage.ts";
 import { emailStatus, userEmail } from "../../utils/constants";
 

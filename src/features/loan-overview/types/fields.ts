@@ -29,8 +29,8 @@ export type FundingBreakdown = {
 export type LoanOverviewFields = {
 	checkAndBalanceInterest: number;
 	checkAndBalancePrinciple: number;
-  dueToDrawDetails: DueToDrawDetails[];
-  dueToDraws: number;
+	dueToDrawDetails: DueToDrawDetails[];
+	dueToDraws: number;
 	fundingBreakdown: FundingBreakdown[];
 	loansDrawnDown: number;
 	servicingFee: number;
@@ -40,5 +40,3 @@ export type LoanOverviewFields = {
 	trustAccountBalance: number;
 	yieldSpread: number;
 };
-
-

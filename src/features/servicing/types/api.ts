@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 export interface DkcServicing {
 	id?: string;
 	createdAt?: Date;
@@ -13,6 +11,7 @@ export interface DkcServicing {
 	originDate?: string;
 	maturityDate?: string;
 }
+
 export interface Datum {
 	id: string;
 	createdAt: Date;

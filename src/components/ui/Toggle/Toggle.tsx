@@ -1,4 +1,5 @@
 import "./Toggle.css";
+import { FC } from "react";
 
 interface AvatarProps {
 	checked?: boolean;
@@ -8,7 +9,7 @@ interface AvatarProps {
 	checkLabelClassName?: string;
 }
 
-export const Toggle: React.FC<AvatarProps> = ({
+export const Toggle: FC<AvatarProps> = ({
 	checked,
 	onChecked,
 	checkedClassName = "bg-primary-500",

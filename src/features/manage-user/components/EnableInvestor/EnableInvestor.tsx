@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/Button";
+import { FC } from "react";
 
 interface EnableInvestorProps {
 	id?: string;
 	handleDeleteUser?: (id: string) => void;
 }
 
-export const EnableInvestor: React.FC<EnableInvestorProps> = ({
+export const EnableInvestor: FC<EnableInvestorProps> = ({
 	id = "",
 	handleDeleteUser,
 }) => {

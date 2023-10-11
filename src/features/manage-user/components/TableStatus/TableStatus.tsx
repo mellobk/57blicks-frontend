@@ -1,3 +1,5 @@
+import { FC } from "react";
+
 interface statusProps {
 	className: string;
 }
@@ -9,7 +11,8 @@ interface StatusMap {
 interface TableStatusProps {
 	status: string;
 }
-export const TableStatus: React.FC<TableStatusProps> = ({ status }) => {
+
+export const TableStatus: FC<TableStatusProps> = ({ status }) => {
 	const statusMap: StatusMap = {
 		active: {
 			className: "bg-green-800 text-green-700",

@@ -73,14 +73,14 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 			wrapperClassName="mt-6"
 			required
 		/>
-    <FormatInput
-      control={control}
-      error={errors?.investmentMonthlyInterestedOfferedToParticipant?.message}
-      format="percentage"
-      label="Investment Monthly Interested Offered to Participant"
-      name="investmentMonthlyInterestedOfferedToParticipant"
-      wrapperClassName="mt-6"
-      required
-    />
+		<FormatInput
+			control={control}
+			error={errors?.investmentMonthlyInterestedOfferedToParticipant?.message}
+			format="percentage"
+			label="Investment Monthly Interested Offered to Participant"
+			name="investmentMonthlyInterestedOfferedToParticipant"
+			wrapperClassName="mt-6"
+			required
+		/>
 	</div>
 );

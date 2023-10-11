@@ -1,10 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable unicorn/prevent-abbreviations */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import type { IErrorResponse } from "@/features/manage-user/types/api.ts";
 import { accessToken } from "./constant.ts";
 import axios from "axios";

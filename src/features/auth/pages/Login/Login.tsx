@@ -1,4 +1,4 @@
-import { useState, type FC } from "react";
+import { type FC, useState } from "react";
 import { LoginForm } from "@/features/auth/components/Login";
 import { LoginMfaComponent } from "../../components/LoginMfa";
 

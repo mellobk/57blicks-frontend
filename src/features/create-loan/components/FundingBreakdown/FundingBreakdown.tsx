@@ -146,9 +146,9 @@ export const FundingBreakdown: FC<Props> = ({
 				</>
 			),
 			name: "",
-      right: true,
-      style: { padding: 0 },
-      width: "48px",
+			right: true,
+			style: { padding: 0 },
+			width: "48px",
 		},
 	];
 

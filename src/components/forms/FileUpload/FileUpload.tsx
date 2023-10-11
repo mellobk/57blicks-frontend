@@ -39,7 +39,7 @@ export const FileUpload: ForwardRefRenderFunction<
 			<input
 				className={`${className} pr-[30px]`}
 				type="file"
-        placeholder="Upload Image"
+				placeholder="Upload Image"
 				{...props}
 				{...register}
 			/>

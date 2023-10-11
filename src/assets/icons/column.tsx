@@ -1,14 +1,11 @@
-import type * as React from "react";
+import { FC } from "react";
 
 type Props = {
 	color?: string;
 	width?: string;
 };
 
-const Column: React.FC<Props> = ({
-	color = "#BBBBBB",
-	width = "48",
-}: Props) => {
+const Column: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			width={width}

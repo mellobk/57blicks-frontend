@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { COGNITO_CLIENT_ID, COGNITO_USER_POOL_ID } from "@/config";
 import {
 	AuthenticationDetails,

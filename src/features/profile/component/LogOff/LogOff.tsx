@@ -1,8 +1,9 @@
 import { Icon } from "@/components/ui/Icon";
 import { useAuth } from "@/providers/AuthContextProvider";
 import { useNavigate } from "@tanstack/router";
+import { FC } from "react";
 
-export const LogOff: React.FC = () => {
+export const LogOff: FC = () => {
 	const navigate = useNavigate();
 	const { signOut } = useAuth();
 	const LogOutUser = (): void => {

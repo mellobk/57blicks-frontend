@@ -22,11 +22,7 @@ describe("TextArea component", () => {
 
 	it("renders required indicator when required prop is true", () => {
 		render(
-			<TextArea
-				label="Username"
-				placeholder="Enter your username"
-				required
-			/>
+			<TextArea label="Username" placeholder="Enter your username" required />
 		);
 
 		const requiredIndicator = screen.getByText("*");

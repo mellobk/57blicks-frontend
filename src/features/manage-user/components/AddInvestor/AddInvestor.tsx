@@ -1,6 +1,4 @@
-/* eslint-disable no-duplicate-imports */
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { InvestorInfo } from "../InvestorInfo/InvestorInfo";
 import type {
 	AddInvestorBankFields,
@@ -16,7 +14,7 @@ interface AddInvestorProps {
 	handleSuccess?: () => void;
 }
 
-export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
+export const AddInvestor: FC<AddInvestorProps> = ({ handleSuccess }) => {
 	const [investorInfo, setInvestorInfo] = useState<AddInvestorFields>();
 	const [investorBankInfo, setInvestorBankInfo] =
 		useState<AddInvestorBankFields>();

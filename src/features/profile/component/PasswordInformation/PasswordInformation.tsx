@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { PasswordInput } from "@/components/forms/PasswordInput";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { type SubmitHandler, useForm, type FieldValues } from "react-hook-form";
+import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useStore from "@/stores/app-store";
 import { changePassword, getSession } from "@/lib/cognito";
@@ -11,10 +9,10 @@ import { changePassWordFields } from "@/features/auth/utils/input-fields";
 import { passwordInitialsValidations } from "@/features/auth/utils/constants";
 import { changePasswordSchema } from "@/features/auth/utils/Schemas/validations-change-password-schemas";
 import type { PasswordValidations } from "@/features/auth/types/validations";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { validPasswordRules } from "@/features/auth/utils/functions";
 
-export const PasswordInformation: React.FC = () => {
+export const PasswordInformation: FC = () => {
 	const { register, handleSubmit, watch, setValue } = useForm({
 		resolver: zodResolver(changePasswordSchema),
 	});

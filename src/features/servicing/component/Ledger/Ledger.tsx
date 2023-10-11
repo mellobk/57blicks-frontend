@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useState, type FC } from "react";
+import { type FC, useState } from "react";
 
 import type { FundingBreakdown } from "../../types/api";
 

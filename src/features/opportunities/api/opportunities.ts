@@ -23,8 +23,9 @@ const deleteOpportunity = async (opportunityId: string) => {
 };
 
 const getOpportunities = async () => {
-	const response =
-		await authApiClient.get<Array<OpportunityMin>>("/opportunities");
+	const response = await authApiClient.get<Array<OpportunityMin>>(
+		"/opportunities"
+	);
 
 	return response.data;
 };

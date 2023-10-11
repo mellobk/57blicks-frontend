@@ -9,6 +9,7 @@ import { ReactQueryDevelopmentTools } from "@/utils/development-tools/ReactQuery
 import { RouterProvider } from "@tanstack/router";
 import { TanStackRouterDevelopmentTools } from "@/utils/development-tools/TanStackRouterDevelopmentTools";
 import { router } from "./routes";
+
 const queryClient = new QueryClient();
 
 const App = (): FunctionComponent => {

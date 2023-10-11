@@ -22,7 +22,6 @@ import {
 } from "./backend-end-points";
 
 import type { AxiosResponse } from "axios";
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { authApiClient } from "@/utils/api-client";
 
 const getUser = async (sub: string) => {

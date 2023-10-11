@@ -27,7 +27,7 @@ export const SelectLender: FC<Props> = ({
 		);
 
 		if (lender) {
-      setValue("fundingBreakdown.0.lenderName", lender.name);
+			setValue("fundingBreakdown.0.lenderName", lender.name);
 			setValue("fundingBreakdown.0.investorId", lender.code);
 			setValue("participationBreakdown", []);
 			setOpenModal(false);

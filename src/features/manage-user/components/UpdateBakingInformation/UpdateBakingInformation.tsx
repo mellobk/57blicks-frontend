@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import type { AddInvestorBankFields } from "../../types/fields";
 import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo";
 import { Success } from "../Success";
@@ -12,9 +12,11 @@ interface UpdateBakingInformationProps {
 	id?: string;
 }
 
-export const UpdateBakingInformation: React.FC<
-	UpdateBakingInformationProps
-> = ({ handleClick, data, id }) => {
+export const UpdateBakingInformation: FC<UpdateBakingInformationProps> = ({
+	handleClick,
+	data,
+	id,
+}) => {
 	const [investorBankInfo, setInvestorBankInfo] = useState<any>(data);
 	const [showInvestorBankInfo, setShowInvestorBankInfo] =
 		useState<boolean>(false);

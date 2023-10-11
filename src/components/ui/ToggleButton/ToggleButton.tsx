@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { Icon } from "@/components/ui/Icon";
-import { ICONS } from "@/components/ui/Icon";
+import { Icon, ICONS } from "@/components/ui/Icon";
 
 interface AvatarProps {
 	checked: boolean;

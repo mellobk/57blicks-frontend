@@ -1,4 +1,4 @@
-import {type FC, useEffect, useState} from "react";
+import { type FC, useEffect, useState } from "react";
 import { Loading } from "@/components/ui/Loading";
 import { Icon } from "@/components/ui/Icon";
 
@@ -10,9 +10,9 @@ interface Props {
 export const DocumentPreview: FC<Props> = ({ isLoading, url }) => {
 	const [showPreview, setShowPreview] = useState(false);
 
-  useEffect(() => {
-    setShowPreview(false);
-  }, [url])
+	useEffect(() => {
+		setShowPreview(false);
+	}, [url]);
 
 	return isLoading ? (
 		<Loading />

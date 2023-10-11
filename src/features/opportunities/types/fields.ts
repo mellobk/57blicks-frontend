@@ -9,7 +9,7 @@ export type Opportunity = {
 	additionalInformation: string;
 	assetValue: string;
 	dkcRepeatBorrower: string;
-  documentS3Path: string;
+	documentS3Path: string;
 	googleDriveLink: string;
 	image: any;
 	investmentBorrower: string;

@@ -1,5 +1,4 @@
-import type React from "react";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { Icon } from "@/components/ui/Icon";
 import { dateFormat } from "@/utils/formats";
@@ -9,7 +8,7 @@ interface LastLoginProps {
 	data: UserActivity;
 }
 
-const LastLogin: React.FC<LastLoginProps> = ({ data }) => {
+const LastLogin: FC<LastLoginProps> = ({ data }) => {
 	const [lastLogin, setLastLogin] = useState<string | null>(null);
 
 	useEffect(() => {

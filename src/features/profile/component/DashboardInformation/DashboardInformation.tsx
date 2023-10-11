@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { User } from "@/features/manage-user/types/api";
 import { userBasicInformation } from "@/utils/constant";
 import { getLocalStorage } from "@/utils/local-storage";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { PasswordInformation } from "../PasswordInformation/PasswordInformation";
 import { GeneralInformation } from "../GeneralInformation/GeneralInformation";
 
-export const DashboardInformation: React.FC = () => {
+export const DashboardInformation: FC = () => {
 	const [userData, setUserData] = useState<User>({});
 
 	useEffect(() => {

@@ -1,5 +1,4 @@
-/* eslint-disable no-use-before-define */
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { CalendarModal } from "@/components/ui/CalendarModal/CalendarModal";
 import { Icon } from "@/components/ui/Icon";
@@ -15,7 +14,8 @@ interface UserActivityProps {
 	deleteUser?: (id: string) => void;
 	enableUser?: (id: string) => void;
 }
-const UserActivity: React.FC<UserActivityProps> = ({
+
+const UserActivity: FC<UserActivityProps> = ({
 	user,
 	deleteUser,
 	enableUser,
