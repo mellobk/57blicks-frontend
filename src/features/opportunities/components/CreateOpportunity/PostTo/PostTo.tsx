@@ -82,13 +82,16 @@ export const PostTo: FC<Props> = ({
 		);
 
 	const onPost = (): void => {
-		const formData = form as Opportunity;
+		const formatData = {
+			...form,
+			documentS3Path: "opportunities/9bfadef3-10cd-457d-a120-c5030e5b8288.pdf",
+		} as Opportunity;
 
 		setValue(
 			"documentS3Path",
-			"opportunities/aaa52541-143e-4e6d-a7e2-a5706c85bd89.pdf"
+			"opportunities/9bfadef3-10cd-457d-a120-c5030e5b8288.pdf"
 		);
-		mutate(formData);
+		createOpportunityMutation.mutate(formatData);
 	};
 
 	const openNote = (investor: Investor) => {
