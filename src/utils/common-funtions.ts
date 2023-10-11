@@ -48,8 +48,6 @@ export const validateDate = (date: string): boolean => {
 	const dateInMillie = dateObject.getTime();
 	const nowInMillie = now.getTime();
 
-	if (dateInMillie < nowInMillie) {
-		return true;
-	}
-	return false;
+	return dateInMillie < nowInMillie;
+
 };
