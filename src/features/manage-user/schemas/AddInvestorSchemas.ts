@@ -1,21 +1,16 @@
 import * as z from "zod";
+import { errorMessages } from "@/utils/error-messages.ts";
 import { addInvestorFields } from "../utils/input-fields";
 
 export const AddInvestorSchemas = z.object({
-	[addInvestorFields?.firstName]: z
-		.string()
-		.min(1, { message: "Required field" }),
-	[addInvestorFields?.lastName]: z
-		.string()
-		.min(1, { message: "Required field" }),
+	[addInvestorFields?.firstName]: z.string().nonempty(errorMessages.required),
+	[addInvestorFields?.lastName]: z.string().nonempty(errorMessages.required),
 	[addInvestorFields?.email]: z
 		.string()
 		.email()
-		.min(1, { message: "Required field" }),
+		.nonempty(errorMessages.required),
 	[addInvestorFields?.entityName || ""]: z.string().optional(),
-	[addInvestorFields?.phoneNumber]: z
-		.string()
-		.min(1, { message: "Required field" }),
+	[addInvestorFields?.phoneNumber]: z.string().nonempty(errorMessages.required),
 	[addInvestorFields?.einSsn || "einSsn"]: z.string(),
 	[addInvestorFields?.zip || "zip"]: z.string(),
 	[addInvestorFields?.mailingAddress || "streetAddress"]: z.string().optional(),

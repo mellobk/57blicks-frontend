@@ -10,17 +10,14 @@ export const OpportunitySchema = z.object({
 	assetValue: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(12, errorMessages.maxLength),
-	dkcRepeatBorrower: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(50, errorMessages.maxLength),
+		.max(15, errorMessages.maxLength),
+	dkcRepeatBorrower: z.string().nonempty(errorMessages.required),
 	documentS3Path: z.string().optional(),
 	googleDriveLink: z
 		.string()
 		.nonempty(errorMessages.required)
-		.url()
-		.max(200, errorMessages.maxLength),
+		.max(255, errorMessages.maxLength)
+		.url(),
 	image: z
 		.any()
 		.refine((files) => files?.length == 1, errorMessages.required)
@@ -46,7 +43,7 @@ export const OpportunitySchema = z.object({
 	investmentMonthlyInterestedOfferedToParticipant: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(4, errorMessages.maxLength),
+		.max(5, errorMessages.maxLength),
 	investmentPermanentPenalty: z
 		.string()
 		.nonempty(errorMessages.required)
@@ -59,7 +56,7 @@ export const OpportunitySchema = z.object({
 	loanAmount: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(12, errorMessages.maxLength),
+		.max(15, errorMessages.maxLength),
 	loanTerm: z
 		.string()
 		.nonempty(errorMessages.required)

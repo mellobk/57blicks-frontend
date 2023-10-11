@@ -1,18 +1,19 @@
 import * as z from "zod";
+import { errorMessages } from "@/utils/error-messages.ts";
 import { generalInformationFields } from "../input-fields";
 
 export const generalInformationSchema = z.object({
 	[generalInformationFields?.email]: z
 		.string()
-		.min(1, { message: "Required field" }),
+		.nonempty(errorMessages.required),
 	[generalInformationFields?.companyName]: z.string(),
 	[generalInformationFields?.firstName]: z
 		.string()
-		.min(1, { message: "Required field" }),
+		.nonempty(errorMessages.required),
 	[generalInformationFields?.lastName]: z
 		.string()
-		.min(1, { message: "Required field" }),
+		.nonempty(errorMessages.required),
 	[generalInformationFields?.phoneNumber]: z
 		.string()
-		.min(1, { message: "Required field" }),
+		.nonempty(errorMessages.required),
 });

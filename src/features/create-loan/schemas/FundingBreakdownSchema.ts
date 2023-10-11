@@ -5,26 +5,26 @@ export const FundingBreakdownSchema = z.object({
 	amount: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(15, { message: errorMessages.maxLength }),
+		.max(15, errorMessages.maxLength),
 	investorId: z
 		.string()
-		.max(100, { message: errorMessages.maxLength })
+		.max(100, errorMessages.maxLength)
 		.optional(),
 	lenderName: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(100, { message: errorMessages.maxLength }),
+		.max(100, errorMessages.maxLength),
 	prorated: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(15, { message: errorMessages.maxLength }),
+		.max(15, errorMessages.maxLength),
 	rate: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(5, { message: errorMessages.maxLength }),
+		.max(5, errorMessages.maxLength),
 	regular: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(15, { message: errorMessages.maxLength }),
-	type: z.string().max(100, { message: errorMessages.maxLength }).optional(),
+		.max(15, errorMessages.maxLength),
+	type: z.string().max(100, errorMessages.maxLength).optional(),
 });
