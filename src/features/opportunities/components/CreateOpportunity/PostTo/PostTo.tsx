@@ -9,7 +9,7 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
+import { IconButton } from "@/components/ui/IconButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
@@ -218,15 +218,12 @@ export const PostTo: FC<Props> = ({
 
 							<div className="flex flex-row gap-2">
 								<SearchBar setValue={setSearchValue} value={searchValue} />
-								<Button
-									className={`${
-										selectedInvestor ? "hidden" : ""
-									} rounded-3xl pl-3 pr-1 h-[34px] bg-gray-200`}
-									icon={<Icon name="wrong" color="#0E2130" width="12" />}
-									onClick={() => {
-										setOpenModal(false);
-									}}
-									type="button"
+								<IconButton
+									className={selectedInvestor ? "hidden" : ""}
+									color="#0E2130"
+									name="wrong"
+									onClick={() => setOpenModal(false)}
+									width="12"
 								/>
 							</div>
 						</div>
@@ -331,21 +328,19 @@ export const PostTo: FC<Props> = ({
 								/>
 
 								<div className="flex flex-row gap-2">
-									<Button
-										className="rounded-3xl pl-3 pr-1 h-[34px] bg-gray-1300"
-										icon={<Icon name="arrowLeft" color="#FBFEFF" width="12" />}
-										onClick={() => {
-											setSelectedInvestor(null);
-										}}
-										type="button"
+									<IconButton
+										bgColor="bg-gray-1300"
+										color="#FBFEFF"
+										name="arrowLeft"
+										onClick={() => setSelectedInvestor(null)}
+										width="12"
 									/>
-									<Button
-										className="rounded-3xl pl-3 pr-1 h-[34px] bg-gray-1300"
-										icon={<Icon name="wrong" color="#FBFEFF" width="12" />}
-										onClick={() => {
-											setOpenModal(false);
-										}}
-										type="button"
+									<IconButton
+										bgColor="bg-gray-1300"
+										color="#FBFEFF"
+										name="wrong"
+										onClick={() => setOpenModal(false)}
+										width="12"
 									/>
 								</div>
 							</div>
