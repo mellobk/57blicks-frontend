@@ -106,6 +106,7 @@ export const GeneralInformation: React.FC = () => {
 					</div>{" "}
 					<Button
 						buttonText="Save"
+						variant={"gray"}
 						className="py-1 px-[10px] bg-gray-250 text-white"
 					/>
 				</div>

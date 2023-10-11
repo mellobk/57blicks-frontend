@@ -1,22 +1,25 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable unicorn/consistent-function-scoping */
 import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import moment from "moment/moment";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { Button } from "@/components/ui/Button";
-import { SuccessModal } from "@/components/ui/SuccessModal";
-import LoansService from "@/features/create-loan/api/loans";
+
 import { AddParticipant } from "@/features/create-loan/components/AddParticipant/AddParticipant";
 import { BankingInformation } from "@/features/create-loan/components/BankingInformation/BankingInformation";
 import { BorrowerInformation } from "@/features/create-loan/components/BorrowerInformation/BorrowerInformation";
+import { Button } from "@/components/ui/Button";
 import { FundingBreakdown } from "@/features/create-loan/components/FundingBreakdown/FundingBreakdown";
+import type { Loan } from "@/features/create-loan/types/fields";
 import { LoanInformation } from "@/features/create-loan/components/LoanInformation/LoanInformation";
+import { LoanSchema } from "@/features/create-loan/schemas/LoanSchema";
+import LoansService from "../../api/loans";
 import { MultipleCollateral } from "@/features/create-loan/components/MultipleCollateral/MultipleCollateral";
 import { SelectLender } from "@/features/create-loan/components/SelectLender/SelectLender";
-import { LoanSchema } from "@/features/create-loan/schemas/LoanSchema";
-import { Loan } from "@/features/create-loan/types/fields";
+import { SuccessModal } from "@/components/ui/SuccessModal";
 import { defaultValues } from "@/features/create-loan/utils/values";
+import moment from "moment/moment";
 import { unFormatPhone } from "@/utils/common-funtions";
+import { useMutation } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const CreateLoan: FC = () => {
 	const [openLenderModal, setOpenLenderModal] = useState<boolean>(false);

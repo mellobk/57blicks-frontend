@@ -1,16 +1,24 @@
-import { Input } from "@/components/forms/Input";
-import { Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/forms/Input";
 import { LEDGER_OPTIONS } from "../../utils/constant";
+import { Select } from "@/components/forms/Select";
+import { useState } from "react";
 
 interface EnableInvestorProps {
 	id?: string;
-	handleConfirm?: () => void;
+	handleConfirm: (
+		typeOfPayment: string,
+		typeOfPaymentDescription: string
+	) => void;
 }
 
 export const TypeOfPayment: React.FC<EnableInvestorProps> = ({
 	handleConfirm,
 }) => {
+	const [typeOfPayment, setTypeOfPayment] = useState<string>("");
+	const [typeOfPaymentDescription, setTypeOfPaymentDescription] =
+		useState<string>("");
+
 	return (
 		<div className="flex  flex-col justify-between w-full h-full gap-10 mt-9">
 			<div className="flex items-center gap-8 justify-center flex-col w-full">
@@ -19,6 +27,10 @@ export const TypeOfPayment: React.FC<EnableInvestorProps> = ({
 						label="Type of Payment"
 						placeholder="Type of Payment"
 						options={LEDGER_OPTIONS}
+						onChange={(event): void => {
+							setTypeOfPayment(event.target.value as string);
+							setTypeOfPaymentDescription(event.target.value as string);
+						}}
 					/>
 				</div>
 
@@ -30,6 +42,10 @@ export const TypeOfPayment: React.FC<EnableInvestorProps> = ({
 					<Input
 						label="Custom Type of Payment"
 						placeholder="Enter Custom Type of Payment"
+						onChange={(event): void => {
+							setTypeOfPayment("Custom");
+							setTypeOfPaymentDescription(event.target.value);
+						}}
 					/>
 				</div>
 			</div>
@@ -38,9 +54,7 @@ export const TypeOfPayment: React.FC<EnableInvestorProps> = ({
 				className={`bg-primary-500`}
 				buttonText="Confirm"
 				onClick={(): void => {
-					if (handleConfirm) {
-						handleConfirm();
-					}
+					handleConfirm(typeOfPayment, typeOfPaymentDescription);
 				}}
 			/>
 		</div>

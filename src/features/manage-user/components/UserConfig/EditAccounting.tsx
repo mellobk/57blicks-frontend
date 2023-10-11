@@ -119,6 +119,7 @@ export const EditAccounting: React.FC<EditAccountingProps> = ({
 					</div>
 					<Button
 						buttonText="Save"
+						variant={"gray"}
 						className="absolute top-[25px] right-[102px] py-[3px] px-[10px] bg-gray-250 text-white rounded-3xl"
 					/>
 				</div>

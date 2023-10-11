@@ -314,6 +314,7 @@ export const EditInvestor: React.FC<EditInvestorProps> = ({
 
 					<Button
 						buttonText="Save"
+						variant={"gray"}
 						className={`absolute top-[25px] ${
 							investor?.user?.isActive ? "right-[103px]" : "right-[215px]"
 						} py-[3px] px-[10px] bg-gray-250 text-white rounded-3xl`}

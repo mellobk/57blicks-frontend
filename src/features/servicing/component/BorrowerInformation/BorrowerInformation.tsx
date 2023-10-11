@@ -283,7 +283,8 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 								iconColor="black"
 								loading={updateAdmin.isLoading}
 								buttonText={"Save"}
-								className={`bg-gray-200  text-black round-[15px] py-[3px] px-[10px] z-50`}
+								variant={"gray"}
+								className={``}
 							/>
 						</div>
 					</div>

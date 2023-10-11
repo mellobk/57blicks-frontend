@@ -15,6 +15,7 @@ export const CellInputDate: FC<Props> = ({
 	format,
 	name,
 	placeholder,
+	defaultValue,
 	...props
 }) => {
 	const [isEditing, setIsEditing] = useState(false);
@@ -23,6 +24,7 @@ export const CellInputDate: FC<Props> = ({
 		<Controller
 			control={control}
 			name={name}
+			defaultValue={defaultValue}
 			render={({ field: { onChange, onBlur, value } }) => (
 				<input
 					className={`h-full w-full py-3 px-4 bg-transparent ${

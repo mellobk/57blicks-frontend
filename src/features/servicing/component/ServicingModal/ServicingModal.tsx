@@ -1,12 +1,14 @@
-import { Modal } from "@/components/ui/Modal";
-import { servicingModalTabs } from "../../utils/tabs";
-import { Tabs } from "../Tabs";
-import { useEffect, useState } from "react";
-import { LoanInformation } from "../LoanInformation";
-import { BorrowerInformation } from "../BorrowerInformation";
 import "./ServicingModal.css";
+
+import { useEffect, useState } from "react";
+
+import { BorrowerInformation } from "../BorrowerInformation";
 import type { FundingBreakdown } from "../../types/api";
-import { Ledger } from "../Ledger";
+import { LedgerList } from "../Ledger";
+import { LoanInformation } from "../LoanInformation";
+import { Modal } from "@/components/ui/Modal";
+import { Tabs } from "../Tabs";
+import { servicingModalTabs } from "../../utils/tabs";
 
 interface ServicingModalProps {
 	openModal?: boolean;
@@ -23,6 +25,7 @@ export const ServicingModal: React.FC<ServicingModalProps> = ({
 }) => {
 	const [actualTabData, setActualTabData] = useState<string>("loan");
 	const [tabTitle, setTabTitle] = useState<string>("Loan Information");
+
 	const tabHandlerData = (value: string): void => {
 		setActualTabData(value);
 	};
@@ -38,7 +41,7 @@ export const ServicingModal: React.FC<ServicingModalProps> = ({
 				break;
 			}
 			case "ledger": {
-				setTabTitle("ledger");
+				setTabTitle("Ledger");
 				break;
 			}
 			case "funding": {
@@ -83,9 +86,7 @@ export const ServicingModal: React.FC<ServicingModalProps> = ({
 						handleRefreshData={handleRefreshData}
 					/>
 				)}
-				{tabTitle === "ledger" && (
-					<Ledger data={data} handleRefreshData={handleRefreshData} />
-				)}
+				{tabTitle === "Ledger" && data && <LedgerList loan={data.loan.id} />}
 			</Modal>
 		</div>
 	);

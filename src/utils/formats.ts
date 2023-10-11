@@ -1,7 +1,21 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import moment from "moment";
 
-export const dateFormat = (inputDate: string) => {
+export const dateFormat = (inputDate: string): string => {
 	const formattedDate = moment(inputDate, "YYYY-MM-DD").format("MMM DD, YYYY");
+
+	if (!formattedDate || formattedDate === "Invalid date") {
+		return "Invalid date format";
+	}
+
+	return formattedDate;
+};
+
+export const dateWithFormat = (
+	inputDate: string | Date,
+	format: string
+): string => {
+	const formattedDate = moment(inputDate, "YYYY-MM-DD").format(format);
 
 	if (!formattedDate || formattedDate === "Invalid date") {
 		return "Invalid date format";

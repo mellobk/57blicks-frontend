@@ -108,6 +108,7 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 					<Button
 						buttonText="Total Trust Account: $406,500.00"
 						className="px-4 py-2 bg-gold-500/[.12] rounded-2xl"
+						variant={"info"}
 						deepClassName="font-inter text-sm text-gold-500 font-semibold leading-[17px] tracking-[-0.7px]"
 						icon={<Icon color="#C79E63" name="moneyBag" width="16" />}
 					/>

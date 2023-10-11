@@ -73,6 +73,7 @@ export const ResetPassword: FC = () => {
 									<div className="flex flex-col gap-1">
 										<Button
 											buttonText="Continue"
+											size={"large"}
 											className={`${
 												isValid ? "bg-primary-500" : "bg-gray-300"
 											}`}
@@ -89,6 +90,7 @@ export const ResetPassword: FC = () => {
 				<Button
 					buttonText="Back"
 					className="bg-transparent text-black w-full"
+					size={"large"}
 					onClick={backTo}
 				/>
 			</div>

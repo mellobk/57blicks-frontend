@@ -30,6 +30,7 @@ export default {
 					DEFAULT: "#C79E63",
 				},
 				red: {
+					100: "#F2D7DE",
 					200: "#FCD5DE",
 					300: "#F04A4A",
 					400: "#FE1F4C",

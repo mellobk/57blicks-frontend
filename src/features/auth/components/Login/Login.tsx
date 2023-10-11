@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -109,6 +110,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 						<Button
 							type="submit"
 							buttonText="Login"
+							size={"large"}
 							className="bg-primary-500"
 						/>
 					</div>

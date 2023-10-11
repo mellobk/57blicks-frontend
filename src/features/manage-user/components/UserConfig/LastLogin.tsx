@@ -1,9 +1,9 @@
-import type React from "react";
 import { useEffect, useState } from "react";
 
 import { Icon } from "@/components/ui/Icon";
-import { dateFormat } from "@/utils/formats";
+import type React from "react";
 import type { UserActivity } from "../../types/logs";
+import { dateFormat } from "@/utils/formats";
 
 interface LastLoginProps {
 	data: UserActivity;
