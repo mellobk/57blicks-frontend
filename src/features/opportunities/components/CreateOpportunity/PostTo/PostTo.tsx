@@ -60,12 +60,7 @@ export const PostTo: FC<Props> = ({
 		{ enabled: openModal }
 	);
 
-	const {
-		isError,
-		isSuccess,
-		mutate,
-		reset: resetMutation,
-	} = useMutation((data: Opportunity) => {
+	const createOpportunityMutation = useMutation((data: Opportunity) => {
 		return OpportunitiesService.createOpportunity(data);
 	});
 
@@ -185,19 +180,19 @@ export const PostTo: FC<Props> = ({
 	};
 
 	useEffect(() => {
-		if (isSuccess) {
+		if (createOpportunityMutation.isSuccess) {
 			reset();
-			resetMutation();
+			createOpportunityMutation.reset();
 			setOpenModal(false);
 			setOpenSuccessModal(true);
 		}
-	}, [isSuccess]);
+	}, [createOpportunityMutation.isSuccess]);
 
 	useEffect(() => {
-		if (isError) {
-			resetMutation();
+		if (createOpportunityMutation.isError) {
+			createOpportunityMutation.reset();
 		}
-	}, [isError]);
+	}, [createOpportunityMutation.isError]);
 
 	return (
 		openModal && (
@@ -206,7 +201,7 @@ export const PostTo: FC<Props> = ({
 				<div
 					className={`grid ${
 						selectedInvestor ? "grid-cols-2 w-[900px]" : "grid-cols-1 w-[450px]"
-					} h-[500px] relative shadow-lg z-50`}
+					} relative shadow-lg z-50`}
 				>
 					<div
 						className={`${
@@ -238,7 +233,7 @@ export const PostTo: FC<Props> = ({
 										All SMS
 									</button>
 								</div>
-								<div className="grid grid-cols-1 divide-y divide-gray-200 overflow-y-auto">
+								<div className="flex flex-col divide-y divide-gray-200 h-[300px] overflow-y-auto">
 									{investorsQuery.data?.map((investor, index) => {
 										const opportunityInvestor = investorsNotifications.find(
 											(opportunityInvestor) =>
