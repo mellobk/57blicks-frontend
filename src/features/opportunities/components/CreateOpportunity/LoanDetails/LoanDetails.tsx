@@ -73,15 +73,14 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 			wrapperClassName="mt-6"
 			required
 		/>
-		<Input
-			error={errors?.investmentMonthlyInterestedOfferedToParticipant?.message}
-			label="Investment Monthly Interested Offered to Participant"
-			min={0}
-			placeholder="Enter Investment Monthly Interested Offered to Participant"
-			register={register("investmentMonthlyInterestedOfferedToParticipant")}
-			type="number"
-			wrapperClassName="mt-6"
-			required
-		/>
+    <FormatInput
+      control={control}
+      error={errors?.investmentMonthlyInterestedOfferedToParticipant?.message}
+      format="percentage"
+      label="Investment Monthly Interested Offered to Participant"
+      name="investmentMonthlyInterestedOfferedToParticipant"
+      wrapperClassName="mt-6"
+      required
+    />
 	</div>
 );

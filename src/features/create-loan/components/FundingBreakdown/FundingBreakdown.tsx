@@ -154,7 +154,7 @@ export const FundingBreakdown: FC<Props> = ({
 	];
 
 	function canAddParticipant() {
-		const lender = fundingBreakdown[0]?.lenderId === LENDERS[0]?.code;
+		const lender = fundingBreakdown[0]?.investorId === LENDERS[0]?.code;
 
 		return lender && participationBreakdown.length < 4;
 	}

@@ -20,7 +20,7 @@ export const OpportunitySchema = z.object({
 		.string()
 		.nonempty(errorMessages.required)
 		.url()
-		.max(50, errorMessages.maxLength),
+		.max(200, errorMessages.maxLength),
 	image: z
 		.any()
 		.refine((files) => files?.length == 1, errorMessages.required)
@@ -42,7 +42,7 @@ export const OpportunitySchema = z.object({
 	investmentCollateral: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(50, errorMessages.maxLength),
+		.max(100, errorMessages.maxLength),
 	investmentMonthlyInterestedOfferedToParticipant: z
 		.string()
 		.nonempty(errorMessages.required)
@@ -67,9 +67,9 @@ export const OpportunitySchema = z.object({
 	loanToValue: z.string().nonempty(errorMessages.required),
 	loanType: z.string().nonempty(errorMessages.required),
 	participantOpportunities: z.object({
-		"99%": z.string(),
-		"75%": z.string(),
-		"50%": z.string(),
+		"99%": z.string().optional(),
+		"75%": z.string().optional(),
+		"50%": z.string().optional(),
 	}),
 	postTitle: z.string().max(50, errorMessages.maxLength),
 });

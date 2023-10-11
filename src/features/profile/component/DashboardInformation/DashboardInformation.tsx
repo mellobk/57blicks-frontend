@@ -10,7 +10,7 @@ export const DashboardInformation: React.FC = () => {
 	const [userData, setUserData] = useState<User>({});
 
 	useEffect(() => {
-		const userInformation = JSON.parse(getLocalStorage(userBasicInformation));
+		const userInformation = JSON?.parse(getLocalStorage(userBasicInformation));
 		setUserData(userInformation as User);
 	}, []);
 

@@ -1,9 +1,9 @@
 export type Borrower = {
-	accountNumber: string;
-	accountType: string;
-	bankingName: string;
+	accountNumber?: string;
+	accountType?: string;
+	bankingName?: string;
 	llc: string;
-	routingNumber: string;
+	routingNumber?: string;
 	ssnEin: string;
 	user: User;
 };
@@ -18,9 +18,9 @@ export type Collateral = {
 
 export type FundingBreakdown = {
 	amount: string;
-	lenderId?: string;
-  lenderName: string;
-  prorated: string;
+	investorId?: string;
+	lenderName: string;
+	prorated: string;
 	rate: string;
 	regular: string;
 };

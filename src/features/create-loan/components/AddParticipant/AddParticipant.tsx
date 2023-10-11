@@ -21,25 +21,25 @@ export const AddParticipant: FC<Props> = ({
 }) => {
 	const [selectedParticipant, setSelectedParticipant] = useState<string>();
 
-	const investorQuery = useQuery(
-		["investor-query"],
+	const investorsQuery = useQuery(
+		["investors-query"],
 		() => InvestorsService.getInvestors(),
 		{ enabled: openModal }
 	);
 
 	const addParticipant = () => {
-		const participant = investorQuery?.data?.find(
+		const participant = investorsQuery?.data?.find(
 			(participant) => participant.id === selectedParticipant
 		);
 
 		if (participant) {
 			append({
 				amount: "",
-				lenderId: participant.id,
+				investorId: participant.id,
 				lenderName: nameFormat(
 					`${participant.user?.firstName} ${participant.user?.lastName}`
 				),
-        prorated: "0",
+				prorated: "0",
 				rate: "",
 				regular: "0",
 			});
@@ -58,7 +58,7 @@ export const AddParticipant: FC<Props> = ({
 				className="mt-6"
 				label="Participant"
 				onChange={(e) => setSelectedParticipant(e.target.value)}
-				options={investorQuery?.data?.map(({ id, user }) => ({
+				options={investorsQuery?.data?.map(({ id, user }) => ({
 					code: id,
 					name: nameFormat(`${user?.firstName} ${user?.lastName}`),
 				}))}

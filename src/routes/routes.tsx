@@ -2,8 +2,12 @@ import type { ComponentType, ReactElement, ReactNode } from "react";
 import { Route } from "@tanstack/router";
 import { rootRoute } from "./RootRoute";
 import { getLocalStorage, removeLocalStorage } from "@/utils/local-storage";
-import { accessToken } from "@/utils/constant";
+import { accessToken, group } from "@/utils/constant";
 import { signOut } from "@/lib/cognito";
+import {
+	awsRouterPermission,
+	investorRouterPermission,
+} from "@/utils/router-funtions";
 
 interface Props {
 	path: string;
@@ -35,11 +39,46 @@ export const AuthenticatedRoute = (routes: Array<Props>) => {
 			path,
 			getParentRoute: (): typeof rootRoute => rootRoute,
 			component: (): ReactElement => {
+				const cognitoGroup = getLocalStorage(group)
+					? JSON?.parse(getLocalStorage(group))
+					: "";
 				if (!getLocalStorage(accessToken)) {
 					signOut();
 					removeLocalStorage(accessToken);
 					window.location.href = "/login";
 				}
+
+				awsRouterPermission(cognitoGroup as string);
+
+				return Layout ? (
+					<Layout>
+						<Page />
+					</Layout>
+				) : (
+					<Page />
+				);
+			},
+		});
+	});
+};
+
+export const InvestorRoute = (routes: Array<Props>) => {
+	return routes.map(({ page: Page, layout: Layout, path }) => {
+		return new Route({
+			path,
+			getParentRoute: (): typeof rootRoute => rootRoute,
+			component: (): ReactElement => {
+				if (!getLocalStorage(accessToken)) {
+					signOut();
+					removeLocalStorage(accessToken);
+					window.location.href = "/login";
+				}
+
+				const cognitoGroup = getLocalStorage(group)
+					? JSON?.parse(getLocalStorage(group))
+					: "";
+
+				investorRouterPermission(cognitoGroup as string);
 
 				return Layout ? (
 					<Layout>

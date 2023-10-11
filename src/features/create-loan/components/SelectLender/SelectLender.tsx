@@ -19,7 +19,7 @@ export const SelectLender: FC<Props> = ({
 	setOpenModal,
 	setValue,
 }) => {
-	const [selectedLender, setSelectedLender] = useState(fields[0]?.lenderId);
+	const [selectedLender, setSelectedLender] = useState(fields[0]?.investorId);
 
 	const selectLender = () => {
 		const lender = LENDERS.find(
@@ -27,8 +27,8 @@ export const SelectLender: FC<Props> = ({
 		);
 
 		if (lender) {
-			setValue("fundingBreakdown.0.lenderName", lender.name);
-			setValue("fundingBreakdown.0.lenderId", lender.code);
+      setValue("fundingBreakdown.0.lenderName", lender.name);
+			setValue("fundingBreakdown.0.investorId", lender.code);
 			setValue("participationBreakdown", []);
 			setOpenModal(false);
 		}

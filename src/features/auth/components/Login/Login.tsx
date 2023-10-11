@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -18,7 +19,7 @@ import { useNavigate } from "@tanstack/router";
 import { loginRoutesNames } from "../../routes/LoginRouter";
 import { getSession } from "@/lib/cognito";
 import { sendToLocalStorage } from "@/utils/local-storage.ts";
-import { accessToken, sub } from "@/utils/constant.ts";
+import { accessToken, group, sub } from "@/utils/constant.ts";
 import { useMutation } from "@tanstack/react-query";
 import ManageLogService from "@/features/manage-user/api/logs";
 
@@ -53,10 +54,16 @@ export const LoginForm: FC<LoginFormProps> = () => {
 		try {
 			await signInWithEmail(data.email, data.password, "");
 			const sessionData: any = await getSession();
+			const groupAws = JSON.stringify(
+				sessionData?.accessToken?.payload["cognito:groups"][0] || "admin"
+			);
+			sendToLocalStorage(group, groupAws);
 			sendToLocalStorage(accessToken, `${sessionData?.idToken?.jwtToken}`);
 			sendToLocalStorage(sub, `${sessionData?.idToken?.payload?.sub}`);
 			createLoginLog.mutate();
-			window.location.href = "/servicing/dkc-llc";
+
+			window.location.href =
+				groupAws === "investor" ? "/investors" : "/manage-users/admins";
 		} catch (error) {
 			console.log(error);
 			setLoginError("Login failed. Please check your credentials.");

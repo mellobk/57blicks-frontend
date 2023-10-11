@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import type React from "react";
 import type { UserActivity } from "../../types/logs";
+import { dateFormat } from "@/utils/formats";
 
 interface LastLoginProps {
 	data: UserActivity;
@@ -28,7 +29,7 @@ const LastLogin: React.FC<LastLoginProps> = ({ data }) => {
 				Last login
 			</div>
 			<div className="absolute top-16 text-2xl font-semibold z-40 ">
-				{lastLogin ?? "There is no activity to report"}
+				{lastLogin ? dateFormat(lastLogin) : "There is no activity to report"}
 			</div>
 		</div>
 	);

@@ -1,3 +1,14 @@
+interface Role {
+	id: string;
+	name: string;
+	description: string;
+	createdAt: string; // You can also use 'Date' if it's converted to a Date object in your application
+	updatedAt: string; // Same note applies here
+	createdBy: string | null;
+	updatedBy: string | null;
+	deletedAt: string | null; // If this represents a date, you can use 'Date' type
+}
+
 export interface User {
 	id?: string;
 	createdAt?: Date;
@@ -12,6 +23,7 @@ export interface User {
 	company?: string;
 	isActive?: boolean;
 	companyName?: string;
+	role?: Role;
 }
 
 export interface Investor {
@@ -36,4 +48,42 @@ export interface IErrorResponse {
 			message: string;
 		};
 	};
+}
+
+export interface Permissions {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	deletedAt: null;
+	name: string;
+	description: string;
+	inviteAdmins: boolean;
+	inviteAccounters: boolean;
+	inviteInvestors: boolean;
+	viewInvestors: boolean;
+	viewAdmins: boolean;
+	viewAccounts: boolean;
+	editAdmins: boolean;
+	editInvestors: boolean;
+	editAccounting: boolean;
+	editBorrowers: boolean;
+	disableUsers: boolean;
+	approveUsersModifications: boolean;
+	grantPermissions: boolean;
+	createLoan: boolean;
+	viewLoans: boolean;
+	inputTransactionsLedger: boolean;
+	approveNewLoans: boolean;
+	approveLoanChanges: boolean;
+	sendInvoice: boolean;
+	loanOverview: boolean;
+	createOpportunity: boolean;
+	viewOpportunities: boolean;
+	editOpportunities: boolean;
+	sendOpportunities: boolean;
+	downloadOpportunities: boolean;
+	approveOpportunities: boolean;
+	reporting: boolean;
+	viewPqrs: boolean;
+	editPqrs: boolean;
 }

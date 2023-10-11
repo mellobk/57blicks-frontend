@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import type { FieldValues, SubmitHandler } from "react-hook-form";
+import type { FieldValues } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
@@ -32,7 +33,7 @@ export const AddAdmin: React.FC<AddAdminProps> = ({ handleSuccess }) => {
 		return ManageUsersService.createNewAdmin(data);
 	});
 
-	const onSubmit: SubmitHandler<FieldValues> = (data: User): void => {
+	const onSubmit: any = (data: User): void => {
 		const phoneNumber = unFormatPhone(data?.phoneNumber || "");
 
 		const formatData = {

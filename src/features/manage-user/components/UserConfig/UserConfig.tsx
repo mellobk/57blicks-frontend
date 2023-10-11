@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-use-before-define */
 
 import type { Investor, User } from "../../types/api";
@@ -14,11 +15,12 @@ import { getLocalStorage } from "@/utils/local-storage";
 import { useQuery } from "@tanstack/react-query";
 import { userBasicInformation } from "@/utils/constant";
 import { userTabs } from "@/features/servicing/utils/tabs";
+import { PermissionsAdmin } from "./PermissionsAdmin";
 
 interface UserConfigProps {
 	user?: User;
 	investor?: Investor;
-	setUser: (user: User | Investor | null) => void;
+	setUser?: (user: any) => void;
 	type: "admin" | "investor" | "accounting";
 	callBack: () => void;
 	deleteUser: (id: string) => void;
@@ -40,7 +42,7 @@ const UserConfig: React.FC<UserConfigProps> = ({
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [role, setRole] = useState<string>();
 	const userData = getLocalStorage(userBasicInformation);
-	const parseData = JSON.parse(userData) as User;
+	const parseData = JSON.parse(userData || "") as User;
 
 	const dkcRoleQuery = useQuery(
 		["dkc-role-by-id-query"],
@@ -55,7 +57,9 @@ const UserConfig: React.FC<UserConfigProps> = ({
 		if (setOpenActivityModal) {
 			setOpenActivityModal(true);
 		}
-		setUser(null);
+		if (setUser) {
+			setUser(null);
+		}
 	};
 
 	const tabHandlerData = (value: string): void => {
@@ -84,8 +88,11 @@ const UserConfig: React.FC<UserConfigProps> = ({
 	}, [user]);
 
 	const handleSetUser = (user: User | Investor): void => {
-		setUser(user);
-		setUser(null);
+		if (setUser) {
+			setUser(user);
+			setUser(null);
+		}
+
 		callBack ? callBack() : null;
 	};
 
@@ -131,7 +138,17 @@ const UserConfig: React.FC<UserConfigProps> = ({
 						enableUser={enableUser}
 					/>
 				)}
-				{actualTabData === "permission" && <></>}
+
+				{actualTabData === "permission" && user && (
+					<PermissionsAdmin user={user} deleteUser={deleteUser} />
+				)}
+				{actualTabData === "permission" && investor?.user && (
+					<PermissionsAdmin
+						user={investor.user}
+						deleteUser={deleteUser}
+						enableUser={enableUser}
+					/>
+				)}
 				{actualTabData === "edit" && (
 					<>
 						{type === "admin" && user && (
