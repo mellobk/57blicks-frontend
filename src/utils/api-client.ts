@@ -1,10 +1,10 @@
-import type { IErrorResponse } from "@/features/manage-user/types/api.ts";
-import { accessToken } from "./constant.ts";
+import type { IErrorResponse } from "@/features/manage-user/types/api";
+import { accessToken } from "./constant";
 import axios from "axios";
-import { getLocalStorage } from "./local-storage.ts";
+import { getLocalStorage } from "./local-storage";
 import sharedObject from "@/config/api-config";
 import { signOut } from "@/lib/cognito";
-import useStore from "@/stores/app-store.ts";
+import useStore from "@/stores/app-store";
 
 const store = useStore.getState();
 

@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { Name } from "@/features/opportunities/components/PastOpportunities/Name/Name";
-import type { OpportunityMin } from "@/features/opportunities/types/api.ts";
+import type { OpportunityMin } from "@/features/opportunities/types/api";
 
 interface Props {
 	data?: Array<OpportunityMin>;

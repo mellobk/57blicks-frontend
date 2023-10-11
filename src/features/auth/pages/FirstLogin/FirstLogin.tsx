@@ -6,7 +6,7 @@ import {
 	getLocalStorage,
 	removeLocalStorage,
 	sendToLocalStorage,
-} from "@/utils/local-storage.ts";
+} from "@/utils/local-storage";
 import { emailStatus, userEmail } from "../../utils/constants";
 
 export const FirstLogin: FC = () => {

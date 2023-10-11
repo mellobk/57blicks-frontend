@@ -2,9 +2,9 @@ import type { FC } from "react";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
-import { Title } from "@/components/ui/Title/Title.tsx";
-import type { Opportunity } from "@/features/opportunities/types/fields.ts";
-import { DKC_REPEAT_BORROWER } from "@/features/create-loan/utils/selects.ts";
+import { Title } from "@/components/ui/Title/Title";
+import type { Opportunity } from "@/features/opportunities/types/fields";
+import { DKC_REPEAT_BORROWER } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	control: Control<Opportunity>;

@@ -1,1 +1,1 @@
-export { CellInputDate } from "./CellInputDate.tsx";
+export { CellInputDate } from "./CellInputDate";

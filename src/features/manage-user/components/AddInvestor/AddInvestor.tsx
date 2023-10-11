@@ -5,7 +5,7 @@ import type {
 	AddInvestorFields,
 } from "../../types/fields";
 import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo";
-import { unFormatPhone } from "@/utils/common-funtions.ts";
+import { unFormatPhone } from "@/utils/common-funtions";
 import { useMutation } from "@tanstack/react-query";
 import ManageUsersService from "../../api/investors";
 import type { Investor } from "../../types/api";

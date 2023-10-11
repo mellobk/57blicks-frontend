@@ -5,16 +5,16 @@ import { Name } from "@/features/opportunities/components/PastOpportunities/Name
 import type {
 	Investment,
 	Opportunity,
-} from "@/features/opportunities/types/api.ts";
+} from "@/features/opportunities/types/api";
 import { Title } from "@/components/ui/Title";
 import { IconButton } from "@/components/ui/IconButton";
-import { Value } from "@/features/opportunities/components/PastOpportunities/Details/Value/Value.tsx";
-import { dateFormat } from "@/utils/formats.ts";
-import { Subtitle } from "@/features/opportunities/components/PastOpportunities/Subtitle/Subtitle.tsx";
+import { Value } from "@/features/opportunities/components/PastOpportunities/Details/Value/Value";
+import { dateFormat } from "@/utils/formats";
+import { Subtitle } from "@/features/opportunities/components/PastOpportunities/Subtitle/Subtitle";
 import { Table } from "@/components/ui/Table";
 import type { TableColumn } from "react-data-table-component";
 import { useMutation } from "@tanstack/react-query";
-import OpportunitiesService from "@/features/opportunities/api/opportunities.ts";
+import OpportunitiesService from "@/features/opportunities/api/opportunities";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 
 interface Props {

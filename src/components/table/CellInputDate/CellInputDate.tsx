@@ -1,6 +1,6 @@
 import { type FC, type InputHTMLAttributes, useState } from "react";
 import { type Control, Controller } from "react-hook-form";
-import { dateFormatFormat } from "@/utils/formats.ts";
+import { dateFormatFormat } from "@/utils/formats";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	control: Control<any>;

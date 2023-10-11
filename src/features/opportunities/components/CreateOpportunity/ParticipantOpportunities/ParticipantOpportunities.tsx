@@ -2,7 +2,7 @@ import type { FC } from "react";
 import type { Control, FieldErrors } from "react-hook-form";
 import { FormatInput } from "@/components/forms/FormatInput";
 import { Title } from "@/components/ui/Title";
-import type { Opportunity } from "@/features/opportunities/types/fields.ts";
+import type { Opportunity } from "@/features/opportunities/types/fields";
 
 interface Props {
 	control: Control<Opportunity>;

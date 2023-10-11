@@ -6,7 +6,7 @@ import { Loading } from "@/components/ui/Loading";
 import { Tabs } from "@/components/ui/Tabs";
 import OpportunitiesService from "@/features/opportunities/api/opportunities";
 import { Details } from "@/features/opportunities/components/PastOpportunities/Details/Details";
-import { DocumentPreview } from "@/features/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview.tsx";
+import { DocumentPreview } from "@/features/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview";
 import { List } from "@/features/opportunities/components/PastOpportunities/List/List";
 import type { OpportunityMin } from "@/features/opportunities/types/api";
 import { tabs } from "@/features/opportunities/utils/tabs";

@@ -1,4 +1,4 @@
-import { findIndex, statusSort } from "@/utils/common-funtions.ts";
+import { findIndex, statusSort } from "@/utils/common-funtions";
 import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 

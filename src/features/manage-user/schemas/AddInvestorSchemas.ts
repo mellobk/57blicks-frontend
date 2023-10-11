@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { errorMessages } from "@/utils/error-messages.ts";
+import { errorMessages } from "@/utils/error-messages";
 import { addInvestorFields } from "../utils/input-fields";
 
 export const AddInvestorSchemas = z.object({

@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { formatValue } from "@/utils/formats.ts";
+import { formatValue } from "@/utils/formats";
 
 type Props = {
 	bold?: boolean;

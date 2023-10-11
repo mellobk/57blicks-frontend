@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { errorMessages } from "@/utils/error-messages.ts";
+import { errorMessages } from "@/utils/error-messages";
 import { loginFields } from "../input-fields";
 
 export const LoginSchema = z.object({

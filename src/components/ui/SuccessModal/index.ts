@@ -1,1 +1,1 @@
-export { SuccessModal } from "./SuccessModal.tsx";
+export { SuccessModal } from "./SuccessModal";

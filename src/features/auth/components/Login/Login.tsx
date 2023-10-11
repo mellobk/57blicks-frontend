@@ -14,8 +14,8 @@ import type { LoginFields } from "../../types/validations";
 import { useNavigate } from "@tanstack/router";
 import { loginRoutesNames } from "../../routes/LoginRouter";
 import { getSession } from "@/lib/cognito";
-import { sendToLocalStorage } from "@/utils/local-storage.ts";
-import { accessToken, group, sub } from "@/utils/constant.ts";
+import { sendToLocalStorage } from "@/utils/local-storage";
+import { accessToken, group, sub } from "@/utils/constant";
 import { useMutation } from "@tanstack/react-query";
 import ManageLogService from "@/features/manage-user/api/logs";
 

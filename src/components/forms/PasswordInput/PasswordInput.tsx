@@ -11,7 +11,7 @@ import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
 import { Icon, type ICONS } from "@/components/ui/Icon";
 import type { PasswordValidations } from "@/features/auth/types/validations";
-import { inputClassName } from "@/utils/class-names.ts";
+import { inputClassName } from "@/utils/class-names";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	label: string;

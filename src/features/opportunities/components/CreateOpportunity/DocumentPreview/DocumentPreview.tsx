@@ -1,10 +1,10 @@
 import { type FC, useEffect, useState } from "react";
 import { type Control, useWatch } from "react-hook-form";
 import LogoNavy from "@/assets/images/png/LogoNavy.png";
-import { Detail } from "@/features/opportunities/components/CreateOpportunity/DocumentPreview/Detail/Detail.tsx";
-import { Subtitle } from "@/features/opportunities/components/CreateOpportunity/DocumentPreview/Subtitle/Subtitle.tsx";
-import type { Opportunity } from "@/features/opportunities/types/fields.ts";
-import { moneyFormat } from "@/utils/formats.ts";
+import { Detail } from "@/features/opportunities/components/CreateOpportunity/DocumentPreview/Detail/Detail";
+import { Subtitle } from "@/features/opportunities/components/CreateOpportunity/DocumentPreview/Subtitle/Subtitle";
+import type { Opportunity } from "@/features/opportunities/types/fields";
+import { moneyFormat } from "@/utils/formats";
 
 interface Props {
 	control: Control<Opportunity>;

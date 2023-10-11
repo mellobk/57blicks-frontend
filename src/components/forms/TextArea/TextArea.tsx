@@ -3,7 +3,7 @@ import type { UseFormRegisterReturn } from "react-hook-form";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
 import { Icon, type ICONS } from "@/components/ui/Icon";
-import { inputClassName } from "@/utils/class-names.ts";
+import { inputClassName } from "@/utils/class-names";
 
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	clickIcon?: () => void;

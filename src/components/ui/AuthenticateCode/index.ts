@@ -1,1 +1,1 @@
-export { AuthenticateCode } from "./AuthenticateCode.tsx";
+export { AuthenticateCode } from "./AuthenticateCode";

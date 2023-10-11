@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { TextArea } from "./TextArea.tsx";
+import { TextArea } from "./TextArea";
 import "../../../styles/tailwind.css";
 
 const meta: Meta<typeof TextArea> = {

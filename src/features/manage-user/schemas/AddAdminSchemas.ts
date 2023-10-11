@@ -1,6 +1,6 @@
 import * as z from "zod";
 import { addAdminFields } from "../utils/input-fields";
-import { errorMessages } from "@/utils/error-messages.ts";
+import { errorMessages } from "@/utils/error-messages";
 
 export const AddAdminSchema = z.object({
 	[addAdminFields?.firstName]: z.string().nonempty(errorMessages.required),

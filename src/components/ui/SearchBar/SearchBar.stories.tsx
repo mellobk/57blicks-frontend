@@ -1,7 +1,7 @@
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import type { Meta, StoryObj } from "@storybook/react";
-import { SearchBar } from "./SearchBar.tsx";
+import { SearchBar } from "./SearchBar";
 import "../../../styles/tailwind.css";
 
 const meta: Meta<typeof SearchBar> = {
