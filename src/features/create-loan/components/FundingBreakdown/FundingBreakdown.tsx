@@ -1,23 +1,24 @@
-import type { FC } from "react";
 import {
 	Control,
 	FieldErrors,
 	UseFieldArrayRemove,
 	useWatch,
 } from "react-hook-form";
-import { TableColumn } from "react-data-table-component";
-import { Cell } from "@/components/table/Cell";
-import { CellInput } from "@/components/table/CellInput";
-import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
-import { Title } from "@/components/ui/Title/Title";
-import { Table } from "@/components/ui/Table/Table";
-import { Footer } from "@/features/create-loan/components/FundingBreakdown/Footer/Footer";
 import {
 	FundingBreakdown as FundingBreakdownType,
 	Loan,
 } from "@/features/create-loan/types/fields";
+
+import { Button } from "@/components/ui/Button";
+import { Cell } from "@/components/table/Cell";
+import { CellInput } from "@/components/table/CellInput";
+import type { FC } from "react";
+import { Footer } from "@/features/create-loan/components/FundingBreakdown/Footer/Footer";
+import { Icon } from "@/components/ui/Icon";
 import { LENDERS } from "@/features/create-loan/utils/selects";
+import { Table } from "@/components/ui/Table/Table";
+import { TableColumn } from "react-data-table-component";
+import { Title } from "@/components/ui/Title/Title";
 
 interface Props {
 	calculateProrated: (
@@ -146,9 +147,9 @@ export const FundingBreakdown: FC<Props> = ({
 				</>
 			),
 			name: "",
-      right: true,
-      style: { padding: 0 },
-      width: "48px",
+			right: true,
+			style: { padding: 0 },
+			width: "48px",
 		},
 	];
 
@@ -163,12 +164,9 @@ export const FundingBreakdown: FC<Props> = ({
 			<div className="flex flex-row justify-between">
 				<Title text="Funding Breakdown" />
 				<Button
-					buttonText={
-						<div className="ml-2 font-inter font-semibold text-sm text-primary leading-[17px] tracking-[-0.7px]">
-							Add Participant
-						</div>
-					}
-					className="rounded-2xl px-4 h-[34px] bg-gray-200"
+					buttonText={"Add Participant"}
+					variant={"gray"}
+					className=""
 					icon={<Icon name="plus" color="#0E2130" width="12" />}
 					onClick={() => setOpenParticipantModal(true)}
 					type="button"

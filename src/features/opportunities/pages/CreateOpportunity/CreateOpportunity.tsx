@@ -1,21 +1,22 @@
-import type { FC } from "react";
-import { useEffect, useState } from "react";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+
+import { AdditionalInformation } from "@/features/opportunities/components/CreateOpportunity/AdditionalInformation/AdditionalInformation";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Button } from "@/components/ui/Button";
-import { SuccessModal } from "@/components/ui/SuccessModal";
-import { Tabs } from "@/components/ui/Tabs";
-import { AdditionalInformation } from "@/features/opportunities/components/CreateOpportunity/AdditionalInformation/AdditionalInformation";
 import { DocumentPreview } from "@/features/opportunities/components/CreateOpportunity/DocumentPreview/DocumentPreview";
+import type { FC } from "react";
 import { GeneralInformation } from "@/features/opportunities/components/CreateOpportunity/GeneralInformation/GeneralInformation";
 import { LoanDetails } from "@/features/opportunities/components/CreateOpportunity/LoanDetails/LoanDetails";
 import { NotesOnTheBorrower } from "@/features/opportunities/components/CreateOpportunity/NotesOnTheBorrower/NotesOnTheBorrower";
+import { Opportunity } from "@/features/opportunities/types/fields";
+import { OpportunitySchema } from "@/features/opportunities/schemas/OpportunitySchema";
 import { ParticipantOpportunities } from "@/features/opportunities/components/CreateOpportunity/ParticipantOpportunities/ParticipantOpportunities";
 import { PostTo } from "@/features/opportunities/components/CreateOpportunity/PostTo/PostTo";
-import { OpportunitySchema } from "@/features/opportunities/schemas/OpportunitySchema";
-import { Opportunity } from "@/features/opportunities/types/fields";
+import { SuccessModal } from "@/components/ui/SuccessModal";
+import { Tabs } from "@/components/ui/Tabs";
 import { tabs } from "@/features/opportunities/utils/tabs";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const CreateOpportunity: FC = () => {
 	const [openPostToModal, setOpenPostToModal] = useState(false);
@@ -69,7 +70,6 @@ export const CreateOpportunity: FC = () => {
 				<div>
 					<Button
 						className="rounded-2xl h-9 bg-gold-500/[.16] text-gold-500"
-						label="Post"
 						type="submit"
 					/>
 				</div>

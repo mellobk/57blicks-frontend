@@ -56,7 +56,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 			sendToLocalStorage(accessToken, `${sessionData?.idToken?.jwtToken}`);
 			sendToLocalStorage(sub, `${sessionData?.idToken?.payload?.sub}`);
 			createLoginLog.mutate();
-			window.location.href = "/manage-users/admins";
+			window.location.href = "/servicing/dkc-llc";
 		} catch (error) {
 			console.log(error);
 			setLoginError("Login failed. Please check your credentials.");
@@ -103,6 +103,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 						<Button
 							type="submit"
 							buttonText="Login"
+							size={"large"}
 							className="bg-primary-500"
 						/>
 					</div>
