@@ -1,6 +1,6 @@
-import { FC } from "react";
+import type { FC } from "react";
 import { Button } from "@/components/ui/Button";
-import { Modal, ModalProps } from "@/components/ui/Modal";
+import { Modal, type ModalProps } from "@/components/ui/Modal";
 
 interface Props extends ModalProps {
 	action: string;

@@ -1,10 +1,10 @@
 import type { FC } from "react";
-import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
 import { Title } from "@/components/ui/Title";
-import { LOAN_TYPES } from "@/features/create-loan/utils/selects.ts";
-import { Opportunity } from "@/features/opportunities/types/fields.ts";
+import { LOAN_TYPES } from "@/features/create-loan/utils/selects";
+import type { Opportunity } from "@/features/opportunities/types/fields";
 import { FormatInput } from "@/components/forms/FormatInput";
 
 interface Props {
@@ -73,14 +73,14 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 			wrapperClassName="mt-6"
 			required
 		/>
-    <FormatInput
-      control={control}
-      error={errors?.investmentMonthlyInterestedOfferedToParticipant?.message}
-      format="percentage"
-      label="Investment Monthly Interested Offered to Participant"
-      name="investmentMonthlyInterestedOfferedToParticipant"
-      wrapperClassName="mt-6"
-      required
-    />
+		<FormatInput
+			control={control}
+			error={errors?.investmentMonthlyInterestedOfferedToParticipant?.message}
+			format="percentage"
+			label="Investment Monthly Interested Offered to Participant"
+			name="investmentMonthlyInterestedOfferedToParticipant"
+			wrapperClassName="mt-6"
+			required
+		/>
 	</div>
 );

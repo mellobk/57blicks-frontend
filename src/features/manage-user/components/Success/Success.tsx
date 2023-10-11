@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
 import type { ICONS } from "@/components/ui/Icon";
+import { Icon } from "@/components/ui/Icon";
 
 interface SuccessProps {
 	title?: string;

@@ -1,24 +1,23 @@
+import type { FC } from "react";
 import {
-	Control,
-	FieldErrors,
-	UseFieldArrayRemove,
+	type Control,
+	type FieldErrors,
+	type UseFieldArrayRemove,
 	useWatch,
 } from "react-hook-form";
-import {
+import type { TableColumn } from "react-data-table-component";
+import { Cell } from "@/components/table/Cell";
+import { CellInput } from "@/components/table/CellInput";
+import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
+import { Title } from "@/components/ui/Title/Title";
+import { Table } from "@/components/ui/Table/Table";
+import { Footer } from "@/features/create-loan/components/FundingBreakdown/Footer/Footer";
+import type {
 	FundingBreakdown as FundingBreakdownType,
 	Loan,
 } from "@/features/create-loan/types/fields";
-
-import { Button } from "@/components/ui/Button";
-import { Cell } from "@/components/table/Cell";
-import { CellInput } from "@/components/table/CellInput";
-import type { FC } from "react";
-import { Footer } from "@/features/create-loan/components/FundingBreakdown/Footer/Footer";
-import { Icon } from "@/components/ui/Icon";
 import { LENDERS } from "@/features/create-loan/utils/selects";
-import { Table } from "@/components/ui/Table/Table";
-import { TableColumn } from "react-data-table-component";
-import { Title } from "@/components/ui/Title/Title";
 
 interface Props {
 	calculateProrated: (
@@ -53,14 +52,16 @@ export const FundingBreakdown: FC<Props> = ({
 		],
 	});
 
-	const columns: TableColumn<FundingBreakdownType>[] = [
+	const columns: Array<TableColumn<FundingBreakdownType>> = [
 		{
 			cell: (row, rowIndex) => {
 				if (rowIndex === 0) {
 					return (
 						<button
 							className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200"
-							onClick={() => setOpenLenderModal(true)}
+							onClick={() => {
+								setOpenLenderModal(true);
+							}}
 							type="button"
 						>
 							<div className="flex flex-row justify-between items-center">
@@ -140,7 +141,9 @@ export const FundingBreakdown: FC<Props> = ({
 						<Button
 							className="bg-white px-0 py-2 mr-2"
 							icon={<Icon name="trashBin" color="#FF0033" width="24" />}
-							onClick={() => remove(rowIndex - 3)}
+							onClick={() => {
+								remove(rowIndex - 3);
+							}}
 							type="button"
 						/>
 					)}
@@ -164,11 +167,16 @@ export const FundingBreakdown: FC<Props> = ({
 			<div className="flex flex-row justify-between">
 				<Title text="Funding Breakdown" />
 				<Button
-					buttonText={"Add Participant"}
-					variant={"gray"}
-					className=""
+					buttonText={
+						<div className="ml-2 font-inter font-semibold text-sm text-primary leading-[17px] tracking-[-0.7px]">
+							Add Participant
+						</div>
+					}
+					className="rounded-2xl px-4 h-[34px] bg-gray-200"
 					icon={<Icon name="plus" color="#0E2130" width="12" />}
-					onClick={() => setOpenParticipantModal(true)}
+					onClick={() => {
+						setOpenParticipantModal(true);
+					}}
 					type="button"
 					disabled={!canAddParticipant()}
 				/>

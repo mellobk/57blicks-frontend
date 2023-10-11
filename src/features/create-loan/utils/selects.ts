@@ -1,24 +1,24 @@
 export const ACCOUNT_TYPES = [
-  { code: "Personal Checking", name: "Personal Checking" },
-  { code: "Personal Savings", name: "Personal Savings" },
-  { code: "Business Checking", name: "Business Checking" },
-  { code: "Business Savings", name: "Business Savings" },
+	{ code: "Personal Checking", name: "Personal Checking" },
+	{ code: "Personal Savings", name: "Personal Savings" },
+	{ code: "Business Checking", name: "Business Checking" },
+	{ code: "Business Savings", name: "Business Savings" },
 ];
 
 export const ASSET_TYPES = [
-  { code: "SFR", name: "SFR" },
-  { code: "MF (4 or less)", name: "MF (4 or less)" },
-  { code: "MF (+4)", name: "MF (+4)" },
-  { code: "Duplex", name: "Duplex" },
-  { code: "Triplex", name: "Triplex" },
-  { code: "Commercial Office", name: "Commercial Office" },
-  { code: "Vacant Land", name: "Vacant Land" },
-  { code: "Manufactured/MH", name: "Manufactured/MH" },
-  { code: "Condo", name: "Condo" },
-  { code: "Townhome", name: "Townhome" },
-  { code: "Villa", name: "Villa" },
-  { code: "Commercial-Warehouse", name: "Commercial-Warehouse" },
-  { code: "Commercial-Other", name: "Commercial-Other" },
+	{ code: "SFR", name: "SFR" },
+	{ code: "MF (4 or less)", name: "MF (4 or less)" },
+	{ code: "MF (+4)", name: "MF (+4)" },
+	{ code: "Duplex", name: "Duplex" },
+	{ code: "Triplex", name: "Triplex" },
+	{ code: "Commercial Office", name: "Commercial Office" },
+	{ code: "Vacant Land", name: "Vacant Land" },
+	{ code: "Manufactured/MH", name: "Manufactured/MH" },
+	{ code: "Condo", name: "Condo" },
+	{ code: "Townhome", name: "Townhome" },
+	{ code: "Villa", name: "Villa" },
+	{ code: "Commercial-Warehouse", name: "Commercial-Warehouse" },
+	{ code: "Commercial-Other", name: "Commercial-Other" },
 ];
 
 export const LEAD_SOURCES = [

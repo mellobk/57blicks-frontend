@@ -1,6 +1,7 @@
 import { InvestorsTable } from "@/features/manage-user/components/InvestorsTable/InvestorsTable";
+import type { FC } from "react";
 
-export const Investors: React.FC = () => {
+export const Investors: FC = () => {
 	return (
 		<div className="flex flex-col items-center h-full w-full">
 			<InvestorsTable />

@@ -1,4 +1,4 @@
-import { type ForwardRefRenderFunction, type InputHTMLAttributes } from "react";
+import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
@@ -39,7 +39,7 @@ export const FileUpload: ForwardRefRenderFunction<
 			<input
 				className={`${className} pr-[30px]`}
 				type="file"
-        placeholder="Upload Image"
+				placeholder="Upload Image"
 				{...props}
 				{...register}
 			/>

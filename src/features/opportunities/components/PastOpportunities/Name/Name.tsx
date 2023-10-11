@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import PDF from "@/assets/images/png/PDF.png";
-import { Subtitle } from "@/features/opportunities/components/PastOpportunities/Subtitle/Subtitle.tsx";
+import { Subtitle } from "@/features/opportunities/components/PastOpportunities/Subtitle/Subtitle";
 
 interface Props {
 	filename: string;

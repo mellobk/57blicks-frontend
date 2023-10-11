@@ -1,13 +1,11 @@
-/* eslint-disable no-duplicate-imports */
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { InvestorInfo } from "../InvestorInfo/InvestorInfo";
 import type {
 	AddInvestorBankFields,
 	AddInvestorFields,
 } from "../../types/fields";
 import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo";
-import { unFormatPhone } from "@/utils/common-funtions.ts";
+import { unFormatPhone } from "@/utils/common-funtions";
 import { useMutation } from "@tanstack/react-query";
 import ManageUsersService from "../../api/investors";
 import type { Investor } from "../../types/api";
@@ -16,7 +14,7 @@ interface AddInvestorProps {
 	handleSuccess?: () => void;
 }
 
-export const AddInvestor: React.FC<AddInvestorProps> = ({ handleSuccess }) => {
+export const AddInvestor: FC<AddInvestorProps> = ({ handleSuccess }) => {
 	const [investorInfo, setInvestorInfo] = useState<AddInvestorFields>();
 	const [investorBankInfo, setInvestorBankInfo] =
 		useState<AddInvestorBankFields>();

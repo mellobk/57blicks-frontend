@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Button } from "@/components/ui/Button";
-import { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import type { Permissions, User } from "@/features/manage-user/types/api";
 
 import ManageUsersService from "../../api/investors";
@@ -21,7 +18,7 @@ interface PermissionsAdmin {
 	deleteUser?: (id: string) => void;
 }
 
-export const PermissionsAdmin: React.FC<PermissionsAdmin> = ({
+export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 	user,
 	deleteUser,
 	enableUser,

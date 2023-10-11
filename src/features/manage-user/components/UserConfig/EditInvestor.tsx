@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Button } from "@/components/ui/Button";
-import { type SubmitHandler, useForm, type FieldValues } from "react-hook-form";
+import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/forms/Input";
-import { useEffect } from "react";
+import { type FC, useEffect } from "react";
 import type { Investor } from "@/features/manage-user/types/api";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { Select } from "@/components/forms/Select";
@@ -27,7 +24,7 @@ interface EditInvestorProps {
 	enableUser?: (id: string) => void;
 }
 
-export const EditInvestor: React.FC<EditInvestorProps> = ({
+export const EditInvestor: FC<EditInvestorProps> = ({
 	investor,
 	role,
 	setUser,

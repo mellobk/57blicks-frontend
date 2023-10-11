@@ -1,14 +1,11 @@
-import type * as React from "react";
+import type { FC } from "react";
 
 type Props = {
 	color?: string;
 	width?: string;
 };
 
-const MenuTable: React.FC<Props> = ({
-	color = "#BBBBBB",
-	width = "48",
-}: Props) => {
+const MenuTable: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
 	return (
 		<svg
 			width={width}

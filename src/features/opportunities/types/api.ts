@@ -30,7 +30,7 @@ export interface Investor {
 export interface Investment {
 	createdAt: string;
 	id: string;
-  investor: Investor
+	investor: Investor;
 	notifyEmail: boolean;
 	notifySms: boolean;
 	status: "ACCEPTED" | "PENDING" | "REJECTED";
@@ -67,7 +67,7 @@ export interface Opportunity {
 	investmentMonthlyInterestedOfferedToParticipant: string;
 	investmentPermanentPenalty: string;
 	investmentSummary: string;
-	investments: Investment[];
+	investments: Array<Investment>;
 	loanAmount: string;
 	loanTerm: string;
 	loanToValue: string;
@@ -75,7 +75,7 @@ export interface Opportunity {
 	participantOpportunity50Percent: null | string;
 	participantOpportunity75Percent: null | string;
 	participantOpportunity99Percent: null | string;
-  presignedDocumentUrl: string;
+	presignedDocumentUrl: string;
 	postTitle: string;
 	referenceId: number;
 	updatedAt: string;

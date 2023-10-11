@@ -22,11 +22,7 @@ describe("Input component", () => {
 
 	it("renders required indicator when required prop is true", () => {
 		render(
-			<Input
-				label="Username"
-				placeholder="Enter your username"
-				required
-			/>
+			<Input label="Username" placeholder="Enter your username" required />
 		);
 
 		const requiredIndicator = screen.getByText("*");

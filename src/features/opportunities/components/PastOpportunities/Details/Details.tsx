@@ -2,16 +2,19 @@ import type { FC } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Loading } from "@/components/ui/Loading";
 import { Name } from "@/features/opportunities/components/PastOpportunities/Name/Name";
-import { Investment, Opportunity } from "@/features/opportunities/types/api.ts";
+import type {
+	Investment,
+	Opportunity,
+} from "@/features/opportunities/types/api";
 import { Title } from "@/components/ui/Title";
 import { IconButton } from "@/components/ui/IconButton";
-import { Value } from "@/features/opportunities/components/PastOpportunities/Details/Value/Value.tsx";
-import { dateFormat } from "@/utils/formats.ts";
-import { Subtitle } from "@/features/opportunities/components/PastOpportunities/Subtitle/Subtitle.tsx";
+import { Value } from "@/features/opportunities/components/PastOpportunities/Details/Value/Value";
+import { dateFormat } from "@/utils/formats";
+import { Subtitle } from "@/features/opportunities/components/PastOpportunities/Subtitle/Subtitle";
 import { Table } from "@/components/ui/Table";
-import { TableColumn } from "react-data-table-component";
+import type { TableColumn } from "react-data-table-component";
 import { useMutation } from "@tanstack/react-query";
-import OpportunitiesService from "@/features/opportunities/api/opportunities.ts";
+import OpportunitiesService from "@/features/opportunities/api/opportunities";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 
 interface Props {
@@ -28,7 +31,7 @@ export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
 		OpportunitiesService.deleteOpportunity(opportunityId)
 	);
 
-	const columns: TableColumn<Investment>[] = [
+	const columns: Array<TableColumn<Investment>> = [
 		{
 			name: "Name",
 			selector: (row) =>
@@ -103,7 +106,9 @@ export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
 							bgColor="bg-red-500/[.12]"
 							color="#FF0033"
 							name="trashBin"
-							onClick={() => setOpenConfirmationModal(true)}
+							onClick={() => {
+								setOpenConfirmationModal(true);
+							}}
 							width="16"
 						/>
 					</div>
@@ -127,10 +132,14 @@ export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
 				<ConfirmationModal
 					action="delete"
 					buttonText="Archive"
-					handelConfirmation={() => deleteOpportunityMutation.mutate(data.id)}
+					handelConfirmation={() => {
+						deleteOpportunityMutation.mutate(data.id);
+					}}
 					loading={deleteOpportunityMutation.isLoading}
 					model="opportunity"
-					onHide={() => setOpenConfirmationModal(false)}
+					onHide={() => {
+						setOpenConfirmationModal(false);
+					}}
 					title="Delete Opportunity"
 					visible={openConfirmationModal}
 				/>

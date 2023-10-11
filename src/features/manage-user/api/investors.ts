@@ -22,7 +22,6 @@ import {
 } from "./backend-end-points";
 
 import type { AxiosResponse } from "axios";
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { authApiClient } from "@/utils/api-client";
 
 const getUser = async (sub: string) => {
@@ -70,31 +69,28 @@ const updateInvestorsBank = async (body: Investor) => {
 const updateGeneralInformation = async (
 	body: updateGeneralUserInformation
 ): Promise<AxiosResponse<Array<User>, unknown>> => {
-	const response = await authApiClient.put<Array<User>>(
-		updateAdminUrl(body.id || ""),
-		body
-	);
-	return response;
+  return await authApiClient.put<Array<User>>(
+    updateAdminUrl(body.id || ""),
+    body
+  );
 };
 
 const updateAdmin = async (
 	body: AddAdminFields
 ): Promise<AxiosResponse<Array<User>, unknown>> => {
-	const response = await authApiClient.put<Array<User>>(
-		updateAdminUrl(body.id || ""),
-		body
-	);
-	return response;
+  return await authApiClient.put<Array<User>>(
+    updateAdminUrl(body.id || ""),
+    body
+  );
 };
 
 const updateAccounting = async (
 	body: AddAccountingFields
 ): Promise<AxiosResponse<Array<User>, unknown>> => {
-	const response = await authApiClient.put<Array<User>>(
-		updateAccountingUrl(body.id || ""),
-		body
-	);
-	return response;
+  return await authApiClient.put<Array<User>>(
+    updateAccountingUrl(body.id || ""),
+    body
+  );
 };
 
 const createNewAdmin = async (body: Investor) => {

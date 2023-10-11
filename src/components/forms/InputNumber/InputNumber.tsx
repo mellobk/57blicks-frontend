@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable unicorn/prefer-logical-operator-over-ternary */
 import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
 
 import { InputNumber as InputNumberComp } from "primereact/inputnumber";

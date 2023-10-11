@@ -1,13 +1,13 @@
-import { FC, useState } from "react";
-import { FieldArrayWithId, UseFormSetValue } from "react-hook-form";
-import { Option, Select } from "@/components/forms/Select";
+import { type FC, useState } from "react";
+import type { FieldArrayWithId, UseFormSetValue } from "react-hook-form";
+import { type Option, Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import { Loan } from "@/features/create-loan/types/fields";
+import type { Loan } from "@/features/create-loan/types/fields";
 import { LENDERS } from "@/features/create-loan/utils/selects";
 
 interface Props {
-	fields: FieldArrayWithId<Loan, "fundingBreakdown">[];
+	fields: Array<FieldArrayWithId<Loan, "fundingBreakdown">>;
 	openModal: boolean;
 	setOpenModal: (openModal: boolean) => void;
 	setValue: UseFormSetValue<Loan>;
@@ -27,7 +27,7 @@ export const SelectLender: FC<Props> = ({
 		);
 
 		if (lender) {
-      setValue("fundingBreakdown.0.lenderName", lender.name);
+			setValue("fundingBreakdown.0.lenderName", lender.name);
 			setValue("fundingBreakdown.0.investorId", lender.code);
 			setValue("participationBreakdown", []);
 			setOpenModal(false);
@@ -36,14 +36,18 @@ export const SelectLender: FC<Props> = ({
 
 	return (
 		<Modal
-			onHide={() => setOpenModal(false)}
+			onHide={() => {
+				setOpenModal(false);
+			}}
 			title="Select Lender"
 			visible={openModal}
 		>
 			<Select
 				className="mt-6"
 				label="Lender"
-				onChange={(e) => setSelectedLender(e.target.value)}
+				onChange={(e) => {
+					setSelectedLender(e.target.value);
+				}}
 				options={LENDERS}
 				placeholder="Select Lender"
 				value={selectedLender}

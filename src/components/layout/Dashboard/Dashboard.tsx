@@ -1,4 +1,4 @@
-import { useState, type FC, type ReactNode, useEffect } from "react";
+import { type FC, type ReactNode, useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/router";
 import { Icon } from "@/components/ui/Icon";
 import "@/assets/images/png/LogoGold_2x.png";
@@ -24,7 +24,7 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 	const localSub = getLocalStorage(sub);
 	const localUserName = getLocalStorage(userName);
 	const [enabled, setEnabled] = useState<boolean>(
-		getLocalStorage(userName) ? false : true
+		!getLocalStorage(userName)
 	);
 	const [openModalUser, setOpenModalUser] = useState<boolean>();
 	const setLenderData = servicingStore((state) => state.setLender);

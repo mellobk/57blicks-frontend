@@ -1,8 +1,10 @@
+import type { FC } from "react";
+
 export interface FooterTableProps {
 	tabs?: Array<{ label: string; width: string; justify?: string }>;
 }
 
-export const FooterTable: React.FC<FooterTableProps> = ({ tabs }) => {
+export const FooterTable: FC<FooterTableProps> = ({ tabs }) => {
 	return (
 		<div
 			className="flex  h-[40px]  w-full  text-black text-[13px] "

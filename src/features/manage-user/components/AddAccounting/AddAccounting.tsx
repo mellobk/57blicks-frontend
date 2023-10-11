@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { FieldValues } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,18 +5,18 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
 import { AddAdminSchema } from "@/features/manage-user/schemas/AddAdminSchemas";
 import { addAdminFields } from "../../utils/input-fields";
-import { useEffect } from "react";
+import { type FC, useEffect } from "react";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { useMutation } from "@tanstack/react-query";
 import type { User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
-import { unFormatPhone } from "@/utils/common-funtions.ts";
+import { unFormatPhone } from "@/utils/common-funtions";
 
 interface AddAdminProps {
 	handleSuccess?: () => void;
 }
 
-export const AddAccounting: React.FC<AddAdminProps> = ({ handleSuccess }) => {
+export const AddAccounting: FC<AddAdminProps> = ({ handleSuccess }) => {
 	const {
 		register,
 		handleSubmit,

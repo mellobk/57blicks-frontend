@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { AddAdmin } from "../AddAdmin/AddAdmin";
@@ -16,7 +16,7 @@ import { tabs } from "../../utils/tabs";
 
 interface SuccessProps {}
 
-export const AdminTable: React.FC<SuccessProps> = () => {
+export const AdminTable: FC<SuccessProps> = () => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 	const [detailModal, setDetailModal] = useState<boolean>(true);

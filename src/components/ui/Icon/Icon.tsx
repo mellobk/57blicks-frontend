@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import ArrowDown from "@/assets/icons/arrow-down";
 import ArrowLeft from "@/assets/icons/arrow-left";

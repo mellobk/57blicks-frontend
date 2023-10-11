@@ -1,6 +1,6 @@
 import "./Modal.css";
 
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
 import { Dialog } from "primereact/dialog";
 

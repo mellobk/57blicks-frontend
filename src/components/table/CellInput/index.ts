@@ -1,1 +1,1 @@
-export { CellInput } from "./CellInput.tsx";
+export { CellInput } from "./CellInput";

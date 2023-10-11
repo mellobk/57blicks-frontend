@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 interface Props {
 	error?: string;
@@ -7,7 +7,11 @@ interface Props {
 export const ErrorText: FC<Props> = ({ error }) => (
 	<>
 		{error && (
-			<div className={"font-inter text-[13px] leading-4 tracking-[-0.7px] text-red-ERROR"}>
+			<div
+				className={
+					"font-inter text-[13px] leading-4 tracking-[-0.7px] text-red-ERROR"
+				}
+			>
 				{error}
 			</div>
 		)}

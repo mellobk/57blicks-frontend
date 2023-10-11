@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/forms/Input";
 
-import { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { getLocalStorage, sendToLocalStorage } from "@/utils/local-storage";
 import { userBasicInformation } from "@/utils/constant";
 import type { User } from "@/features/manage-user/types/api";
@@ -19,7 +17,7 @@ import { useMutation } from "@tanstack/react-query";
 import useStore from "@/stores/app-store";
 import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
 
-export const GeneralInformation: React.FC = () => {
+export const GeneralInformation: FC = () => {
 	const [userData, setUserData] = useState<User>();
 	const {
 		register,

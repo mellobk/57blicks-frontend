@@ -1,11 +1,9 @@
-/* eslint-disable react-refresh/only-export-components */
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/utils/cn";
 import type { ReactElement } from "react";
-//bg-gray-250 text-white rounded-3xl
 
 export const buttonVariants = cva(
 	"inline-flex items-center justify-center   disabled:pointer-events-none disabled:opacity-50 bg-gray-250 text-white rounded-lg transition-colors	transition-duration: 250ms;",

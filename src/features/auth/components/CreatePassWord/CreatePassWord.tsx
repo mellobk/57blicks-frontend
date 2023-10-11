@@ -1,18 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { type FC, useEffect, useRef, useState } from "react";
-import { type SubmitHandler, useForm, type FieldValues } from "react-hook-form";
+import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
 import createPassWordFields from "@/features/auth/utils/input-fields";
 import { createPasswordSchema } from "@/features/auth/utils/Schemas/validations-schemas";
 import {
+	mfaCode as localMfa,
 	passwordInitialsValidations,
 	userEmail,
-	mfaCode as localMfa,
 } from "@/features/auth/utils/constants";
 import { validPasswordRules } from "@/features/auth/utils/functions";
 import type { PasswordValidations } from "@/features/auth/types/validations";
@@ -20,7 +16,7 @@ import { LoginTitle } from "../LoginTitle";
 import { forgotPassword } from "@/lib/cognito";
 import { useNavigate } from "@tanstack/router";
 import { Message } from "primereact/message";
-import { removeLocalStorage } from "@/utils/local-storage.ts";
+import { removeLocalStorage } from "@/utils/local-storage";
 
 interface MfaProps {
 	title?: string;

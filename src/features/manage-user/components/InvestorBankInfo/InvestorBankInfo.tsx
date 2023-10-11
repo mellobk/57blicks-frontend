@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
 import { addInvestorBankFields } from "../../utils/input-fields";
-import { useEffect } from "react";
+import { type FC, useEffect } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Select } from "@/components/forms/Select";
 import type { AddInvestorBankFields } from "../../types/fields";
@@ -19,7 +18,7 @@ interface InvestorBankInfoProps {
 	loading?: boolean;
 }
 
-export const InvestorBankInfo: React.FC<InvestorBankInfoProps> = ({
+export const InvestorBankInfo: FC<InvestorBankInfoProps> = ({
 	showInvestorBankInfo,
 	handleInvestorBankInfo,
 	data,

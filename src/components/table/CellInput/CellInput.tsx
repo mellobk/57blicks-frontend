@@ -1,6 +1,6 @@
-import { type Control, Controller } from "react-hook-form";
 import { type FC, type InputHTMLAttributes, useState } from "react";
-import { formatPlaceholder, formatValue } from "@/utils/formats.ts";
+import { type Control, Controller } from "react-hook-form";
+import { formatPlaceholder, formatValue } from "@/utils/formats";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	control: Control<any>;
@@ -29,12 +29,12 @@ export const CellInput: FC<Props> = ({
 						error ? "border-2 border-red-ERROR" : ""
 					} hover:bg-gray-200 focus-visible:border-gold-500 focus-visible:border-2 focus-visible:outline-none items-center font-inter text-[13px] text-primary-300 leading-4 tracking-[-0.65px]`}
 					min={0}
-					onBlur={(): void => {
+					onBlur={() => {
 						setIsEditing(false);
 						onBlur();
 					}}
-					onChange={(event): void => {
-						let inputValue = event.target.value;
+					onChange={(e) => {
+						let inputValue = e.target.value;
 
 						if (inputValue !== "") {
 							inputValue = Number(inputValue).toString();
@@ -42,17 +42,13 @@ export const CellInput: FC<Props> = ({
 
 						onChange(inputValue);
 					}}
-					onFocus={(): void => {
+					onFocus={() => {
 						setIsEditing(true);
 					}}
 					placeholder={formatPlaceholder(format, placeholder)}
 					type={isEditing ? "number" : "text"}
 					value={
-						isEditing
-							? String(value)
-							: value
-							? formatValue(Number.parseInt(value as string), format)
-							: ""
+						isEditing ? String(value) : value ? formatValue(value, format) : ""
 					}
 					{...props}
 				/>

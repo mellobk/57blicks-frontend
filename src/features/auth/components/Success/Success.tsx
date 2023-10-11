@@ -1,9 +1,8 @@
 import type { FC } from "react";
 import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
+import { Icon, type ICONS } from "@/components/ui/Icon";
 import { LoginTitle } from "../LoginTitle";
 import { useNavigate } from "@tanstack/router";
-import { ICONS } from "@/components/ui/Icon";
 
 interface SuccessProps {
 	title?: string;

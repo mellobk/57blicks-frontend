@@ -4,24 +4,24 @@ import { borrowerInformationFields } from "../utils/input-fields";
 export const BorrowerInformationSchema = z.object({
 	[borrowerInformationFields?.firstName]: z
 		.string()
-		.min(1, { message: "Required field" }),
+		.nonempty(errorMessages.required),
 	[borrowerInformationFields?.lastName]: z
 		.string()
-		.min(1, { message: "Required field" }),
+		.nonempty(errorMessages.required),
 	[borrowerInformationFields?.mailingAddress]: z
 		.string()
-		.min(1, { message: "Required field" }),
+		.nonempty(errorMessages.required),
 	[borrowerInformationFields?.email]: z
 		.string()
 		.email()
-		.min(1, { message: "Required field" }),
+		.nonempty(errorMessages.required),
 	[borrowerInformationFields?.phoneNumber]: z
 		.string()
-		.min(1, { message: "Required field" }),
+		.nonempty(errorMessages.required),
 	[borrowerInformationFields?.llc]: z.string(),
 	[borrowerInformationFields?.ssnEin]: z
 		.string()
-		.min(1, { message: "Required field" }),
+		.nonempty(errorMessages.required),
 	[borrowerInformationFields?.bankingName]: z.string().optional(),
 	[borrowerInformationFields?.accountNumber]: z.string().optional(),
 	[borrowerInformationFields?.accountType]: z.string().optional(),

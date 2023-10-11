@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { authApiClient } from "@/utils/api-client";
-import type { IBorrowerInformation, DkcLenders } from "../types/api";
+import type { DkcLenders, IBorrowerInformation } from "../types/api";
 import { lenders, lendersById, updateBorrowerData } from "./backend-end-points";
 
 const getLenders = async (): Promise<DkcLenders> => {

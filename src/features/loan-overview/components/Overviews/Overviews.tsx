@@ -1,8 +1,8 @@
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { DueToDraws } from "@/features/loan-overview/components/DueToDraws/DueToDraws";
 import { Subtitle } from "@/features/loan-overview/components/Subtitle/Subtitle";
 import { Value } from "@/features/loan-overview/components/Value/Value";
-import { LoanOverviewFields } from "@/features/loan-overview/types/fields";
+import type { LoanOverviewFields } from "@/features/loan-overview/types/fields";
 
 type Props = {
 	data: LoanOverviewFields;
@@ -20,7 +20,9 @@ export const Overviews: FC<Props> = ({ data }) => {
 				<Value label="Loans Drawn Down" value={data.loansDrawnDown} />
 				<Value
 					label="Due to Draws"
-					action={() => setOpenDueToDrawsModal(true)}
+					action={() => {
+						setOpenDueToDrawsModal(true);
+					}}
 					value={data.dueToDraws}
 				/>
 				<Value

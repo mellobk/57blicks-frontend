@@ -1,22 +1,22 @@
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import {
-	Control,
+	type Control,
 	useFieldArray,
-	UseFormReset,
-	UseFormSetValue,
+	type UseFormReset,
+	type UseFormSetValue,
 	useWatch,
 } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
+import { IconButton } from "@/components/ui/IconButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
 import InvestorsService from "@/features/opportunities/api/investors";
 import OpportunitiesService from "@/features/opportunities/api/opportunities";
-import { Investor } from "@/features/opportunities/types/api";
-import { Opportunity } from "@/features/opportunities/types/fields";
+import type { Investor } from "@/features/opportunities/types/api";
+import type { Opportunity } from "@/features/opportunities/types/fields";
 import { nameFormat } from "@/utils/formats";
 
 interface Props {
@@ -60,25 +60,20 @@ export const PostTo: FC<Props> = ({
 		{ enabled: openModal }
 	);
 
-	const {
-		isError,
-		isSuccess,
-		mutate,
-		reset: resetMutation,
-	} = useMutation((data: Opportunity) => {
+	const createOpportunityMutation = useMutation((data: Opportunity) => {
 		return OpportunitiesService.createOpportunity(data);
 	});
 
 	const allEmail = () => {
-		investorsNotifications.map((_, index) =>
-			setValue(`investorsNotifications.${index}.email`, true)
-		);
+		investorsNotifications.map((_, index) => {
+			setValue(`investorsNotifications.${index}.email`, true);
+		});
 	};
 
 	const allSMS = () => {
-		investorsNotifications.map((_, index) =>
-			setValue(`investorsNotifications.${index}.sms`, true)
-		);
+		investorsNotifications.map((_, index) => {
+			setValue(`investorsNotifications.${index}.sms`, true);
+		});
 	};
 
 	const findIndex = (investorId: string) =>
@@ -87,13 +82,16 @@ export const PostTo: FC<Props> = ({
 		);
 
 	const onPost = (): void => {
-		const formData = form as Opportunity;
+		const formatData = {
+			...form,
+			documentS3Path: "opportunities/9bfadef3-10cd-457d-a120-c5030e5b8288.pdf",
+		} as Opportunity;
 
 		setValue(
 			"documentS3Path",
-			"opportunities/aaa52541-143e-4e6d-a7e2-a5706c85bd89.pdf"
+			"opportunities/9bfadef3-10cd-457d-a120-c5030e5b8288.pdf"
 		);
-		mutate(formData);
+		createOpportunityMutation.mutate(formatData);
 	};
 
 	const openNote = (investor: Investor) => {
@@ -185,19 +183,19 @@ export const PostTo: FC<Props> = ({
 	};
 
 	useEffect(() => {
-		if (isSuccess) {
+		if (createOpportunityMutation.isSuccess) {
 			reset();
-			resetMutation();
+			createOpportunityMutation.reset();
 			setOpenModal(false);
 			setOpenSuccessModal(true);
 		}
-	}, [isSuccess]);
+	}, [createOpportunityMutation.isSuccess]);
 
 	useEffect(() => {
-		if (isError) {
-			resetMutation();
+		if (createOpportunityMutation.isError) {
+			createOpportunityMutation.reset();
 		}
-	}, [isError]);
+	}, [createOpportunityMutation.isError]);
 
 	return (
 		openModal && (
@@ -206,7 +204,7 @@ export const PostTo: FC<Props> = ({
 				<div
 					className={`grid ${
 						selectedInvestor ? "grid-cols-2 w-[900px]" : "grid-cols-1 w-[450px]"
-					} h-[500px] relative shadow-lg z-50`}
+					} relative shadow-lg z-50`}
 				>
 					<div
 						className={`${
@@ -218,13 +216,12 @@ export const PostTo: FC<Props> = ({
 
 							<div className="flex flex-row gap-2">
 								<SearchBar setValue={setSearchValue} value={searchValue} />
-								<Button
-									className={`${
-										selectedInvestor ? "hidden" : ""
-									} rounded-3xl pl-3 pr-1 h-[34px] bg-gray-200`}
-									icon={<Icon name="wrong" color="#0E2130" width="12" />}
+								<IconButton
+									className={selectedInvestor ? "hidden" : ""}
+									color="#0E2130"
+									name="wrong"
 									onClick={() => setOpenModal(false)}
-									type="button"
+									width="12"
 								/>
 							</div>
 						</div>
@@ -239,7 +236,7 @@ export const PostTo: FC<Props> = ({
 										All SMS
 									</button>
 								</div>
-								<div className="grid grid-cols-1 divide-y divide-gray-200 overflow-y-auto">
+								<div className="flex flex-col divide-y divide-gray-200 h-[300px] overflow-y-auto">
 									{investorsQuery.data?.map((investor, index) => {
 										const opportunityInvestor = investorsNotifications.find(
 											(opportunityInvestor) =>
@@ -259,7 +256,9 @@ export const PostTo: FC<Props> = ({
 													<div className="flex flex-row items-center">
 														<input
 															checked={!!opportunityInvestor}
-															onChange={() => toggleInvestor(investor.id)}
+															onChange={() => {
+																toggleInvestor(investor.id);
+															}}
 															type="checkbox"
 														/>
 														<div className="ml-1 font-inter text-gray-1000 text-[13px] leading-4 tracking-[-0.65]">
@@ -275,7 +274,9 @@ export const PostTo: FC<Props> = ({
 														offIconName="plus"
 														offLabel="Add Notes"
 														offTextColor="text-green-500"
-														onChange={() => openNote(investor)}
+														onChange={() => {
+															openNote(investor);
+														}}
 														onIconName="note"
 														onLabel="Notes"
 													/>
@@ -285,7 +286,9 @@ export const PostTo: FC<Props> = ({
 														checked={!!opportunityInvestor?.sms}
 														offIconName="cellphone"
 														offLabel="SMS"
-														onChange={() => toggleSMS(investor.id)}
+														onChange={() => {
+															toggleSMS(investor.id);
+														}}
 														lineThrough
 													/>
 												</div>
@@ -294,7 +297,9 @@ export const PostTo: FC<Props> = ({
 														checked={!!opportunityInvestor?.email}
 														offIconName="email"
 														offLabel="EMAIL"
-														onChange={() => toggleEmail(investor.id)}
+														onChange={() => {
+															toggleEmail(investor.id);
+														}}
 														lineThrough
 													/>
 												</div>
@@ -307,7 +312,7 @@ export const PostTo: FC<Props> = ({
 								buttonText="Post"
 								className="bg-primary-500 w-full mt-6 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
 								onClick={onPost}
-								disabled={investorsNotifications.length < 1}
+								disabled={investorsNotifications.length === 0}
 								type="button"
 							/>
 						</div>
@@ -321,17 +326,19 @@ export const PostTo: FC<Props> = ({
 								/>
 
 								<div className="flex flex-row gap-2">
-									<Button
-										className="rounded-3xl pl-3 pr-1 h-[34px] bg-gray-1300"
-										icon={<Icon name="arrowLeft" color="#FBFEFF" width="12" />}
+									<IconButton
+										bgColor="bg-gray-1300"
+										color="#FBFEFF"
+										name="arrowLeft"
 										onClick={() => setSelectedInvestor(null)}
-										type="button"
+										width="12"
 									/>
-									<Button
-										className="rounded-3xl pl-3 pr-1 h-[34px] bg-gray-1300"
-										icon={<Icon name="wrong" color="#FBFEFF" width="12" />}
+									<IconButton
+										bgColor="bg-gray-1300"
+										color="#FBFEFF"
+										name="wrong"
 										onClick={() => setOpenModal(false)}
-										type="button"
+										width="12"
 									/>
 								</div>
 							</div>
@@ -341,12 +348,12 @@ export const PostTo: FC<Props> = ({
 								</div>
 								<textarea
 									className="h-full rounded-lg py-3 px-4 bg-gray-1300 resize-none focus:outline-none font-inter text-white text-[13px] leading-4 tracking-[-0.65]"
-									onChange={(e) =>
+									onChange={(e) => {
 										setNote(
 											selectedInvestor.opportunityInvestorIndex,
 											e.target.value
-										)
-									}
+										);
+									}}
 									value={
 										investorsNotifications[
 											selectedInvestor.opportunityInvestorIndex

@@ -1,6 +1,4 @@
-/* eslint-disable no-use-before-define */
-
-import { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 
 import { Modal } from "@/components/ui/Modal/Modal";
 import { Tabs } from "@/features/servicing/component/Tabs";
@@ -16,7 +14,8 @@ interface UserConfigProps {
 	setOpenActivityModal?: (value: boolean) => void;
 	activityModal?: boolean;
 }
-const UserConfig: React.FC<UserConfigProps> = ({
+
+const UserConfig: FC<UserConfigProps> = ({
 	user,
 	setUser,
 	deleteUser,

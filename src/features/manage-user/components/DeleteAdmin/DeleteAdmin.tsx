@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/Button";
+import type { FC } from "react";
 
 interface DeleteAdminProps {
 	id?: string;
 	handleDeleteAdmin?: (id: string) => void;
 }
 
-export const DeleteAdmin: React.FC<DeleteAdminProps> = ({
+export const DeleteAdmin: FC<DeleteAdminProps> = ({
 	id = "",
 	handleDeleteAdmin,
 }) => {

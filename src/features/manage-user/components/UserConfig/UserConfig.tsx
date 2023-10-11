@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-use-before-define */
-
 import type { Investor, User } from "../../types/api";
-import { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 
 import { EditAccounting } from "./EditAccounting";
 import { EditAdmin } from "./EditAdmin";
@@ -28,7 +25,8 @@ interface UserConfigProps {
 	setOpenActivityModal?: (value: boolean) => void;
 	activityModal?: boolean;
 }
-const UserConfig: React.FC<UserConfigProps> = ({
+
+const UserConfig: FC<UserConfigProps> = ({
 	user,
 	investor,
 	type,

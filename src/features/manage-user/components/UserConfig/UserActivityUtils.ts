@@ -1,4 +1,3 @@
-/* eslint-disable no-unmodified-loop-condition */
 import type { DataEntry } from "../../types/chart-types";
 
 export const convertToHour = (minutes: number): number => {

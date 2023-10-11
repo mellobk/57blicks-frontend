@@ -9,7 +9,7 @@ export type Opportunity = {
 	additionalInformation: string;
 	assetValue: string;
 	dkcRepeatBorrower: string;
-  documentS3Path: string;
+	documentS3Path: string;
 	googleDriveLink: string;
 	image: any;
 	investmentBorrower: string;
@@ -18,7 +18,7 @@ export type Opportunity = {
 	investmentMonthlyInterestedOfferedToParticipant: string;
 	investmentPermanentPenalty: string;
 	investmentSummary: string;
-	investorsNotifications: InvestorsNotifications[];
+	investorsNotifications: Array<InvestorsNotifications>;
 	loanAmount: string;
 	loanTerm: string;
 	loanToValue: string;

@@ -1,8 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-duplicate-imports */
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import { useState, type FC } from "react";
+import { type FC, useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,7 +9,7 @@ import { ResetPasswordSchemas } from "@/features/auth/utils/Schemas/ResetPasswor
 import { LoginTitle } from "../LoginTitle";
 import { sendCode } from "@/lib/cognito";
 import { useNavigate } from "@tanstack/router";
-import { sendToLocalStorage } from "@/utils/local-storage.ts";
+import { sendToLocalStorage } from "@/utils/local-storage";
 import { userEmail } from "../../utils/constants";
 import { Message } from "primereact/message";
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { type FC, type ReactElement, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { AddAccounting } from "../AddAccounting/AddAccounting";
@@ -14,9 +14,7 @@ import UserConfig from "../UserConfig/UserConfig";
 import { findIndex } from "@/utils/common-funtions";
 import { tabs } from "../../utils/tabs";
 
-interface SuccessProps {}
-
-export const AccountingTable: React.FC<SuccessProps> = () => {
+export const AccountingTable: FC = () => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 	const [deleteId, setDeleteId] = useState<string>("");
@@ -136,7 +134,7 @@ export const AccountingTable: React.FC<SuccessProps> = () => {
 		{
 			name: "Status",
 			maxWidth: "50px",
-			selector: (row: User): JSX.Element => (
+			selector: (row: User): ReactElement => (
 				<TableStatus status={row.isActive ? "Active" : "Inactive"} />
 			),
 			sortable: true,

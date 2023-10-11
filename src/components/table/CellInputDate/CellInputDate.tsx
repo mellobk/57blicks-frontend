@@ -1,6 +1,6 @@
 import { type FC, type InputHTMLAttributes, useState } from "react";
 import { type Control, Controller } from "react-hook-form";
-import { dateFormatFormat } from "@/utils/formats.ts";
+import { dateFormatFormat } from "@/utils/formats";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	control: Control<any>;
@@ -15,7 +15,6 @@ export const CellInputDate: FC<Props> = ({
 	format,
 	name,
 	placeholder,
-	defaultValue,
 	...props
 }) => {
 	const [isEditing, setIsEditing] = useState(false);
@@ -24,7 +23,6 @@ export const CellInputDate: FC<Props> = ({
 		<Controller
 			control={control}
 			name={name}
-			defaultValue={defaultValue}
 			render={({ field: { onChange, onBlur, value } }) => (
 				<input
 					className={`h-full w-full py-3 px-4 bg-transparent ${

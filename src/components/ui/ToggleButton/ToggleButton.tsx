@@ -1,6 +1,5 @@
-import { FC } from "react";
-import { Icon } from "@/components/ui/Icon";
-import { ICONS } from "@/components/ui/Icon";
+import type { FC } from "react";
+import { Icon, type ICONS } from "@/components/ui/Icon";
 
 interface AvatarProps {
 	checked: boolean;
@@ -38,7 +37,9 @@ export const ToggleButton: FC<AvatarProps> = ({
 			className={`flex flex-row gap-1 items-center py-1 px-2 rounded-2xl ${
 				checked ? onColor : offColor
 			}`}
-			onClick={() => onChange(!checked)}
+			onClick={() => {
+				onChange(!checked);
+			}}
 		>
 			<Icon
 				name={checked ? onIconName : offIconName}

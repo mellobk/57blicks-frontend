@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/Button";
+import type { FC } from "react";
 
 interface DeleteAdminProps {
 	id?: string;
 	handleDeleteUser?: (id: string) => void;
 }
 
-export const DisableInvestor: React.FC<DeleteAdminProps> = ({
+export const DisableInvestor: FC<DeleteAdminProps> = ({
 	id = "",
 	handleDeleteUser,
 }) => {

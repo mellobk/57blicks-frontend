@@ -7,6 +7,7 @@ import { formatCurrency } from "@/utils/common-funtions";
 interface LoanInformationProps {
 	data?: FundingBreakdown;
 }
+
 export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 	return (
 		<div

@@ -1,5 +1,5 @@
-import { FC, InputHTMLAttributes, useState } from "react";
-import { Control, Controller } from "react-hook-form";
+import { type FC, type InputHTMLAttributes, useState } from "react";
+import { type Control, Controller } from "react-hook-form";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
 import { inputClassName } from "@/utils/class-names";
@@ -53,7 +53,9 @@ export const FormatInput: FC<Props> = ({
 
 								onChange(inputValue);
 							}}
-							onFocus={() => setIsEditing(true)}
+							onFocus={() => {
+								setIsEditing(true);
+							}}
 							placeholder={formatPlaceholder(format, placeholder)}
 							type={isEditing ? "number" : "text"}
 							value={

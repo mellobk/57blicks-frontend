@@ -3,10 +3,10 @@ import { Mfa } from "@/features/auth/components/Mfa";
 import { useSearch } from "@tanstack/router";
 import { sendCode } from "@/lib/cognito";
 import {
-	sendToLocalStorage,
 	getLocalStorage,
 	removeLocalStorage,
-} from "@/utils/local-storage.ts";
+	sendToLocalStorage,
+} from "@/utils/local-storage";
 import { emailStatus, userEmail } from "../../utils/constants";
 
 export const FirstLogin: FC = () => {

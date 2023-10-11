@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable unicorn/prevent-abbreviations */
 type ApiConfig = {
 	ENDPOINT: string;
 };

@@ -1,5 +1,5 @@
-import { findIndex, statusSort } from "@/utils/common-funtions.ts";
-import { useEffect, useState } from "react";
+import { findIndex, statusSort } from "@/utils/common-funtions";
+import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { AddInvestor } from "../AddInvestor/AddInvestor";
@@ -10,8 +10,6 @@ import { Icon } from "@/components/ui/Icon";
 import type { Investor } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 import { Modal } from "@/components/ui/Modal/Modal";
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Table } from "@/features/manage-user/components/Table";
 import { TableStatus } from "../TableStatus/TableStatus";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
@@ -23,7 +21,7 @@ import { EnableInvestor } from "../EnableInvestor/EnableInvestor";
 
 interface SuccessProps {}
 
-export const InvestorsTable: React.FC<SuccessProps> = () => {
+export const InvestorsTable: FC<SuccessProps> = () => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 	const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);

@@ -1,1 +1,1 @@
-export { type Option, Dropdown } from "./Dropdown.tsx";
+export { type Option, Dropdown } from "./Dropdown";

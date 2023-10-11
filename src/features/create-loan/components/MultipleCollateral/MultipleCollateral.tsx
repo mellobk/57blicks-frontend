@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import {
+import type {
 	Control,
 	FieldArrayWithId,
 	FieldErrors,
@@ -12,7 +12,7 @@ import { Input } from "@/components/forms/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Title } from "@/components/ui/Title/Title";
-import { Loan } from "@/features/create-loan/types/fields";
+import type { Loan } from "@/features/create-loan/types/fields";
 import { ASSET_TYPES } from "@/features/create-loan/utils/selects";
 import { IconButton } from "@/components/ui/IconButton";
 import { MaskInput } from "@/components/forms/MaskInput";
@@ -21,7 +21,7 @@ interface Props {
 	append: UseFieldArrayAppend<Loan, "collaterals">;
 	control: Control<Loan>;
 	errors: FieldErrors<Loan>;
-	fields: FieldArrayWithId<Loan, "collaterals">[];
+	fields: Array<FieldArrayWithId<Loan, "collaterals">>;
 	register: UseFormRegister<Loan>;
 	remove: UseFieldArrayRemove;
 }
@@ -40,15 +40,15 @@ export const MultipleCollateral: FC<Props> = ({
 			<IconButton
 				color="#0E2130"
 				name="plus"
-				onClick={() =>
+				onClick={() => {
 					append({
 						address: "",
 						assetType: "",
 						insuranceExpirationDate: "",
 						link: "",
 						taxUrl: "",
-					})
-				}
+					});
+				}}
 				width="12"
 			/>
 		</div>
@@ -89,7 +89,9 @@ export const MultipleCollateral: FC<Props> = ({
 													icon={
 														<Icon name="trashBin" color="#FF0033" width="24" />
 													}
-													onClick={() => remove(index)}
+													onClick={() => {
+														remove(index);
+													}}
 													type="button"
 												/>
 											</div>
@@ -133,15 +135,15 @@ export const MultipleCollateral: FC<Props> = ({
 					<Button
 						buttonText="Add Collateral"
 						className="rounded-lg bg-primary-500 mt-4 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
-						onClick={() =>
+						onClick={() => {
 							append({
 								address: "",
 								assetType: "",
 								insuranceExpirationDate: "",
 								link: "",
 								taxUrl: "",
-							})
-						}
+							});
+						}}
 						type="button"
 					/>
 				</div>

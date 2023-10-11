@@ -1,11 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import type React from "react";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import {
+	createContext,
+	type FC,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import type {
-	CognitoUserSession,
 	CognitoUser,
+	CognitoUserSession,
 } from "amazon-cognito-identity-js";
 import * as Cognito from "@/lib/cognito";
 import { Toast } from "primereact/toast";
@@ -28,7 +32,7 @@ interface AuthProviderProps {
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const errorMessage = useStore((state) => state.errorMessage);
 	const successMessage = useStore((state) => state.successMessage);
 	const clearErrorMessage = useStore((state) => state.clearErrorMessage);

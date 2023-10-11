@@ -1,8 +1,8 @@
 import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
 import { Cell } from "@/components/table/Cell";
-import { Loan } from "@/features/create-loan/types/fields";
-import { Control, useWatch } from "react-hook-form";
+import type { Loan } from "@/features/create-loan/types/fields";
+import { type Control, useWatch } from "react-hook-form";
 
 interface Props {
 	calculateProrated: (
@@ -43,15 +43,15 @@ export const Footer: ComponentType<Props> = ({
 
 	useEffect(() => {
 		const newTotals = [...fundingBreakdown, ...participationBreakdown].reduce(
-			(acc, { amount, rate }) => {
-				acc.amount += Number(amount);
-				acc.prorated += Number(
+			(accumulator, { amount, rate }) => {
+				accumulator.amount += Number(amount);
+				accumulator.prorated += Number(
 					calculateProrated(amount, rate, originationDate)
 				);
-				acc.rate += Number(rate);
-				acc.regular += Number(calculateRegular(amount, rate));
+				accumulator.rate += Number(rate);
+				accumulator.regular += Number(calculateRegular(amount, rate));
 
-				return acc;
+				return accumulator;
 			},
 			defaultTotals
 		);
@@ -65,9 +65,9 @@ export const Footer: ComponentType<Props> = ({
 				<Cell format="text" value="Total" bold />
 				<Cell
 					className={
-						totals.amount !== Number(totalLoanAmount)
-							? "text-red-ERROR"
-							: "text-primary-300"
+						totals.amount === Number(totalLoanAmount)
+							? "text-primary-300"
+							: "text-red-ERROR"
 					}
 					format="money"
 					value={totals.amount}

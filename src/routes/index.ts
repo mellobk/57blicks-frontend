@@ -1,5 +1,5 @@
-import { Router } from "@tanstack/router";
-import { rootRoute } from "./RootRoute";
+import {Router} from "@tanstack/router";
+import {rootRoute} from "./RootRoute";
 import LoginRouter from "@/features/auth/routes/LoginRouter";
 import DashboardRouter from "@/features/dashboard/routes/DashboardRouter";
 import ManageUserRouter from "@/features/manage-user/routes/ManageUsersRouter";

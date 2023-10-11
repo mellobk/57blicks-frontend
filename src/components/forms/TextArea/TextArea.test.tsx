@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { TextArea } from "./TextArea.tsx";
+import { TextArea } from "./TextArea";
 
 describe("TextArea component", () => {
 	it("renders, placeholder, and icon when provided", () => {
@@ -22,11 +22,7 @@ describe("TextArea component", () => {
 
 	it("renders required indicator when required prop is true", () => {
 		render(
-			<TextArea
-				label="Username"
-				placeholder="Enter your username"
-				required
-			/>
+			<TextArea label="Username" placeholder="Enter your username" required />
 		);
 
 		const requiredIndicator = screen.getByText("*");

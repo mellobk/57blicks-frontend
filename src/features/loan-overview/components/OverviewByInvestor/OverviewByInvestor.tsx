@@ -1,6 +1,6 @@
 import { type FC, useState } from "react";
 import { createTheme, type TableColumn } from "react-data-table-component";
-import { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
+import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
 import { useForm, useWatch } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { Cell } from "@/components/table/Cell";
@@ -118,8 +118,12 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 								? "w-[200px] bg-transparent"
 								: "bg-transparent w-[30px]"
 						} transition duration-500`}
-						onMouseEnter={() => setSearchVisible(true)}
-						onMouseLeave={() => setSearchVisible(false)}
+						onMouseEnter={() => {
+							setSearchVisible(true);
+						}}
+						onMouseLeave={() => {
+							setSearchVisible(false);
+						}}
 					>
 						<Input
 							type="text"
@@ -132,8 +136,12 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 							}
 							iconWidth={searchValue ? "10" : "18"}
 							iconName={searchValue ? "wrong" : "search"}
-							onChange={(data) => setSearchValue(data.target.value)}
-							clickIcon={() => setSearchValue("")}
+							onChange={(data) => {
+								setSearchValue(data.target.value);
+							}}
+							clickIcon={() => {
+								setSearchValue("");
+							}}
 							className={`${
 								searchVisible || searchValue ? "bg-gray-200" : "bg-transparent"
 							} rounded-2xl w-full px-4 py-2 placeholder-primary-500/[.5] text-primary-500 text-[13px] leading-[18px] tracking-[-0.65px] caret-blue-200 items-center outline-none`}

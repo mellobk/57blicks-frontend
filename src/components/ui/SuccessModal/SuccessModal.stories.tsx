@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import "@/utils/story-book-css-export.ts";
-import { SuccessModal } from "./SuccessModal.tsx";
+import "@/utils/story-book-css-export";
+import { SuccessModal } from "./SuccessModal";
 
 const meta: Meta<typeof SuccessModal> = {
 	component: SuccessModal,

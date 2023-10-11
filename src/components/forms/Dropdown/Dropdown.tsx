@@ -1,5 +1,5 @@
-import { type ForwardRefRenderFunction } from "react";
-import { Control, Controller } from "react-hook-form";
+import type { ForwardRefRenderFunction } from "react";
+import { type Control, Controller } from "react-hook-form";
 import {
 	Dropdown as PrimereactDropdown,
 	type DropdownProps,

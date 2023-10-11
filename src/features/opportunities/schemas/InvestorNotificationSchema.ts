@@ -7,6 +7,6 @@ export const InvestorsNotificationSchema = z.object({
 		.string()
 		.nonempty(errorMessages.required)
 		.max(50, errorMessages.maxLength),
-	note: z.string().nonempty(errorMessages.required),
+	note: z.string().nonempty(errorMessages.required).optional(),
 	sms: z.boolean(),
 });

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { create, type SetState } from "zustand";
 import type { Datum } from "../types/api";
 

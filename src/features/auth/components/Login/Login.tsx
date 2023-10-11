@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,8 +14,8 @@ import type { LoginFields } from "../../types/validations";
 import { useNavigate } from "@tanstack/router";
 import { loginRoutesNames } from "../../routes/LoginRouter";
 import { getSession } from "@/lib/cognito";
-import { sendToLocalStorage } from "@/utils/local-storage.ts";
-import { accessToken, group, sub } from "@/utils/constant.ts";
+import { sendToLocalStorage } from "@/utils/local-storage";
+import { accessToken, group, sub } from "@/utils/constant";
 import { useMutation } from "@tanstack/react-query";
 import ManageLogService from "@/features/manage-user/api/logs";
 
@@ -110,7 +106,6 @@ export const LoginForm: FC<LoginFormProps> = () => {
 						<Button
 							type="submit"
 							buttonText="Login"
-							size={"large"}
 							className="bg-primary-500"
 						/>
 					</div>

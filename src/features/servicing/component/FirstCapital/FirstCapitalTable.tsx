@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { DkcServicing, FundingBreakdown } from "../../types/api";
@@ -13,7 +13,7 @@ import { formatCurrency } from "@/utils/common-funtions";
 
 interface SuccessProps {}
 
-export const FirstCapitalTable: React.FC<SuccessProps> = () => {
+export const FirstCapitalTable: FC<SuccessProps> = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const lenderData = servicingStore((state) => state.lenders);

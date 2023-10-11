@@ -18,7 +18,7 @@ export type Participant = {
 export type FundingBreakdown = {
 	dueToDraws: number;
 	lender: string;
-	participants?: Participant[];
+	participants?: Array<Participant>;
 	totalDrawn: number;
 	totalFunds: number;
 	totalLoan: number;
@@ -29,9 +29,9 @@ export type FundingBreakdown = {
 export type LoanOverviewFields = {
 	checkAndBalanceInterest: number;
 	checkAndBalancePrinciple: number;
-  dueToDrawDetails: DueToDrawDetails[];
-  dueToDraws: number;
-	fundingBreakdown: FundingBreakdown[];
+	dueToDrawDetails: Array<DueToDrawDetails>;
+	dueToDraws: number;
+	fundingBreakdown: Array<FundingBreakdown>;
 	loansDrawnDown: number;
 	servicingFee: number;
 	totalCollectibles: number;
@@ -40,5 +40,3 @@ export type LoanOverviewFields = {
 	trustAccountBalance: number;
 	yieldSpread: number;
 };
-
-

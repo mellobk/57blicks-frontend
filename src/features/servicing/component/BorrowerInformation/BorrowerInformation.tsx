@@ -1,12 +1,12 @@
-import { useEffect, type FC } from "react";
+import { type FC, useEffect } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
-import { Input } from "@/components/forms/Input";
 import { useForm } from "react-hook-form";
+import { Input } from "@/components/forms/Input";
 import { Button } from "@/components/ui/Button";
 import { Select } from "@/components/forms/Select";
 import { ACCOUNT_OPTIONS } from "@/features/manage-user/utils/constant";
 import { MaskInput } from "@/components/forms/MaskInput";
-import type { IBorrowerInformation, FundingBreakdown } from "../../types/api";
+import type { FundingBreakdown, IBorrowerInformation } from "../../types/api";
 import { borrowerInformationFields } from "../../utils/input-fields";
 import { useMutation } from "@tanstack/react-query";
 import DkcLendersService from "../../api/servicing";

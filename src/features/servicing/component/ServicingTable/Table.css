@@ -1,10 +1,10 @@
-.rdt_TableHeadRow{
+.rdt_TableHeadRow {
   background-color: #edf3f5 !important;
   min-height: 40px !important;
   border: none !important;
 }
 
-.rdt_TableRow{
+.rdt_TableRow {
   border-bottom-color: #f0f5f7 !important;
   background-color: transparent !important;
 }
@@ -15,26 +15,26 @@
 }
 
 .rdt_TableCol_Sortable {
-display: flex !important;
-    justify-content: space-between !important;
+  display: flex !important;
+  justify-content: space-between !important;
 
 }
 
-.rdt_TableCol_Sortable span{
+.rdt_TableCol_Sortable span {
   opacity: 1;
 
 }
 
-.not-visible{
+.not-visible {
   display: none !important;
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: opacity 0.3s ease, max-height 0.3s ease;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease, max-height 0.3s ease;
 }
 
-.visible{
-   display: block;
-    opacity: 1;
+.visible {
+  display: block;
+  opacity: 1;
   transition: opacity 0.3s ease, max-height 0.3s ease;
 }
