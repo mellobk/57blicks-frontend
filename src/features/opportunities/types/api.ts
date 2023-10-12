@@ -88,3 +88,7 @@ export interface OpportunityMin {
 	updatedAt: string;
 	referenceId: number;
 }
+
+export interface Upload {
+  s3Path: string;
+}

@@ -6,6 +6,7 @@ import {
 	type UseFormSetValue,
 	useWatch,
 } from "react-hook-form";
+import { pdf } from "@react-pdf/renderer";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/Button";
@@ -13,6 +14,7 @@ import { IconButton } from "@/components/ui/IconButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
+import { DocumentPreview } from "@/features/opportunities/components/CreateOpportunity/DocumentPreview/DocumentPreview.tsx";
 import InvestorsService from "@/features/opportunities/api/investors";
 import OpportunitiesService from "@/features/opportunities/api/opportunities";
 import type { Investor } from "@/features/opportunities/types/api";
@@ -64,6 +66,10 @@ export const PostTo: FC<Props> = ({
 		return OpportunitiesService.createOpportunity(data);
 	});
 
+	const uploadOpportunityMutation = useMutation((file: Blob) => {
+		return OpportunitiesService.uploadOpportunity(file);
+	});
+
 	const allEmail = () => {
 		investorsNotifications.map((_, index) => {
 			setValue(`investorsNotifications.${index}.email`, true);
@@ -81,17 +87,22 @@ export const PostTo: FC<Props> = ({
 			(opportunityInvestor) => opportunityInvestor.investorId === investorId
 		);
 
-	const onPost = (): void => {
-		const formatData = {
-			...form,
-			documentS3Path: "opportunities/9bfadef3-10cd-457d-a120-c5030e5b8288.pdf",
-		} as Opportunity;
+	const onPost = async () => {
+		try {
+			const pdfDoc = pdf(<DocumentPreview control={control} />);
+			const blob = await pdfDoc.toBlob();
 
-		setValue(
-			"documentS3Path",
-			"opportunities/9bfadef3-10cd-457d-a120-c5030e5b8288.pdf"
-		);
-		createOpportunityMutation.mutate(formatData);
+			uploadOpportunityMutation.mutate(blob, {
+				onSuccess: (data) => {
+					const formData = form;
+					formData.documentS3Path = data.s3Path;
+
+					createOpportunityMutation.mutate(formData as Opportunity);
+				},
+			});
+		} catch (error) {
+			console.error("Error al generar PDF:", error);
+		}
 	};
 
 	const openNote = (investor: Investor) => {

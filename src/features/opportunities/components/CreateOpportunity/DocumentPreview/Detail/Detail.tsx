@@ -1,13 +1,29 @@
 import type { FC } from "react";
+import { StyleSheet, Text, View } from "@react-pdf/renderer";
 
 interface Props {
 	title: string;
 	value?: string;
 }
 
-export const Detail: FC<Props> = ({ title, value }) => (
-	<div className="flex flex-row gap-1">
-		<h3 className="text-primary-500 font-extrabold text-xs">{title}:</h3>
-		<p className="text-primary-500 text-xs">{value || ""}</p>
-	</div>
+const styles = StyleSheet.create({
+	container: {
+		flexDirection: "row",
+		marginTop: 5,
+	},
+	title: {
+		fontSize: 12,
+		fontWeight: "extrabold",
+	},
+	value: {
+		fontSize: 12,
+		marginLeft: 5,
+	},
+});
+
+export const Detail: FC<Props> = ({ title, value = "" }) => (
+	<View style={styles.container}>
+		<Text style={styles.title}>{title}:</Text>
+		<Text style={styles.value}>{value}</Text>
+	</View>
 );
