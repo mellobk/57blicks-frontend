@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import type { FC } from "react";
 import { LedgerComponent } from "./LedgerComponent";
 import type { Ledgers } from "../types";
 import ManageLedgerService from "@/features/servicing/api/ledger";
-import { useQuery } from "@tanstack/react-query";
+import { dateWithFormat } from "@/utils/formats";
 
 interface LedgerListProps {
 	loan?: string;
@@ -24,7 +26,8 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 					data.forEach((item: Ledgers) => {
 						const ledger: Ledgers = {
 							id: item.id,
-							ledgerDate: item.ledgerDate,
+							ledgerDate:
+								item.ledgerDate && dateWithFormat(item.ledgerDate, "MMDDYYYY"),
 							typeOfPayment: item.typeOfPayment,
 							typeOfPaymentDescription: item.typeOfPaymentDescription,
 							type: item.type,
@@ -36,6 +39,7 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 							new: false,
 							editable: false,
 							order: 0,
+							action: "show",
 						};
 						newData.push(ledger);
 					});
@@ -46,16 +50,37 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 		}
 	);
 
-	const getUserActivity = () => {
+	const refetchLedgers = (): void => {
 		void refetch();
+	};
+
+	const deleteLedgerMutation = useMutation(
+		(id: string) => {
+			return ManageLedgerService.deleteLedger(id);
+		},
+		{
+			onSuccess: () => {
+				//refetchLedgers();
+			},
+			onError: () => {
+				//refetchLedgers();
+			},
+		}
+	);
+	const handleDeleteLedger = (id: string): void => {
+		deleteLedgerMutation.mutate(id);
 	};
 
 	useEffect(() => {}, [ledgers]);
 
 	return (
 		<>
-			<button onClick={getUserActivity}>Get Ledger</button>
-			<LedgerComponent loan={loan} ledgersData={ledgers} />
+			<LedgerComponent
+				loan={loan}
+				ledgersData={ledgers}
+				refetchLedgers={refetchLedgers}
+				handleDeleteLedger={handleDeleteLedger}
+			/>
 		</>
 	);
 };

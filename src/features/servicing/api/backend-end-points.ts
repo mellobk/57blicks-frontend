@@ -13,3 +13,7 @@ export const updateBorrowerData = (id: string): string => {
 export const ledgers = (): string => {
 	return `/ledgers`;
 };
+
+export const deleteLedgerApi = (id: string): string => {
+	return `/ledgers/${id}`;
+};

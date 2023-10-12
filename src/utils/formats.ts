@@ -24,6 +24,18 @@ export const dateWithFormat = (
 	return formattedDate;
 };
 
+export const dateWithFormatUS = (
+	inputDate: string | Date,
+	format: string
+): string => {
+	const formattedDate = moment(inputDate, "MMDDYYYY").format(format);
+
+	if (!formattedDate || formattedDate === "Invalid date") {
+		return "Invalid date format";
+	}
+
+	return formattedDate;
+};
 export const moneyFormat = (value: number) => {
 	const USDollar = new Intl.NumberFormat("en-US", {
 		style: "currency",
