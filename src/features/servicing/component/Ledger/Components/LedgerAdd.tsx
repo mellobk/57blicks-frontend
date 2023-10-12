@@ -214,13 +214,16 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							handleEdit(`editable`, true, index);
 						}}
 					>
-						{dataLedgers && !dataLedgers.edit && (
-							<Icon
-								name={"pencil"}
-								color={dataLedgers.editable ? "red" : "gray"}
-								width="14"
-							/>
-						)}
+						{
+							// @ts-ignore
+							dataLedgers && !dataLedgers.edit && (
+								<Icon
+									name={"pencil"}
+									color={dataLedgers.editable ? "red" : "gray"}
+									width="14"
+								/>
+							)
+						}
 					</div>
 					<div
 						key={`delete-${index}`}
