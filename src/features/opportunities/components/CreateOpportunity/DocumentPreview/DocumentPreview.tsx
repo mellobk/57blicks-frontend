@@ -1,14 +1,53 @@
 import { type FC, useEffect, useState } from "react";
 import { type Control, useWatch } from "react-hook-form";
+import {
+	Document,
+	Image,
+	Page,
+	StyleSheet,
+	Text,
+	View,
+} from "@react-pdf/renderer";
 import LogoNavy from "@/assets/images/png/LogoNavy.png";
 import { Detail } from "@/features/opportunities/components/CreateOpportunity/DocumentPreview/Detail/Detail";
 import { Subtitle } from "@/features/opportunities/components/CreateOpportunity/DocumentPreview/Subtitle/Subtitle";
 import type { Opportunity } from "@/features/opportunities/types/fields";
-import { moneyFormat } from "@/utils/formats";
+import { moneyFormat, percentageFormat } from "@/utils/formats";
 
 interface Props {
 	control: Control<Opportunity>;
 }
+
+const styles = StyleSheet.create({
+	body: {
+		marginHorizontal: 80,
+	},
+	column: {
+		width: "50%",
+	},
+	columns: {
+		flexDirection: "row",
+		marginVertical: 10,
+	},
+	header: {
+		alignItems: "center",
+		margin: 10,
+	},
+	logo: {
+		width: "50%",
+		marginBottom: 8,
+	},
+	section: {
+		marginVertical: 10,
+	},
+	text: {
+		fontSize: 12,
+	},
+	title: {
+		fontSize: 18,
+		fontWeight: "extrabold",
+	},
+});
 
 export const DocumentPreview: FC<Props> = ({ control }) => {
 	const [imagePreview, setImagePreview] = useState<any>(null);
@@ -27,47 +66,41 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 	}, [form.image]);
 
 	return (
-		<div className="p-6 rounded-r-2xl bg-gold-300">
-			<div className="w-[660px] h-[840px] px-20 py-2 bg-white">
-				<div className="flex flex-col items-center">
-					<img width="50%" src={LogoNavy} alt="DKC Logo" />
-					<h1 className="my-1 text-primary-500 font-extrabold text-base">
+		<Document>
+			<Page size="A4">
+				<View style={styles.header}>
+					<Image src={LogoNavy} style={styles.logo} />
+					<Text style={styles.title}>
 						New Loan Investment Opportunity{" "}
 						{form.postTitle ? ` - ${form.postTitle}` : ""}
-					</h1>
-				</div>
-				<div className="flex flex-col my-4">
-					<Subtitle
-						subtitle={`Collateral: ${form.investmentCollateral || ""}`}
-					/>
-					<Subtitle subtitle={`Borrower: ${form.investmentBorrower || ""}`} />
-				</div>
-				<p className="text-primary-500 text-xs">{form.investmentSummary}</p>
-				<div className="grid grid-cols-2 my-4">
-					<div>
-						<div>
+					</Text>
+				</View>
+				<View style={styles.body}>
+					<View style={styles.section}>
+						<Subtitle
+							subtitle={`Collateral: ${form.investmentCollateral || ""}`}
+						/>
+						<Subtitle subtitle={`Borrower: ${form.investmentBorrower || ""}`} />
+					</View>
+					{form.investmentSummary && (
+						<View style={styles.section}>
+							<Text style={styles.text}>{form.investmentSummary}</Text>
+						</View>
+					)}
+					<View style={styles.columns}>
+						<View style={styles.column}>
 							<Subtitle subtitle="Loan Details:" />
 							<Detail
 								title="Asset Value"
-								value={
-									Number(form.assetValue)
-										? moneyFormat(Number(form.assetValue))
-										: ""
-								}
+								value={moneyFormat(Number(form.assetValue))}
 							/>
 							<Detail
 								title="Loan Amount"
-								value={
-									Number(form.loanAmount)
-										? moneyFormat(Number(form.loanAmount))
-										: ""
-								}
+								value={moneyFormat(Number(form.loanAmount))}
 							/>
 							<Detail
 								title="Loan to Value"
-								value={
-									Number(form.loanToValue) ? `${Number(form.loanToValue)}%` : ""
-								}
+								value={percentageFormat(Number(form.loanToValue))}
 							/>
 							<Detail title="Term" value={form.loanTerm} />
 							<Detail title="Type" value={form.loanType} />
@@ -77,66 +110,60 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 							/>
 							<Detail
 								title="Interest Offered to Participant"
-								value={
+								value={percentageFormat(
 									Number(form.investmentMonthlyInterestedOfferedToParticipant)
-										? `${Number(
-												form.investmentMonthlyInterestedOfferedToParticipant
-										  )}%`
-										: ""
-								}
+								)}
 							/>
-						</div>
-						<div className="flex flex-col my-4">
-							<Subtitle subtitle="Participation Opportunities:" />
-							{form.participantOpportunities?.["99%"] && (
-								<div className="flex flex-row text-primary-500 text-xs">
-									<div className="font-semibold">99%</div>-{" "}
-									{moneyFormat(Number(form.participantOpportunities?.["99%"]))}
-								</div>
-							)}
-							{form.participantOpportunities?.["75%"] && (
-								<div className="flex flex-row text-primary-500 text-xs">
-									<div className="font-semibold">75%</div>-{" "}
-									{moneyFormat(Number(form.participantOpportunities?.["75%"]))}
-								</div>
-							)}
-							{form.participantOpportunities?.["50%"] && (
-								<div className="flex flex-row text-primary-500 text-xs">
-									<div className="font-semibold">50%</div>-{" "}
-									{moneyFormat(Number(form.participantOpportunities?.["50%"]))}
-								</div>
-							)}
-						</div>
-						<div className="flex flex-col my-4">
-							<Subtitle subtitle="Notes On The Borrower:" />
-							<Detail title="Borrower" value={form.investmentBorrower} />
+						</View>
+						<View style={styles.column}>
+							{imagePreview && <Image src={imagePreview} />}
+						</View>
+					</View>
+					<View style={styles.section}>
+						<Subtitle subtitle="Participation Opportunities:" />
+						{form.participantOpportunities?.["99%"] && (
 							<Detail
-								title="DKC Repeat Borrower"
-								value={form.dkcRepeatBorrower}
+								title="99%"
+								value={moneyFormat(
+									Number(form.participantOpportunities?.["99%"])
+								)}
 							/>
+						)}
+						{form.participantOpportunities?.["75%"] && (
 							<Detail
-								title="Borrower Background"
-								value={form.investmentBorrowerBackground}
+								title="75%"
+								value={moneyFormat(
+									Number(form.participantOpportunities?.["75%"])
+								)}
 							/>
-						</div>
-						<div className="my-4">
-							<Subtitle subtitle="Additional Documents:" />
-							<p className="text-primary-500 text-xs">
-								{form.additionalInformation}
-							</p>
-						</div>
-					</div>
-					<div>
-						{imagePreview ? (
-							<img
-								src={imagePreview}
-								alt="Selected Preview"
-								style={{ width: "100%", height: "auto" }}
+						)}
+						{form.participantOpportunities?.["50%"] && (
+							<Detail
+								title="50%"
+								value={moneyFormat(
+									Number(form.participantOpportunities?.["50%"])
+								)}
 							/>
-						) : null}
-					</div>
-				</div>
-			</div>
-		</div>
+						)}
+					</View>
+					<View style={styles.section}>
+						<Subtitle subtitle="Notes On The Borrower:" />
+						<Detail title="Borrower" value={form.investmentBorrower} />
+						<Detail
+							title="DKC Repeat Borrower"
+							value={form.dkcRepeatBorrower}
+						/>
+						<Detail
+							title="Borrower Background"
+							value={form.investmentBorrowerBackground}
+						/>
+					</View>
+					<View style={styles.section}>
+						<Subtitle subtitle="Additional Documents:" />
+						<Text style={styles.text}>{form.additionalInformation}</Text>
+					</View>
+				</View>
+			</Page>
+		</Document>
 	);
 };

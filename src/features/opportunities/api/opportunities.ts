@@ -1,6 +1,7 @@
 import type {
 	Opportunity,
 	OpportunityMin,
+	Upload,
 } from "@/features/opportunities/types/api";
 import type { Opportunity as OpportunityFields } from "@/features/opportunities/types/fields";
 import { authApiClient } from "@/utils/api-client";
@@ -23,9 +24,8 @@ const deleteOpportunity = async (opportunityId: string) => {
 };
 
 const getOpportunities = async () => {
-	const response = await authApiClient.get<Array<OpportunityMin>>(
-		"/opportunities"
-	);
+	const response =
+		await authApiClient.get<Array<OpportunityMin>>("/opportunities");
 
 	return response.data;
 };
@@ -42,11 +42,24 @@ const getOpportunity = async (opportunityId?: string) => {
 	return;
 };
 
+const uploadOpportunity = async (file: Blob) => {
+	let formData = new FormData();
+	formData.append("file", file);
+
+	const response = await authApiClient.post<Upload>(
+		"/opportunities/upload",
+		formData
+	);
+
+	return response.data;
+};
+
 const OpportunitiesService = {
 	createOpportunity,
 	deleteOpportunity,
 	getOpportunities,
 	getOpportunity,
+	uploadOpportunity,
 };
 
 export default OpportunitiesService;

@@ -1,7 +1,8 @@
-import type { FC } from "react";
-import { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { type SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PDFViewer } from "@react-pdf/renderer";
+
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Button } from "@/components/ui/Button";
 import { SuccessModal } from "@/components/ui/SuccessModal";
@@ -16,10 +17,12 @@ import { PostTo } from "@/features/opportunities/components/CreateOpportunity/Po
 import { OpportunitySchema } from "@/features/opportunities/schemas/OpportunitySchema";
 import type { Opportunity } from "@/features/opportunities/types/fields";
 import { tabs } from "@/features/opportunities/utils/tabs";
+import { defaultValues } from "@/features/opportunities/utils/values";
 
 export const CreateOpportunity: FC = () => {
 	const [openPostToModal, setOpenPostToModal] = useState(false);
 	const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(false);
+
 	const {
 		control,
 		formState: { errors },
@@ -28,8 +31,10 @@ export const CreateOpportunity: FC = () => {
 		reset,
 		setValue,
 	} = useForm<Opportunity>({
+		defaultValues,
 		resolver: zodResolver(OpportunitySchema),
 	});
+
 	const [assetValue, loanAmount] = useWatch({
 		control,
 		name: ["assetValue", "loanAmount"],
@@ -68,13 +73,13 @@ export const CreateOpportunity: FC = () => {
 				</div>
 				<div>
 					<Button
-            buttonText="Post"
+						buttonText="Post"
 						className="rounded-2xl h-9 bg-gold-500/[.16] text-gold-500"
 						type="submit"
 					/>
 				</div>
 			</div>
-			<div className="grid lg:grid-cols-7 gap-6 divide-x divide-gray-200 bg-white rounded-3xl w-screen p-6 h-full overflow-y-auto">
+			<div className="grid lg:grid-cols-7 gap-6 divide-x divide-gray-200 bg-white rounded-3xl w-full h-full p-6 overflow-y-auto">
 				<div className="lg:col-span-2 col-span-1">
 					<GeneralInformation errors={errors} register={register} />
 				</div>
@@ -91,7 +96,9 @@ export const CreateOpportunity: FC = () => {
 				</div>
 
 				<div className="lg:col-span-3 col-span-1 lg:pl-6">
-					<DocumentPreview control={control} />
+					<PDFViewer height="100%" width="100%" showToolbar={false}>
+						<DocumentPreview control={control} />
+					</PDFViewer>
 				</div>
 			</div>
 
