@@ -15,14 +15,19 @@ import { formatCurrency } from "@/utils/common-funtions";
 import { useMutation } from "@tanstack/react-query";
 import ManageLedgerService from "@/features/servicing/api/ledger";
 import { v4 as uuidv4 } from "uuid";
+import { Icon } from "@/components/ui/Icon";
 interface LedgerComponentProps {
 	loan?: string;
 	ledgersData?: Array<Ledgers>;
+	refetchLedgers?: () => void;
+	handleDeleteLedger?: (id: string) => void;
 }
 
 export const LedgerComponent: FC<LedgerComponentProps> = ({
 	loan,
 	ledgersData,
+	refetchLedgers,
+	handleDeleteLedger,
 }) => {
 	const [openClassModal, setOpenClassModal] = useState<boolean>();
 	const [currentIndex, setCurrentIndex] = useState<number>();
@@ -35,6 +40,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		{
 			onSuccess: () => {
 				//remove all rews
+				refetchLedgers && refetchLedgers();
 				remove();
 			},
 			onError: (error) => {
@@ -60,7 +66,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		setValue,
 		control,
 		formState: { errors },
-		reset,
 	} = useZodForm({
 		schema: validationSchema,
 		// @ts-ignore
@@ -79,7 +84,8 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		control,
 	});
 
-	const handleRemove = (index: number): void => {
+	const handleRemove = (index: number, id: string): void => {
+		handleDeleteLedger && handleDeleteLedger(id);
 		remove(index);
 	};
 
@@ -121,6 +127,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			new: true,
 			approvalState: ApprovalStateType.PENDING,
 			order: allFields.ledgers.length + 1,
+			action: "add",
 		};
 		append(newRow as never);
 		//append(exampleLedger as never);
@@ -156,20 +163,43 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		setTotals(totals);
 	};
 
-	const handleSetValue = (name: string, value: string, index: number): void => {
+	const handleSetValue = (
+		name: string,
+		value: string | number | boolean,
+		index: number
+	): void => {
 		setValue(`ledgers.${index}.${name}` as never, value as never);
 		if (name === "credit") {
 			setValue(`ledgers.${index}.debit` as never, 0 as never);
 			setValue(`ledgers.${index}.type` as never, "Credit" as never);
+
+			setValue(
+				`ledgers.${index}.balance` as never,
+				Number.parseInt(`${value}`) as never
+			);
 		} else if (name === "debit") {
 			setValue(`ledgers.${index}.credit` as never, 0 as never);
 			setValue(`ledgers.${index}.type` as never, "Debit" as never);
-		}
-		setValue(
-			`ledgers.${index}.balance` as never,
-			Number.parseInt(value) as never
-		);
 
+			setValue(
+				`ledgers.${index}.balance` as never,
+				Number.parseInt(`${value}`) as never
+			);
+		}
+		append({} as never);
+		remove(allFields.ledgers.length);
+		handleTotals();
+	};
+
+	const handleEdit = (
+		name: string,
+		value: string | number | boolean,
+		index: number
+	): void => {
+		setValue(`ledgers.${index}.${name}` as never, value as never);
+		setValue(`ledgers.${index}.action` as never, "edit" as never);
+		append({} as never);
+		remove(allFields.ledgers.length);
 		handleTotals();
 	};
 
@@ -199,7 +229,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					});
 
 					createLedger.mutate({ ...sanedData, loan: loan });
-					reset(data);
 				})}
 			>
 				<div
@@ -230,6 +259,8 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 											data={allFields as unknown as LedgerFormValues}
 											handleOpenModal={handleOpenModal}
 											handleSetValue={handleSetValue}
+											handleEdit={handleEdit}
+											handleDeleteLedger={handleDeleteLedger}
 											control={control as never}
 											errors={errors}
 											register={register as never}
@@ -239,7 +270,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 							})}
 						</tbody>
 					</table>
-					<div className="absolute bottom-[5px]">
+					<div className="w-[98%] absolute bottom-[5px] rounded-xl">
 						<table className="w-full  rounded-xl bg-white flex flex-col justify-between  ">
 							<tfoot className="bg-gray-200 h-10 ">
 								<tr>
@@ -271,7 +302,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 									<td style={{ width: "150px", paddingLeft: "20px" }}>
 										{formatCurrency(totals.balances) || "$ 0"}
 									</td>
-									<td style={{ width: "80px" }}></td>
+									<td style={{ width: "10px" }}></td>
 								</tr>
 							</tfoot>
 						</table>
@@ -292,6 +323,15 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					onClick={handleAddRow}
 				>
 					Add row
+				</Button>
+
+				<Button
+					variant={"success"}
+					type="button"
+					className="absolute top-[25px] right-[272px] rounded-full w-[30px] h-[30px] bg-green-400"
+					onClick={refetchLedgers}
+				>
+					<Icon name="success" width="15" color="white" />
 				</Button>
 			</form>
 			<Modal
