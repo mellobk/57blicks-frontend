@@ -60,4 +60,5 @@ export const exampleLedger: Ledger = {
 	editable: true,
 	order: 0,
 	new: true,
+	action: "add",
 };
