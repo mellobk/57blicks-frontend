@@ -17,7 +17,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Tag } from "@/components/ui/Tag";
 import { InputNumber } from "@/components/forms/InputNumber";
 import { formatCurrency } from "@/utils/common-funtions";
-import { dateFormat } from "@/utils/formats";
+import { dateWithFormatUS } from "@/utils/formats";
 
 interface LedgerAddProps {
 	field: FieldArrayWithId<Ledger>;
@@ -25,9 +25,19 @@ interface LedgerAddProps {
 	errors: FieldErrors<LedgerFormValues>;
 	control: Control<LedgerFormValues>;
 	data: LedgerFormValues;
-	handleSetValue: (field: string, value: string, index: number) => void;
+	handleSetValue: (
+		field: string,
+		value: string | number | boolean,
+		index: number
+	) => void;
+	handleEdit: (
+		field: string,
+		value: string | number | boolean,
+		index: number
+	) => void;
+	handleDeleteLedger?: (id: string) => void;
 	register: UseFormRegister<LedgerFormValues>;
-	handleRemove: (index: number) => void;
+	handleRemove: (index: number, id: string) => void;
 	handleOpenModal: (value: boolean, index: number) => void;
 }
 
@@ -38,6 +48,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	control,
 	data,
 	handleSetValue,
+	handleEdit,
 	register,
 	handleRemove,
 	handleOpenModal,
@@ -58,9 +69,9 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	return (
 		<tr
 			key={`ledger-${index}`}
-			className={`border-b border-gray-200 h-12 ${
+			className={`relative border-b border-gray-200 h-12 ${
 				dataLedgers && dataLedgers.editable ? "bg-gray-50" : ""
-			}`}
+			} `}
 		>
 			<td style={{ paddingLeft: "20px", width: "150px" }}>
 				{editable ? (
@@ -80,7 +91,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				) : (
 					dataLedgers &&
 					dataLedgers.ledgerDate &&
-					dateFormat(dataLedgers.ledgerDate?.toString() ?? "")
+					dateWithFormatUS(dataLedgers.ledgerDate ?? "", "MM-DD-YYYY")
 				)}
 			</td>
 			<td style={{ paddingLeft: "20px", width: "160px" }}>
@@ -91,6 +102,13 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							: ""
 					}`}
 				>
+					{dataLedgers &&
+						dataLedgers.action === "show" &&
+						dataLedgers.approvalState === "Pending" && (
+							<div className="absolute text-[8px] top-0 w-24  text-red-400">
+								Pending
+							</div>
+						)}
 					{editable ? (
 						<>
 							{dataLedgers && dataLedgers.typeOfPayment ? (
@@ -108,7 +126,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							</div>
 						</>
 					) : (
-						<>{dataLedgers && dataLedgers.typeOfPayment}</>
+						<>{dataLedgers && dataLedgers.typeOfPaymentDescription}</>
 					)}
 				</div>
 			</td>
@@ -193,12 +211,12 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					<div
 						key={`edit-${index}`}
 						onClick={(): void => {
-							//handleEditRow(row.id);
+							handleEdit(`editable`, true, index);
 						}}
 					>
-						{dataLedgers && !dataLedgers.new && (
+						{dataLedgers && !dataLedgers.edit && (
 							<Icon
-								name={dataLedgers.editable ? "deleteBack" : "pencil"}
+								name={"pencil"}
 								color={dataLedgers.editable ? "red" : "gray"}
 								width="14"
 							/>
@@ -207,7 +225,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					<div
 						key={`delete-${index}`}
 						onClick={(): void => {
-							handleRemove(index);
+							// @ts-ignore
+							handleRemove(index, `${dataLedgers.id}`);
 						}}
 					>
 						<Icon name="trashBin" color="red" width="20" />

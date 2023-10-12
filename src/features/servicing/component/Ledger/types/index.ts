@@ -33,6 +33,7 @@ export type Ledgers = {
 	editable?: boolean;
 	new?: boolean;
 	order?: number;
+	action?: string;
 };
 
 export type LedgerFormValues = {

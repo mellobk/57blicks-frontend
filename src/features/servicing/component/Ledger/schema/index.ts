@@ -20,6 +20,7 @@ export const validationSchema = z.object({
 			editable: z.boolean(),
 			order: z.number(),
 			new: z.boolean(),
+			action: z.string(),
 		})
 	),
 });
