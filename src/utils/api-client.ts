@@ -14,8 +14,7 @@ export const authApiClient = axios.create({
 
 authApiClient.interceptors.request.use(
 	(config: any) => {
-		config.headers.Authorization = `Bearer  ${getLocalStorage(accessToken)}`;
-		config.headers["Content-type"] = "application/json";
+		config.headers.Authorization = `Bearer ${getLocalStorage(accessToken)}`;
 
 		return config;
 	},

@@ -19,10 +19,10 @@ import { defaultValues } from "@/features/create-loan/utils/values";
 import { unFormatPhone } from "@/utils/common-funtions";
 
 export const CreateLoan: FC = () => {
-	const [openLenderModal, setOpenLenderModal] = useState<boolean>(false);
-	const [openParticipantModal, setOpenParticipantModal] =
-		useState<boolean>(false);
-	const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(false);
+	const [openLenderModal, setOpenLenderModal] = useState(false);
+	const [openParticipantModal, setOpenParticipantModal] = useState(false);
+	const [openSuccessModal, setOpenSuccessModal] = useState(false);
+
 	const {
 		control,
 		formState: { errors },
@@ -34,6 +34,7 @@ export const CreateLoan: FC = () => {
 		defaultValues,
 		resolver: zodResolver(LoanSchema),
 	});
+
 	const {
 		append: appendCollateral,
 		fields: collaterals,
@@ -42,15 +43,18 @@ export const CreateLoan: FC = () => {
 		control,
 		name: "collaterals",
 	});
+
 	const { fields: fundingBreakdown } = useFieldArray({
 		control,
 		name: "fundingBreakdown",
 	});
+
 	const { append: appendParticipant, remove: removeParticipant } =
 		useFieldArray({
 			control,
 			name: "participationBreakdown",
 		});
+
 	const {
 		isError,
 		isSuccess,

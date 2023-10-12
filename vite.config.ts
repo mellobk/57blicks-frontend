@@ -25,6 +25,7 @@ export default defineConfig({
 				global: "globalThis",
 			},
 		},
+    include: ["@react-pdf/renderer"]
 	},
 	define: { _global: "({})" },
 
