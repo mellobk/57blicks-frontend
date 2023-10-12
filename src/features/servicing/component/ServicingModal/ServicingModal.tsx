@@ -7,6 +7,7 @@ import { BorrowerInformation } from "../BorrowerInformation";
 import "./ServicingModal.css";
 import type { FundingBreakdown } from "../../types/api";
 import { LedgerList } from "../Ledger";
+import { InvoiceScreen } from "../Invoice";
 
 interface ServicingModalProps {
 	openModal?: boolean;
@@ -47,7 +48,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 				break;
 			}
 			case "invoices": {
-				setTabTitle("Loan Information");
+				setTabTitle("Invoices");
 				break;
 			}
 			default: {
@@ -85,6 +86,9 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 					/>
 				)}
 				{tabTitle === "Ledger" && data && <LedgerList loan={data.loan.id} />}
+				{tabTitle === "Invoices" && data && (
+					<InvoiceScreen loan={data.loan.id} />
+				)}
 			</Modal>
 		</div>
 	);
