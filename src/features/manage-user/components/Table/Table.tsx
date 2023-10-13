@@ -103,7 +103,7 @@ export const Table: FC<TableProps> = ({
 					style={{ position: "relative", width: "180px" }}
 				>
 					<div
-						className="flex justify-end gap-1 items-center"
+						className="flex justify-end gap-1 items-center w-0"
 						style={{ position: "absolute" }}
 					>
 						<div
@@ -119,7 +119,7 @@ export const Table: FC<TableProps> = ({
 								<Toggle
 									checkedClassName="bg-green-500"
 									checkLabel="Show Disabled"
-									checkLabelClassName="text-white text-[13px]"
+									checkLabelClassName="text-white text-[13px] w-32"
 									onChecked={(data): void => {
 										if (handleCheckValue) {
 											handleCheckValue(data);
@@ -191,8 +191,7 @@ export const Table: FC<TableProps> = ({
 						<div className="">
 							<Button
 								buttonText={buttonText}
-								className="text-primary-500 w-[100%]  bg-white h-8 p-2 border-none flex justify-center items-center rounded-[16px] text-12 font-bold"
-								deepClassName=" w-full flex flex-row items-center justify-center  text-[13px] text-center"
+								variant={"white"}
 								onClick={onClickButton}
 							/>
 						</div>
