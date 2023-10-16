@@ -168,10 +168,10 @@ export const DkcLlcTable: FC<SuccessProps> = () => {
 			selector: (row: DkcServicing): JSX.Element => (
 				<div key={row.id}>
 					<Toggle
-						checkedClassName="bg-green-500"
-						checkLabel="Paid"
-						checkLabelClassName="text-black text-[13px]"
 						checked={false}
+						checkedClassName="bg-green-500"
+						label="Paid"
+						labelClassName="text-black text-[13px]"
 					/>
 				</div>
 			),

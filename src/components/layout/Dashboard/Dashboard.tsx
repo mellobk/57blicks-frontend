@@ -23,9 +23,7 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 	const createLoanTo: string = "/create-loan";
 	const localSub = getLocalStorage(sub);
 	const localUserName = getLocalStorage(userName);
-	const [enabled, setEnabled] = useState<boolean>(
-		!getLocalStorage(userName)
-	);
+	const [enabled, setEnabled] = useState<boolean>(!getLocalStorage(userName));
 	const [openModalUser, setOpenModalUser] = useState<boolean>();
 	const setLenderData = servicingStore((state) => state.setLender);
 	const lenderData = servicingStore((state) => state.lenders);

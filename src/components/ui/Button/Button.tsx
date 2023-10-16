@@ -1,9 +1,9 @@
+import type { ReactElement } from "react";
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/utils/cn";
-import type { ReactElement } from "react";
 
 export const buttonVariants = cva(
 	"inline-flex items-center justify-center   disabled:pointer-events-none disabled:opacity-50 bg-gray-250 text-white rounded-lg transition-colors	transition-duration: 250ms",
@@ -76,7 +76,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					})
 				)}
 				ref={ref}
-				//change children
 				children={
 					<>
 						{loading ? (
@@ -86,7 +85,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 						) : (
 							<div className="flex flex-row align-middle items-center">
 								{icon && (
-									<div className="pr-2 ">
+									<div className={buttonText ? "pr-2" : ""}>
 										<>{icon}</>
 									</div>
 								)}

@@ -151,15 +151,15 @@ export const ServicingTable: FC<TableProps> = ({
 						>
 							{handleCheckValue && (
 								<Toggle
+									checked={checkedValue}
 									checkedClassName="bg-green-500"
-									checkLabel="Show Disabled"
-									checkLabelClassName="text-white text-[13px]"
+									label="Show Disabled"
+									labelClassName="text-white text-[13px]"
 									onChecked={(data): void => {
 										if (handleCheckValue) {
 											handleCheckValue(data);
 										}
 									}}
-									checked={checkedValue}
 								/>
 							)}
 							<div

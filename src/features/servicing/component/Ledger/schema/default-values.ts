@@ -1,8 +1,8 @@
 import {
 	ApprovalStateType,
+	type Ledgers,
 	LedgerType,
 	LedgerTypeOfPayment,
-	type Ledgers,
 } from "../types";
 
 export const defaultLedgerValues: Ledgers = {

@@ -1,45 +1,65 @@
 import type { FC } from "react";
-import type { Control, FieldErrors } from "react-hook-form";
-import { FormatInput } from "@/components/forms/FormatInput";
+import { useEffect } from "react";
+import type { Control, FieldErrors, UseFormSetValue } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import { Title } from "@/components/ui/Title";
 import type { Opportunity } from "@/features/opportunities/types/fields";
+import { Switch } from "@/features/opportunities/components/CreateOpportunity/ParticipantOpportunities/Switch/Switch.tsx";
 
 interface Props {
 	control: Control<Opportunity>;
 	errors: FieldErrors<Opportunity>;
+	setValue: UseFormSetValue<Opportunity>;
 }
 
-export const ParticipantOpportunities: FC<Props> = ({ control, errors }) => (
-	<div>
-		<Title text="Participant Opportunities" />
-		<div className="grid xl:grid-cols-3 grid-cols-1 xl:gap-6">
-			<FormatInput
-				control={control}
-				error={errors?.participantOpportunities?.["99%"]?.message}
-				format="money"
-				name="participantOpportunities.99%"
-				placeholder="99%"
-				wrapperClassName="mt-6"
-				required
-			/>
-			<FormatInput
-				control={control}
-				error={errors?.participantOpportunities?.["75%"]?.message}
-				format="money"
-				name="participantOpportunities.75%"
-				placeholder="75%"
-				wrapperClassName="mt-6"
-				required
-			/>
-			<FormatInput
-				control={control}
-				error={errors?.participantOpportunities?.["50%"]?.message}
-				format="money"
-				name="participantOpportunities.50%"
-				placeholder="50%"
-				wrapperClassName="mt-6"
-				required
-			/>
+export const ParticipantOpportunities: FC<Props> = ({
+	control,
+	errors,
+	setValue,
+}) => {
+	const [loanAmount, participantOpportunities] = useWatch({
+		control,
+		name: ["loanAmount", "participantOpportunities"],
+	});
+
+	const onChange = (checked: boolean, percentage: "99%" | "75%" | "50%") => {
+		setValue(
+			`participantOpportunities.${percentage}`,
+			checked
+				? String((Number(loanAmount) * (parseInt(percentage) / 100)).toFixed(2))
+				: ""
+		);
+	};
+
+	useEffect(() => {
+		onChange(!!participantOpportunities["99%"], "99%");
+		onChange(!!participantOpportunities["75%"], "75%");
+		onChange(!!participantOpportunities["50%"], "50%");
+	}, [loanAmount]);
+
+	return (
+		<div>
+			<Title text="Participant Opportunities" />
+			<div className="grid xl:grid-cols-3 grid-cols-1 xl:gap-6">
+				<Switch
+					control={control}
+					errors={errors}
+					onChange={onChange}
+					percentage={"99%"}
+				/>
+				<Switch
+					control={control}
+					errors={errors}
+					onChange={onChange}
+					percentage={"75%"}
+				/>
+				<Switch
+					control={control}
+					errors={errors}
+					onChange={onChange}
+					percentage={"50%"}
+				/>
+			</div>
 		</div>
-	</div>
-);
+	);
+};

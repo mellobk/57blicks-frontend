@@ -1,14 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable camelcase */
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Button } from "@/components/ui/Button";
-import { type FC, useEffect, useState, useRef } from "react";
+import { type FC, useEffect, useRef, useState } from "react";
 import type {
 	PermissionGroup,
 	Permissions,
@@ -24,7 +15,7 @@ import {
 } from "../PermissionToggle/PermissionToggle";
 import { Select } from "@/components/forms/Select";
 import { Input } from "@/components/forms/Input";
-import { type FieldValues, useForm, type SubmitHandler } from "react-hook-form";
+import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import useStore from "@/stores/app-store";
 
 interface PermissionsAdmin {
@@ -217,7 +208,7 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 	}, [roles]);
 
 	const enableOriginalSearch = (id: number) => {
-		const enableOriginalSearch = originalSearch.current?.map((item) => {
+		originalSearch.current = originalSearch.current?.map((item) => {
 			if (item.id === id) {
 				return {
 					...item,
@@ -226,12 +217,10 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 			}
 			return item;
 		});
-		/* 	void findExistingRole(enableOriginalSearch || []); */
-		originalSearch.current = enableOriginalSearch;
 	};
 
 	const enableOriginalSearchVisible = (id: number) => {
-		const enableOriginalSearch = originalSearch.current?.map((item) => {
+		originalSearch.current = originalSearch.current?.map((item) => {
 			if (item.id === id) {
 				return {
 					...item,
@@ -240,8 +229,6 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 			}
 			return item;
 		});
-
-		originalSearch.current = enableOriginalSearch;
 	};
 
 	const enablePermission = (id: number): void => {

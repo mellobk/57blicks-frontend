@@ -31,10 +31,9 @@ export const PermissionToggle: FC<PermissionToggleProps> = ({
 						<Icon name={`${visible ? "openEye" : "closeEye"}`} width="22" />
 					</div>
 					<Toggle
-						checkedClassName="bg-green-500"
 						checked={permissionStatus}
+						checkedClassName="bg-green-500"
 						onChecked={handleOnClick}
-						checkLabel=""
 					/>
 				</div>
 			</div>
