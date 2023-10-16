@@ -92,11 +92,11 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 							<Subtitle subtitle="Loan Details:" />
 							<Detail
 								title="Asset Value"
-								value={moneyFormat(Number(form.assetValue))}
+								value={moneyFormat(Number(form.assetValue), false)}
 							/>
 							<Detail
 								title="Loan Amount"
-								value={moneyFormat(Number(form.loanAmount))}
+								value={moneyFormat(Number(form.loanAmount), false)}
 							/>
 							<Detail
 								title="Loan to Value"
@@ -123,7 +123,8 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 							<Detail
 								title="99%"
 								value={moneyFormat(
-									Number(form.participantOpportunities?.["99%"])
+									Number(form.participantOpportunities?.["99%"]),
+									false
 								)}
 							/>
 						)}
@@ -131,7 +132,8 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 							<Detail
 								title="75%"
 								value={moneyFormat(
-									Number(form.participantOpportunities?.["75%"])
+									Number(form.participantOpportunities?.["75%"]),
+									false
 								)}
 							/>
 						)}
@@ -139,7 +141,8 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 							<Detail
 								title="50%"
 								value={moneyFormat(
-									Number(form.participantOpportunities?.["50%"])
+									Number(form.participantOpportunities?.["50%"]),
+									false
 								)}
 							/>
 						)}

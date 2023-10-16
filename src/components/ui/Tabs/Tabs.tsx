@@ -9,7 +9,7 @@ interface LoginTitleProps {
 export const Tabs: FC<LoginTitleProps> = ({ tabs, actualTab }) => {
 	const navigate = useNavigate();
 	return (
-		<div className="flex  h-full  w-full gap-1 text-white items-center justify-center p-[5px] bg-black-200 rounded-[16px]">
+		<div className="flex h-full w-full gap-1 text-white items-center justify-center p-[5px] bg-black-200 rounded-[16px]">
 			{tabs?.map((Tab, index) => (
 				<div
 					key={index}

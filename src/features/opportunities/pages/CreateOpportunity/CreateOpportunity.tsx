@@ -77,7 +77,7 @@ export const CreateOpportunity: FC = () => {
 				<div>
 					<Button
 						buttonText="Post"
-						className="rounded-2xl h-9 bg-gold-500/[.16] text-gold-500"
+						className="rounded-2xl px-4 py-2 bg-gold-500/[.16] text-gold-500 font-semibold"
 						type="submit"
 					/>
 				</div>
