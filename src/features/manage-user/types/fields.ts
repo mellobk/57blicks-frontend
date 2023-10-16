@@ -21,12 +21,12 @@ export type updateGeneralUserInformation = {
 
 export type AddAccountingFields = {
 	id?: string;
-	firstName: string;
-	lastName: string;
-	mailingAddress: string;
-	email: string;
-	phoneNumber: string;
-	company: string;
+	firstName?: string;
+	lastName?: string;
+	mailingAddress?: string;
+	email?: string;
+	phoneNumber?: string;
+	company?: string;
 };
 
 export type AddInvestorFields = {

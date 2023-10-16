@@ -1,4 +1,4 @@
-import { type ForwardRefRenderFunction, useState } from "react";
+import { type ForwardRefRenderFunction } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { Dropdown, type DropdownProps } from "primereact/dropdown";
 import { ErrorText } from "@/components/forms/ErrorText";
@@ -15,6 +15,7 @@ interface SelectProps extends DropdownProps {
 	error?: string;
 	label: string;
 	register?: UseFormRegisterReturn;
+	value?: string;
 }
 
 export const Select: ForwardRefRenderFunction<
@@ -30,8 +31,6 @@ export const Select: ForwardRefRenderFunction<
 	value,
 	...props
 }) => {
-	const [selectedData, setSelectedData] = useState<string>(value);
-
 	return (
 		<div className={`flex flex-col gap-2 ${className}`}>
 			<Label label={label} required={required} />
@@ -40,9 +39,8 @@ export const Select: ForwardRefRenderFunction<
 				<Dropdown
 					{...props}
 					{...register}
-					value={selectedData}
+					value={value}
 					onChange={(e): void => {
-						setSelectedData(e.target.value);
 						onChange?.(e);
 					}}
 					optionLabel="name"

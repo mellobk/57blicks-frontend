@@ -273,10 +273,7 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 										}
 										required
 										placeholder="Select Account Type"
-										value={{
-											name: "",
-											code: "",
-										}}
+										value={""}
 										options={ACCOUNT_OPTIONS}
 									/>
 								</div>

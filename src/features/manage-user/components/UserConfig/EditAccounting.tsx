@@ -45,8 +45,6 @@ export const EditAccounting: FC<EditAccountingProps> = ({
 		},
 	});
 
-	const setErrorMessage = useStore((state) => state.setErrorMessage);
-	const clearErrorMessage = useStore((state) => state.clearErrorMessage);
 	const setSuccessMessage = useStore((state) => state.setSuccessMessage);
 	const clearSuccessMessage = useStore((state) => state.clearSuccessMessage);
 
@@ -60,13 +58,6 @@ export const EditAccounting: FC<EditAccountingProps> = ({
 				setUser ? setUser(user) : null;
 				setTimeout(() => {
 					clearSuccessMessage();
-				}, 500);
-			},
-			onError: (error: any) => {
-				setErrorMessage(`${error?.response?.data.message}`);
-
-				setTimeout(() => {
-					clearErrorMessage();
 				}, 500);
 			},
 		}
