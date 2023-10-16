@@ -8,8 +8,10 @@ export interface PermissionToggleProps {
 	handleEyesOnClick?: () => void;
 	description?: string;
 	permission?: string;
+	name?: string;
 	id?: number;
 	visible?: boolean;
+	keyValue?: string;
 }
 
 export const PermissionToggle: FC<PermissionToggleProps> = ({

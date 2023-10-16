@@ -204,6 +204,7 @@ export const Table: FC<TableProps> = ({
 						fixedHeader
 						columns={stateColumns}
 						data={data}
+						className="h-[85vh]"
 						progressPending={loading}
 						conditionalRowStyles={conditionalRowStyles}
 						onRowClicked={onRowClicked}

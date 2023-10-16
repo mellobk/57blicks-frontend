@@ -3,20 +3,30 @@ import type {
 	AddAdminFields,
 	updateGeneralUserInformation,
 } from "../types/fields";
-import type { Investor, User } from "../types/api";
+import type {
+	Investor,
+	PermissionGroup,
+	Permissions,
+	User,
+} from "../types/api";
 import {
+	assignPermissionRole,
 	createAccounting,
 	createAdmin,
 	createInvestor,
 	deleteUserData,
 	filterData,
-	getPermissionRoleById,
+	findExistingPermission,
+	getAllPermission,
+	getPermissionGroupById,
 	getUserData,
 	investors,
 	investorsBank,
+	permissionGroup,
 	restoreUserData,
 	updateAccountingUrl,
 	updateAdminUrl,
+	updateUser,
 	userFilterAccountingData,
 	userFilterAdminData,
 } from "./backend-end-points";
@@ -69,28 +79,41 @@ const updateInvestorsBank = async (body: Investor) => {
 const updateGeneralInformation = async (
 	body: updateGeneralUserInformation
 ): Promise<AxiosResponse<Array<User>, unknown>> => {
-	return await authApiClient.put<Array<User>>(
-		updateAdminUrl(body.id || ""),
-		body
-	);
+	return authApiClient.put<Array<User>>(updateAdminUrl(body.id || ""), body);
 };
 
 const updateAdmin = async (
 	body: AddAdminFields
 ): Promise<AxiosResponse<Array<User>, unknown>> => {
-	return await authApiClient.put<Array<User>>(
-		updateAdminUrl(body.id || ""),
-		body
-	);
+	return authApiClient.put<Array<User>>(updateAdminUrl(body.id || ""), body);
+};
+
+const updateUserGroupPermission = async (
+	body: User
+): Promise<AxiosResponse<Array<User>, unknown>> => {
+	return authApiClient.put<Array<User>>(updateUser(body.id || ""), body);
 };
 
 const updateAccounting = async (
 	body: AddAccountingFields
 ): Promise<AxiosResponse<Array<User>, unknown>> => {
-	return await authApiClient.put<Array<User>>(
+	return authApiClient.put<Array<User>>(
 		updateAccountingUrl(body.id || ""),
 		body
 	);
+};
+
+const getAllPermissionGroup = async () => {
+	const response = await authApiClient.get<Array<PermissionGroup>>(
+		permissionGroup()
+	);
+	return response.data;
+};
+const allPermission = async () => {
+	const response = await authApiClient.get<Array<PermissionGroup>>(
+		getAllPermission()
+	);
+	return response.data;
 };
 
 const createNewAdmin = async (body: Investor) => {
@@ -114,6 +137,21 @@ const createNewInvestor = async (body: Investor) => {
 	return response.data;
 };
 
+const findExistingRolePermission = async (body: Investor) => {
+	const response = await authApiClient.post<Permissions>(
+		findExistingPermission(),
+		body
+	);
+	return response.data;
+};
+
+const assignPermissionRoleData = async (body: Investor) => {
+	const response = await authApiClient.post<Permissions>(
+		assignPermissionRole(),
+		body
+	);
+	return response.data;
+};
 const deleteUser = async (id: string) => {
 	const response = await authApiClient.delete<Array<User>>(deleteUserData(id));
 	return response.data;
@@ -124,9 +162,9 @@ const restoreUser = async (id: string) => {
 	return response.data;
 };
 
-const permissionRoleById = async (id: string) => {
-	const response = await authApiClient.get<Permissions>(
-		getPermissionRoleById(id)
+const permissionGroupById = async (id: string) => {
+	const response = await authApiClient.get<PermissionGroup>(
+		getPermissionGroupById(id)
 	);
 	return response.data;
 };
@@ -150,7 +188,12 @@ const ManageUsersService = {
 	updateAccounting,
 	updateGeneralInformation,
 	restoreUser,
-	permissionRoleById,
+	permissionGroupById,
+	allPermission,
+	findExistingRolePermission,
+	assignPermissionRoleData,
+	getAllPermissionGroup,
+	updateUserGroupPermission,
 };
 
 export default ManageUsersService;
