@@ -50,18 +50,18 @@ const styles = StyleSheet.create({
 });
 
 export const DocumentPreview: FC<Props> = ({ control }) => {
-	const [imagePreview, setImagePreview] = useState<any>(null);
+	const [image, setImage] = useState<any>(null);
 	const form = useWatch({ control });
 
 	useEffect(() => {
 		if (form.image?.[0]) {
 			const reader = new FileReader();
 			reader.onloadend = () => {
-				setImagePreview(reader.result);
+				setImage(reader.result);
 			};
 			reader.readAsDataURL(form.image?.[0]);
 		} else {
-			setImagePreview(null);
+			setImage(null);
 		}
 	}, [form.image]);
 
@@ -115,9 +115,7 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 								)}
 							/>
 						</View>
-						<View style={styles.column}>
-							{imagePreview && <Image src={imagePreview} />}
-						</View>
+						<View style={styles.column}>{image && <Image src={image} />}</View>
 					</View>
 					<View style={styles.section}>
 						<Subtitle subtitle="Participation Opportunities:" />
