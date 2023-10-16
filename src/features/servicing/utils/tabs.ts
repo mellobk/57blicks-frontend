@@ -36,3 +36,8 @@ export const userTabs = [
 	{ label: "Permission", routeTo: "manage-users/admins" },
 	{ label: "Edit", routeTo: "manage-users/admins" },
 ];
+
+export const investorUserTabs = [
+	{ label: "Activity", routeTo: "manage-users/admins" },
+	{ label: "Edit", routeTo: "manage-users/admins" },
+];

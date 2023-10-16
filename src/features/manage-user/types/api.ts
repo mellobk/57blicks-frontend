@@ -1,4 +1,5 @@
-interface Role {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export interface Role {
 	id: string;
 	name: string;
 	description: string;
@@ -7,6 +8,18 @@ interface Role {
 	createdBy: string | null;
 	updatedBy: string | null;
 	deletedAt: string | null; // If this represents a date, you can use 'Date' type
+}
+
+export interface PermissionGroup {
+	id?: string;
+	name?: string;
+	description?: string;
+	createdAt?: string; // You can also use 'Date' if it's converted to a Date object in your application
+	updatedAt?: string; // Same note applies here
+	createdBy?: string | null;
+	updatedBy?: string | null;
+	deletedAt?: string | null; // If this represents a date, you can use 'Date' type
+	permissions?: Array<PermissionGroup>;
 }
 
 export interface User {
@@ -23,7 +36,9 @@ export interface User {
 	company?: string;
 	isActive?: boolean;
 	companyName?: string;
+	permission_group_id?: string;
 	role?: Role;
+	permissionGroup?: any;
 }
 
 export interface Investor {
@@ -51,12 +66,13 @@ export interface IErrorResponse {
 }
 
 export interface Permissions {
-	id: string;
-	createdAt: Date;
-	updatedAt: Date;
-	deletedAt: null;
-	name: string;
-	description: string;
+	id?: string;
+	createdAt?: Date;
+	updatedAt?: Date;
+	deletedAt?: null;
+	name?: string;
+	user?: User;
+	description?: string;
 	inviteAdmins: boolean;
 	inviteAccounters: boolean;
 	inviteInvestors: boolean;
@@ -86,4 +102,5 @@ export interface Permissions {
 	reporting: boolean;
 	viewPqrs: boolean;
 	editPqrs: boolean;
+	roleId?: string;
 }

@@ -243,6 +243,7 @@ export const ServicingTable: FC<TableProps> = ({
 							responsive={false}
 							columns={stateColumns}
 							data={data || []}
+							className="h-[50vh]"
 							fixedHeader
 							progressPending={loading}
 							conditionalRowStyles={conditionalRowStyles}

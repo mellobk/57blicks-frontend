@@ -11,7 +11,7 @@ import UserActivity from "./UserActivity";
 import { getLocalStorage } from "@/utils/local-storage";
 import { useQuery } from "@tanstack/react-query";
 import { userBasicInformation } from "@/utils/constant";
-import { userTabs } from "@/features/servicing/utils/tabs";
+import { investorUserTabs, userTabs } from "@/features/servicing/utils/tabs";
 import { PermissionsAdmin } from "./PermissionsAdmin";
 
 interface UserConfigProps {
@@ -118,7 +118,7 @@ const UserConfig: FC<UserConfigProps> = ({
 						</div>
 						<div className="absolute top-10 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-normal ">
 							<Tabs
-								tabs={userTabs}
+								tabs={investor?.user ? investorUserTabs : userTabs}
 								actualTab={actualTabData}
 								onClick={tabHandlerData}
 							/>
@@ -138,10 +138,15 @@ const UserConfig: FC<UserConfigProps> = ({
 				)}
 
 				{actualTabData === "permission" && user && (
-					<PermissionsAdmin user={user} deleteUser={deleteUser} />
+					<PermissionsAdmin
+						user={user}
+						deleteUser={deleteUser}
+						callBack={callBack}
+					/>
 				)}
 				{actualTabData === "permission" && investor?.user && (
 					<PermissionsAdmin
+						callBack={callBack}
 						user={investor.user}
 						deleteUser={deleteUser}
 						enableUser={enableUser}
