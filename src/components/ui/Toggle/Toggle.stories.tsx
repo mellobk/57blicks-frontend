@@ -26,7 +26,7 @@ export const CheckedTrue: Story = {
 			console.log(value);
 		},
 		checkedClassName: "bg-primary-500",
-		checkLabel: "Checked",
-		checkLabelClassName: "checkLabelClassName",
+		label: "Checked",
+		labelClassName: "labelClassName",
 	},
 };

@@ -33,7 +33,7 @@ export const FormatInput: FC<Props> = ({
 			control={control}
 			name={name}
 			render={({ field: { onChange, onBlur, value } }) => (
-				<div className={`flex flex-col gap-2 active: ${wrapperClassName}`}>
+				<div className={`flex flex-col gap-2 ${wrapperClassName}`}>
 					<Label label={label} required={required} />
 
 					<div className="relative">
