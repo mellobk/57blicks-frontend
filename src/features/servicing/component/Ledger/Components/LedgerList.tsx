@@ -1,16 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-
-import type { FC } from "react";
-import { LedgerComponent } from "./LedgerComponent";
-import type { Ledgers } from "../types";
+import type {FC} from "react";
+import {useEffect, useState} from "react";
+import {useMutation, useQuery} from "@tanstack/react-query";
+import {LedgerComponent} from "./LedgerComponent";
+import type {Ledgers} from "../types";
 import ManageLedgerService from "@/features/servicing/api/ledger";
-import { dateWithFormat } from "@/utils/formats";
+import {dateWithFormat} from "@/utils/formats";
 
 interface LedgerListProps {
 	loan?: string;
 }
+
 const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 	const [ledgers, setLedgers] = useState<Array<Ledgers>>([]);
 

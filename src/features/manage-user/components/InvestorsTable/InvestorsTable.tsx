@@ -209,15 +209,15 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 			selector: (row: Investor): JSX.Element => (
 				<div key={row.id}>
 					<Toggle
-            checked={
-              !!(
-                row?.accountNumber ||
-                row?.accountType ||
-                row?.bankingName ||
-                row?.accountType
-              )
-            }
-						checkedClassName="bg-green-500"
+						checked={
+							!!(
+								row?.accountNumber ||
+								row?.accountType ||
+								row?.bankingName ||
+								row?.accountType
+							)
+						}
+            checkedClassName="bg-green-500"
 						labelClassName="text-white text-[13px]"
 					/>
 				</div>

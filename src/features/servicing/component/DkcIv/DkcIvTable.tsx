@@ -180,10 +180,10 @@ export const DkcIvTable: FC<SuccessProps> = () => {
 			selector: (row: DkcServicing): JSX.Element => (
 				<div key={row.id}>
 					<Toggle
-            checked={false}
+						checked={false}
             checkedClassName="bg-green-500"
-            label="Paid"
-            labelClassName="text-black text-[13px]"
+						label="Paid"
+						labelClassName="text-black text-[13px]"
 					/>
 				</div>
 			),

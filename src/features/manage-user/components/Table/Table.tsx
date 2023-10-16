@@ -117,7 +117,8 @@ export const Table: FC<TableProps> = ({
 						>
 							{handleCheckValue && (
 								<Toggle
-									checkedClassName="bg-green-500"
+                  checked={checkedValue}
+                  checkedClassName="bg-green-500"
 									label="Show Disabled"
 									labelClassName="text-white text-[13px] w-32"
 									onChecked={(data): void => {
@@ -125,7 +126,6 @@ export const Table: FC<TableProps> = ({
 											handleCheckValue(data);
 										}
 									}}
-									checked={checkedValue}
 								/>
 							)}
 							<div

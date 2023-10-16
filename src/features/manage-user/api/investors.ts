@@ -69,28 +69,28 @@ const updateInvestorsBank = async (body: Investor) => {
 const updateGeneralInformation = async (
 	body: updateGeneralUserInformation
 ): Promise<AxiosResponse<Array<User>, unknown>> => {
-  return await authApiClient.put<Array<User>>(
-    updateAdminUrl(body.id || ""),
-    body
-  );
+	return await authApiClient.put<Array<User>>(
+		updateAdminUrl(body.id || ""),
+		body
+	);
 };
 
 const updateAdmin = async (
 	body: AddAdminFields
 ): Promise<AxiosResponse<Array<User>, unknown>> => {
-  return await authApiClient.put<Array<User>>(
-    updateAdminUrl(body.id || ""),
-    body
-  );
+	return await authApiClient.put<Array<User>>(
+		updateAdminUrl(body.id || ""),
+		body
+	);
 };
 
 const updateAccounting = async (
 	body: AddAccountingFields
 ): Promise<AxiosResponse<Array<User>, unknown>> => {
-  return await authApiClient.put<Array<User>>(
-    updateAccountingUrl(body.id || ""),
-    body
-  );
+	return await authApiClient.put<Array<User>>(
+		updateAccountingUrl(body.id || ""),
+		body
+	);
 };
 
 const createNewAdmin = async (body: Investor) => {

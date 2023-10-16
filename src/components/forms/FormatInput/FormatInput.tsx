@@ -16,7 +16,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 export const FormatInput: FC<Props> = ({
 	error,
-	className = inputClassName(error),
+	className,
 	control,
 	format,
 	label,
@@ -38,7 +38,7 @@ export const FormatInput: FC<Props> = ({
 
 					<div className="relative">
 						<input
-							className={className}
+							className={`${className} ${inputClassName(error)}`}
 							min={0}
 							onBlur={() => {
 								setIsEditing(false);

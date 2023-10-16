@@ -1,6 +1,6 @@
 import { type FC, useEffect, useState } from "react";
 
-import type { LedgerFormValues, Ledger } from "../types";
+import type { Ledger, LedgerFormValues } from "../types";
 import type {
 	Control,
 	FieldArrayWithId,

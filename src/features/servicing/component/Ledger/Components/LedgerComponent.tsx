@@ -1,4 +1,4 @@
-import { type FC, useState, useEffect } from "react";
+import { type FC, useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import {
 	ApprovalStateType,
@@ -16,6 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 import ManageLedgerService from "@/features/servicing/api/ledger";
 import { v4 as uuidv4 } from "uuid";
 import { Icon } from "@/components/ui/Icon";
+
 interface LedgerComponentProps {
 	loan?: string;
 	ledgersData?: Array<Ledgers>;
@@ -238,7 +239,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					<table>
 						<thead className="bg-gray-200 h-10">
 							<tr className="bg-gray-200 text-[12px] border-2">
-								<th className="font-semibold text-gray-600">Date </th>
+								<th className="font-semibold text-gray-600">Date</th>
 								<th className="font-semibold text-gray-600">Class</th>
 								<th className="font-semibold text-gray-600">Debit/Credit</th>
 								<th className="font-semibold text-gray-600">Memo</th>

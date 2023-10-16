@@ -14,21 +14,18 @@ export const Toggle: FC<AvatarProps> = ({
 	onChecked,
 	checkedClassName = "bg-primary-500",
 	label,
-	labelClassName = "text-[13px] ",
+	labelClassName = "text-[13px]",
 }) => {
 	return (
-		<div className="flex items-center justify-center gap-2 border-red-ERROR border-2">
+		<div className="flex items-center justify-center gap-2">
 			<div className="flex items-center">
 				<label className="switch">
 					<input
 						type="checkbox"
 						checked={checked}
-						defaultChecked={checked}
-						onClick={(data) => onChecked?.(data)}
+						onChange={(data) => onChecked?.(data)}
 					/>
-					<span
-						className={`slider round ${checked ? checkedClassName : ""}`}
-					></span>
+					<span className={`slider round ${checked ? checkedClassName : ""}`} />
 				</label>
 			</div>
 			{label && <div className={labelClassName}>{label}</div>}
