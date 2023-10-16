@@ -183,7 +183,7 @@ export const DkcFlTable: FC<SuccessProps> = () => {
 				<div key={row.id}>
 					<Toggle
 						checked={false}
-            checkedClassName="bg-green-500"
+						checkedClassName="bg-green-500"
 						label="Paid"
 						labelClassName="text-black text-[13px]"
 					/>

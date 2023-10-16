@@ -22,7 +22,7 @@ export const List: FC<Props> = ({
 					? "bg-gold-500/[.12]"
 					: "bg-white"
 			} p-4 rounded-lg cursor-pointer`}
-      key={key}
+			key={key}
 			onClick={() => {
 				setSelectedOpportunity(opportunity);
 			}}

@@ -217,7 +217,7 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 								row?.accountType
 							)
 						}
-            checkedClassName="bg-green-500"
+						checkedClassName="bg-green-500"
 						labelClassName="text-white text-[13px]"
 					/>
 				</div>
