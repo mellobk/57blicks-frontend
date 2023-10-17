@@ -1,4 +1,5 @@
-import { type FC, useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { type FC, useState, useEffect } from "react";
 import { Modal } from "@/components/ui/Modal";
 import {
 	ApprovalStateType,
@@ -21,12 +22,14 @@ interface LedgerComponentProps {
 	loan?: string;
 	ledgersData?: Array<Ledgers>;
 	refetchLedgers?: () => void;
+	orderLedgers?: (orderBy: string) => void;
 	handleDeleteLedger?: (id: string) => void;
 }
 
 export const LedgerComponent: FC<LedgerComponentProps> = ({
 	loan,
 	ledgersData,
+	orderLedgers,
 	refetchLedgers,
 	handleDeleteLedger,
 }) => {
@@ -42,7 +45,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			onSuccess: () => {
 				//remove all rews
 				refetchLedgers && refetchLedgers();
-				remove();
 			},
 			onError: (error) => {
 				console.log("🚀 ~ file: LedgerComponent.tsx:50 ~ error:", error);
@@ -117,9 +119,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			});
 		}
 	}, [ledgersData]);
-	useEffect(() => {
-		handleTotals();
-	}, [ledgers]);
 
 	const handleAddRow = (): void => {
 		const newRow: Ledgers = {
@@ -204,6 +203,11 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		handleTotals();
 	};
 
+	useEffect(() => {
+		handleTotals();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ledgers]);
+
 	useEffect(() => {}, [allFields]);
 
 	return (
@@ -214,7 +218,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					//convert  ledgerDate to date
 					const sanedData: LedgerFormValues = {
 						ledgers: [],
-						loan: loan,
+						loanId: loan,
 					};
 					data.ledgers.forEach((ledger) => {
 						if (ledger.editable) {
@@ -224,12 +228,12 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 							const day = date.slice(2, 4);
 							sanedData.ledgers.push({
 								...ledger,
-								ledgerDate: `${month}-${day}-${year}`,
+								ledgerDate: `${year}-${month}-${day}`,
 							});
 						}
 					});
 
-					createLedger.mutate({ ...sanedData, loan: loan });
+					createLedger.mutate({ ...sanedData, loanId: loan });
 				})}
 			>
 				<div
@@ -238,15 +242,43 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				>
 					<table>
 						<thead className="bg-gray-200 h-10">
-							<tr className="bg-gray-200 text-[12px] border-2">
-								<th className="font-semibold text-gray-600">Date</th>
-								<th className="font-semibold text-gray-600">Class</th>
-								<th className="font-semibold text-gray-600">Debit/Credit</th>
-								<th className="font-semibold text-gray-600">Memo</th>
-								<th className="font-semibold text-gray-600">Debit</th>
-								<th className="font-semibold text-gray-600">Credit</th>
-								<th className="font-semibold text-gray-600">Balance</th>
-								<th className="font-semibold text-gray-600">Delete</th>
+							<tr className="bg-gray-200 text-[12px] border-2 items-start 	 ">
+								<td className="font-semibold text-gray-600 pl-4">
+									<div
+										onClick={(): void => {
+											console.log(
+												"🚀 ~ file: LedgerComponent.tsx:232 ~ onClick ~ orderLedgers Date"
+											);
+											orderLedgers && orderLedgers("date");
+										}}
+										className=""
+									>
+										Date
+									</div>
+								</td>
+								<td className="font-semibold text-gray-600 pl-4">Class</td>
+								<td className="font-semibold text-gray-600 pl-4">
+									Debit/Credit
+								</td>
+								<td className="font-semibold text-gray-600 pl-4">Memo</td>
+								<td className="font-semibold text-gray-600 pl-4">
+									<div className="flex flex-row gap-2  align-middle">
+										Debit
+										<div className="pt-1">
+											<Icon name="debit" width="10" color="grey" />
+										</div>
+									</div>
+								</td>
+								<td className="font-semibold text-gray-600 pl-4">
+									<div className="flex flex-row gap-2  align-middle">
+										Credit
+										<div className="pt-1">
+											<Icon name="credit" width="10" color="grey" />
+										</div>
+									</div>
+								</td>
+								<td className="font-semibold text-gray-600 pl-4">Balance</td>
+								<td className="font-semibold text-gray-600 pl-4">Delete</td>
 							</tr>
 						</thead>
 						<tbody>

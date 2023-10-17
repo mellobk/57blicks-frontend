@@ -1,11 +1,13 @@
-import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+
+import type { FC } from "react";
 import { LedgerComponent } from "./LedgerComponent";
 import type { Ledgers } from "../types";
 import ManageLedgerService from "@/features/servicing/api/ledger";
 import { dateWithFormat } from "@/utils/formats";
 
+const orderLedgers = (): void => {};
 interface LedgerListProps {
 	loan?: string;
 }
@@ -59,10 +61,10 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 		},
 		{
 			onSuccess: () => {
-				//refetchLedgers();
+				refetchLedgers();
 			},
 			onError: () => {
-				//refetchLedgers();
+				refetchLedgers();
 			},
 		}
 	);
@@ -79,6 +81,7 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 				ledgersData={ledgers}
 				refetchLedgers={refetchLedgers}
 				handleDeleteLedger={handleDeleteLedger}
+				orderLedgers={orderLedgers}
 			/>
 		</>
 	);

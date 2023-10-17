@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type FC, useEffect, useState } from "react";
 
 import type { Ledger, LedgerFormValues } from "../types";
@@ -31,6 +34,7 @@ interface LedgerAddProps {
 		index: number
 	) => void;
 	handleDeleteLedger?: (id: string) => void;
+
 	register: UseFormRegister<LedgerFormValues>;
 	handleRemove: (index: number, id: string) => void;
 	handleOpenModal: (value: boolean, index: number) => void;

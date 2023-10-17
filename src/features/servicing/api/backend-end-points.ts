@@ -17,3 +17,7 @@ export const ledgers = (): string => {
 export const deleteLedgerApi = (id: string): string => {
 	return `/ledgers/${id}`;
 };
+
+export const invoices = (): string => {
+	return `/invoices`;
+};

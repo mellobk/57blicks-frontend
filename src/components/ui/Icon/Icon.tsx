@@ -1,7 +1,6 @@
-import type { FC } from "react";
-
 import ArrowDown from "@/assets/icons/arrow-down";
 import ArrowLeft from "@/assets/icons/arrow-left";
+import ArrowRight from "@/assets/icons/arrow-right";
 import Bank from "@/assets/icons/bank";
 import Cellphone from "@/assets/icons/cellphone";
 import Chart from "@/assets/icons/chart";
@@ -11,11 +10,14 @@ import Close from "@/assets/icons/close";
 import CloseEye from "@/assets/icons/close-eye";
 import CloseEyes from "@/assets/icons/closes-eyes";
 import Column from "@/assets/icons/column";
+import Credit from "@/assets/icons/credit";
 import Date from "@/assets/icons/date";
+import Debit from "@/assets/icons/debit";
 import DeleteBack from "@/assets/icons/delete-back";
 import DoorOut from "@/assets/icons/door-out";
 import Download from "@/assets/icons/download";
 import Email from "@/assets/icons/email";
+import type { FC } from "react";
 import Hamburger from "@/assets/icons/hamburger";
 import Hidden from "@/assets/icons/hidden";
 import LinkCopy from "@/assets/icons/link-copy";
@@ -28,25 +30,27 @@ import Ok from "@/assets/icons/ok";
 import Open from "@/assets/icons/open";
 import OpenEye from "@/assets/icons/open-eye";
 import PasswordProfile from "@/assets/icons/password-profile";
+import Pdf from "@/assets/icons/pdf";
+import Pencil from "@/assets/icons/pencil";
 import Plus from "@/assets/icons/plus";
+import Refresh from "@/assets/icons/refresh";
+import SVG403 from "@/assets/images/svg/403";
 import Search from "@/assets/icons/search";
+import Send from "@/assets/icons/send";
 import Shield from "@/assets/icons/shield";
 import Star from "@/assets/icons/star";
 import Success from "@/assets/icons/success";
-import SVG403 from "@/assets/images/svg/403";
 import TimeUsage from "@/assets/icons/time-usage";
 import TrashBin from "@/assets/icons/trash-bin";
 import Upload from "@/assets/icons/upload";
 import User from "@/assets/icons/user";
 import UserProfile from "@/assets/icons/user-profile";
 import Wrong from "@/assets/icons/wrong";
-import Debit from "@/assets/icons/debit";
-import Credit from "@/assets/icons/credit";
-import Pencil from "@/assets/icons/pencil";
 
 export const ICONS = {
 	arrowDown: ArrowDown,
 	arrowLeft: ArrowLeft,
+	arrowRight: ArrowRight,
 	bank: Bank,
 	cellphone: Cellphone,
 	chart: Chart,
@@ -88,6 +92,9 @@ export const ICONS = {
 	debit: Debit,
 	credit: Credit,
 	pencil: Pencil,
+	pdf: Pdf,
+	send: Send,
+	refresh: Refresh,
 };
 
 export interface IconProps {

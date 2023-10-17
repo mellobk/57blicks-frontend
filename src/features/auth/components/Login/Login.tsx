@@ -106,7 +106,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 						<Button
 							type="submit"
 							buttonText="Login"
-							className="bg-primary-500"
+							className="bg-primary-500 h-12"
 						/>
 					</div>
 				</form>

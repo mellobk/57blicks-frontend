@@ -38,7 +38,7 @@ export type Ledgers = {
 
 export type LedgerFormValues = {
 	ledgers: Array<Ledgers>;
-	loan?: string;
+	loanId?: string;
 };
 
 export type Ledger = z.infer<typeof validationSchema>["ledgers"][number];
@@ -49,13 +49,13 @@ const radom = Math.floor(Math.random() * 10000) + 1000;
 export const exampleLedger: Ledger = {
 	id: `18a833d2-c425-4c62-a73a-d6ae14fc${radom}`,
 	ledgerDate: "10102023",
-	typeOfPayment: LedgerTypeOfPayment.INTEREST,
-	typeOfPaymentDescription: "Interest",
+	typeOfPayment: LedgerTypeOfPayment.PRINCIPAL,
+	typeOfPaymentDescription: "Principal payment",
 	type: LedgerType.DEBIT,
-	memo: "memo",
-	debit: 100,
+	memo: "principal test",
+	debit: 5000,
 	credit: 0,
-	balance: 0,
+	balance: 5000,
 	approvalState: ApprovalStateType.PENDING,
 	editable: true,
 	order: 0,

@@ -34,6 +34,10 @@ const IconNames: Array<string> = [
 	"credit",
 	"debit",
 	"pencil",
+	"pdf",
+	"arrowRight",
+	"send",
+	"refresh",
 ];
 
 export default IconNames;
