@@ -86,9 +86,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 					/>
 				)}
 				{tabTitle === "Ledger" && data && <LedgerList loan={data.loan.id} />}
-				{tabTitle === "Invoices" && data && (
-					<InvoiceScreen loan={data.loan.id} />
-				)}
+				{tabTitle === "Invoices" && data && <InvoiceScreen loan={data.loan} />}
 			</Modal>
 		</div>
 	);

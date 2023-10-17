@@ -1,42 +1,55 @@
 import { useState, type FC, useEffect } from "react";
 import { Icon } from "@/components/ui/Icon";
-import { temporaryInvoiceList } from "./temp/invoices";
-import type { InvoiceTypeArray } from "../types";
 
-interface InvoiceListProps {}
-const InvoiceList: FC<InvoiceListProps> = () => {
+import type { Invoice, InvoiceTypeArray } from "../../types";
+import { formatInvoiceName } from "../../utils/format-invoice-name";
+
+interface InvoiceListScreenProps {
+	invoices: Array<Invoice>;
+	setInvoice: (invoice: Invoice) => void;
+}
+const InvoiceListScreen: FC<InvoiceListScreenProps> = ({
+	invoices,
+	setInvoice,
+}) => {
 	const [invoiceData, setInvoiceData] = useState<Array<InvoiceTypeArray>>([]);
 
-	const groupByYear = (data: Array<InvoiceTypeArray>) => {
+	const groupByYear = (): void => {
 		const temporaryData: Array<InvoiceTypeArray> = [];
-		let year = "";
+		let year = 0;
 
-		data.forEach((invoice) => {
-			const currentYear = invoice.date.split("-")[0] || "";
+		invoices.forEach((invoice) => {
+			const currentYear = new Date(invoice.startDate).getFullYear();
 
+			const auxData: InvoiceTypeArray = {
+				name: formatInvoiceName(new Date(invoice.startDate), invoice.id || 0),
+				...invoice,
+				type: "list",
+				active: false,
+				s3Url: "",
+			};
 			if (currentYear !== year) {
 				temporaryData.push({
-					name: currentYear,
-					date: "",
+					...auxData,
 					type: "header",
-					active: false,
+					name: currentYear.toString(),
 				});
 			}
 			year = currentYear;
-			temporaryData.push(invoice);
+			temporaryData.push(auxData);
 		});
+
 		setInvoiceData(temporaryData);
 	};
 
 	useEffect(() => {
-		groupByYear(temporaryInvoiceList);
-	}, []);
+		groupByYear();
+	}, [invoices]);
 
-	const setActive = (index: number): void => {
-		console.log("🚀 ~ file: InvoiceList.tsx:36 ~ setActive ~ index:", index);
-		//loop all invoiceData and set active to false except the one with index === index
-		const temporaryData = invoiceData.map((invoice, i) => {
-			if (i === index) {
+	const setActive = (indexActive: number): void => {
+		const temporaryData = invoiceData.map((invoice, index) => {
+			if (index === indexActive) {
+				setInvoice(invoice);
 				return { ...invoice, active: true };
 			}
 			return { ...invoice, active: false };
@@ -57,12 +70,12 @@ const InvoiceList: FC<InvoiceListProps> = () => {
               `}
 						>
 							<Icon name="arrowLeft" color="#C79E63" width="14" />
-							<h2>{invoice.name}</h2>
+							<h2 className="capitalize">{invoice.name}</h2>
 							<Icon name="arrowRight" color="#C79E63" width="7" height="13" />
 						</li>
 					) : (
 						<li
-							className={`relative hover:bg-gold-380 hover:text-gold  cursor-pointer h-12 rounded-xl m-6 p-3
+							className={`relative hover:bg-gold-380 hover:text-gold  cursor-pointer h-12 rounded-xl m-3 p-3
                 ${invoice.active ? "bg-gold-380 text-gold" : "bg-white"}
               `}
 							key={`invoice-${index}`}
@@ -70,7 +83,7 @@ const InvoiceList: FC<InvoiceListProps> = () => {
 								setActive(index);
 							}}
 						>
-							<div className="flex flex-row w-full">
+							<div className="flex flex-row w-full capitalize">
 								{invoice.name}
 								<div className="absolute flex flex-row  right-4 bg-red-200 w-14 h-6 rounded-2xl text-[8px] align-middle place-content-center pt-[5px] text-red-500 font-bold">
 									<div className=" mr-1">
@@ -87,4 +100,4 @@ const InvoiceList: FC<InvoiceListProps> = () => {
 	);
 };
 
-export default InvoiceList;
+export default InvoiceListScreen;
