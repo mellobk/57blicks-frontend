@@ -36,10 +36,12 @@ export const dateWithFormatUS = (
 
 	return formattedDate;
 };
-export const moneyFormat = (value: number) => {
+export const moneyFormat = (value: number, decimals = true) => {
 	const USDollar = new Intl.NumberFormat("en-US", {
 		style: "currency",
 		currency: "USD",
+		minimumFractionDigits: decimals ? 2 : 0,
+		maximumFractionDigits: decimals ? 2 : 0,
 	});
 
 	return USDollar.format(value);

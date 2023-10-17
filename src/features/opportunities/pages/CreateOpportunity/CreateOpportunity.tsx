@@ -5,6 +5,7 @@ import { PDFViewer } from "@react-pdf/renderer";
 
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { SuccessModal } from "@/components/ui/SuccessModal";
 import { Tabs } from "@/components/ui/Tabs";
 import { AdditionalInformation } from "@/features/opportunities/components/CreateOpportunity/AdditionalInformation/AdditionalInformation";
@@ -22,6 +23,7 @@ import { defaultValues } from "@/features/opportunities/utils/values";
 export const CreateOpportunity: FC = () => {
 	const [openPostToModal, setOpenPostToModal] = useState(false);
 	const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(false);
+	const [showPreview, setShowPreview] = useState(false);
 
 	const {
 		control,
@@ -35,10 +37,7 @@ export const CreateOpportunity: FC = () => {
 		resolver: zodResolver(OpportunitySchema),
 	});
 
-	const [assetValue, loanAmount] = useWatch({
-		control,
-		name: ["assetValue", "loanAmount"],
-	});
+	const form = useWatch({ control });
 
 	const onSubmit: SubmitHandler<Opportunity> = (): void => {
 		setOpenPostToModal(true);
@@ -48,13 +47,17 @@ export const CreateOpportunity: FC = () => {
 		setValue(
 			"loanToValue",
 			String(
-				(assetValue
-					? (Number(loanAmount) * 100) / Number(assetValue) || 0
+				(form.assetValue
+					? (Number(form.loanAmount) * 100) / Number(form.assetValue) || 0
 					: 0
 				).toFixed(2)
 			)
 		);
-	}, [assetValue, loanAmount]);
+	}, [form.assetValue, form.loanAmount]);
+
+	useEffect(() => {
+		setShowPreview(false);
+	}, [form]);
 
 	return (
 		<form
@@ -74,7 +77,7 @@ export const CreateOpportunity: FC = () => {
 				<div>
 					<Button
 						buttonText="Post"
-						className="rounded-2xl h-9 bg-gold-500/[.16] text-gold-500"
+						className="rounded-2xl px-4 py-2 bg-gold-500/[.16] text-gold-500 font-semibold"
 						type="submit"
 					/>
 				</div>
@@ -84,9 +87,13 @@ export const CreateOpportunity: FC = () => {
 					<GeneralInformation errors={errors} register={register} />
 				</div>
 
-				<div className="lg:col-span-2 col-span-1 flex flex-col gap-6 lg:pl-6">
+				<div className="lg:col-span-2 col-span-1 flex flex-col gap-6 lg:pl-6 h-full overflow-y-auto">
 					<LoanDetails control={control} errors={errors} register={register} />
-					<ParticipantOpportunities control={control} errors={errors} />
+					<ParticipantOpportunities
+						control={control}
+						errors={errors}
+						setValue={setValue}
+					/>
 					<NotesOnTheBorrower
 						control={control}
 						errors={errors}
@@ -96,9 +103,22 @@ export const CreateOpportunity: FC = () => {
 				</div>
 
 				<div className="lg:col-span-3 col-span-1 lg:pl-6">
-					<PDFViewer height="100%" width="100%" showToolbar={false}>
-						<DocumentPreview control={control} />
-					</PDFViewer>
+					{showPreview ? (
+						<div className="h-full" onClick={() => setShowPreview(false)}>
+							<PDFViewer height="100%" width="100%" showToolbar={false}>
+								<DocumentPreview control={control} />
+							</PDFViewer>
+						</div>
+					) : (
+						<div
+							className="flex justify-center items-center h-full bg-gray-500/[.08]"
+							onClick={() => {
+								setShowPreview(true);
+							}}
+						>
+							<Icon color="#0E2130" name="hidden" width="48" />
+						</div>
+					)}
 				</div>
 			</div>
 

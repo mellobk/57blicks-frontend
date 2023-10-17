@@ -15,6 +15,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	register?: UseFormRegisterReturn;
 	wrapperClassName?: string;
 	readOnly?: boolean;
+	iconClassName?: string;
 }
 
 export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
@@ -29,6 +30,7 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 	register,
 	wrapperClassName,
 	readOnly,
+	iconClassName = `absolute top-0 right-2 bottom-0 flex items-center justify-center`,
 	...props
 }) => (
 	<div className={`flex flex-col gap-2 ${wrapperClassName}`}>
@@ -36,10 +38,7 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 
 		<div className="relative">
 			{iconName && (
-				<div
-					className={`absolute top-0 right-2 bottom-0 flex items-center justify-center`}
-					data-testid="icon"
-				>
+				<div className={iconClassName} data-testid="icon">
 					<div onClick={clickIcon}>
 						<Icon
 							name={iconName || "search"}

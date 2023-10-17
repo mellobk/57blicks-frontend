@@ -15,13 +15,14 @@ export const List: FC<Props> = ({
 	selectedOpportunity,
 	setSelectedOpportunity,
 }) =>
-	data?.map((opportunity) => (
+	data?.map((opportunity, key) => (
 		<div
 			className={`${
 				selectedOpportunity?.id === opportunity.id
 					? "bg-gold-500/[.12]"
 					: "bg-white"
 			} p-4 rounded-lg cursor-pointer`}
+			key={key}
 			onClick={() => {
 				setSelectedOpportunity(opportunity);
 			}}

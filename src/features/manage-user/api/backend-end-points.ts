@@ -35,6 +35,10 @@ export const updateAdminUrl = (id: string): string => {
 	return `/users/admin/${id}`;
 };
 
+export const updateUser = (id: string): string => {
+	return `/users/${id}`;
+};
+
 export const updateAccountingUrl = (id: string): string => {
 	return `/users/accounting/${id}`;
 };
@@ -67,6 +71,22 @@ export const getRolesByUser = (id: string): string => {
 	return `users/user-rol/${id}`;
 };
 
-export const getPermissionRoleById = (id: string): string => {
-	return `permissions/role/${id}`;
+export const getPermissionGroupById = (id: string): string => {
+	return `permission-groups/${id}`;
+};
+
+export const getAllPermission = (): string => {
+	return `permissions?limit=50`;
+};
+
+export const permissionGroup = (): string => {
+	return `permission-groups`;
+};
+
+export const findExistingPermission = (): string => {
+	return `permissions/find-existing-role`;
+};
+
+export const assignPermissionRole = (): string => {
+	return `permissions/assign-permission-role`;
 };

@@ -6,15 +6,14 @@ export const ACCOUNT_TYPES = [
 ];
 
 export const ASSET_TYPES = [
-	{ code: "SFR", name: "SFR" },
-	{ code: "MF (4 or less)", name: "MF (4 or less)" },
+	{ code: "Single Family Residence", name: "Single Family Residence" },
 	{ code: "MF (+4)", name: "MF (+4)" },
 	{ code: "Duplex", name: "Duplex" },
 	{ code: "Triplex", name: "Triplex" },
 	{ code: "Commercial Office", name: "Commercial Office" },
 	{ code: "Vacant Land", name: "Vacant Land" },
 	{ code: "Manufactured/MH", name: "Manufactured/MH" },
-	{ code: "Condo", name: "Condo" },
+	{ code: "Condominium", name: "Condominium" },
 	{ code: "Townhome", name: "Townhome" },
 	{ code: "Villa", name: "Villa" },
 	{ code: "Commercial-Warehouse", name: "Commercial-Warehouse" },
@@ -45,32 +44,16 @@ export const LOAN_TYPES = [
 		name: "New Construction Loans",
 	},
 	{
-		code: "Cash Out Refinance Loans",
-		name: "Cash Out Refinance Loans",
-	},
-	{
-		code: "Cash Out Refinance Loans in Tampa, Florida",
-		name: "Cash Out Refinance Loans in Tampa, Florida",
+		code: "Refinance",
+		name: "Refinance",
 	},
 	{
 		code: "Fix and Lease Loans",
 		name: "Fix and Lease Loans",
 	},
 	{
-		code: "Non-Recourse Loans",
-		name: "Non-Recourse Loans",
-	},
-	{
-		code: "Manufactured Mobile Home Loan",
-		name: "Manufactured Mobile Home Loan",
-	},
-	{
 		code: "Transactional Funding",
 		name: "Transactional Funding",
-	},
-	{
-		code: "Capital Markets",
-		name: "Capital Markets",
 	},
 ];
 

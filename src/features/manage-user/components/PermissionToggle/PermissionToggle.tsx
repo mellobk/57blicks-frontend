@@ -8,8 +8,10 @@ export interface PermissionToggleProps {
 	handleEyesOnClick?: () => void;
 	description?: string;
 	permission?: string;
+	name?: string;
 	id?: number;
 	visible?: boolean;
+	keyValue?: string;
 }
 
 export const PermissionToggle: FC<PermissionToggleProps> = ({
@@ -29,10 +31,9 @@ export const PermissionToggle: FC<PermissionToggleProps> = ({
 						<Icon name={`${visible ? "openEye" : "closeEye"}`} width="22" />
 					</div>
 					<Toggle
-						checkedClassName="bg-green-500"
 						checked={permissionStatus}
+						checkedClassName="bg-green-500"
 						onChecked={handleOnClick}
-						checkLabel=""
 					/>
 				</div>
 			</div>

@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type FC, useEffect, useState } from "react";
 
-import type { LedgerFormValues, Ledger } from "../types";
+import type { Ledger, LedgerFormValues } from "../types";
 import type {
 	Control,
 	FieldArrayWithId,

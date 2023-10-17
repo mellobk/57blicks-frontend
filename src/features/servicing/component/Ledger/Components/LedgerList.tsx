@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -12,6 +11,7 @@ const orderLedgers = (): void => {};
 interface LedgerListProps {
 	loan?: string;
 }
+
 const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 	const [ledgers, setLedgers] = useState<Array<Ledgers>>([]);
 

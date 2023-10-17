@@ -90,5 +90,5 @@ export interface OpportunityMin {
 }
 
 export interface Upload {
-  s3Path: string;
+	s3Path: string;
 }
