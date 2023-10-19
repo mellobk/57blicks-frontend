@@ -6,7 +6,7 @@ import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/utils/cn";
 
 export const buttonVariants = cva(
-	"inline-flex items-center justify-center   disabled:pointer-events-none disabled:opacity-50 bg-gray-250 text-white rounded-lg transition-colors	transition-duration: 250ms",
+	"inline-flex items-center justify-center   disabled:pointer-events-none disabled:opacity-50 bg-gray-250 text-white rounded-lg transition-colors	transition-duration: 250ms pl-6 pr-6 ",
 	{
 		variants: {
 			variant: {
@@ -24,7 +24,7 @@ export const buttonVariants = cva(
 			},
 			size: {
 				primary: "h-8",
-				small: "h-8 text-[13px] ",
+				small: "h-8 text-[13px]",
 				large: "h-12 ",
 				icon: "h-10 w-10",
 			},

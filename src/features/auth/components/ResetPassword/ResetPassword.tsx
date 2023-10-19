@@ -70,7 +70,7 @@ export const ResetPassword: FC = () => {
 										<Button
 											buttonText="Continue"
 											size={"large"}
-											className={`${
+											className={`h-12  ${
 												isValid ? "bg-primary-500" : "bg-gray-300"
 											}`}
 											disabled={!isValid}
@@ -85,7 +85,7 @@ export const ResetPassword: FC = () => {
 			<div className="w-full">
 				<Button
 					buttonText="Back"
-					className="bg-transparent text-black w-full"
+					className="h-12 bg-transparent text-black w-full"
 					size={"large"}
 					onClick={backTo}
 				/>

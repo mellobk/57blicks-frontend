@@ -109,7 +109,7 @@ export const LoginMfaComponent: FC<MfaProps> = ({
 						/>
 						<Button
 							buttonText="Back"
-							className="bg-transparent text-black"
+							className="h-12 bg-transparent text-black"
 							onClick={backTo}
 						/>
 					</div>
