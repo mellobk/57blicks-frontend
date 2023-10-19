@@ -52,6 +52,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				refetchLedgers && refetchLedgers();
 			},
 			onError: (error) => {
+				//@ts-ignore
 				setErrorMessage(`${error.response.data.message}`);
 				setTimeout(() => {
 					clearErrorMessage();
