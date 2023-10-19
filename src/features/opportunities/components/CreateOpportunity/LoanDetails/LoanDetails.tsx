@@ -75,10 +75,10 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 		/>
 		<FormatInput
 			control={control}
-			error={errors?.investmentMonthlyInterestedOfferedToParticipant?.message}
+			error={errors?.investmentMonthlyInterestedOfferedToInvestor?.message}
 			format="percentage"
 			label="Investment Monthly Interested Offered to Investor"
-			name="investmentMonthlyInterestedOfferedToParticipant"
+			name="investmentMonthlyInterestedOfferedToInvestor"
 			wrapperClassName="mt-6"
 			required
 		/>

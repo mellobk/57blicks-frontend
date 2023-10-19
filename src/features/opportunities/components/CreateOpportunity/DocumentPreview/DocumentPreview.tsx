@@ -111,7 +111,7 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 							<Detail
 								title="Interest Offered to Participant"
 								value={percentageFormat(
-									Number(form.investmentMonthlyInterestedOfferedToParticipant)
+									Number(form.investmentMonthlyInterestedOfferedToInvestor)
 								)}
 							/>
 						</View>

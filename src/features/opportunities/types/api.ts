@@ -64,7 +64,7 @@ export interface Opportunity {
 	investmentBorrower: string;
 	investmentBorrowerBackground: string;
 	investmentCollateral: string;
-	investmentMonthlyInterestedOfferedToParticipant: string;
+	investmentMonthlyInterestedOfferedToInvestor: string;
 	investmentPermanentPenalty: string;
 	investmentSummary: string;
 	investments: Array<Investment>;

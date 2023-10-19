@@ -151,7 +151,11 @@ export const CreateLoan: FC = () => {
 					/>
 
 					<div className="flex flex-col gap-6 divide-y divide-gray-200 pl-6">
-						<BorrowerInformation errors={errors} register={register} />
+						<BorrowerInformation
+							control={control}
+							errors={errors}
+							register={register}
+						/>
 						<BankingInformation
 							control={control}
 							errors={errors}

@@ -29,7 +29,7 @@ export const Value: FC<Props> = ({ action, checkAndBalance, label, value }) => (
 			</h1>
 			{action && (
 				<Button
-					className="p-0 focus:bg-white focus:outline-none focus:border-transparent shadow-none"
+					className="p-0 bg-white focus:outline-none focus:border-transparent shadow-none"
 					icon={<Icon name="open" width="18" color="#C79E63" />}
 					onClick={action}
 					type="button"

@@ -10,7 +10,7 @@ export const defaultValues: Opportunity = {
 	investmentBorrower: "",
 	investmentBorrowerBackground: "",
 	investmentCollateral: "",
-	investmentMonthlyInterestedOfferedToParticipant: "",
+	investmentMonthlyInterestedOfferedToInvestor: "",
 	investmentPermanentPenalty: "",
 	investmentSummary: "",
 	investorsNotifications: [],

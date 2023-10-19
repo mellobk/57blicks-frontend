@@ -6,6 +6,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import "unfonts.css";
 import "./styles/tailwind.css";
+import "./styles/main.css";
 
 const rootElement = document.querySelector("#root") as Element;
 if (!rootElement.innerHTML) {
