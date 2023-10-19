@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type FC, useState, useEffect } from "react";
 import { Modal } from "@/components/ui/Modal";
@@ -17,7 +18,9 @@ import { useMutation } from "@tanstack/react-query";
 import ManageLedgerService from "@/features/servicing/api/ledger";
 import { v4 as uuidv4 } from "uuid";
 import { Icon } from "@/components/ui/Icon";
-
+import { dateWithFormat } from "@/utils/formats";
+import { calculateBalance } from "../utils/calculate-balance";
+import useStore from "@/stores/app-store";
 interface LedgerComponentProps {
 	loan?: string;
 	ledgersData?: Array<Ledgers>;
@@ -36,6 +39,8 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	const [openClassModal, setOpenClassModal] = useState<boolean>();
 	const [currentIndex, setCurrentIndex] = useState<number>();
 	const [ledgers] = useState<Array<Ledgers>>(ledgersData || []);
+	const setErrorMessage = useStore((state) => state.setErrorMessage);
+	const clearErrorMessage = useStore((state) => state.clearErrorMessage);
 
 	const createLedger = useMutation(
 		(data: LedgerFormValues) => {
@@ -47,11 +52,10 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				refetchLedgers && refetchLedgers();
 			},
 			onError: (error) => {
-				console.log("🚀 ~ file: LedgerComponent.tsx:50 ~ error:", error);
-				// setErrorMessage(`${error.response.data.message}`);
-				// setTimeout(() => {
-				// 	clearErrorMessage();
-				// }, 500);
+				setErrorMessage(`${error.response.data.message}`);
+				setTimeout(() => {
+					clearErrorMessage();
+				}, 500);
 			},
 		}
 	);
@@ -59,7 +63,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	const [totals, setTotals] = useState({
 		debits: 0,
 		credits: 0,
-		balances: 0,
+		balance: 0,
 	});
 
 	const {
@@ -67,6 +71,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		register,
 		watch,
 		setValue,
+		getValues,
 		control,
 		formState: { errors },
 	} = useZodForm({
@@ -88,7 +93,8 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	});
 
 	const handleRemove = (index: number, id: string): void => {
-		handleDeleteLedger && handleDeleteLedger(id);
+		const action = getValues(`ledgers.${index}.action` as never);
+		if (action !== "add") handleDeleteLedger && handleDeleteLedger(id);
 		remove(index);
 	};
 
@@ -97,7 +103,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		if (ledgersData && ledgersData.length > 0) {
 			let debits = 0;
 			let credits = 0;
-			let balances = 0;
+			let balance = 0;
 			ledgersData.forEach((ledger) => {
 				append(ledger as never);
 				if (ledger.debit) {
@@ -107,16 +113,16 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					credits += Number(ledger.credit);
 				}
 				if (ledger.balance) {
-					balances += Number(ledger.balance);
+					balance = Number(ledger.balance);
 				}
-
-				const totals = {
-					debits,
-					credits,
-					balances,
-				};
-				setTotals(totals);
 			});
+			const totals = {
+				debits,
+				credits,
+				balance,
+			};
+
+			setTotals(totals);
 		}
 	}, [ledgersData]);
 
@@ -139,26 +145,26 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	};
 
 	const handleTotals = (): void => {
-		let debits = 0;
-		let credits = 0;
-		let balances = 0;
-
-		allFields.ledgers.forEach((row) => {
-			if (row.debit) {
-				debits += Number(row.debit);
-			}
-			if (row.credit) {
-				credits += Number(row.credit);
-			}
-			if (row.balance) {
-				balances += Number(row.balance);
-			}
-		});
+		// let debits = 0;
+		// let credits = 0;
+		// let balances = 0;
+		const { debits, credits, balance } = calculateBalance(allFields.ledgers);
+		// allFields.ledgers.forEach((row) => {
+		// 	if (row.debit) {
+		// 		debits += Number(row.debit);
+		// 	}
+		// 	if (row.credit) {
+		// 		credits += Number(row.credit);
+		// 	}
+		// 	if (row.balance) {
+		// 		balances += Number(row.balance);
+		// 	}
+		// });
 
 		const totals = {
 			debits,
 			credits,
-			balances,
+			balance,
 		};
 		setTotals(totals);
 	};
@@ -173,22 +179,29 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			setValue(`ledgers.${index}.debit` as never, 0 as never);
 			setValue(`ledgers.${index}.type` as never, "Credit" as never);
 
-			setValue(
-				`ledgers.${index}.balance` as never,
-				Number.parseInt(`${value}`) as never
-			);
+			// setValue(
+			// 	`ledgers.${index}.balance` as never,
+			// 	Number.parseInt(`${value}`) as never
+			// );
 		} else if (name === "debit") {
 			setValue(`ledgers.${index}.credit` as never, 0 as never);
 			setValue(`ledgers.${index}.type` as never, "Debit" as never);
 
-			setValue(
-				`ledgers.${index}.balance` as never,
-				Number.parseInt(`${value}`) as never
-			);
+			// setValue(
+			// 	`ledgers.${index}.balance` as never,
+			// 	Number.parseInt(`${value}`) as never
+			// );
 		}
 		append({} as never);
 		remove(allFields.ledgers.length);
 		handleTotals();
+	};
+
+	const handleSetDate = (name: string, value: Date, index: number): void => {
+		setValue(
+			`ledgers.${index}.${name}` as never,
+			dateWithFormat(value.toISOString(), "MMDDYYYY") as never
+		);
 	};
 
 	const handleEdit = (
@@ -246,9 +259,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 								<td className="font-semibold text-gray-600 pl-4">
 									<div
 										onClick={(): void => {
-											console.log(
-												"🚀 ~ file: LedgerComponent.tsx:232 ~ onClick ~ orderLedgers Date"
-											);
 											orderLedgers && orderLedgers("date");
 										}}
 										className=""
@@ -292,6 +302,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 											data={allFields as unknown as LedgerFormValues}
 											handleOpenModal={handleOpenModal}
 											handleSetValue={handleSetValue}
+											handleSetDate={handleSetDate}
 											handleEdit={handleEdit}
 											handleDeleteLedger={handleDeleteLedger}
 											control={control as never}
@@ -301,6 +312,12 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 									</>
 								);
 							})}
+							<tr>
+								<td colSpan={9}>&nbsp;</td>
+							</tr>
+							<tr>
+								<td colSpan={9}>&nbsp;</td>
+							</tr>
 						</tbody>
 					</table>
 					<div className="w-[98%] absolute bottom-[5px] rounded-xl">
@@ -333,7 +350,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 										{formatCurrency(totals.credits) || "$ 0"}
 									</td>
 									<td style={{ width: "150px", paddingLeft: "20px" }}>
-										{formatCurrency(totals.balances) || "$ 0"}
+										{formatCurrency(totals.balance) || "$ 0"}
 									</td>
 									<td style={{ width: "10px" }}></td>
 								</tr>
@@ -356,15 +373,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					onClick={handleAddRow}
 				>
 					Add row
-				</Button>
-
-				<Button
-					variant={"success"}
-					type="button"
-					className="absolute top-[25px] right-[272px] rounded-full w-[30px] h-[30px] bg-green-400"
-					onClick={refetchLedgers}
-				>
-					<Icon name="success" width="15" color="white" />
 				</Button>
 			</form>
 			<Modal

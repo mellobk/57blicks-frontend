@@ -126,8 +126,9 @@ const IInvoicePdfPreview: FC<IInvoicePdfPreviewProps> = ({
 					</PDFDownloadLink>
 				)}
 			</div>
-			<SendInvoice invoice={invoice} />
-
+			{invoiceDataPdf && (
+				<SendInvoice invoice={invoice} invoiceDataPdf={invoiceDataPdf} />
+			)}
 			<div
 				className="lg:col-span-3 col-span-1 lg:pl-6"
 				style={{

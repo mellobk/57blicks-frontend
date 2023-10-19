@@ -10,7 +10,8 @@ export const buttonVariants = cva(
 	{
 		variants: {
 			variant: {
-				primary: "text-base",
+				base: "text-base",
+				primary: "bg-primary-500 h-12",
 				gold: "bg-gold-500/[.12] text-gold-500 rounded-2xl pl-4 pr-4  hover:bg-gold-350 font-semibold",
 				gray: "bg-gray-200 rounded-2xl text-primary pl-4 pr-4  hover:bg-primary hover:text-white font-semibold",
 				white:
@@ -29,7 +30,7 @@ export const buttonVariants = cva(
 			},
 		},
 		defaultVariants: {
-			variant: "primary",
+			variant: "base",
 			size: "small",
 		},
 	}
