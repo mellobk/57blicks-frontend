@@ -1,7 +1,8 @@
-import type { Invoice } from "../component/Invoice/types";
-import { Ledgers } from "../component/Ledger/types";
+import type { Invoice, InvoiceSend } from "../component/Invoice/types";
+import { invoices, sendInvoices } from "./backend-end-points";
+
+import type { Ledgers } from "../component/Ledger/types";
 import { authApiClient } from "@/utils/api-client";
-import { invoices } from "./backend-end-points";
 
 const getInvoiceByLoanId = async (
 	id: string
@@ -35,9 +36,18 @@ const getInvoiceDetails = async (
 	return null;
 };
 
+const sendInvoice = async (data: InvoiceSend): Promise<void> => {
+	try {
+		await authApiClient.post(sendInvoices(), data);
+	} catch {
+		/* empty */
+	}
+};
+
 const ManageInvoiceService = {
 	getInvoiceByLoanId,
 	getInvoiceDetails,
+	sendInvoice,
 };
 
 export default ManageInvoiceService;

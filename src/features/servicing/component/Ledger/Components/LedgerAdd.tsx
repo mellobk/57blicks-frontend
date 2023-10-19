@@ -10,12 +10,13 @@ import type {
 	FieldErrors,
 	UseFormRegister,
 } from "react-hook-form";
-import { CellInputDate } from "@/components/table/CellInputDate";
 import { Icon } from "@/components/ui/Icon";
 import { Tag } from "@/components/ui/Tag";
 import { InputNumber } from "@/components/forms/InputNumber";
 import { formatCurrency } from "@/utils/common-funtions";
 import { dateWithFormatUS } from "@/utils/formats";
+import { DatePicker } from "@/components/ui/DatePicker";
+import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 
 interface LedgerAddProps {
 	field: FieldArrayWithId<Ledger>;
@@ -28,6 +29,7 @@ interface LedgerAddProps {
 		value: string | number | boolean,
 		index: number
 	) => void;
+	handleSetDate: (field: string, value: Date, index: number) => void;
 	handleEdit: (
 		field: string,
 		value: string | number | boolean,
@@ -44,15 +46,16 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	field,
 	index,
 	errors,
-	control,
 	data,
 	handleSetValue,
+	handleSetDate,
 	handleEdit,
 	register,
 	handleRemove,
 	handleOpenModal,
 }) => {
 	const [dataLedgers, setDataLedgers] = useState<Ledger>();
+	const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
 	// @ts-ignore
 	const { editable } = field;
 
@@ -65,6 +68,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 		}
 	}, [data]);
 
+	const hanldeRemoveConfirmation = (): void => {};
+
 	return (
 		<tr
 			key={`ledger-${index}`}
@@ -74,19 +79,17 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 		>
 			<td style={{ paddingLeft: "20px", width: "150px" }}>
 				{editable ? (
-					<CellInputDate
-						control={control}
-						error={
-							errors?.ledgers?.[index]?.ledgerDate
-								? // @ts-ignore
-								  errors?.ledgers?.[index]?.ledgerDate.message
-								: ""
-						}
-						max={10}
-						placeholder="MM-DD-YYYY"
-						format="date"
-						name={`ledgers.${index}.ledgerDate`}
-					/>
+					<>
+						<DatePicker
+							placeholder="MM-DD-YYYY"
+							name={`ledgers.${index}.ledgerDate`}
+							invalid={errors?.ledgers?.[index]?.ledgerDate ? true : false}
+							onChange={(date: Date): void => {
+								console.log("🚀 ~ file: LedgerAdd.tsx:85 ~ date:", date);
+								handleSetDate(`ledgerDate`, date, index);
+							}}
+						/>
+					</>
 				) : (
 					dataLedgers &&
 					dataLedgers.ledgerDate &&
@@ -111,7 +114,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					{editable ? (
 						<>
 							{dataLedgers && dataLedgers.typeOfPayment ? (
-								<div>{dataLedgers.typeOfPayment}</div>
+								<div>{dataLedgers.typeOfPaymentDescription}</div>
 							) : (
 								<div className="text-gray-400">Type of Payment</div>
 							)}
@@ -234,6 +237,15 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						<Icon name="trashBin" color="red" width="20" />
 					</div>
 				</div>
+				<ConfirmationModal
+					action="delete"
+					buttonText="Archive"
+					handelConfirmation={(): void => {}}
+					model="opportunity"
+					onHide={(): void => {}}
+					title="Delete Opportunity"
+					visible={openConfirmation}
+				/>
 			</td>
 		</tr>
 	);

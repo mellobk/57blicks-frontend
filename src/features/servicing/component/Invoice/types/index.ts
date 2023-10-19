@@ -35,3 +35,15 @@ export interface InvoiceDataPdf {
 	originationDate: string;
 	details: Array<InvoiceDataPdfDetails>;
 }
+
+export interface notification {
+	email: boolean;
+	sms: boolean;
+	note?: string;
+}
+
+export interface InvoiceSend {
+	invoiceId: number;
+	notification: notification;
+	file: string;
+}

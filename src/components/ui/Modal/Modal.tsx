@@ -12,6 +12,7 @@ export interface ModalProps {
 	visible?: boolean;
 	width?: string;
 	footer?: ReactNode;
+	className?: string;
 }
 
 export const Modal: FC<ModalProps> = ({
@@ -22,6 +23,7 @@ export const Modal: FC<ModalProps> = ({
 	visible,
 	width = "50vw",
 	footer,
+	className,
 }) => {
 	return (
 		<div className="card flex justify-content-center">
@@ -31,6 +33,7 @@ export const Modal: FC<ModalProps> = ({
 				onHide={() => onHide?.()}
 				style={{ width, minHeight }}
 				breakpoints={{ "960px": "75vw", "641px": "100vw" }}
+				className={className}
 			>
 				<div className="h-[1px] bg-gray-1100 mb-6"></div>
 				{children}
