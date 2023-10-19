@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type FC, useState, useEffect } from "react";
@@ -51,9 +52,13 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				//remove all rews
 				refetchLedgers && refetchLedgers();
 			},
-			onError: (error) => {
-				//@ts-ignore
-				setErrorMessage(`${error.response.data.message}`);
+			onError: (error: unknown) => {
+				try {
+					setErrorMessage(error?.response?.data?.message || "");
+				} catch {
+					/* empty */
+				}
+
 				setTimeout(() => {
 					clearErrorMessage();
 				}, 500);
@@ -146,21 +151,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	};
 
 	const handleTotals = (): void => {
-		// let debits = 0;
-		// let credits = 0;
-		// let balances = 0;
 		const { debits, credits, balance } = calculateBalance(allFields.ledgers);
-		// allFields.ledgers.forEach((row) => {
-		// 	if (row.debit) {
-		// 		debits += Number(row.debit);
-		// 	}
-		// 	if (row.credit) {
-		// 		credits += Number(row.credit);
-		// 	}
-		// 	if (row.balance) {
-		// 		balances += Number(row.balance);
-		// 	}
-		// });
 
 		const totals = {
 			debits,
@@ -179,19 +170,9 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		if (name === "credit") {
 			setValue(`ledgers.${index}.debit` as never, 0 as never);
 			setValue(`ledgers.${index}.type` as never, "Credit" as never);
-
-			// setValue(
-			// 	`ledgers.${index}.balance` as never,
-			// 	Number.parseInt(`${value}`) as never
-			// );
 		} else if (name === "debit") {
 			setValue(`ledgers.${index}.credit` as never, 0 as never);
 			setValue(`ledgers.${index}.type` as never, "Debit" as never);
-
-			// setValue(
-			// 	`ledgers.${index}.balance` as never,
-			// 	Number.parseInt(`${value}`) as never
-			// );
 		}
 		append({} as never);
 		remove(allFields.ledgers.length);
