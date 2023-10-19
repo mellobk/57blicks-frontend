@@ -86,7 +86,6 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							name={`ledgers.${index}.ledgerDate`}
 							invalid={errors?.ledgers?.[index]?.ledgerDate ? true : false}
 							onChange={(date: Date): void => {
-								console.log("🚀 ~ file: LedgerAdd.tsx:85 ~ date:", date);
 								handleSetDate(`ledgerDate`, date, index);
 							}}
 						/>

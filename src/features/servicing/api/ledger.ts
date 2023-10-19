@@ -1,5 +1,6 @@
 import type { LedgerFormValues, Ledgers } from "../component/Ledger/types";
 import { deleteLedgerApi, ledgers } from "./backend-end-points";
+
 import type { Ledger } from "@/features/servicing/component/Ledger/types";
 import { authApiClient } from "@/utils/api-client";
 
@@ -19,11 +20,13 @@ const getLedgerByLoanId = async (
 	return null;
 };
 
-const createLedger = async (data: LedgerFormValues) => {
+const createLedger = async (
+	data: LedgerFormValues
+): Promise<Array<Ledger> | null> => {
 	try {
 		return await authApiClient.post(ledgers(), data);
-	} catch (error) {
-		return error;
+	} catch {
+		return null;
 	}
 };
 

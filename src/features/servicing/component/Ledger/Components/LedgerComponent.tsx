@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type FC, useState, useEffect } from "react";
 import { Modal } from "@/components/ui/Modal";
@@ -21,7 +19,6 @@ import { v4 as uuidv4 } from "uuid";
 import { Icon } from "@/components/ui/Icon";
 import { dateWithFormat } from "@/utils/formats";
 import { calculateBalance } from "../utils/calculate-balance";
-import useStore from "@/stores/app-store";
 interface LedgerComponentProps {
 	loan?: string;
 	ledgersData?: Array<Ledgers>;
@@ -40,28 +37,16 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	const [openClassModal, setOpenClassModal] = useState<boolean>();
 	const [currentIndex, setCurrentIndex] = useState<number>();
 	const [ledgers] = useState<Array<Ledgers>>(ledgersData || []);
-	const setErrorMessage = useStore((state) => state.setErrorMessage);
-	const clearErrorMessage = useStore((state) => state.clearErrorMessage);
 
 	const createLedger = useMutation(
 		(data: LedgerFormValues) => {
 			return ManageLedgerService.createLedger(data);
 		},
 		{
-			onSuccess: () => {
-				//remove all rews
-				refetchLedgers && refetchLedgers();
-			},
-			onError: (error: unknown) => {
-				try {
-					setErrorMessage(error?.response?.data?.message || "");
-				} catch {
-					/* empty */
+			onSuccess: (data) => {
+				if (data) {
+					refetchLedgers && refetchLedgers();
 				}
-
-				setTimeout(() => {
-					clearErrorMessage();
-				}, 500);
 			},
 		}
 	);
@@ -89,9 +74,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 
 	const allFields = watch();
 
-	useEffect(() => {
-		console.log("🚀 ~ file: LedgerComponent.tsx:73 ~ errors:", errors);
-	}, [errors]);
+	useEffect(() => {}, [errors]);
 
 	const { fields, append, remove } = useFieldArray({
 		name: "ledgers",
