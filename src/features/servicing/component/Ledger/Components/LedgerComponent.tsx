@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type FC, useState, useEffect } from "react";
 import { Modal } from "@/components/ui/Modal";
@@ -20,7 +19,6 @@ import { v4 as uuidv4 } from "uuid";
 import { Icon } from "@/components/ui/Icon";
 import { dateWithFormat } from "@/utils/formats";
 import { calculateBalance } from "../utils/calculate-balance";
-import useStore from "@/stores/app-store";
 interface LedgerComponentProps {
 	loan?: string;
 	ledgersData?: Array<Ledgers>;
@@ -39,24 +37,16 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	const [openClassModal, setOpenClassModal] = useState<boolean>();
 	const [currentIndex, setCurrentIndex] = useState<number>();
 	const [ledgers] = useState<Array<Ledgers>>(ledgersData || []);
-	const setErrorMessage = useStore((state) => state.setErrorMessage);
-	const clearErrorMessage = useStore((state) => state.clearErrorMessage);
 
 	const createLedger = useMutation(
 		(data: LedgerFormValues) => {
 			return ManageLedgerService.createLedger(data);
 		},
 		{
-			onSuccess: () => {
-				//remove all rews
-				refetchLedgers && refetchLedgers();
-			},
-			onError: (error) => {
-				//@ts-ignore
-				setErrorMessage(`${error.response.data.message}`);
-				setTimeout(() => {
-					clearErrorMessage();
-				}, 500);
+			onSuccess: (data) => {
+				if (data) {
+					refetchLedgers && refetchLedgers();
+				}
 			},
 		}
 	);
@@ -84,9 +74,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 
 	const allFields = watch();
 
-	useEffect(() => {
-		console.log("🚀 ~ file: LedgerComponent.tsx:73 ~ errors:", errors);
-	}, [errors]);
+	useEffect(() => {}, [errors]);
 
 	const { fields, append, remove } = useFieldArray({
 		name: "ledgers",
@@ -146,21 +134,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	};
 
 	const handleTotals = (): void => {
-		// let debits = 0;
-		// let credits = 0;
-		// let balances = 0;
 		const { debits, credits, balance } = calculateBalance(allFields.ledgers);
-		// allFields.ledgers.forEach((row) => {
-		// 	if (row.debit) {
-		// 		debits += Number(row.debit);
-		// 	}
-		// 	if (row.credit) {
-		// 		credits += Number(row.credit);
-		// 	}
-		// 	if (row.balance) {
-		// 		balances += Number(row.balance);
-		// 	}
-		// });
 
 		const totals = {
 			debits,
@@ -179,19 +153,9 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		if (name === "credit") {
 			setValue(`ledgers.${index}.debit` as never, 0 as never);
 			setValue(`ledgers.${index}.type` as never, "Credit" as never);
-
-			// setValue(
-			// 	`ledgers.${index}.balance` as never,
-			// 	Number.parseInt(`${value}`) as never
-			// );
 		} else if (name === "debit") {
 			setValue(`ledgers.${index}.credit` as never, 0 as never);
 			setValue(`ledgers.${index}.type` as never, "Debit" as never);
-
-			// setValue(
-			// 	`ledgers.${index}.balance` as never,
-			// 	Number.parseInt(`${value}`) as never
-			// );
 		}
 		append({} as never);
 		remove(allFields.ledgers.length);

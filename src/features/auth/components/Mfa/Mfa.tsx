@@ -109,13 +109,13 @@ export const Mfa: FC<MfaProps> = ({
 						<Button
 							onClick={handleSendMfa}
 							buttonText={buttonText}
-							className={`${codeMfa ? "bg-primary-500" : "bg-gray-300"}`}
+							className={` h-12 ${codeMfa ? "bg-primary-500" : "bg-gray-300"}`}
 							disabled={!codeMfa}
 						/>
 						{showBackButton && (
 							<Button
 								buttonText="Back"
-								className="bg-transparent text-black"
+								className="h-12 bg-transparent text-black"
 								onClick={backTo}
 							/>
 						)}

@@ -122,7 +122,7 @@ export const CreatePassword: FC<MfaProps> = ({
 									<div className="flex flex-col gap-1" ref={buttonContainer}>
 										<Button
 											buttonText={buttonText}
-											className={`${
+											className={`h-12 ${
 												errorPassword ? "bg-gray-300" : "bg-primary-500"
 											}`}
 											disabled={!!errorPassword}
@@ -130,7 +130,7 @@ export const CreatePassword: FC<MfaProps> = ({
 										<Button
 											onClick={backHandleClick}
 											buttonText="Back"
-											className="bg-transparent text-black"
+											className="h-12  bg-transparent text-black"
 											type="submit"
 										/>
 									</div>

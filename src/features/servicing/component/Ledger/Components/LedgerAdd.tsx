@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
-/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type FC, useEffect, useState } from "react";
 
-import type { Ledger, LedgerFormValues } from "../types";
+import {
+	ApprovalStateType,
+	type Ledger,
+	type LedgerFormValues,
+} from "../types";
 import type {
 	Control,
 	FieldArrayWithId,
@@ -43,7 +44,6 @@ interface LedgerAddProps {
 }
 
 export const LedgerAdd: FC<LedgerAddProps> = ({
-	field,
 	index,
 	errors,
 	data,
@@ -58,14 +58,11 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
 	const [selectedIndex, setSelectedIndex] = useState<number>();
 	const [selectedId, setSelectedId] = useState<string>();
-	// @ts-ignore
-	const { editable } = field;
 
 	useEffect(() => {
 		if (data) {
-			// @ts-ignore
 			setDataLedgers({
-				...data.ledgers[index],
+				...(data?.ledgers[index] as Ledger),
 			});
 		}
 	}, [data]);
@@ -82,14 +79,13 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 			} `}
 		>
 			<td style={{ paddingLeft: "20px", width: "150px" }}>
-				{editable ? (
+				{dataLedgers?.editable ? (
 					<>
 						<DatePicker
 							placeholder="MM-DD-YYYY"
 							name={`ledgers.${index}.ledgerDate`}
 							invalid={errors?.ledgers?.[index]?.ledgerDate ? true : false}
 							onChange={(date: Date): void => {
-								console.log("🚀 ~ file: LedgerAdd.tsx:85 ~ date:", date);
 								handleSetDate(`ledgerDate`, date, index);
 							}}
 						/>
@@ -110,12 +106,12 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				>
 					{dataLedgers &&
 						dataLedgers.action === "show" &&
-						dataLedgers.approvalState === "Pending" && (
+						dataLedgers?.approvalState === ApprovalStateType.PENDING && (
 							<div className="absolute text-[8px] top-0 w-24  text-red-400">
 								Pending
 							</div>
 						)}
-					{editable ? (
+					{dataLedgers?.editable ? (
 						<>
 							{dataLedgers && dataLedgers.typeOfPayment ? (
 								<div>{dataLedgers.typeOfPaymentDescription}</div>
@@ -148,7 +144,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				</div>
 			</td>
 			<td style={{ paddingLeft: "20px", width: "220px" }}>
-				{editable ? (
+				{dataLedgers?.editable ? (
 					<input
 						{...register(`ledgers.${index}.memo` as const)}
 						placeholder="Enter a text.."
@@ -162,15 +158,14 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				)}
 			</td>
 			<td style={{ paddingLeft: "20px", width: "220px" }}>
-				{editable ? (
+				{dataLedgers?.editable ? (
 					<InputNumber
 						{...register(`ledger.${index}.debit` as never)}
 						placeholder="Debit"
 						defaultValue={dataLedgers ? dataLedgers.debit : 0}
 						error={
 							errors?.ledgers?.[index]?.debit
-								? // @ts-ignore
-								  errors?.ledgers?.[index]?.debit.message
+								? errors?.ledgers?.[index]?.debit?.message
 								: ""
 						}
 						customValue={dataLedgers ? dataLedgers.debit : 0}
@@ -185,14 +180,13 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				)}
 			</td>
 			<td style={{ paddingLeft: "20px", width: "220px" }}>
-				{editable ? (
+				{dataLedgers?.editable ? (
 					<InputNumber
 						{...register(`ledger.${index}.credit` as never)}
 						placeholder="Credit"
 						error={
 							errors?.ledgers?.[index]?.credit
-								? // @ts-ignore }
-								  errors?.ledgers?.[index]?.credit.message
+								? errors?.ledgers?.[index]?.credit?.message
 								: ""
 						}
 						defaultValue={dataLedgers ? dataLedgers.credit : 0}
@@ -209,7 +203,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 			</td>
 			<td style={{ paddingLeft: "20px", width: "150px" }}>
 				{dataLedgers && dataLedgers.balance
-					? formatCurrency(dataLedgers.balance as number)
+					? formatCurrency(dataLedgers?.balance)
 					: "0.00"}
 			</td>
 			<td style={{ paddingRight: "30px", width: "80px" }}>
@@ -217,30 +211,27 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					<div
 						key={`edit-${index}`}
 						onClick={(): void => {
-							handleEdit(`editable`, true, index);
+							handleEdit(`editable`, !dataLedgers?.editable, index);
 						}}
 					>
-						{
-							// @ts-ignore
-							dataLedgers && !dataLedgers.edit && (
-								<Icon
-									name={"pencil"}
-									color={dataLedgers.editable ? "red" : "gray"}
-									width="14"
-								/>
-							)
-						}
+						{dataLedgers && (
+							<Icon
+								name={dataLedgers.editable ? "deleteBack" : "pencil"}
+								color={dataLedgers.editable ? "red" : "gray"}
+								width="14"
+							/>
+						)}
 					</div>
 					<div
 						key={`delete-${index}`}
 						onClick={(): void => {
-							setOpenConfirmation(true);
-
-							// @ts-ignore
 							setSelectedIndex(index);
-							// @ts-ignore
-							setSelectedId(`${dataLedgers.id}`);
-							//handleRemove(index, `${dataLedgers.id}`);
+							setSelectedId(dataLedgers?.id);
+							if (dataLedgers?.action === "add") {
+								handleRemove(index, `${dataLedgers.id}`);
+							} else {
+								setOpenConfirmation(true);
+							}
 						}}
 					>
 						<Icon name="trashBin" color="red" width="20" />
@@ -251,9 +242,12 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					buttonText="Delete"
 					handelConfirmation={(): void => {
 						handleRemoveConfirmation();
+						setOpenConfirmation(false);
 					}}
 					model="ledger"
-					onHide={(): void => {}}
+					onHide={(): void => {
+						setOpenConfirmation(false);
+					}}
 					title="Delete Ledger"
 					visible={openConfirmation}
 				/>
