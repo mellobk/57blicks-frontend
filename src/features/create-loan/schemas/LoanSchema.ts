@@ -43,7 +43,7 @@ export const LoanSchema = z.object({
 	prepaymentPenalty: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(100, errorMessages.maxLength),
+		.max(15, errorMessages.maxLength),
 	totalLoanAmount: z
 		.string()
 		.nonempty(errorMessages.required)

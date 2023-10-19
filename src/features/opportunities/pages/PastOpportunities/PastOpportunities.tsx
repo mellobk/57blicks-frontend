@@ -22,7 +22,7 @@ export const PastOpportunities: FC = () => {
 	const getOpportunityQuery = useQuery(
 		["opportunity-query", selectedOpportunity?.id],
 		() => OpportunitiesService.getOpportunity(selectedOpportunity?.id),
-		{ enabled: !!selectedOpportunity?.id }
+		{ enabled: selectedOpportunity && !!selectedOpportunity?.id }
 	);
 
 	const getFilename = (referenceId: number) => {

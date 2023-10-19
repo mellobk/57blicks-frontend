@@ -15,7 +15,7 @@ export type Opportunity = {
 	investmentBorrower: string;
 	investmentBorrowerBackground: string;
 	investmentCollateral: string;
-	investmentMonthlyInterestedOfferedToParticipant: string;
+	investmentMonthlyInterestedOfferedToInvestor: string;
 	investmentPermanentPenalty: string;
 	investmentSummary: string;
 	investorsNotifications: Array<InvestorsNotifications>;

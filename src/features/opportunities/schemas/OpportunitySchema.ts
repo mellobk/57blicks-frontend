@@ -40,7 +40,7 @@ export const OpportunitySchema = z.object({
 		.string()
 		.nonempty(errorMessages.required)
 		.max(100, errorMessages.maxLength),
-	investmentMonthlyInterestedOfferedToParticipant: z
+	investmentMonthlyInterestedOfferedToInvestor: z
 		.string()
 		.nonempty(errorMessages.required)
 		.max(5, errorMessages.maxLength),

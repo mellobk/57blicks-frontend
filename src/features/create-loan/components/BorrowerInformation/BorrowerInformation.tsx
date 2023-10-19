@@ -1,24 +1,33 @@
 import type { FC } from "react";
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Control } from "react-hook-form";
+import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { Title } from "@/components/ui/Title/Title";
 import type { Loan } from "@/features/create-loan/types/fields";
+import { LENDERS } from "@/features/create-loan/utils/selects.ts";
 
 interface Props {
+	control: Control<Loan>;
 	errors: FieldErrors<Loan>;
 	register: UseFormRegister<Loan>;
 }
 
-export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
+export const BorrowerInformation: FC<Props> = ({
+	control,
+	errors,
+	register,
+}) => (
 	<div>
 		<Title text="Borrower Information" />
-		<Input
+		<Dropdown
+			control={control}
 			error={errors?.borrower?.llc?.message}
+			className="mt-6"
 			label="Borrower LLC"
-			placeholder="Enter Borrower LLC"
-			register={register("borrower.llc")}
-			wrapperClassName="mt-6"
+			name="borrower.llc"
+			options={LENDERS}
 			required
 		/>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
