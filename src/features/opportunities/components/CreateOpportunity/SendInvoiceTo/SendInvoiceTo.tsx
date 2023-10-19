@@ -16,10 +16,7 @@ const getNoteText = (borrower: string, email: string): string => {
   \nDKC Lending LLC`;
 };
 
-export const SendInvoiceTo: FC<Props> = ({
-	setOpenModal,
-	handleSendInvoice,
-}) => {
+export const SendInvoiceTo: FC<Props> = ({ handleSendInvoice }) => {
 	const [note, setNote] = useState<string>("");
 	const [smsSelect, setSmsSelect] = useState<boolean>(false);
 	const [emailSelect, setEmailSelect] = useState<boolean>(false);

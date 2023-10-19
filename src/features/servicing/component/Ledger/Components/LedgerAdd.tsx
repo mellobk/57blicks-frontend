@@ -56,6 +56,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 }) => {
 	const [dataLedgers, setDataLedgers] = useState<Ledger>();
 	const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
+	const [selectedIndex, setSelectedIndex] = useState<number>();
+	const [selectedId, setSelectedId] = useState<string>();
 	// @ts-ignore
 	const { editable } = field;
 
@@ -68,7 +70,9 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 		}
 	}, [data]);
 
-	const hanldeRemoveConfirmation = (): void => {};
+	const handleRemoveConfirmation = (): void => {
+		handleRemove(selectedIndex as number, selectedId as string);
+	};
 
 	return (
 		<tr
@@ -230,8 +234,13 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					<div
 						key={`delete-${index}`}
 						onClick={(): void => {
+							setOpenConfirmation(true);
+
 							// @ts-ignore
-							handleRemove(index, `${dataLedgers.id}`);
+							setSelectedIndex(index);
+							// @ts-ignore
+							setSelectedId(`${dataLedgers.id}`);
+							//handleRemove(index, `${dataLedgers.id}`);
 						}}
 					>
 						<Icon name="trashBin" color="red" width="20" />
@@ -239,11 +248,13 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				</div>
 				<ConfirmationModal
 					action="delete"
-					buttonText="Archive"
-					handelConfirmation={(): void => {}}
-					model="opportunity"
+					buttonText="Delete"
+					handelConfirmation={(): void => {
+						handleRemoveConfirmation();
+					}}
+					model="ledger"
 					onHide={(): void => {}}
-					title="Delete Opportunity"
+					title="Delete Ledger"
 					visible={openConfirmation}
 				/>
 			</td>

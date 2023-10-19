@@ -1,8 +1,5 @@
-import { type FC, useState } from "react";
-
 import { Calendar } from "primereact/calendar";
-import type { Nullable } from "primereact/ts-helpers";
-import { dateFormatShort, dateFormatShortCalendar } from "@/config/constants";
+import { dateFormatShortCalendar } from "@/config/constants";
 
 interface DatePickerProps {
 	inputId?: string;

@@ -17,7 +17,7 @@ const InvoiceList: FC<InvoiceListProps> = ({
 }) => {
 	const [invoices, setInvoices] = useState<Array<Invoice>>([]);
 
-	const { refetch, isLoading } = useQuery(
+	const { isLoading } = useQuery(
 		["leger-get-by-loan"],
 		() => {
 			return ManageInvoiceService.getInvoiceByLoanId(loanId);
@@ -31,10 +31,6 @@ const InvoiceList: FC<InvoiceListProps> = ({
 			},
 		}
 	);
-
-	const handleRefetch = async (): Promise<void> => {
-		await refetch();
-	};
 
 	return (
 		<div>
