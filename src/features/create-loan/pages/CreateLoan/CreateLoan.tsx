@@ -44,11 +44,6 @@ export const CreateLoan: FC = () => {
 		name: "collaterals",
 	});
 
-	const { fields: fundingBreakdown } = useFieldArray({
-		control,
-		name: "fundingBreakdown",
-	});
-
 	const { append: appendParticipant, remove: removeParticipant } =
 		useFieldArray({
 			control,
@@ -199,7 +194,7 @@ export const CreateLoan: FC = () => {
 			/>
 
 			<SelectLender
-				fields={fundingBreakdown}
+				control={control}
 				openModal={openLenderModal}
 				setOpenModal={setOpenLenderModal}
 				setValue={setValue}

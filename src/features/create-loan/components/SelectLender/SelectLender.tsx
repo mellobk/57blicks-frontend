@@ -1,25 +1,31 @@
-import { type FC, useState } from "react";
-import type { FieldArrayWithId, UseFormSetValue } from "react-hook-form";
+import { type FC, useEffect, useState } from "react";
+import { type Control, type UseFormSetValue, useWatch } from "react-hook-form";
 import { type Option, Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import type { Loan } from "@/features/create-loan/types/fields";
 import { LENDERS } from "@/features/create-loan/utils/selects";
+import { defaultFundingBreakdown } from "@/features/create-loan/utils/values";
 
 interface Props {
-	fields: Array<FieldArrayWithId<Loan, "fundingBreakdown">>;
+	control: Control<Loan>;
 	openModal: boolean;
 	setOpenModal: (openModal: boolean) => void;
 	setValue: UseFormSetValue<Loan>;
 }
 
 export const SelectLender: FC<Props> = ({
-	fields,
+	control,
 	openModal,
 	setOpenModal,
 	setValue,
 }) => {
-	const [selectedLender, setSelectedLender] = useState(fields[0]?.investorId);
+	const [selectedLender, setSelectedLender] = useState<string>();
+
+	const fundingBreakdown = useWatch({
+		control,
+		name: "fundingBreakdown",
+	});
 
 	const selectLender = () => {
 		const lender = LENDERS.find(
@@ -27,12 +33,26 @@ export const SelectLender: FC<Props> = ({
 		);
 
 		if (lender) {
-			setValue("fundingBreakdown.0.lenderName", lender.name);
-			setValue("fundingBreakdown.0.investorId", lender.code);
+			const newFundingBreakdown = [...defaultFundingBreakdown];
+
+			if (newFundingBreakdown[0]) {
+				newFundingBreakdown[0].lenderName = lender.name;
+				newFundingBreakdown[0].investorId = lender.code;
+			}
+
+			if (lender.code !== LENDERS[0]?.code) {
+				newFundingBreakdown.pop();
+			}
+
+			setValue("fundingBreakdown", newFundingBreakdown);
 			setValue("participationBreakdown", []);
 			setOpenModal(false);
 		}
 	};
+
+	useEffect(() => {
+		setSelectedLender(fundingBreakdown?.[0]?.investorId);
+	}, [fundingBreakdown?.[0]?.investorId]);
 
 	return (
 		<Modal
@@ -45,9 +65,7 @@ export const SelectLender: FC<Props> = ({
 			<Select
 				className="mt-6"
 				label="Lender"
-				onChange={(e) => {
-					setSelectedLender(e.target.value);
-				}}
+				onChange={(e) => setSelectedLender(e.target.value)}
 				options={LENDERS}
 				placeholder="Select Lender"
 				value={selectedLender}
