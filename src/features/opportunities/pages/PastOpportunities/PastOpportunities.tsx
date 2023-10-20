@@ -15,14 +15,16 @@ export const PastOpportunities: FC = () => {
 	const [selectedOpportunity, setSelectedOpportunity] =
 		useState<OpportunityMin>();
 
-	const getOpportunitiesQuery = useQuery(["opportunities-query"], () =>
-		OpportunitiesService.getOpportunities()
+	const getOpportunitiesQuery = useQuery(
+		["opportunities-query"],
+		() => OpportunitiesService.getOpportunities(),
+		{ enabled: !selectedOpportunity }
 	);
 
 	const getOpportunityQuery = useQuery(
 		["opportunity-query", selectedOpportunity?.id],
 		() => OpportunitiesService.getOpportunity(selectedOpportunity?.id),
-		{ enabled: selectedOpportunity && !!selectedOpportunity?.id }
+		{ enabled: !!selectedOpportunity?.id }
 	);
 
 	const getFilename = (referenceId: number) => {
@@ -61,19 +63,23 @@ export const PastOpportunities: FC = () => {
 								setSelectedOpportunity={setSelectedOpportunity}
 							/>
 						</div>
-						<div className="lg:col-span-4 col-span-1 flex flex-col gap-8 py-2">
-							<Details
-								data={getOpportunityQuery.data}
-								getFilename={getFilename}
-								isLoading={getOpportunityQuery.isLoading}
-							/>
-						</div>
-						<div className="lg:col-span-3 col-span-1">
-							<DocumentPreview
-								isLoading={getOpportunityQuery.isLoading}
-								url={getOpportunityQuery.data?.presignedDocumentUrl}
-							/>
-						</div>
+						{selectedOpportunity && (
+							<>
+								<div className="lg:col-span-4 col-span-1 flex flex-col gap-8 py-2">
+									<Details
+										data={getOpportunityQuery.data}
+										getFilename={getFilename}
+										isLoading={getOpportunityQuery.isLoading}
+									/>
+								</div>
+								<div className="lg:col-span-3 col-span-1">
+									<DocumentPreview
+										isLoading={getOpportunityQuery.isLoading}
+										url={getOpportunityQuery.data?.presignedDocumentUrl}
+									/>
+								</div>
+							</>
+						)}
 					</div>
 				)}
 			</div>
