@@ -19,6 +19,7 @@ export interface PermissionGroup {
 	createdBy?: string | null;
 	updatedBy?: string | null;
 	deletedAt?: string | null; // If this represents a date, you can use 'Date' type
+	permissionType?: string;
 	permissions?: Array<PermissionGroup>;
 }
 

@@ -11,10 +11,11 @@ interface LoanInformationProps {
 export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 	return (
 		<div
-			className={` flex  w-full h-full  gap-5 text-gray-1000  justify-center p-[5px] rounded-[16px] max-h-[750px] overflow-hidden`}
+			className={` flex  w-full   gap-5 text-gray-1000  justify-center p-[5px] rounded-[16px]  overflow-hidden`}
+			style={{ height: "80vh !important" }}
 		>
 			<div className="w-[33.33%]  border-r border-gray-200 pr-4">
-				<div className="mb-10 flex gap-2 flex-col">
+				<div className="mb-20 flex gap-2 flex-col">
 					<LoanCard title="Loan Type" text={data?.loan?.type} />
 
 					<LoanCard

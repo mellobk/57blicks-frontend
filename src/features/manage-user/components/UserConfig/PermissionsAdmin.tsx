@@ -84,7 +84,7 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 		},
 		{
 			onSuccess: () => {
-				setSuccessMessage("User updated successfully");
+				setSuccessMessage("User permission updated successfully");
 				setTimeout(() => {
 					clearSuccessMessage();
 				}, 500);
@@ -304,6 +304,8 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 								</div>
 								<Button
 									buttonText="Save"
+									iconColor="white"
+									loading={updateAdmin.isLoading}
 									className={`absolute top-[25px] ${
 										enableUser && !userData.isActive
 											? "right-[215px]"
