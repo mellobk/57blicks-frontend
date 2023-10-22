@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/filename-case */
 import { ForbiddenPage } from "@/features/auth/pages/forbidden/ForbiddenPage";
 import UnauthenticatedRoute from "./routes";
 

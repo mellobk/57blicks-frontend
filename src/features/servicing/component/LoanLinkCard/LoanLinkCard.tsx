@@ -24,9 +24,14 @@ export const LoanLinkCard: FC<LoginTitleProps> = ({
 					padding: "0px 16px",
 				}}
 			>
-				<div style={{ color: colorIcon }}>{text}</div>
+				<div
+					className=" flex items-center text-[20px]"
+					style={{ color: colorIcon }}
+				>
+					{text}
+				</div>
 				<div className="flex items-center">
-					<Icon color={colorIcon} name="linkCopy" width="32" />
+					<Icon color={colorIcon} name="linkCopy" width="25" />
 				</div>
 			</div>
 		</div>
