@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { LoanCard } from "../LoanCard";
 import { LoanCollateralCard } from "../LoanCollateralCard";
 import type { Collateral, FundingBreakdown } from "../../types/api";
-import { moneyFormat } from "@/utils/formats.ts";
+import { moneyFormat } from "@/utils/formats";
 
 interface LoanInformationProps {
 	data?: FundingBreakdown;

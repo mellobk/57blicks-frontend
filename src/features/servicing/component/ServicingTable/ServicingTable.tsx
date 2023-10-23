@@ -10,7 +10,7 @@ import { useDebounce } from "@/hooks/debounce";
 import "./Table.css";
 import { FooterTable } from "@/components/ui/FooterTabs/FooterTabs";
 import type { FundingBreakdown } from "../../types/api";
-import { moneyFormat } from "@/utils/formats.ts";
+import { moneyFormat } from "@/utils/formats";
 
 interface Column {
 	name?: string;

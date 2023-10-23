@@ -10,7 +10,7 @@ import { ServicingModal } from "../ServicingModal/ServicingModal";
 import servicingStore from "../../stores/servicing-store";
 import DkcLendersService from "../../api/servicing";
 import { moneyFormat } from "@/utils/formats";
-import { validateDate } from "@/utils/common-funtions.ts";
+import { validateDate } from "@/utils/common-funtions";
 
 interface SuccessProps {}
 

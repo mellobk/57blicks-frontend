@@ -10,7 +10,7 @@ import servicingStore from "../../stores/servicing-store";
 import { useQuery } from "@tanstack/react-query";
 import DkcLendersService from "../../api/servicing";
 import { validateDate } from "@/utils/common-funtions";
-import { moneyFormat } from "@/utils/formats.ts";
+import { moneyFormat } from "@/utils/formats";
 
 interface SuccessProps {}
 

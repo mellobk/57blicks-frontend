@@ -9,8 +9,8 @@ import { ServicingModal } from "../ServicingModal/ServicingModal";
 import servicingStore from "../../stores/servicing-store";
 import { useQuery } from "@tanstack/react-query";
 import DkcLendersService from "../../api/servicing";
-import { moneyFormat } from "@/utils/formats.ts";
-import { validateDate } from "@/utils/common-funtions.ts";
+import { moneyFormat } from "@/utils/formats";
+import { validateDate } from "@/utils/common-funtions";
 
 interface SuccessProps {}
 
