@@ -1,4 +1,5 @@
 import type { Investor, User } from "@/features/manage-user/types/api";
+import moment from "moment";
 
 export const statusSort = (rowA: Investor, rowB: Investor) => {
 	const a = rowA.user?.isActive || "";
@@ -40,4 +41,23 @@ export const validateDate = (date: string): boolean => {
 	const nowInMillie = now.getTime();
 
 	return dateInMillie < nowInMillie;
+};
+
+export const calculateRegular = (amount: string, rate: string) => {
+	return ((Number(amount) * (Number(rate) / 100)) / 12).toFixed(2);
+};
+
+export const calculateProrated = (
+	amount: string,
+	rate: string,
+	originationDate: string
+) => {
+	const date = originationDate
+		? moment(originationDate, "MM-DD-YYYY")
+		: moment();
+	const lastDayOfMonth = date.clone().endOf("month");
+	const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days") + 1;
+	const dailyRate = Number(rate) / 100 / 365;
+
+	return (Number(amount) * dailyRate * daysUntilEndOfMonth).toFixed(2);
 };

@@ -1,6 +1,5 @@
 import { type FC, useEffect, useState } from "react";
 import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import moment from "moment/moment";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
@@ -16,7 +15,11 @@ import LoansService from "../../api/loans";
 import { MultipleCollateral } from "@/features/create-loan/components/MultipleCollateral/MultipleCollateral";
 import { SelectLender } from "@/features/create-loan/components/SelectLender/SelectLender";
 import { defaultValues } from "@/features/create-loan/utils/values";
-import { unFormatPhone } from "@/utils/common-funtions";
+import {
+	calculateProrated,
+	calculateRegular,
+	unFormatPhone,
+} from "@/utils/common-funtions";
 
 export const CreateLoan: FC = () => {
 	const [openLenderModal, setOpenLenderModal] = useState(false);
@@ -58,25 +61,6 @@ export const CreateLoan: FC = () => {
 	} = useMutation((data: Loan) => {
 		return LoansService.createLoan(data);
 	});
-
-	function calculateRegular(amount: string, rate: string) {
-		return ((Number(amount) * (Number(rate) / 100)) / 12).toFixed(2);
-	}
-
-	function calculateProrated(
-		amount: string,
-		rate: string,
-		originationDate: string
-	) {
-		const date = originationDate
-			? moment(originationDate, "MM-DD-YYYY")
-			: moment();
-		const lastDayOfMonth = date.clone().endOf("month");
-		const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days") + 1;
-		const dailyRate = Number(rate) / 100 / 365;
-
-		return (Number(amount) * dailyRate * daysUntilEndOfMonth).toFixed(2);
-	}
 
 	const onSubmit: SubmitHandler<Loan> = (data: Loan): void => {
 		const phoneNumber = unFormatPhone(data.borrower?.user?.phoneNumber || "");
@@ -169,8 +153,6 @@ export const CreateLoan: FC = () => {
 				</div>
 
 				<FundingBreakdown
-					calculateProrated={calculateProrated}
-					calculateRegular={calculateRegular}
 					control={control}
 					errors={errors}
 					remove={removeParticipant}
