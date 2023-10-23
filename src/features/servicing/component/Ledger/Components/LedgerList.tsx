@@ -1,7 +1,6 @@
+import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-
-import type { FC } from "react";
 import { LedgerComponent } from "./LedgerComponent";
 import type { Ledgers } from "../types";
 import Loading from "@/assets/icons/loading";
@@ -10,6 +9,7 @@ import { calculateBalance } from "../utils/calculate-balance";
 import { dateWithFormat } from "@/utils/formats";
 
 const orderLedgers = (): void => {};
+
 interface LedgerListProps {
 	loan?: string;
 }

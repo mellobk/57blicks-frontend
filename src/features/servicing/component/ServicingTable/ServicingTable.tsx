@@ -10,7 +10,7 @@ import { useDebounce } from "@/hooks/debounce";
 import "./Table.css";
 import { FooterTable } from "@/components/ui/FooterTabs/FooterTabs";
 import type { FundingBreakdown } from "../../types/api";
-import { formatCurrency } from "@/utils/common-funtions";
+import { moneyFormat } from "@/utils/formats.ts";
 
 interface Column {
 	name?: string;
@@ -120,9 +120,9 @@ export const ServicingTable: FC<TableProps> = ({
 			justify?: string;
 		}> = [
 			{ label: `total: ${totalRow}`, width: "730px", justify: "center" },
-			{ label: formatCurrency(total), width: "150px" },
+			{ label: moneyFormat(total), width: "150px" },
 			{ label: "", width: "100px" },
-			{ label: formatCurrency(totalRegular), width: "200px" },
+			{ label: moneyFormat(totalRegular), width: "200px" },
 		];
 
 		return footerTabData;

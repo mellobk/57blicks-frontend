@@ -69,6 +69,9 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 		void navigate({ to: `/profile` });
 	};
 
+	const navigateToPermission = (): void => {
+		void navigate({ to: `/permissions` });
+	};
 	return (
 		<div className="flex flex-col h-screen bg-gradient relative">
 			<div className="flex items-center justify-between px-12 py-4">
@@ -134,16 +137,16 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 							className=" flex gap-3 items-center p-1 cursor-pointer"
 							onClick={navigateToProfile}
 						>
-							<Icon name="userProfile" color="black" width="20" />
-							My Profile
+							<Icon name="passwordProfile" color="black" width="20" />
+							My profile
 						</div>
 
 						<div
 							className=" flex gap-3 items-center p-1 cursor-pointer"
-							onClick={navigateToProfile}
+							onClick={navigateToPermission}
 						>
-							<Icon name="passwordProfile" color="black" width="20" />
-							Change Password
+							<Icon name="permission" color="black" width="20" />
+							Permission
 						</div>
 						<LogOff />
 					</div>

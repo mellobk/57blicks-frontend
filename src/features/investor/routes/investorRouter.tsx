@@ -8,6 +8,11 @@ export const investorRoutes = [
 		page: HomeInvestor,
 		layout: BlankLayout,
 	},
+	{
+		path: "/investors/portfolio",
+		page: HomeInvestor,
+		layout: BlankLayout,
+	},
 ];
 
 const investorRouter = InvestorRoute([...investorRoutes]);

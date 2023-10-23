@@ -6,6 +6,7 @@ import { formatInvoiceName } from "../../utils/format-invoice-name";
 interface InvoiceDetailProps {
 	invoice?: Invoice;
 }
+
 const InvoiceDetail: FC<InvoiceDetailProps> = ({ invoice }) => {
 	return (
 		<div className="mb-2">
@@ -48,7 +49,7 @@ const InvoiceDetail: FC<InvoiceDetailProps> = ({ invoice }) => {
 				)}
 			</div>
 			<div className="mb-2 flex justify-between pr-8 pl-2 ">
-				<div className="text-gray-400">Invoice Date </div>
+				<div className="text-gray-400">Invoice Date</div>
 				{invoice && <>{new Date(invoice.date).toDateString()}</>}
 			</div>
 			<div className="mb-2 flex justify-between pr-8 pl-2 ">

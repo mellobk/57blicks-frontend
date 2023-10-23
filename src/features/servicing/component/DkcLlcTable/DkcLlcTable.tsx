@@ -9,7 +9,8 @@ import { ServicingModal } from "../ServicingModal/ServicingModal";
 import servicingStore from "../../stores/servicing-store";
 import { useQuery } from "@tanstack/react-query";
 import DkcLendersService from "../../api/servicing";
-import { formatCurrency, validateDate } from "@/utils/common-funtions";
+import { validateDate } from "@/utils/common-funtions";
+import { moneyFormat } from "@/utils/formats.ts";
 
 interface SuccessProps {}
 
@@ -85,7 +86,7 @@ export const DkcLlcTable: FC<SuccessProps> = () => {
 		{
 			name: "Total Loan",
 			selector: (row: FundingBreakdown): string =>
-				formatCurrency(Number.parseInt(row?.loan?.totalLoanAmount)),
+				moneyFormat(Number.parseInt(row?.loan?.totalLoanAmount)),
 			sortable: true,
 			omit: false,
 			maxWidth: "150px",
@@ -101,7 +102,7 @@ export const DkcLlcTable: FC<SuccessProps> = () => {
 		{
 			name: "Regular Payment",
 			selector: (row: FundingBreakdown): string =>
-				formatCurrency(Number.parseInt(row?.regular)),
+				moneyFormat(Number.parseInt(row?.regular)),
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
@@ -165,7 +166,7 @@ export const DkcLlcTable: FC<SuccessProps> = () => {
 		{
 			name: "Taxed Paid",
 			maxWidth: "50px",
-			selector: (row: DkcServicing): JSX.Element => (
+			selector: (row: DkcServicing) => (
 				<div key={row.id}>
 					<Toggle
 						checked={false}

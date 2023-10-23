@@ -1,15 +1,15 @@
-import { useEffect, useState, type FC } from "react";
+import { type FC, useEffect, useState } from "react";
 import type { Invoice, InvoiceDataPdf, InvoiceDataPdfDetails } from "../types";
 import { InvoiceDocumentPreview } from "./InvoiceList/InvoiceDocumentPreview";
 import {
-	PDFViewer as PDFViewerGenerator,
 	PDFDownloadLink,
+	PDFViewer as PDFViewerGenerator,
 } from "@react-pdf/renderer";
 import type { Loan } from "@/features/servicing/types/api";
 import {
+	type Ledgers,
 	LedgerType,
 	LedgerTypeOfPayment,
-	type Ledgers,
 } from "../../Ledger/types";
 import {
 	dateFormatFormat,

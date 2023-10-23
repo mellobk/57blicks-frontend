@@ -1,6 +1,7 @@
 import { Link, StyleSheet, Text, View } from "@react-pdf/renderer";
 
 import type { FC } from "react";
+
 const styles = StyleSheet.create({
 	servicing: {
 		display: "flex",
@@ -39,9 +40,8 @@ const styles = StyleSheet.create({
 interface PDFServicingNoticeProps {
 	link: string;
 }
-export const PDFServicingNotice: FC<PDFServicingNoticeProps> = ({
-	link,
-}): JSX.Element => (
+
+export const PDFServicingNotice: FC<PDFServicingNoticeProps> = ({ link }) => (
 	<View style={styles.servicing}>
 		<View style={styles.paragraph}>
 			<Text>
