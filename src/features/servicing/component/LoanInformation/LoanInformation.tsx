@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { LoanCard } from "../LoanCard";
 import { LoanCollateralCard } from "../LoanCollateralCard";
 import type { Collateral, FundingBreakdown } from "../../types/api";
-import { formatCurrency } from "@/utils/common-funtions";
+import { moneyFormat } from "@/utils/formats";
 
 interface LoanInformationProps {
 	data?: FundingBreakdown;
@@ -28,7 +28,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 				<div className="flex gap-2 flex-col">
 					<LoanCard
 						title="Total Loan Amount"
-						text={formatCurrency(
+						text={moneyFormat(
 							Number.parseInt(data?.loan?.totalLoanAmount || "")
 						)}
 					/>
@@ -66,14 +66,14 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 
 				<LoanCard
 					title="Construction Holdback"
-					text={formatCurrency(
+					text={moneyFormat(
 						Number.parseInt(data?.loan?.constructionHoldback || "")
 					)}
 				/>
 
 				<LoanCard
 					title="Amount Drawn"
-					text={formatCurrency(Number.parseInt(data?.loan?.amountDrawn || ""))}
+					text={moneyFormat(Number.parseInt(data?.loan?.amountDrawn || ""))}
 					background
 				/>
 				<LoanCard

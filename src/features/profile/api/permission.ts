@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
 import { authApiClient } from "@/utils/api-client";
 import {
 	addPermissionGroupPermissionData,

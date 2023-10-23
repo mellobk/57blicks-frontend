@@ -14,7 +14,7 @@ import { IconButton } from "@/components/ui/IconButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
-import { DocumentPreview } from "@/features/opportunities/components/CreateOpportunity/DocumentPreview/DocumentPreview.tsx";
+import { DocumentPreview } from "@/features/opportunities/components/CreateOpportunity/DocumentPreview/DocumentPreview";
 import InvestorsService from "@/features/opportunities/api/investors";
 import OpportunitiesService from "@/features/opportunities/api/opportunities";
 import type { Investor } from "@/features/opportunities/types/api";

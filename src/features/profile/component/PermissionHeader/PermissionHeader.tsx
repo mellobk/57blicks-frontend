@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prevent-abbreviations */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import type { FC } from "react";
 
 import type { PermissionGroup } from "@/features/manage-user/types/api";

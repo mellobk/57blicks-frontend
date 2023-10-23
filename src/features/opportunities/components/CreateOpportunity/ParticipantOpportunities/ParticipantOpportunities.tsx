@@ -4,7 +4,7 @@ import type { Control, FieldErrors, UseFormSetValue } from "react-hook-form";
 import { useWatch } from "react-hook-form";
 import { Title } from "@/components/ui/Title";
 import type { Opportunity } from "@/features/opportunities/types/fields";
-import { Switch } from "@/features/opportunities/components/CreateOpportunity/ParticipantOpportunities/Switch/Switch.tsx";
+import { Switch } from "@/features/opportunities/components/CreateOpportunity/ParticipantOpportunities/Switch/Switch";
 
 interface Props {
 	control: Control<Opportunity>;

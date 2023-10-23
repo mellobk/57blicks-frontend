@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { FormatInput } from "@/components/forms/FormatInput";
 import { Toggle } from "@/components/ui/Toggle";
 import { Control, FieldErrors, useWatch } from "react-hook-form";
-import { Opportunity } from "@/features/opportunities/types/fields.ts";
+import { Opportunity } from "@/features/opportunities/types/fields";
 
 interface Props {
 	control: Control<Opportunity>;
@@ -27,7 +27,7 @@ export const Switch: FC<Props> = ({
 			<FormatInput
 				className={
 					!!participantOpportunities[percentage]
-						? "disabled:bg-green-500/[.16] disabled:text-green-500"
+						? "disabled:bg-green-500/[16%] disabled:text-green-500"
 						: ""
 				}
 				control={control}

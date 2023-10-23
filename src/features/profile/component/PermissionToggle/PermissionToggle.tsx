@@ -1,7 +1,5 @@
-/* eslint-disable unicorn/prevent-abbreviations */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import { useState } from "react";
 import type { FC } from "react";
+import { useState } from "react";
 
 import type { PermissionGroup } from "@/features/manage-user/types/api";
 import { Toggle } from "@/components/ui/Toggle";

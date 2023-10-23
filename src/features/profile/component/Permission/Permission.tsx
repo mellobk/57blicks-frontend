@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useEffect, type FC, useState, useRef } from "react";
-
+import { type FC, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ManageUsersService from "@/features/manage-user/api/investors";
 import { Button } from "@/components/ui/Button";
@@ -162,7 +160,7 @@ export const Permission: FC = () => {
 						dataFind?.permissionType !== permissionType
 				);
 				if (key === position) {
-					return checked === true
+					return checked
 						? {
 								...permissionGroup,
 								permissions: [...(oldPermissions || []), ...permissions],
@@ -182,7 +180,7 @@ export const Permission: FC = () => {
 	return (
 		<div className="h-auto w-full rounded-3xl flex flex-col items-center relative">
 			<div className="flex w-full py-4 px-4 items-center justify-between">
-				<div className="text-[24px]">Permissions </div>
+				<div className="text-[24px]">Permissions</div>
 				<div className="flex gap-2">
 					<div className="w-[350px] flex justify-end">
 						<div

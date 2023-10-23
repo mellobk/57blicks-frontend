@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable unicorn/prevent-abbreviations */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import type { FC } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";

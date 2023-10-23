@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/Button";
-import { useState, type FC, useEffect } from "react";
+import { type FC, useEffect, useState } from "react";
 
 interface Props {
 	setOpenModal: (openModal: boolean) => void;

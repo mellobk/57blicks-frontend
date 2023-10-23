@@ -29,15 +29,6 @@ export const findIndex = (data: Array<User>, id: string): number => {
 	return index + 1;
 };
 
-export const formatCurrency = (value: number): string => {
-	return value
-		? new Intl.NumberFormat("en-US", {
-				style: "currency",
-				currency: "USD",
-		  }).format(value)
-		: "";
-};
-
 export const validateDate = (date: string): boolean => {
 	const dateObject = new Date(date);
 	const now = new Date();

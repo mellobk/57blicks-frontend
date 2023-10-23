@@ -1,4 +1,5 @@
 import { type FC, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { DkcServicing, FundingBreakdown } from "../../types/api";
@@ -8,8 +9,8 @@ import { Toggle } from "@/components/ui/Toggle";
 import { ServicingModal } from "../ServicingModal/ServicingModal";
 import servicingStore from "../../stores/servicing-store";
 import DkcLendersService from "../../api/servicing";
-import { useQuery } from "@tanstack/react-query";
-import { formatCurrency } from "@/utils/common-funtions";
+import { moneyFormat } from "@/utils/formats";
+import { validateDate } from "@/utils/common-funtions";
 
 interface SuccessProps {}
 
@@ -43,19 +44,6 @@ export const DkcClTable: FC<SuccessProps> = () => {
 	const handleSearch = (data: string) => {
 		setSearchValue(data);
 		return data;
-	};
-
-	const validateDate = (date: string): boolean => {
-		const dateObject = new Date(date);
-		const now = new Date();
-
-		dateObject.setHours(0, 0, 0, 0);
-		now.setHours(0, 0, 0, 0);
-
-		const dateInMillie = dateObject.getTime();
-		const nowInMillie = now.getTime();
-
-		return dateInMillie < nowInMillie;
 	};
 
 	useEffect(() => {
@@ -100,7 +88,7 @@ export const DkcClTable: FC<SuccessProps> = () => {
 		{
 			name: "Total Loan",
 			selector: (row: FundingBreakdown): string =>
-				formatCurrency(Number.parseInt(row?.loan?.totalLoanAmount)),
+				moneyFormat(Number.parseInt(row?.loan?.totalLoanAmount)),
 			sortable: true,
 			omit: false,
 			maxWidth: "150px",
@@ -116,7 +104,7 @@ export const DkcClTable: FC<SuccessProps> = () => {
 		{
 			name: "Regular Payment",
 			selector: (row: FundingBreakdown): string =>
-				formatCurrency(Number.parseInt(row?.regular)),
+				moneyFormat(Number.parseInt(row?.regular)),
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
@@ -180,7 +168,7 @@ export const DkcClTable: FC<SuccessProps> = () => {
 		{
 			name: "Taxed Paid",
 			maxWidth: "50px",
-			selector: (row: DkcServicing): JSX.Element => (
+			selector: (row: DkcServicing) => (
 				<div key={row.id}>
 					<Toggle
 						checked={false}
