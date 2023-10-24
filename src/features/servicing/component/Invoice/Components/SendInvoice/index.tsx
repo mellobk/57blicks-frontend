@@ -1,13 +1,13 @@
-import { useState, type FC } from "react";
+import { type FC, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import type { Invoice, InvoiceDataPdf, InvoiceSend } from "../../types";
 import { Modal } from "@/components/ui/Modal";
 import { SendInvoiceTo } from "@/features/opportunities/components/CreateOpportunity/SendInvoiceTo/SendInvoiceTo";
 import { InvoiceDocumentPreview } from "../InvoiceList/InvoiceDocumentPreview";
 import { BlobProvider } from "@react-pdf/renderer";
-export type InvoiceDataPdfDetails = {};
 import { useMutation } from "@tanstack/react-query";
 import ManageInvoiceService from "@/features/servicing/api/invoices";
+
 interface SendInvoiceProps {
 	invoice: Invoice;
 	invoiceDataPdf: InvoiceDataPdf;

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { type FC, useState, useEffect } from "react";
+import { type FC, useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import {
 	ApprovalStateType,
@@ -12,13 +12,13 @@ import { validationSchema } from "../schema";
 import { LedgerAdd } from "./LedgerAdd";
 import { Button } from "@/components/ui/Button";
 import { TypeOfPayment } from "../../TypeOfPayment/TypeOfPayment";
-import { formatCurrency } from "@/utils/common-funtions";
 import { useMutation } from "@tanstack/react-query";
 import ManageLedgerService from "@/features/servicing/api/ledger";
 import { v4 as uuidv4 } from "uuid";
 import { Icon } from "@/components/ui/Icon";
-import { dateWithFormat } from "@/utils/formats";
+import { dateWithFormat, moneyFormat } from "@/utils/formats";
 import { calculateBalance } from "../utils/calculate-balance";
+
 interface LedgerComponentProps {
 	loan?: string;
 	ledgersData?: Array<Ledgers>;
@@ -310,13 +310,13 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 									<td style={{ width: "100px", paddingLeft: "20px" }}></td>
 									<td style={{ width: "230px", paddingLeft: "20px" }}></td>
 									<td style={{ width: "260px", paddingLeft: "20px" }}>
-										{formatCurrency(totals.debits) || "$ 0"}
+										{moneyFormat(totals.debits) || "$ 0"}
 									</td>
 									<td style={{ width: "220px", paddingLeft: "20px" }}>
-										{formatCurrency(totals.credits) || "$ 0"}
+										{moneyFormat(totals.credits) || "$ 0"}
 									</td>
 									<td style={{ width: "150px", paddingLeft: "20px" }}>
-										{formatCurrency(totals.balance) || "$ 0"}
+										{moneyFormat(totals.balance) || "$ 0"}
 									</td>
 									<td style={{ width: "10px" }}></td>
 								</tr>

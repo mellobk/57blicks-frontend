@@ -1,4 +1,4 @@
-import { useState, type FC } from "react";
+import { type FC, useState } from "react";
 import InvoiceListScreen from "./InvoiceListScreen";
 import ManageInvoiceService from "@/features/servicing/api/invoices";
 import { useQuery } from "@tanstack/react-query";
@@ -10,6 +10,7 @@ interface InvoiceListProps {
 	setInvoice: (invoice: Invoice) => void;
 	setExitsInvoice: (exitsInvoice: boolean) => void;
 }
+
 const InvoiceList: FC<InvoiceListProps> = ({
 	loanId,
 	setInvoice,

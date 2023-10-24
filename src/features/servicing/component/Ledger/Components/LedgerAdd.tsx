@@ -14,8 +14,7 @@ import type {
 import { Icon } from "@/components/ui/Icon";
 import { Tag } from "@/components/ui/Tag";
 import { InputNumber } from "@/components/forms/InputNumber";
-import { formatCurrency } from "@/utils/common-funtions";
-import { dateWithFormatUS } from "@/utils/formats";
+import { dateWithFormatUS, moneyFormat } from "@/utils/formats";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 import LedgerApprove from "./LedgerApprove";
@@ -86,7 +85,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						<DatePicker
 							placeholder="MM-DD-YYYY"
 							name={`ledgers.${index}.ledgerDate`}
-							invalid={errors?.ledgers?.[index]?.ledgerDate ? true : false}
+							invalid={!!errors?.ledgers?.[index]?.ledgerDate}
 							onChange={(date: Date): void => {
 								handleSetDate(`ledgerDate`, date, index);
 							}}
@@ -178,7 +177,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				) : (
 					dataLedgers &&
 					dataLedgers.debit &&
-					formatCurrency(dataLedgers.debit || 0)
+					moneyFormat(dataLedgers.debit || 0)
 				)}
 			</td>
 			<td style={{ paddingLeft: "20px", width: "220px" }}>
@@ -200,12 +199,12 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				) : (
 					dataLedgers &&
 					dataLedgers.credit &&
-					formatCurrency(dataLedgers.credit || 0)
+					moneyFormat(dataLedgers.credit || 0)
 				)}
 			</td>
 			<td style={{ paddingLeft: "20px", width: "150px" }}>
 				{dataLedgers && dataLedgers.balance
-					? formatCurrency(dataLedgers?.balance)
+					? moneyFormat(dataLedgers?.balance)
 					: "0.00"}
 			</td>
 			<td style={{ paddingRight: "30px", width: "80px" }}>

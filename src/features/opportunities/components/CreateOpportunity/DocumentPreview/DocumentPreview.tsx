@@ -89,75 +89,77 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 					)}
 					<View style={styles.columns}>
 						<View style={styles.column}>
-							<Subtitle subtitle="Loan Details:" />
-							<Detail
-								title="Asset Value"
-								value={moneyFormat(Number(form.assetValue), false)}
-							/>
-							<Detail
-								title="Loan Amount"
-								value={moneyFormat(Number(form.loanAmount), false)}
-							/>
-							<Detail
-								title="Loan to Value"
-								value={percentageFormat(Number(form.loanToValue))}
-							/>
-							<Detail title="Term" value={form.loanTerm} />
-							<Detail title="Type" value={form.loanType} />
-							<Detail
-								title="Prepayment Penalty"
-								value={form.investmentPermanentPenalty}
-							/>
-							<Detail
-								title="Interest Offered to Participant"
-								value={percentageFormat(
-									Number(form.investmentMonthlyInterestedOfferedToInvestor)
+							<View style={styles.section}>
+								<Subtitle subtitle="Loan Details:" />
+								<Detail
+									title="Asset Value"
+									value={moneyFormat(Number(form.assetValue), false)}
+								/>
+								<Detail
+									title="Loan Amount"
+									value={moneyFormat(Number(form.loanAmount), false)}
+								/>
+								<Detail
+									title="Loan to Value"
+									value={percentageFormat(Number(form.loanToValue))}
+								/>
+								<Detail title="Term" value={form.loanTerm} />
+								<Detail title="Type" value={form.loanType} />
+								<Detail
+									title="Prepayment Penalty"
+									value={form.investmentPermanentPenalty}
+								/>
+								<Detail
+									title="Interest Offered to Participant"
+									value={percentageFormat(
+										Number(form.investmentMonthlyInterestedOfferedToInvestor)
+									)}
+								/>
+							</View>
+							<View style={styles.section}>
+								<Subtitle subtitle="Participation Opportunities:" />
+								{form.participantOpportunities?.["99%"] && (
+									<Detail
+										title="99%"
+										value={moneyFormat(
+											Number(form.participantOpportunities?.["99%"]),
+											false
+										)}
+									/>
 								)}
-							/>
+								{form.participantOpportunities?.["75%"] && (
+									<Detail
+										title="75%"
+										value={moneyFormat(
+											Number(form.participantOpportunities?.["75%"]),
+											false
+										)}
+									/>
+								)}
+								{form.participantOpportunities?.["50%"] && (
+									<Detail
+										title="50%"
+										value={moneyFormat(
+											Number(form.participantOpportunities?.["50%"]),
+											false
+										)}
+									/>
+								)}
+							</View>
+							<View style={styles.section}>
+								<Subtitle subtitle="Notes On The Borrower:" />
+								<Detail title="Borrower" value={form.investmentBorrower} />
+								<Detail
+									title="DKC Repeat Borrower"
+									value={form.dkcRepeatBorrower}
+								/>
+								<Detail
+									title="Borrower Background"
+									value={form.investmentBorrowerBackground}
+								/>
+							</View>
 						</View>
 						<View style={styles.column}>{image && <Image src={image} />}</View>
-					</View>
-					<View style={styles.section}>
-						<Subtitle subtitle="Participation Opportunities:" />
-						{form.participantOpportunities?.["99%"] && (
-							<Detail
-								title="99%"
-								value={moneyFormat(
-									Number(form.participantOpportunities?.["99%"]),
-									false
-								)}
-							/>
-						)}
-						{form.participantOpportunities?.["75%"] && (
-							<Detail
-								title="75%"
-								value={moneyFormat(
-									Number(form.participantOpportunities?.["75%"]),
-									false
-								)}
-							/>
-						)}
-						{form.participantOpportunities?.["50%"] && (
-							<Detail
-								title="50%"
-								value={moneyFormat(
-									Number(form.participantOpportunities?.["50%"]),
-									false
-								)}
-							/>
-						)}
-					</View>
-					<View style={styles.section}>
-						<Subtitle subtitle="Notes On The Borrower:" />
-						<Detail title="Borrower" value={form.investmentBorrower} />
-						<Detail
-							title="DKC Repeat Borrower"
-							value={form.dkcRepeatBorrower}
-						/>
-						<Detail
-							title="Borrower Background"
-							value={form.investmentBorrowerBackground}
-						/>
 					</View>
 					<View style={styles.section}>
 						<Subtitle subtitle="Additional Documents:" />

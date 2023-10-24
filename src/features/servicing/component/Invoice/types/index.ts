@@ -12,13 +12,6 @@ export interface InvoiceTypeArray extends Invoice {
 	type: string;
 	active: boolean;
 }
-
-export interface InvoicePdf extends Invoice {
-	loan: string;
-	type: string;
-	active: boolean;
-}
-
 export interface InvoiceDataPdfDetails {
 	dueDate: string;
 	description: string;
@@ -27,6 +20,7 @@ export interface InvoiceDataPdfDetails {
 	due: string;
 	paid: string;
 }
+
 export interface InvoiceDataPdf {
 	loanAmount: string;
 	loanPercent: string;

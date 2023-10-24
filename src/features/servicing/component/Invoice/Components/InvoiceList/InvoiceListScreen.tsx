@@ -1,4 +1,4 @@
-import { useState, type FC, useEffect } from "react";
+import { type FC, useEffect, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 
 import type { Invoice, InvoiceTypeArray } from "../../types";
@@ -8,6 +8,7 @@ interface InvoiceListScreenProps {
 	invoices: Array<Invoice>;
 	setInvoice: (invoice: Invoice) => void;
 }
+
 const InvoiceListScreen: FC<InvoiceListScreenProps> = ({
 	invoices,
 	setInvoice,

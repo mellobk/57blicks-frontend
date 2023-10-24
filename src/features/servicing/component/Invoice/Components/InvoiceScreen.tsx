@@ -1,4 +1,4 @@
-import { useState, type FC, useEffect } from "react";
+import { type FC, useEffect, useState } from "react";
 import IInvoicePdfPreview from "./InvoicePdfPreview";
 import type { Invoice } from "../types";
 import InvoiceDetail from "./InvoiceList/InvoiceDetail";
@@ -11,6 +11,7 @@ import type { Ledgers } from "../../Ledger/types";
 interface InvoiceScreenProps {
 	loan: Loan;
 }
+
 const InvoiceScreen: FC<InvoiceScreenProps> = ({ loan }) => {
 	const [invoice, setInvoice] = useState<Invoice>();
 	const [exitsInvoice, setExitsInvoice] = useState<boolean>(false);

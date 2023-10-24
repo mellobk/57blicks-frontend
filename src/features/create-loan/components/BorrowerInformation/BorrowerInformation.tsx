@@ -6,7 +6,7 @@ import { Input } from "@/components/forms/Input";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { Title } from "@/components/ui/Title/Title";
 import type { Loan } from "@/features/create-loan/types/fields";
-import { LENDERS } from "@/features/create-loan/utils/selects.ts";
+import { LENDERS } from "@/features/create-loan/utils/selects";
 
 interface Props {
 	control: Control<Loan>;

@@ -46,6 +46,7 @@ import Upload from "@/assets/icons/upload";
 import User from "@/assets/icons/user";
 import UserProfile from "@/assets/icons/user-profile";
 import Wrong from "@/assets/icons/wrong";
+import Permission from "@/assets/icons/permission";
 
 export const ICONS = {
 	arrowDown: ArrowDown,
@@ -95,6 +96,7 @@ export const ICONS = {
 	pdf: Pdf,
 	send: Send,
 	refresh: Refresh,
+	permission: Permission,
 };
 
 export interface IconProps {
