@@ -1,8 +1,10 @@
 import type { FC } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Link } from "@tanstack/router";
+import ManageUsersService from "@/features/manage-user/api/investors";
 import { getLocalStorage } from "@/utils/local-storage";
 import { group } from "@/utils/constant";
+import { useQuery } from "@tanstack/react-query";
 
 const ForbiddenPage: FC = () => {
 	const cognitoGroup = getLocalStorage(group)
@@ -10,6 +12,12 @@ const ForbiddenPage: FC = () => {
 		: "";
 	const groupTo: string =
 		cognitoGroup === "investor" ? "/investors" : "/manage-users/admins";
+
+	const userQuery = useQuery(["user-query-forbidden"], () => {
+		return ManageUsersService.forbidden();
+	});
+
+	void userQuery.refetch();
 
 	return (
 		<div className="flex flex-col items-center h-full w-full bg-white text-primary ">

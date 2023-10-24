@@ -90,3 +90,7 @@ export const findExistingPermission = (): string => {
 export const assignPermissionRole = (): string => {
 	return `permissions/assign-permission-role`;
 };
+
+export const getForbidden = (): string => {
+	return `users/forbidden`;
+};
