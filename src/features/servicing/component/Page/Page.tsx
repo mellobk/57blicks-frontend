@@ -6,7 +6,7 @@ import type { DkcServicing, FundingBreakdown } from "../../types/api";
 import { servicingTabs } from "../../utils/tabs";
 import { Table } from "./Table/Table.tsx";
 import { Toggle } from "@/components/ui/Toggle";
-import { Modal } from "@/features/servicing/component/Page/Modal/Modal.tsx";
+import { ShowModal } from "@/features/servicing/component/Page/ShowModal/ShowModal.tsx";
 import servicingStore from "../../stores/servicing-store";
 import DkcLendersService from "../../api/servicing";
 import { moneyFormat } from "@/utils/formats";
@@ -181,7 +181,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 					</div>
 				</>
 			</Table>
-			<Modal
+			<ShowModal
 				data={modalData}
 				openModal={!!modalData}
 				handleRefreshData={handleRefreshData}
