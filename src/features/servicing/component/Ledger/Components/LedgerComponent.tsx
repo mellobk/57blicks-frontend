@@ -270,6 +270,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 											handleSetDate={handleSetDate}
 											handleEdit={handleEdit}
 											handleDeleteLedger={handleDeleteLedger}
+											refetchLedgers={refetchLedgers}
 											control={control as never}
 											errors={errors}
 											register={register as never}
