@@ -1,68 +1,48 @@
 import { type FC, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { DkcServicing, FundingBreakdown } from "../../types/api";
 import { servicingTabs } from "../../utils/tabs";
-import { ServicingTable } from "../ServicingTable";
+import { Table } from "./Table/Table.tsx";
 import { Toggle } from "@/components/ui/Toggle";
-import { ServicingModal } from "../ServicingModal/ServicingModal";
+import { Modal } from "@/features/servicing/component/Page/Modal/Modal.tsx";
 import servicingStore from "../../stores/servicing-store";
-import { useQuery } from "@tanstack/react-query";
 import DkcLendersService from "../../api/servicing";
 import { moneyFormat } from "@/utils/formats";
 import { validateDate } from "@/utils/common-funtions";
 
-interface SuccessProps {}
+interface Props {
+	actualTab: string;
+	id?: string;
+}
 
-export const DkcIvTable: FC<SuccessProps> = () => {
+export const Page: FC<Props> = ({ actualTab, id }) => {
+	const [modalData, setModalData] = useState<FundingBreakdown | null>(null);
 	const [searchValue, setSearchValue] = useState<string>("");
-	const [openModal, setOpenModal] = useState<boolean>(false);
 	const lenderData = servicingStore((state) => state.lenders);
-	const [modalData, setModalData] = useState<FundingBreakdown>();
 
-	const findDkcLender = (): string => {
+	const findDkcLender = () => {
 		const findLender = lenderData.find(
-			(data) => data.name === "DKC Lending IV"
+			(data) => data.name === (id || actualTab)
 		);
 
 		return findLender?.id || "";
 	};
 
 	const dkcLendersQuery = useQuery(
-		["dkc-lenders-by-id-query"],
-		() => {
-			return DkcLendersService.getLenderById(
-				findDkcLender() || "",
-				searchValue
-			);
-		},
+		["dkc-lenders-query"],
+		() => DkcLendersService.getLenderById(findDkcLender(), searchValue),
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
-	const handleSearch = (data: string) => {
-		setSearchValue(data);
-		return data;
-	};
 
 	const handleRefreshData = (): void => {
 		void dkcLendersQuery.refetch();
 	};
 
-	const findDkcLenderData = (data: FundingBreakdown) => {
-		setModalData(data);
-	};
-
-	const handleRowClicked = (row: FundingBreakdown): void => {
-		findDkcLenderData(row);
-		setOpenModal(true);
-	};
-
 	useEffect(() => {
 		void dkcLendersQuery.refetch();
-	}, [lenderData]);
-
-	useEffect(() => {
-		void dkcLendersQuery.refetch();
-	}, [searchValue]);
+	}, [searchValue, lenderData]);
 
 	const columns = [
 		{
@@ -180,36 +160,33 @@ export const DkcIvTable: FC<SuccessProps> = () => {
 	];
 
 	return (
-		<>
-			<ServicingTable
-				handleSearchValue={handleSearch}
+		<div className="flex flex-col items-center  gap-3 h-full w-full rounded-3xl">
+			<Table
+				handleSearchValue={setSearchValue}
 				columns={columns}
 				data={dkcLendersQuery?.data?.fundingBreakdowns}
-				loading={dkcLendersQuery.isFetching}
+				loading={dkcLendersQuery?.isFetching}
 				widthSearch="60px"
-				onRowClicked={handleRowClicked}
+				onRowClicked={setModalData}
 			>
 				<>
 					<div className="relative w-[115px]">
 						<div className="absolute w-[200px]" style={{ top: "-8px" }}>
-							<BreadCrumb initialTab="Servicing" actualTab="DKC Lending IV" />
+							<BreadCrumb initialTab="Servicing" actualTab={actualTab} />
 						</div>
 					</div>
 
 					<div className="relative z-10">
-						<Tabs tabs={servicingTabs} actualTab="dkc lending iv" />
+						<Tabs tabs={servicingTabs} actualTab={actualTab.toLowerCase()} />
 					</div>
 				</>
-			</ServicingTable>
-
-			<ServicingModal
+			</Table>
+			<Modal
 				data={modalData}
+				openModal={!!modalData}
 				handleRefreshData={handleRefreshData}
-				openModal={openModal}
-				handleOnCLose={(): void => {
-					setOpenModal(false);
-				}}
+				handleOnCLose={() => setModalData(null)}
 			/>
-		</>
+		</div>
 	);
 };

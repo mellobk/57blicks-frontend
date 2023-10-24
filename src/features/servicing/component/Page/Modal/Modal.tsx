@@ -1,22 +1,22 @@
-import { Modal } from "@/components/ui/Modal";
-import { servicingModalTabs } from "../../utils/tabs";
-import { Tabs } from "../Tabs";
-import { type FC, useEffect, useState } from "react";
-import { LoanInformation } from "../LoanInformation";
-import { BorrowerInformation } from "../BorrowerInformation";
-import "./ServicingModal.css";
-import type { FundingBreakdown } from "../../types/api";
-import { LedgerList } from "../Ledger";
-import { InvoiceScreen } from "../Invoice";
+import "./Modal.css";
 
-interface ServicingModalProps {
+import { Modal as ModalComponent } from "@/components/ui/Modal";
+import { servicingModalTabs } from "../../../utils/tabs.ts";
+import { Tabs } from "../../Tabs";
+import { type FC, useEffect, useState } from "react";
+import { LoanInformation } from "../../LoanInformation";
+import { BorrowerInformation } from "../../BorrowerInformation";
+import { LedgerList } from "../../Ledger";
+import { InvoiceScreen } from "../../Invoice";
+
+interface Props {
 	openModal?: boolean;
 	handleOnCLose?: () => void;
 	handleRefreshData?: () => void;
-	data?: FundingBreakdown;
+	data?: any;
 }
 
-export const ServicingModal: FC<ServicingModalProps> = ({
+export const Modal: FC<Props> = ({
 	openModal,
 	handleOnCLose,
 	handleRefreshData,
@@ -44,7 +44,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 				break;
 			}
 			case "funding": {
-				setTabTitle("Loan Information");
+				setTabTitle("Funding Breakdown");
 				break;
 			}
 			case "invoices": {
@@ -59,7 +59,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 
 	return (
 		<div className="relative w-[98%]">
-			<Modal
+			<ModalComponent
 				visible={openModal}
 				title={tabTitle}
 				width="98%"
@@ -86,8 +86,11 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 					/>
 				)}
 				{tabTitle === "Ledger" && data && <LedgerList loan={data.loan.id} />}
+				{/*{tabTitle === "Funding Breakdown" && data && (*/}
+				{/*	<FundingBreakdown loan={data.loan} />*/}
+				{/*)}*/}
 				{tabTitle === "Invoices" && data && <InvoiceScreen loan={data.loan} />}
-			</Modal>
+			</ModalComponent>
 		</div>
 	);
 };

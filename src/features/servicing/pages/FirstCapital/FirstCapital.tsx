@@ -1,10 +1,6 @@
 import type { FC } from "react";
-import { FirstCapitalTable } from "../../component/FirstCapital/FirstCapitalTable";
+import { Page } from "@/features/servicing/component/Page/Page";
 
-export const FirstCapital: FC = () => {
-	return (
-		<div className="flex flex-col items-center  gap-3 h-full w-full rounded-3xl">
-			<FirstCapitalTable />
-		</div>
-	);
-};
+export const FirstCapital: FC = () => (
+	<Page actualTab="First Capital Trust LLC" id="First Capital Trust" />
+);

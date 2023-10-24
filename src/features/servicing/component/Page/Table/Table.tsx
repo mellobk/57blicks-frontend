@@ -3,14 +3,14 @@ import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Input } from "@/components/forms/Input";
 import { Button } from "@/components/ui/Button";
-import { Toggle } from "@/components/ui/Toggle/Toggle";
+import { Toggle } from "@/components/ui/Toggle/Toggle.tsx";
 import { Icon } from "@/components/ui/Icon";
-import { Modal } from "@/components/ui/Modal/Modal";
-import { useDebounce } from "@/hooks/debounce";
+import { Modal } from "@/components/ui/Modal/Modal.tsx";
+import { useDebounce } from "@/hooks/debounce.tsx";
 import "./Table.css";
-import { FooterTable } from "@/components/ui/FooterTabs/FooterTabs";
-import type { FundingBreakdown } from "../../types/api";
-import { moneyFormat } from "@/utils/formats";
+import { FooterTable } from "@/components/ui/FooterTabs/FooterTabs.tsx";
+import type { FundingBreakdown } from "../../../types/api.ts";
+import { moneyFormat } from "@/utils/formats.ts";
 
 interface Column {
 	name?: string;
@@ -19,13 +19,13 @@ interface Column {
 	omit?: boolean;
 }
 
-interface TableProps {
+interface Props {
 	columns?: Array<Column>;
 	data?: any;
 	children?: ReactElement;
 	buttonText?: string;
 	checkedValue?: boolean;
-	handleSearchValue?: (value: string) => string;
+	handleSearchValue?: (value: string) => void;
 	handleCheckValue?: (value: any) => void;
 	conditionalRowStyles?: any;
 	onClickButton?: () => void;
@@ -34,7 +34,7 @@ interface TableProps {
 	onRowClicked?: (row: FundingBreakdown) => void;
 }
 
-export const ServicingTable: FC<TableProps> = ({
+export const Table: FC<Props> = ({
 	columns = [],
 	data,
 	children,
