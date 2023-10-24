@@ -1,5 +1,9 @@
 import type { LedgerFormValues, Ledgers } from "../component/Ledger/types";
-import { deleteLedgerApi, ledgers } from "./backend-end-points";
+import {
+	deleteLedgerApi,
+	ledgers,
+	ledgersChangeStatus,
+} from "./backend-end-points";
 
 import type { Ledger } from "@/features/servicing/component/Ledger/types";
 import { authApiClient } from "@/utils/api-client";
@@ -30,12 +34,21 @@ const createLedger = async (
 	}
 };
 
+const changeStatusLedger = async (data: Ledger): Promise<Ledger | null> => {
+	try {
+		return await authApiClient.put(ledgersChangeStatus(data.id), data);
+	} catch {
+		return null;
+	}
+};
+
 const deleteLedger = async (id: string): Promise<void> => {
 	await authApiClient.delete<Array<Ledger>>(deleteLedgerApi(id));
 };
 
 const ManageLedgerService = {
 	createLedger,
+	changeStatusLedger,
 	getLedgerByLoanId,
 	deleteLedger,
 };
