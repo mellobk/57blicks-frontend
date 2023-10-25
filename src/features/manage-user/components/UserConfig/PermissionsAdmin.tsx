@@ -36,7 +36,7 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 
 	const [userData, _] = useState<User>(user);
 	const [groupPermission, setGroupPermission] = useState<string>();
-	const [permissionsArrayData, setPermissionArrayData] = useState<Array<any>>();
+
 	const [arrayRolesData, setArrayRolesData] = useState<
 		Array<{ name: string; code: string }>
 	>([]);
@@ -131,8 +131,6 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 		setAllPermissions(permissionData);
 
 		originalSearch.current = permissionData;
-
-		setPermissionArrayData(permissionData);
 	}, [permissionGroupMutation.isSuccess]);
 
 	useEffect(() => {
@@ -154,11 +152,7 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 
 	// eslint-disable-next-line @typescript-eslint/require-await
 	const getDataPermissions = async (): Promise<any> => {
-		if (
-			roles.data &&
-			!permissionsArrayData?.length &&
-			userData.permissionGroup?.id
-		) {
+		if (roles.data && !allPermissions?.length && userData.permissionGroup?.id) {
 			const permissionGroupData: PermissionGroup | any =
 				permissionGroup?.data || [];
 			const find = permissionGroupData.find(
