@@ -20,6 +20,12 @@ export const servicingModalTabs = [
 	{ label: "Invoices", routeTo: "servicing/first-capital" },
 ];
 
+export const approveModalTabs = [
+	{ label: "Loan", routeTo: "servicing/dkc-llc" },
+	{ label: "Borrower", routeTo: "servicing/dkc-fl" },
+	{ label: "Ledger", routeTo: "servicing/dkc-iv" },
+];
+
 export const footerTabData: Array<{
 	label: string;
 	width: string;

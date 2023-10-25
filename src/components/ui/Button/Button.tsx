@@ -19,10 +19,7 @@ export const buttonVariants = cva(
 				danger: "",
 				success: "",
 				info: "",
-				outline:
-					"bg-transparent border border-primary text-primary hover:bg-primary hover:text-white font-semibold",
-				noBorder:
-					"bg-transparent border-none text-primary hover:bg-transparent font-semibold",
+				outline: "",
 				link: "text-primary underline-offset-4 hover:underline",
 			},
 			size: {
