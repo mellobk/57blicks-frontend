@@ -20,8 +20,6 @@ export const DkcClTable: FC<SuccessProps> = () => {
 	const lenderData = servicingStore((state) => state.lenders);
 	const [modalData, setModalData] = useState<FundingBreakdown>();
 
-	console.log(searchValue);
-
 	const findDkcLender = (): string => {
 		const findLender = lenderData.find(
 			(data) => data.name === "DKC Lending LC"
@@ -73,7 +71,7 @@ export const DkcClTable: FC<SuccessProps> = () => {
 			maxWidth: "230px",
 			minWidth: "230px",
 			selector: (row: FundingBreakdown): string =>
-				`${row?.loan.borrower.user.firstName} ${row?.loan.borrower.user.lastName}`,
+				`${row?.loan.borrower?.user.firstName} ${row?.loan.borrower?.user.lastName}`,
 			omit: false,
 		},
 		{

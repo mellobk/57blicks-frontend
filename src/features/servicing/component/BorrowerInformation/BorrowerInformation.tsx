@@ -92,10 +92,10 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 	};
 
 	useEffect(() => {
-		setValue(borrowerInformationFields?.llc || "", data?.loan?.borrower.llc);
+		setValue(borrowerInformationFields?.llc || "", data?.loan?.borrower?.llc);
 		setValue(
 			borrowerInformationFields?.ssnEin || "",
-			data?.loan?.borrower.ssnEin
+			data?.loan?.borrower?.ssnEin
 		);
 		setValue(
 			borrowerInformationFields?.firstName || "",
@@ -120,19 +120,19 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 
 		setValue(
 			borrowerInformationFields?.bankingName || "",
-			data?.loan?.borrower.bankingName
+			data?.loan?.borrower?.bankingName
 		);
 		setValue(
 			borrowerInformationFields?.accountNumber || "",
-			data?.loan?.borrower.accountNumber
+			data?.loan?.borrower?.accountNumber
 		);
 		setValue(
 			borrowerInformationFields?.accountType || "",
-			data?.loan?.borrower.accountType
+			data?.loan?.borrower?.accountType
 		);
 		setValue(
 			borrowerInformationFields?.routingNumber || "",
-			data?.loan?.borrower.routingNumber
+			data?.loan?.borrower?.routingNumber
 		);
 	}, []);
 
