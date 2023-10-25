@@ -22,10 +22,9 @@ interface PermissionToggleProps {
 export const PermissionToggle: FC<PermissionToggleProps> = ({
 	permissions,
 	type,
-	permissionType,
+
 	permissionsGroups,
 	handleToggle,
-	handleHeaderToggle,
 }) => {
 	/* 	console.log(permissions, permissionsGroups); */
 	const [showPermissions, setShowPermissions] = useState<boolean>(false);
