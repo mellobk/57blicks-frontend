@@ -1,9 +1,11 @@
-import type { FC } from "react";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+
+import type { FC } from "react";
 import { LedgerComponent } from "./LedgerComponent";
 import type { Ledgers } from "../types";
 import Loading from "@/assets/icons/loading";
+import type { Loan } from "@/features/servicing/types/api";
 import ManageLedgerService from "@/features/servicing/api/ledger";
 import { calculateBalance } from "../utils/calculate-balance";
 import { dateWithFormat } from "@/utils/formats";
@@ -11,7 +13,7 @@ import { dateWithFormat } from "@/utils/formats";
 const orderLedgers = (): void => {};
 
 interface LedgerListProps {
-	loan?: string;
+	loan: Loan;
 }
 
 const LedgerList: FC<LedgerListProps> = ({ loan }) => {
@@ -20,7 +22,7 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 	const { refetch, isLoading } = useQuery(
 		["leger-get-by-loan"],
 		() => {
-			return ManageLedgerService.getLedgerByLoanId(loan || "");
+			return ManageLedgerService.getLedgerByLoanId(loan?.id || "");
 		},
 		{
 			onSuccess: (data) => {
@@ -81,13 +83,15 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 			{isLoading ? (
 				<Loading />
 			) : (
-				<LedgerComponent
-					loan={loan}
-					ledgersData={ledgers}
-					refetchLedgers={refetchLedgers}
-					handleDeleteLedger={handleDeleteLedger}
-					orderLedgers={orderLedgers}
-				/>
+				<>
+					<LedgerComponent
+						loan={loan}
+						ledgersData={ledgers}
+						refetchLedgers={refetchLedgers}
+						handleDeleteLedger={handleDeleteLedger}
+						orderLedgers={orderLedgers}
+					/>
+				</>
 			)}
 		</>
 	);

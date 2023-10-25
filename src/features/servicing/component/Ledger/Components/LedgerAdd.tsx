@@ -18,13 +18,15 @@ import { dateWithFormatUS, moneyFormat } from "@/utils/formats";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 import LedgerApprove from "./LedgerApprove";
-
+import type { Loan } from "@/features/servicing/types/api";
+import moment from "moment";
 interface LedgerAddProps {
 	field: FieldArrayWithId<Ledger>;
 	index: number;
 	errors: FieldErrors<LedgerFormValues>;
 	control: Control<LedgerFormValues>;
 	data: LedgerFormValues;
+	loan: Loan;
 	handleSetValue: (
 		field: string,
 		value: string | number | boolean,
@@ -47,6 +49,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	index,
 	errors,
 	data,
+	loan,
 	handleSetValue,
 	handleSetDate,
 	handleEdit,
@@ -84,6 +87,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					<>
 						<DatePicker
 							placeholder="MM-DD-YYYY"
+							maxDate={new Date()}
+							minDate={moment(loan.originationDate).toDate()}
 							name={`ledgers.${index}.ledgerDate`}
 							invalid={!!errors?.ledgers?.[index]?.ledgerDate}
 							onChange={(date: Date): void => {

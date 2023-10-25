@@ -85,7 +85,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 						handleRefreshData={handleRefreshData}
 					/>
 				)}
-				{tabTitle === "Ledger" && data && <LedgerList loan={data.loan.id} />}
+				{tabTitle === "Ledger" && data && <LedgerList loan={data.loan} />}
 				{tabTitle === "Invoices" && data && <InvoiceScreen loan={data.loan} />}
 			</Modal>
 		</div>

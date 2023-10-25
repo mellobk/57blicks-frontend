@@ -18,9 +18,10 @@ import { v4 as uuidv4 } from "uuid";
 import { Icon } from "@/components/ui/Icon";
 import { dateWithFormat, moneyFormat } from "@/utils/formats";
 import { calculateBalance } from "../utils/calculate-balance";
+import type { Loan } from "@/features/servicing/types/api";
 
 interface LedgerComponentProps {
-	loan?: string;
+	loan: Loan;
 	ledgersData?: Array<Ledgers>;
 	refetchLedgers?: () => void;
 	orderLedgers?: (orderBy: string) => void;
@@ -92,7 +93,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		if (ledgersData && ledgersData.length > 0) {
 			let debits = 0;
 			let credits = 0;
-			let balance = 0;
 			ledgersData.forEach((ledger) => {
 				append(ledger as never);
 				if (ledger.debit) {
@@ -101,14 +101,14 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				if (ledger.credit) {
 					credits += Number(ledger.credit);
 				}
-				if (ledger.balance) {
-					balance = Number(ledger.balance);
-				}
 			});
+			console.log(
+				"🚀 ~ file: LedgerComponent.tsx:108 ~ ledgersData.forEach ~ ledgersData:"
+			);
 			const totals = {
 				debits,
 				credits,
-				balance,
+				balance: ledgersData.at(-1)?.balance || 0,
 			};
 
 			setTotals(totals);
@@ -196,7 +196,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					//convert  ledgerDate to date
 					const sanedData: LedgerFormValues = {
 						ledgers: [],
-						loanId: loan,
+						loanId: loan?.id || "",
 					};
 					data.ledgers.forEach((ledger) => {
 						if (ledger.editable) {
@@ -211,7 +211,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 						}
 					});
 
-					createLedger.mutate({ ...sanedData, loanId: loan });
+					createLedger.mutate({ ...sanedData, loanId: loan?.id || "" });
 				})}
 			>
 				<div
@@ -265,6 +265,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 											index={index}
 											handleRemove={handleRemove}
 											data={allFields as unknown as LedgerFormValues}
+											loan={loan}
 											handleOpenModal={handleOpenModal}
 											handleSetValue={handleSetValue}
 											handleSetDate={handleSetDate}
