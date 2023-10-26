@@ -1,24 +1,24 @@
 import UnauthenticatedRoute from "@/routes/routes";
-import { DkcFl } from "../pages/DkcFlc/DkcFl";
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import { FirstCapital } from "../pages/FirstCapital/FirstCapital";
-import { DkcIv } from "../pages/DkcIv/DkcIv";
-import { DkcCl } from "../pages/DkcCl/DkcCl";
+import { CL } from "@/features/servicing/pages/CL/CL";
+import { FirstCapital } from "@/features/servicing/pages/FirstCapital/FirstCapital";
+import { FL } from "@/features/servicing/pages/FL/FL";
+import { IV } from "@/features/servicing/pages/IV/IV";
 
 const ServicingRoutes = [
 	{
 		path: "/servicing/dkc-fl",
-		page: DkcFl,
+		page: FL,
 		layout: DashboardLayout,
 	},
 	{
 		path: "/servicing/dkc-cl",
-		page: DkcCl,
+		page: CL,
 		layout: DashboardLayout,
 	},
 	{
 		path: "/servicing/dkc-iv",
-		page: DkcIv,
+		page: IV,
 		layout: DashboardLayout,
 	},
 	{

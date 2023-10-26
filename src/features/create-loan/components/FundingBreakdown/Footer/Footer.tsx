@@ -1,24 +1,17 @@
-import type { ComponentType } from "react";
-import { useEffect, useState } from "react";
+import { type ComponentType, useEffect, useState } from "react";
+import { type Control, useWatch } from "react-hook-form";
 import { Cell } from "@/components/table/Cell";
 import type { Loan } from "@/features/create-loan/types/fields";
-import { type Control, useWatch } from "react-hook-form";
+import {
+	calculateProrated,
+	calculateRegular,
+} from "@/utils/common-funtions.ts";
 
 interface Props {
-	calculateProrated: (
-		amount: string,
-		rate: string,
-		originationDate: string
-	) => string;
-	calculateRegular: (amount: string, rate: string) => string;
 	control: Control<Loan>;
 }
 
-export const Footer: ComponentType<Props> = ({
-	calculateProrated,
-	calculateRegular,
-	control,
-}) => {
+export const Footer: ComponentType<Props> = ({ control }) => {
 	const defaultTotals = {
 		amount: 0,
 		prorated: 0,

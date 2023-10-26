@@ -1,14 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import type { FC } from "react";
 import { LoanCard } from "../LoanCard";
 import { LoanCollateralCard } from "../LoanCollateralCard";
-
-import { formatCurrency } from "@/utils/common-funtions";
 import type { Collateral, Loan } from "@/features/servicing/types/api";
+import { moneyFormat } from "@/utils/formats";
 
 interface LoanInformationProps {
 	data?: Loan | any;
@@ -34,7 +28,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 				<div className="flex gap-2 flex-col">
 					<LoanCard
 						title="Total Loan Amount"
-						text={formatCurrency(Number.parseInt(data?.totalLoanAmount || ""))}
+						text={moneyFormat(Number.parseInt(data?.totalLoanAmount || ""))}
 					/>
 
 					<LoanCard
@@ -67,14 +61,12 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 
 				<LoanCard
 					title="Construction Holdback"
-					text={formatCurrency(
-						Number.parseInt(data?.constructionHoldback || "")
-					)}
+					text={moneyFormat(Number.parseInt(data?.constructionHoldback || ""))}
 				/>
 
 				<LoanCard
 					title="Amount Drawn"
-					text={formatCurrency(Number.parseInt(data?.amountDrawn || ""))}
+					text={moneyFormat(Number.parseInt(data?.amountDrawn || ""))}
 					background
 				/>
 				<LoanCard title="Asset Class" text={data?.collaterals[0]?.assetType} />

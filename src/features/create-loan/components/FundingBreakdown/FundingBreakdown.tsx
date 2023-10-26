@@ -18,14 +18,12 @@ import type {
 	Loan,
 } from "@/features/create-loan/types/fields";
 import { LENDERS } from "@/features/create-loan/utils/selects";
+import {
+	calculateProrated,
+	calculateRegular,
+} from "@/utils/common-funtions.ts";
 
 interface Props {
-	calculateProrated: (
-		amount: string,
-		rate: string,
-		originationDate: string
-	) => string;
-	calculateRegular: (amount: string, rate: string) => string;
 	control: Control<Loan>;
 	errors: FieldErrors<Loan>;
 	remove: UseFieldArrayRemove;
@@ -34,8 +32,6 @@ interface Props {
 }
 
 export const FundingBreakdown: FC<Props> = ({
-	calculateProrated,
-	calculateRegular,
 	control,
 	errors,
 	remove,
@@ -186,11 +182,7 @@ export const FundingBreakdown: FC<Props> = ({
 				columns={columns}
 				data={[...fundingBreakdown, ...participationBreakdown]}
 			/>
-			<Footer
-				calculateProrated={calculateProrated}
-				calculateRegular={calculateRegular}
-				control={control}
-			/>
+			<Footer control={control} />
 		</div>
 	);
 };

@@ -3,7 +3,7 @@ import { AuthenticatedRoute } from "@/routes/routes";
 import { CreateLoan } from "@/features/create-loan/pages/CreateLoan/CreateLoan";
 import { CreateOpportunity } from "@/features/opportunities/pages/CreateOpportunity/CreateOpportunity";
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import { DkcLlc } from "@/features/servicing/pages/DkcLLC/DkcLlc";
+import { LLC } from "@/features/servicing/pages/LLC/LLC";
 import { InvestorPortals } from "../pages/InvestorPortals/InvestorPortals";
 import { LoanOverview } from "@/features/loan-overview/pages/LoanOverview/LoanOverview";
 import { Reporting } from "../pages/Reporting/Reporting";
@@ -24,7 +24,7 @@ export const NavbarRoutes = [
 	},
 	{
 		path: "/servicing/dkc-llc",
-		page: DkcLlc,
+		page: LLC,
 		layout: DashboardLayout,
 		name: "Servicing",
 	},
