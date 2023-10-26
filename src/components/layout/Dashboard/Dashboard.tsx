@@ -1,5 +1,3 @@
-/* eslint-disable no-useless-escape */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type FC, type ReactNode, useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/router";
 import { Icon } from "@/components/ui/Icon";
@@ -13,11 +11,8 @@ import ManageUsersService from "@/features/manage-user/api/investors";
 import { getLocalStorage, sendToLocalStorage } from "@/utils/local-storage";
 import { sub, userBasicInformation, userName } from "@/utils/constant";
 import { LogOff } from "@/features/profile/component/LogOff/LogOff";
-import DkcLendersService from "@/features/servicing/api/servicing";
-import servicingStore from "@/features/servicing/stores/servicing-store";
 import socket from "../../../socket";
 import type { User } from "@/features/servicing/types/api";
-
 import type { UserNotification } from "../types/notifications";
 import { ServicingModal } from "@/features/notifications/components/ServicingModal/ServicingModal";
 import { Notification } from "@/features/notifications/components/Notification/Notification";
@@ -42,8 +37,6 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 	const [openModalUser, setOpenModalUser] = useState<boolean>();
 	const [openModalLoan, setOpenModalLoan] = useState<boolean>();
 	const [openModalNotification, setOpenModalNotification] = useState<boolean>();
-	const setLenderData = servicingStore((state) => state.setLender);
-	const lenderData = servicingStore((state) => state.lenders);
 	const userData = getLocalStorage(userBasicInformation);
 	const parseData = userData && (JSON.parse(userData || "") as User);
 
@@ -61,14 +54,6 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 			return ManageNotificationService.getUserNotification();
 		},
 		{ enabled: true }
-	);
-
-	const dkcLendersQuery = useQuery(
-		["dkc-lenders-query"],
-		() => {
-			return DkcLendersService.getLenders();
-		},
-		{ enabled: lenderData.length <= 0 }
 	);
 
 	const updateNotificationQuery = useMutation(
@@ -113,12 +98,6 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 			updateNotificationQuery.reset();
 		}
 	}, [updateNotificationQuery]);
-
-	useEffect(() => {
-		if (lenderData.length <= 0) {
-			setLenderData(dkcLendersQuery?.data?.data || []);
-		}
-	}, [dkcLendersQuery.isSuccess]);
 
 	const handleOpenModal = (): void => {
 		setOpenModalUser(!openModalUser);

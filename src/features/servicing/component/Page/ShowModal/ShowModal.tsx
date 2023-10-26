@@ -1,5 +1,5 @@
-import { Modal } from "@/components/ui/Modal";
 import { type FC, useState } from "react";
+import { Modal } from "@/components/ui/Modal";
 import { LoanInformation } from "../../LoanInformation";
 import { BorrowerInformation } from "../../BorrowerInformation";
 import { LedgerList } from "../../Ledger";
@@ -27,8 +27,6 @@ export const ShowModal: FC<Props> = ({
 	data,
 }) => {
 	const [actualTabData, setActualTabData] = useState(TABS[0]);
-
-  console.log(data);
 
 	return (
 		<Modal

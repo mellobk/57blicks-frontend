@@ -1,24 +1,26 @@
-import {Router} from "@tanstack/router";
-import {rootRoute} from "./RootRoute";
+import { Router } from "@tanstack/router";
 import LoginRouter from "@/features/auth/routes/LoginRouter";
 import DashboardRouter from "@/features/dashboard/routes/DashboardRouter";
+import InvestorPortalsRouter from "@/features/investor-portals/routes/InvestorPortalsRoutes";
+import InvestorRouter from "@/features/investor/routes/InvestorRouter";
 import ManageUserRouter from "@/features/manage-user/routes/ManageUsersRouter";
 import OpportunitiesRouter from "@/features/opportunities/routes/OpportunitiesRouter";
-import ServicingRouter from "@/features/servicing/routes/ServicingRoutes";
 import ProfileRouter from "@/features/profile/routes/ProfileRoutes";
-import appRouter from "./appRoutes";
-import investorRouter from "@/features/investor/routes/investorRouter";
+import ServicingRouter from "@/features/servicing/routes/ServicingRoutes";
+import { rootRoute } from "./RootRoute";
+import AppRouter from "./AppRoutes";
 
 //array of all routes
 const allRoutes = [
-	...LoginRouter,
-	...DashboardRouter,
-	...ManageUserRouter,
-	...OpportunitiesRouter,
-	...ServicingRouter,
-	...ProfileRouter,
-	...appRouter,
-	...investorRouter,
+  ...AppRouter,
+  ...DashboardRouter,
+  ...InvestorRouter,
+  ...InvestorPortalsRouter,
+  ...LoginRouter,
+  ...ManageUserRouter,
+  ...OpportunitiesRouter,
+  ...ProfileRouter,
+  ...ServicingRouter,
 ];
 
 const routeTree = rootRoute.addChildren([...allRoutes]);

@@ -10,3 +10,7 @@
 ::-webkit-scrollbar-thumb:hover {
   background: transparent;
 }
+
+.p-dialog-header-close {
+  z-index: 1;
+}
