@@ -14,6 +14,10 @@ export const ledgers = (): string => {
 	return `/ledgers`;
 };
 
+export const ledgersChangeStatus = (id: string): string => {
+	return `/ledgers/change-status/${id}`;
+};
+
 export const deleteLedgerApi = (id: string): string => {
 	return `/ledgers/${id}`;
 };

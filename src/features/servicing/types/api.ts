@@ -69,8 +69,8 @@ export interface Collateral {
 }
 
 export interface Loan {
-	id: string;
-	createdAt: Date;
+	id?: string;
+	createdAt?: Date;
 	updatedAt: Date;
 	type: string;
 	totalLoanAmount: string;
@@ -83,7 +83,7 @@ export interface Loan {
 	status: string;
 	loanConsultant: string;
 	leadSource: string;
-	borrower: Borrower;
+	borrower?: Borrower;
 	collaterals: Array<Collateral>;
 	ltv: string;
 }

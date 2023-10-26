@@ -18,6 +18,7 @@ import {
 	filterData,
 	findExistingPermission,
 	getAllPermission,
+	getForbidden,
 	getPermissionGroupById,
 	getUserData,
 	investors,
@@ -168,6 +169,10 @@ const permissionGroupById = async (id: string) => {
 	);
 	return response.data;
 };
+
+const forbidden = async () => {
+	await authApiClient.get(getForbidden());
+};
 /* const updateInvestors = async (body: Investor) => {
 	const response = fetchData(investors(body?.id || ""), "PUT", body);
 	return response;
@@ -194,6 +199,7 @@ const ManageUsersService = {
 	assignPermissionRoleData,
 	getAllPermissionGroup,
 	updateUserGroupPermission,
+	forbidden,
 };
 
 export default ManageUsersService;

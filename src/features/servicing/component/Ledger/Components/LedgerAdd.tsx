@@ -17,6 +17,7 @@ import { InputNumber } from "@/components/forms/InputNumber";
 import { dateWithFormatUS, moneyFormat } from "@/utils/formats";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
+import LedgerApprove from "./LedgerApprove";
 
 interface LedgerAddProps {
 	field: FieldArrayWithId<Ledger>;
@@ -36,7 +37,7 @@ interface LedgerAddProps {
 		index: number
 	) => void;
 	handleDeleteLedger?: (id: string) => void;
-
+	refetchLedgers?: () => void;
 	register: UseFormRegister<LedgerFormValues>;
 	handleRemove: (index: number, id: string) => void;
 	handleOpenModal: (value: boolean, index: number) => void;
@@ -52,6 +53,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	register,
 	handleRemove,
 	handleOpenModal,
+	refetchLedgers,
 }) => {
 	const [dataLedgers, setDataLedgers] = useState<Ledger>();
 	const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
@@ -234,6 +236,14 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						}}
 					>
 						<Icon name="trashBin" color="red" width="20" />
+					</div>
+					<div className="flex justify-between items-center w-10 gap-2">
+						{dataLedgers && dataLedgers?.action === "show" && (
+							<LedgerApprove
+								ledger={dataLedgers}
+								refetchLedgers={refetchLedgers}
+							/>
+						)}
 					</div>
 				</div>
 				<ConfirmationModal

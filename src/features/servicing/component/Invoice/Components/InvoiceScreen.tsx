@@ -53,7 +53,7 @@ const InvoiceScreen: FC<InvoiceScreenProps> = ({ loan }) => {
 			<div className="flex flex-row w-3/5 max-h-screen h-fit">
 				<div className="w-4/6 h-full overflow-y-auto	">
 					<InvoiceList
-						loanId={loan.id}
+						loanId={loan.id || ""}
 						setInvoice={setInvoice}
 						setExitsInvoice={setExitsInvoice}
 					/>

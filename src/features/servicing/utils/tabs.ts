@@ -12,6 +12,31 @@ export const servicingTabs = [
 	{ label: "First Capital Trusts LLC", routeTo: "servicing/first-capital" },
 ];
 
+export const servicingModalTabs = [
+	{ label: "Loan", routeTo: "servicing/dkc-llc" },
+	{ label: "Borrower", routeTo: "servicing/dkc-fl" },
+	{ label: "Ledger", routeTo: "servicing/dkc-iv" },
+	{ label: "Funding", routeTo: "servicing/dkc-cl" },
+	{ label: "Invoices", routeTo: "servicing/first-capital" },
+];
+
+export const approveModalTabs = [
+	{ label: "Loan", routeTo: "servicing/dkc-llc" },
+	{ label: "Borrower", routeTo: "servicing/dkc-fl" },
+	{ label: "Ledger", routeTo: "servicing/dkc-iv" },
+];
+
+export const footerTabData: Array<{
+	label: string;
+	width: string;
+	justify?: string;
+}> = [
+	{ label: "total: 200", width: "730px", justify: "center" },
+	{ label: "$33,000.00", width: "150px" },
+	{ label: "", width: "100px" },
+	{ label: "$467.50", width: "200px" },
+];
+
 export const userTabs = [
 	{ label: "Activity", routeTo: "manage-users/admins" },
 	{ label: "Permission", routeTo: "manage-users/admins" },

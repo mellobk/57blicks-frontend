@@ -50,7 +50,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			maxWidth: "230px",
 			minWidth: "230px",
 			selector: (row: FundingBreakdown): string =>
-				`${row?.loan.borrower.user.firstName} ${row?.loan.borrower.user.lastName}`,
+				`${row?.loan.borrower?.user.firstName} ${row?.loan.borrower?.user.lastName}`,
 			omit: false,
 		},
 		{

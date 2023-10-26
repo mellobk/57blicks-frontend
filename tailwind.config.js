@@ -39,6 +39,8 @@ export default {
 					500: "#FF0033",
 					600: "#FBF8FA",
 					700: "#FCCBD6",
+					800: "#fbd2db",
+					900: "#fbeff3",
 					ERROR: "#FF0033",
 					default: "#FF0033",
 				},
@@ -51,6 +53,7 @@ export default {
 					600: "#C9F0D6",
 					700: "#1BC24B",
 					800: "#DCF5E6",
+					900: "#d3f3de",
 					DEFAULT: "#00BA35",
 				},
 				blue: {
@@ -80,6 +83,8 @@ export default {
 					1100: "#E8EDEF",
 					1200: "#6C757D",
 					1300: "#25262A",
+					1400: "#f5f8fb",
+					1500: "#B0B4BA",
 					DEFAULT: "#2E2F33",
 				},
 				black: {

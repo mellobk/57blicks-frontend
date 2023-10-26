@@ -152,7 +152,6 @@ export const Permission: FC = () => {
 		position: number,
 		permissionType: string
 	): void => {
-		console.log(permissionType);
 		const newPermissions = allPermissionsGroup?.map(
 			(permissionGroup: PermissionGroup, key: number) => {
 				const oldPermissions = permissionGroup.permissions?.filter(
@@ -246,7 +245,7 @@ export const Permission: FC = () => {
 				</div>
 			</div>
 
-			<div className="w-full h-auto overflow-auto ">
+			<div className="w-full h-auto overflow-auto gap-3 flex flex-col">
 				<PermissionHeader
 					permissions={filterByPermissionType(PermissionType.OTHERS)}
 					permissionsGroups={allPermissionsGroup}
