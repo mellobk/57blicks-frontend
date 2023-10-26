@@ -1,7 +1,7 @@
 import { ForbiddenPage } from "@/features/auth/pages/forbidden/ForbiddenPage";
 import UnauthenticatedRoute from "./routes";
 
-const appRoutes = [
+const AppRoutes = [
 	{
 		path: "/403",
 		page: ForbiddenPage,
@@ -9,6 +9,6 @@ const appRoutes = [
 	},
 ];
 
-const appRouter = UnauthenticatedRoute([...appRoutes]);
+const AppRouter = UnauthenticatedRoute([...AppRoutes]);
 
-export default appRouter;
+export default AppRouter;

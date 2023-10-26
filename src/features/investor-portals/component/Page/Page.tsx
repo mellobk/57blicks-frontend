@@ -2,13 +2,12 @@ import { type FC, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
-import type { DkcServicing, FundingBreakdown } from "../../types/api";
-import { servicingTabs } from "../../utils/tabs";
+import type { DkcInvestorPortals, FundingBreakdown } from "../../types/api";
+import { investorPortalsTabs } from "../../utils/tabs";
 import { Table } from "./Table/Table.tsx";
 import { Toggle } from "@/components/ui/Toggle";
-import { ShowModal } from "@/features/servicing/component/Page/ShowModal/ShowModal.tsx";
-import servicingStore from "../../stores/servicing-store";
-import DkcLendersService from "../../api/servicing";
+import investorPortalsStore from "../../stores/investor-portals-store";
+import DkcLendersService from "../../api/investor-portals";
 import { moneyFormat } from "@/utils/formats";
 import { validateDate } from "@/utils/common-funtions";
 
@@ -20,8 +19,7 @@ interface Props {
 export const Page: FC<Props> = ({ actualTab, id }) => {
 	const [modalData, setModalData] = useState<FundingBreakdown | null>(null);
 	const [searchValue, setSearchValue] = useState<string>("");
-	const setLenderData = servicingStore((state) => state.setLender);
-	const lenderData = servicingStore((state) => state.lenders);
+	const lenderData = investorPortalsStore((state) => state.lenders);
 
 	const findDkcLender = () => {
 		const findLender = lenderData.find(
@@ -33,31 +31,13 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 
 	const dkcLendersQuery = useQuery(
 		["dkc-lenders-query"],
-		() => {
-			return DkcLendersService.getLenders();
-		},
-		{ enabled: lenderData.length <= 0 }
-	);
-
-	const dkcLenderQuery = useQuery(
-		["dkc-lender-query"],
 		() => DkcLendersService.getLenderById(findDkcLender(), searchValue),
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
-	const handleRefreshData = (): void => {
-		void dkcLenderQuery.refetch();
-	};
-
 	useEffect(() => {
-		void dkcLenderQuery.refetch();
+		void dkcLendersQuery.refetch();
 	}, [searchValue, lenderData]);
-
-	useEffect(() => {
-		if (lenderData.length <= 0) {
-			setLenderData(dkcLendersQuery?.data?.data || []);
-		}
-	}, [dkcLendersQuery.isSuccess]);
 
 	const columns = [
 		{
@@ -128,7 +108,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			minWidth: "200px",
 			conditionalCellStyles: [
 				{
-					when: (row: DkcServicing): boolean =>
+					when: (row: DkcInvestorPortals): boolean =>
 						validateDate(row?.maturityDate || ""),
 					style: {
 						background: "#fbf4f7",
@@ -160,7 +140,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Taxed Paid",
 			maxWidth: "50px",
-			selector: (row: DkcServicing) => (
+			selector: (row: DkcInvestorPortals) => (
 				<div key={row.id}>
 					<Toggle
 						checked={false}
@@ -179,29 +159,45 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			<Table
 				handleSearchValue={setSearchValue}
 				columns={columns}
-				data={dkcLenderQuery?.data?.fundingBreakdowns}
-				loading={dkcLenderQuery?.isFetching}
+				data={dkcLendersQuery?.data?.fundingBreakdowns}
+				loading={dkcLendersQuery?.isFetching}
 				widthSearch="60px"
 				onRowClicked={setModalData}
 			>
 				<>
 					<div className="relative w-[115px]">
 						<div className="absolute w-[200px]" style={{ top: "-8px" }}>
-							<BreadCrumb initialTab="Servicing" actualTab={actualTab} />
+							<BreadCrumb initialTab="Investors" actualTab={actualTab} />
 						</div>
 					</div>
 
 					<div className="relative z-10">
-						<Tabs tabs={servicingTabs} actualTab={actualTab.toLowerCase()} />
+						<Tabs tabs={investorPortalsTabs} actualTab={actualTab.toLowerCase()} />
 					</div>
 				</>
 			</Table>
-			<ShowModal
-				data={modalData}
-				openModal={!!modalData}
-				handleRefreshData={handleRefreshData}
-				handleOnCLose={() => setModalData(null)}
-			/>
+			{modalData && (
+				<Table
+					handleSearchValue={setSearchValue}
+					columns={columns}
+					data={dkcLendersQuery?.data?.fundingBreakdowns}
+					loading={dkcLendersQuery?.isFetching}
+					widthSearch="60px"
+					onRowClicked={setModalData}
+				>
+					<>
+						<div className="relative w-[115px]">
+							<div className="absolute w-[200px]" style={{ top: "-8px" }}>
+								<BreadCrumb initialTab="Investors" actualTab={actualTab} />
+							</div>
+						</div>
+
+						<div className="relative z-10">
+							<Tabs tabs={investorPortalsTabs} actualTab={actualTab.toLowerCase()} />
+						</div>
+					</>
+				</Table>
+			)}
 		</div>
 	);
 };

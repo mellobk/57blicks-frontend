@@ -2,7 +2,7 @@ import { InvestorRoute } from "@/routes/routes";
 import { HomeInvestor } from "../pages/Home/Home";
 import { BlankLayout } from "@/components/layout/BlankLayout";
 
-export const investorRoutes = [
+export const InvestorRoutes = [
 	{
 		path: "/investors",
 		page: HomeInvestor,
@@ -15,6 +15,6 @@ export const investorRoutes = [
 	},
 ];
 
-const investorRouter = InvestorRoute([...investorRoutes]);
+const InvestorRouter = InvestorRoute([...InvestorRoutes]);
 
-export default investorRouter;
+export default InvestorRouter;
