@@ -45,7 +45,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
-	const handleRefreshData = (): void => {
+	const handleRefreshData = () => {
 		void dkcLenderQuery.refetch();
 	};
 
@@ -64,13 +64,13 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			name: "Borrower",
 			maxWidth: "230px",
 			minWidth: "230px",
-			selector: (row: FundingBreakdown): string =>
+			selector: (row: FundingBreakdown) =>
 				`${row?.loan.borrower?.user.firstName} ${row?.loan.borrower?.user.lastName}`,
 			omit: false,
 		},
 		{
 			name: "Collateral Address",
-			selector: (row: FundingBreakdown): string =>
+			selector: (row: FundingBreakdown) =>
 				row?.loan?.collaterals[0]?.address || "",
 			sortable: true,
 			omit: false,
@@ -79,7 +79,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Total Loan",
-			selector: (row: FundingBreakdown): string =>
+			selector: (row: FundingBreakdown) =>
 				moneyFormat(Number.parseInt(row?.loan?.totalLoanAmount)),
 			sortable: true,
 			omit: false,
@@ -88,14 +88,14 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Rate",
-			selector: (row: FundingBreakdown): string => row?.rate,
+			selector: (row: FundingBreakdown) => row?.rate,
 			omit: false,
 			maxWidth: "100px",
 			minWidth: "100px",
 		},
 		{
 			name: "Regular Payment",
-			selector: (row: FundingBreakdown): string =>
+			selector: (row: FundingBreakdown) =>
 				moneyFormat(Number.parseInt(row?.regular)),
 			omit: false,
 			maxWidth: "200px",
@@ -103,14 +103,14 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Origin Date",
-			selector: (row: FundingBreakdown): string =>
+			selector: (row: FundingBreakdown) =>
 				row?.loan?.originationDate.toString(),
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
 			conditionalCellStyles: [
 				{
-					when: (row: FundingBreakdown): boolean =>
+					when: (row: FundingBreakdown) =>
 						validateDate(row?.loan?.originationDate.toString() || ""),
 					style: {
 						background: "#fbf4f7",
@@ -121,15 +121,13 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: FundingBreakdown): string =>
-				row?.loan?.maturityDate.toString(),
+			selector: (row: FundingBreakdown) => row?.loan?.maturityDate.toString(),
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
 			conditionalCellStyles: [
 				{
-					when: (row: DkcServicing): boolean =>
-						validateDate(row?.maturityDate || ""),
+					when: (row: DkcServicing) => validateDate(row?.maturityDate || ""),
 					style: {
 						background: "#fbf4f7",
 						color: "#fe3d64",
@@ -139,14 +137,14 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Insurance Expiration Date",
-			selector: (row: FundingBreakdown): string =>
+			selector: (row: FundingBreakdown) =>
 				row?.loan.collaterals[0]?.insuranceExpirationDate.toString() || "",
 			omit: false,
 			maxWidth: "200px",
 			minWidth: "200px",
 			conditionalCellStyles: [
 				{
-					when: (row: FundingBreakdown): boolean =>
+					when: (row: FundingBreakdown) =>
 						validateDate(
 							row?.loan.collaterals[0]?.insuranceExpirationDate.toString() || ""
 						),
