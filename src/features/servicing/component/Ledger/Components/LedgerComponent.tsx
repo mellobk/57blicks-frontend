@@ -21,12 +21,15 @@ import { v4 as uuidv4 } from "uuid";
 import { Icon } from "@/components/ui/Icon";
 import { dateWithFormat, moneyFormat } from "@/utils/formats";
 import { calculateBalance } from "../utils/calculate-balance";
+import type { Loan } from "@/features/servicing/types/api";
+import { toast } from "react-toastify";
+import { validateDataLedger } from "../utils/validate-data";
 import ManageNotificationService from "@/features/notifications/api/notification";
 import { getLocalStorage } from "@/utils/local-storage";
 import { userName } from "@/utils/constant";
 
 interface LedgerComponentProps {
-	loan?: string;
+	loan: Loan;
 	ledgersData?: Array<Ledgers>;
 	refetchLedgers?: () => void;
 	orderLedgers?: (orderBy: string) => void;
@@ -103,7 +106,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		if (ledgersData && ledgersData.length > 0) {
 			let debits = 0;
 			let credits = 0;
-			let balance = 0;
 			ledgersData.forEach((ledger) => {
 				append(ledger as never);
 				if (ledger.debit) {
@@ -112,14 +114,12 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				if (ledger.credit) {
 					credits += Number(ledger.credit);
 				}
-				if (ledger.balance) {
-					balance = Number(ledger.balance);
-				}
 			});
+
 			const totals = {
 				debits,
 				credits,
-				balance,
+				balance: ledgersData.at(-1)?.balance || 0,
 			};
 
 			setTotals(totals);
@@ -169,6 +169,18 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			credits,
 			balance,
 		};
+		if (balance < 0) {
+			toast.warn("Balance error!", {
+				position: "top-right",
+				autoClose: 1000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+			});
+		}
 		setTotals(totals);
 	};
 
@@ -222,9 +234,23 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				autoComplete="off"
 				onSubmit={handleSubmit((data) => {
 					//convert  ledgerDate to date
+					const validation = validateDataLedger(data.ledgers);
+					if (validation !== "") {
+						toast.warning("Error: " + validation, {
+							position: "top-right",
+							autoClose: 2000,
+							hideProgressBar: true,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+							theme: "light",
+						});
+						return;
+					}
 					const sanedData: LedgerFormValues = {
 						ledgers: [],
-						loanId: loan,
+						loanId: loan?.id || "",
 					};
 					data.ledgers.forEach((ledger) => {
 						if (ledger.editable) {
@@ -239,8 +265,8 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 						}
 					});
 
-					createNotificationsLedger({ ...sanedData, loanId: loan });
-					createLedger.mutate({ ...sanedData, loanId: loan });
+					createLedger.mutate({ ...sanedData, loanId: loan?.id || "" });
+					createNotificationsLedger({ ...sanedData, loanId: loan.id });
 				})}
 			>
 				<div
@@ -294,6 +320,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 											index={index}
 											handleRemove={handleRemove}
 											data={allFields as unknown as LedgerFormValues}
+											loan={loan}
 											handleOpenModal={handleOpenModal}
 											handleSetValue={handleSetValue}
 											handleSetDate={handleSetDate}

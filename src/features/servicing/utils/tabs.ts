@@ -28,3 +28,11 @@ export const investorUserTabs = [
 	{ label: "Activity", routeTo: "manage-users/admins" },
 	{ label: "Edit", routeTo: "manage-users/admins" },
 ];
+
+export const servicingModalTabs = [
+	{ label: "Loan", routeTo: "servicing/dkc-llc" },
+	{ label: "Borrower", routeTo: "servicing/dkc-fl" },
+	{ label: "Ledger", routeTo: "servicing/dkc-iv" },
+	{ label: "Funding", routeTo: "servicing/dkc-cl" },
+	{ label: "Invoices", routeTo: "servicing/first-capital" },
+];

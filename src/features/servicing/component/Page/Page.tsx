@@ -197,10 +197,12 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				</>
 			</Table>
 			<ShowModal
-				data={modalData}
+				data={modalData || undefined}
 				openModal={!!modalData}
 				handleRefreshData={handleRefreshData}
-				handleOnCLose={() => setModalData(null)}
+				handleOnCLose={(): void => {
+					setModalData(null);
+				}}
 			/>
 		</div>
 	);

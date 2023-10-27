@@ -128,7 +128,7 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 									<div className="w-full">
 										<Input
 											id="first_name"
-											label="First Name ..."
+											label="First Name"
 											placeholder="Enter First Name"
 											required
 											register={register("firstName")}
