@@ -9,6 +9,8 @@ interface DatePickerProps {
 	className?: string;
 	disabled?: boolean;
 	placeholder?: string;
+	maxDate?: Date;
+	minDate?: Date;
 	onChange?: (event: Date) => void;
 }
 
@@ -20,6 +22,8 @@ export const DatePicker = ({
 	className,
 	placeholder,
 	disabled,
+	maxDate,
+	minDate,
 	onChange,
 }: DatePickerProps): JSX.Element => {
 	return (
@@ -29,6 +33,8 @@ export const DatePicker = ({
 			name={name}
 			disabled={disabled}
 			placeholder={placeholder}
+			maxDate={maxDate}
+			minDate={minDate}
 			className={`${className}
         h-12 rounded-none [&>*]:rounded-none [&>*]:border-gold-500  [&>*]:border-2
         ${invalid ? "[&>*]:border-red-ERROR " : ""}

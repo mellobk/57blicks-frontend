@@ -22,7 +22,7 @@ export const SendInvoiceTo: FC<Props> = ({ handleSendInvoice }) => {
 	const [emailSelect, setEmailSelect] = useState<boolean>(false);
 
 	useEffect(() => {
-		setNote(getNoteText("Snheidert Smalbach", "smalbach24@gmail.com"));
+		setNote(getNoteText("", ""));
 	}, []);
 
 	return (
