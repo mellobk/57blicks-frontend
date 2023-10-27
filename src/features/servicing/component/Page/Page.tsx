@@ -32,33 +32,33 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		return findLender?.id || "";
 	};
 
-	const dkcLendersQuery = useQuery(
-		["dkc-lenders-query"],
+	const lendersQuery = useQuery(
+		["lenders-query"],
 		() => {
 			return LendersService.getLenders();
 		},
 		{ enabled: lenderData.length <= 0 }
 	);
 
-	const dkcLenderQuery = useQuery(
-		["dkc-lender-query"],
+	const lenderQuery = useQuery(
+		["lender-query"],
 		() => LendersService.getLenderById(findDkcLender(), searchValue),
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
 	const handleRefreshData = () => {
-		void dkcLenderQuery.refetch();
+		void lenderQuery.refetch();
 	};
 
 	useEffect(() => {
-		void dkcLenderQuery.refetch();
+		void lenderQuery.refetch();
 	}, [searchValue, lenderData]);
 
 	useEffect(() => {
 		if (lenderData.length <= 0) {
-			setLenderData(dkcLendersQuery?.data?.data || []);
+			setLenderData(lendersQuery?.data?.data || []);
 		}
-	}, [dkcLendersQuery.isSuccess]);
+	}, [lendersQuery.isSuccess]);
 
 	const columns = [
 		{
@@ -178,8 +178,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			<Table
 				handleSearchValue={setSearchValue}
 				columns={columns}
-				data={dkcLenderQuery?.data?.fundingBreakdowns}
-				loading={dkcLenderQuery?.isFetching}
+				data={lenderQuery?.data?.fundingBreakdowns}
+				loading={lenderQuery?.isFetching}
 				widthSearch="60px"
 				onRowClicked={setModalData}
 			>
