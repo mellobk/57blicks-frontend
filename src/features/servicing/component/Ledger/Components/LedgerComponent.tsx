@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type FC, useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
@@ -21,6 +24,10 @@ import { calculateBalance } from "../utils/calculate-balance";
 import type { Loan } from "@/features/servicing/types/api";
 import { toast } from "react-toastify";
 import { validateDataLedger } from "../utils/validate-data";
+import ManageNotificationService from "@/features/notifications/api/notification";
+import { getLocalStorage } from "@/utils/local-storage";
+import { userName } from "@/utils/constant";
+
 interface LedgerComponentProps {
 	loan: Loan;
 	ledgersData?: Array<Ledgers>;
@@ -36,6 +43,11 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	refetchLedgers,
 	handleDeleteLedger,
 }) => {
+	const localUserName = getLocalStorage(userName);
+	const createLedgerQuery = useMutation(async (body: any) => {
+		return ManageNotificationService.createNotifications(body);
+	});
+
 	const [openClassModal, setOpenClassModal] = useState<boolean>();
 	const [currentIndex, setCurrentIndex] = useState<number>();
 	const [ledgers] = useState<Array<Ledgers>>(ledgersData || []);
@@ -132,6 +144,23 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		setOpenClassModal(open);
 	};
 
+	const createNotificationsLedger = (data: LedgerFormValues) => {
+		data.ledgers.map((value) => {
+			if (value.typeOfPayment === "Principal") {
+				const dataNotification = { id: data.loanId, ledgerId: value.id };
+				createLedgerQuery.mutate({
+					title: "Approve Ledger",
+					timestamp: new Date(),
+					content: `${localUserName} is creating a Principal payment and needs confirmation.`,
+					redirectPath: JSON.stringify(dataNotification),
+					userFullName: localUserName,
+					priority: "HIGH",
+					type: "LEDGER",
+					roles: ["super-admin"],
+				});
+			}
+		});
+	};
 	const handleTotals = (): void => {
 		const { debits, credits, balance } = calculateBalance(allFields.ledgers);
 
@@ -237,6 +266,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					});
 
 					createLedger.mutate({ ...sanedData, loanId: loan?.id || "" });
+					createNotificationsLedger({ ...sanedData, loanId: loan.id });
 				})}
 			>
 				<div

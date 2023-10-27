@@ -3,8 +3,8 @@ import { AuthenticatedRoute } from "@/routes/routes";
 import { CreateLoan } from "@/features/create-loan/pages/CreateLoan/CreateLoan";
 import { CreateOpportunity } from "@/features/opportunities/pages/CreateOpportunity/CreateOpportunity";
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import { DkcLlc } from "@/features/servicing/pages/DkcLLC/DkcLlc";
-import { InvestorPortals } from "../pages/InvestorPortals/InvestorPortals";
+import { LLC as ServicingLLC } from "@/features/servicing/pages/LLC/LLC";
+import { LLC as InvestorPortalsLLC } from "@/features/investor-portals/pages/LLC/LLC";
 import { LoanOverview } from "@/features/loan-overview/pages/LoanOverview/LoanOverview";
 import { Reporting } from "../pages/Reporting/Reporting";
 import { Support } from "../pages/Support/Support";
@@ -24,13 +24,13 @@ export const NavbarRoutes = [
 	},
 	{
 		path: "/servicing/dkc-llc",
-		page: DkcLlc,
+		page: ServicingLLC,
 		layout: DashboardLayout,
 		name: "Servicing",
 	},
 	{
-		path: "/investor-portals",
-		page: InvestorPortals,
+		path: "/investor-portals/dkc-llc",
+		page: InvestorPortalsLLC,
 		layout: DashboardLayout,
 		name: "Investor Portals",
 	},

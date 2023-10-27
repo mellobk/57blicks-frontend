@@ -1,22 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Button } from "@/components/ui/Button";
 import { type FC, useEffect, useRef, useState } from "react";
-import type {
-	PermissionGroup,
-	Permissions,
-	User,
-} from "@/features/manage-user/types/api";
+import type { PermissionGroup, User } from "@/features/manage-user/types/api";
 
 import ManageUsersService from "../../api/investors";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Icon } from "@/components/ui/Icon";
-import {
-	PermissionToggle,
-	type PermissionToggleProps,
-} from "../PermissionToggle/PermissionToggle";
+import { PermissionToggle } from "../PermissionToggle/PermissionToggle";
 import { Select } from "@/components/forms/Select";
 import { Input } from "@/components/forms/Input";
 import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import useStore from "@/stores/app-store";
+import { PermissionType } from "@/features/profile/types/permission";
 
 interface PermissionsAdmin {
 	user: User;
@@ -38,29 +36,28 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 
 	const [userData, _] = useState<User>(user);
 	const [groupPermission, setGroupPermission] = useState<string>();
-	const [permissionsArrayData, setPermissionArrayData] = useState<Array<any>>();
+
 	const [arrayRolesData, setArrayRolesData] = useState<
 		Array<{ name: string; code: string }>
 	>([]);
 	const [searchValue, setSearchValue] = useState<string>();
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
-	const originalSearch = useRef<Array<PermissionToggleProps>>();
+	const originalSearch = useRef<Array<PermissionGroup>>();
 	const { register, setValue, handleSubmit } = useForm<FieldValues>();
+	const [allPermissions, setAllPermissions] =
+		useState<Array<PermissionGroup>>();
+	const [allPermissionsGroup, setAllPermissionsGroup] =
+		useState<Array<PermissionGroup>>();
+	const [setPermissionsGroup, setSetPermissionsGroup] =
+		useState<Array<PermissionGroup>>();
 
-	useEffect(() => {
-		setValue("permissionAdminSelect", groupPermission);
-	}, [groupPermission]);
+	const filterByPermissionType = (type: string): Array<PermissionGroup> => {
+		return allPermissions?.filter((data) => data.permissionType === type) || [];
+	};
 
 	const permissionGroupMutation = useMutation((id: string) => {
 		return ManageUsersService.permissionGroupById(id || "");
 	});
-
-	const FindPermissionGroup = (
-		permission: string,
-		permissionGroup: Array<PermissionGroup>
-	): boolean => {
-		return permissionGroup.some((data) => data.name === permission) || false;
-	};
 
 	const permissionGroup = useQuery(
 		["all-permission-group-query"],
@@ -77,6 +74,16 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
+
+	useEffect(() => {
+		setValue("permissionAdminSelect", groupPermission);
+
+		const findPermission = allPermissionsGroup?.filter(
+			(data) => data.name === groupPermission
+		);
+		console.log(findPermission, allPermissionsGroup);
+		setSetPermissionsGroup(findPermission);
+	}, [groupPermission]);
 
 	const updateAdmin = useMutation(
 		(data: User) => {
@@ -119,35 +126,19 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 	}, []);
 
 	useEffect(() => {
-		const permissionGroupData: PermissionGroup | any =
-			permissionGroupMutation.data || [];
+		const permissionData = roles?.data as Array<PermissionGroup>;
 
-		const permissionData = roles?.data as unknown as Array<Permissions>;
+		setAllPermissions(permissionData);
 
-		const permissionArray: Array<PermissionToggleProps> = permissionData?.map(
-			(data, key: number) => {
-				return {
-					id: key++,
-					permission: data.name,
-					permissionStatus: FindPermissionGroup(
-						data.name || "",
-						permissionGroupData.permissions || []
-					),
-					description: data.description,
-					visible: false,
-				};
-			}
-		);
-
-		originalSearch.current = permissionArray;
-
-		setPermissionArrayData(permissionArray);
+		originalSearch.current = permissionData;
 	}, [permissionGroupMutation.isSuccess]);
 
 	useEffect(() => {
 		if (arrayRolesData?.length === 0) {
 			const permissionGroupData: PermissionGroup | any =
 				permissionGroup?.data || [];
+
+			setAllPermissionsGroup(permissionGroupData);
 
 			const permissionsOption = permissionGroupData.map(
 				(value: PermissionGroup) => {
@@ -161,44 +152,23 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 
 	// eslint-disable-next-line @typescript-eslint/require-await
 	const getDataPermissions = async (): Promise<any> => {
-		if (
-			roles.data &&
-			!permissionsArrayData?.length &&
-			userData.permissionGroup?.id
-		) {
+		if (roles.data && !allPermissions?.length && userData.permissionGroup?.id) {
 			const permissionGroupData: PermissionGroup | any =
 				permissionGroup?.data || [];
 			const find = permissionGroupData.find(
 				(data: PermissionGroup) => data.id === userData.permissionGroup?.id
 			);
+			console.log(find?.name);
 
 			setGroupPermission(find?.name);
 
-			const permissionData = roles?.data as unknown as Array<Permissions>;
+			const permissionData = roles?.data;
 
-			if (permissionData.length > 0 && userData.permissionGroup?.id) {
-				const permissionArray: Array<PermissionToggleProps> =
-					permissionData?.map((data, key: number) => {
-						return {
-							id: key++,
-							permission: data.name,
-							permissionStatus: FindPermissionGroup(
-								data.name || "",
-								find.permissions || []
-							),
-							description: data.description,
-							visible: false,
-						};
-					});
-
-				setPermissionArrayData(permissionArray);
-			}
+			setAllPermissions(permissionData);
 		}
 	};
 
 	const getPermissionData = (name: string): void => {
-		const data = permissionGroup?.data?.find((data) => data.name === name);
-		permissionGroupMutation.mutate(data?.id || "");
 		setGroupPermission(name);
 		setValue("permissionAdminSelect", name);
 	};
@@ -207,74 +177,22 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 		void getDataPermissions();
 	}, [roles]);
 
-	const enableOriginalSearch = (id: number) => {
-		originalSearch.current = originalSearch.current?.map((item) => {
-			if (item.id === id) {
-				return {
-					...item,
-					permissionStatus: !item.permissionStatus,
-				};
-			}
-			return item;
-		});
-	};
-
-	const enableOriginalSearchVisible = (id: number) => {
-		originalSearch.current = originalSearch.current?.map((item) => {
-			if (item.id === id) {
-				return {
-					...item,
-					visible: !item.visible,
-				};
-			}
-			return item;
-		});
-	};
-
-	const enablePermission = (id: number): void => {
-		const enableData = permissionsArrayData?.map((item) => {
-			if (item.id === id) {
-				return {
-					...item,
-					permissionStatus: !item.permissionStatus,
-				};
-			}
-			return item;
-		});
-		enableOriginalSearch(id);
-		setPermissionArrayData(enableData);
-	};
-
-	const enableVisible = (id: number): void => {
-		const enableData = permissionsArrayData?.map((item) => {
-			if (item.id === id) {
-				return {
-					...item,
-					visible: !item.visible,
-				};
-			}
-			return item;
-		});
-		enableOriginalSearchVisible(id);
-		setPermissionArrayData(enableData);
-	};
-
 	useEffect(() => {
-		const foundPermissions = permissionsArrayData?.filter(
-			(value: PermissionToggleProps) =>
-				value?.permission
-					?.toLowerCase()
-					.includes(searchValue?.toLowerCase() || "")
+		const foundPermissions = allPermissions?.filter(
+			(value: PermissionGroup) =>
+				value?.name?.toLowerCase().includes(searchValue?.toLowerCase() || "")
 		);
 
+		console.log(foundPermissions);
+
 		if (foundPermissions?.length) {
-			setPermissionArrayData(foundPermissions); // Update the state with the found permissions
+			setAllPermissions(foundPermissions); // Update the state with the found permissions
 		} else {
-			setPermissionArrayData(originalSearch.current); // If you want to show no results when there's no match, otherwise skip this line
+			setAllPermissions(originalSearch.current); // If you want to show no results when there's no match, otherwise skip this line
 		}
 
 		if (!searchValue) {
-			setPermissionArrayData(originalSearch.current);
+			setAllPermissions(originalSearch.current);
 		}
 	}, [searchValue]);
 
@@ -358,24 +276,36 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 						</div>
 
 						<hr className="w-full h-[10px] mt-[10px]" />
-						{permissionsArrayData?.length &&
-							permissionsArrayData?.map((data: PermissionToggleProps) => {
-								return (
-									<PermissionToggle
-										key={data.id}
-										permission={data.permission}
-										permissionStatus={data.permissionStatus}
-										description={data.description}
-										visible={data.visible}
-										handleOnClick={() => {
-											enablePermission(data.id || 0);
-										}}
-										handleEyesOnClick={() => {
-											enableVisible(data.id || 0);
-										}}
-									/>
-								);
-							})}
+
+						<PermissionToggle
+							permissions={filterByPermissionType(PermissionType.MANAGE_USER)}
+							permissionsGroups={setPermissionsGroup}
+							permissionType={PermissionType.MANAGE_USER}
+							type="Manage Users"
+						/>
+
+						<PermissionToggle
+							permissions={filterByPermissionType(PermissionType.MANAGE_LOANS)}
+							permissionsGroups={setPermissionsGroup}
+							permissionType={PermissionType.MANAGE_LOANS}
+							type="Manage Loans"
+						/>
+
+						<PermissionToggle
+							permissions={filterByPermissionType(
+								PermissionType.MANAGE_OPPORTUNITIES
+							)}
+							permissionsGroups={setPermissionsGroup}
+							permissionType={PermissionType.MANAGE_OPPORTUNITIES}
+							type="Manage Opportunities"
+						/>
+
+						<PermissionToggle
+							permissions={filterByPermissionType(PermissionType.OTHERS)}
+							permissionsGroups={setPermissionsGroup}
+							permissionType={PermissionType.OTHERS}
+							type="Others"
+						/>
 					</div>
 
 					<div

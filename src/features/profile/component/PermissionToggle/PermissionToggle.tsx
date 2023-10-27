@@ -27,6 +27,7 @@ export const PermissionToggle: FC<PermissionToggleProps> = ({
 	handleToggle,
 	handleHeaderToggle,
 }) => {
+	/* 	console.log(permissions, permissionsGroups); */
 	const [showPermissions, setShowPermissions] = useState<boolean>(false);
 
 	const FindPermissionGroup = (

@@ -39,7 +39,7 @@ const ForbiddenPage: FC = () => {
 			>
 				Take Me Home
 			</Link>
-			<a href={"/"}></a>
+			<a href={"/login"}></a>
 		</div>
 	);
 };
