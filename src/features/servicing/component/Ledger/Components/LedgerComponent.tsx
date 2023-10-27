@@ -19,7 +19,8 @@ import { Icon } from "@/components/ui/Icon";
 import { dateWithFormat, moneyFormat } from "@/utils/formats";
 import { calculateBalance } from "../utils/calculate-balance";
 import type { Loan } from "@/features/servicing/types/api";
-
+import { toast } from "react-toastify";
+import { validateDataLedger } from "../utils/validate-data";
 interface LedgerComponentProps {
 	loan: Loan;
 	ledgersData?: Array<Ledgers>;
@@ -102,9 +103,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					credits += Number(ledger.credit);
 				}
 			});
-			console.log(
-				"🚀 ~ file: LedgerComponent.tsx:108 ~ ledgersData.forEach ~ ledgersData:"
-			);
+
 			const totals = {
 				debits,
 				credits,
@@ -141,6 +140,18 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			credits,
 			balance,
 		};
+		if (balance < 0) {
+			toast.warn("Balance error!", {
+				position: "top-right",
+				autoClose: 1000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+			});
+		}
 		setTotals(totals);
 	};
 
@@ -194,6 +205,20 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				autoComplete="off"
 				onSubmit={handleSubmit((data) => {
 					//convert  ledgerDate to date
+					const validation = validateDataLedger(data.ledgers);
+					if (validation !== "") {
+						toast.warning("Error: " + validation, {
+							position: "top-right",
+							autoClose: 2000,
+							hideProgressBar: true,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+							theme: "light",
+						});
+						return;
+					}
 					const sanedData: LedgerFormValues = {
 						ledgers: [],
 						loanId: loan?.id || "",

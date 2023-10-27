@@ -56,6 +56,7 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 	);
 
 	const refetchLedgers = (): void => {
+		setLedgers([]);
 		void refetch();
 	};
 
