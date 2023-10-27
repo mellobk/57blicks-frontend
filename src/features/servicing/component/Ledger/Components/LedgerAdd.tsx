@@ -207,10 +207,24 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					moneyFormat(dataLedgers.credit || 0)
 				)}
 			</td>
-			<td style={{ paddingLeft: "20px", width: "150px" }}>
-				{dataLedgers && dataLedgers.balance
-					? moneyFormat(dataLedgers?.balance)
-					: "0.00"}
+			<td
+				style={{
+					paddingLeft: "20px",
+					width: "150px",
+					color: `${errors?.ledgers?.[index]?.balance ? "red" : ""}`,
+				}}
+			>
+				<div
+					className={`flex justify-between items-center ${
+						errors?.ledgers?.[index]?.balance
+							? "   border-2 border-red-ERROR h-[43px]   "
+							: ""
+					}`}
+				>
+					{dataLedgers && dataLedgers.balance
+						? moneyFormat(dataLedgers?.balance)
+						: "0.00"}
+				</div>
 			</td>
 			<td style={{ paddingRight: "30px", width: "80px" }}>
 				<div className="flex justify-between items-center gap-6">
