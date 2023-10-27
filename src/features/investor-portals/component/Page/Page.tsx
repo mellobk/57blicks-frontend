@@ -1,15 +1,16 @@
 import { type FC, useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
+import { Input } from "@/components/forms/Input";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
-import type { FundingBreakdown } from "../../types/api";
-import { investorPortalsTabs } from "../../utils/tabs";
-import { Table } from "./Table/Table.tsx";
-import investorPortalsStore from "../../stores/investor-portals-store";
-import DkcLendersService from "../../api/investor-portals";
+import type { FundingBreakdown } from "@/features/investor-portals/types/api";
+import { investorPortalsTabs } from "@/features/investor-portals/utils/tabs";
+import investorPortalsStore from "@/features/investor-portals/stores/investor-portals-store";
+import DkcLendersService from "@/features/investor-portals/api/investor-portals";
 import { moneyFormat, percentageFormat } from "@/utils/formats";
-import moment from "moment";
-import DataTable from "react-data-table-component";
+import { Footer } from "@/features/investor-portals/component/Page/Footer/Footer.tsx";
 
 interface Props {
 	actualTab: string;
@@ -19,6 +20,7 @@ interface Props {
 export const Page: FC<Props> = ({ actualTab, id }) => {
 	const [modalData, setModalData] = useState<FundingBreakdown | null>(null);
 	const [searchValue, setSearchValue] = useState<string>("");
+	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const setLenderData = investorPortalsStore((state) => state.setLender);
 	const lenderData = investorPortalsStore((state) => state.lenders);
 	const currentMonthName = moment().format("MMMM");
@@ -59,50 +61,47 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Investor",
 			selector: (row: FundingBreakdown) =>
-				`${row?.loan.borrower?.user.firstName} ${row?.loan.borrower?.user.lastName}`,
+				row.loan.collaterals[0]?.address || "",
 			sortable: true,
 		},
 		{
 			name: "Total Loan Amount",
 			selector: (row: FundingBreakdown) =>
-				moneyFormat(Number(row?.loan?.totalLoanAmount)),
+				moneyFormat(Number(row.loan.totalLoanAmount)),
 			sortable: true,
 		},
 		{
 			name: "Investor Equity",
-			selector: (row: FundingBreakdown) =>
-				moneyFormat(Number(row?.loan?.totalLoanAmount)),
+			selector: (row: FundingBreakdown) => moneyFormat(Number(row.amount)),
 			sortable: true,
 		},
 		{
 			name: "Rate",
-			selector: (row: FundingBreakdown) => percentageFormat(Number(row?.rate)),
+			selector: (row: FundingBreakdown) => percentageFormat(Number(row.rate)),
 			sortable: true,
 		},
 		{
 			name: "Regular Payment",
-			selector: (row: FundingBreakdown) => moneyFormat(Number(row?.regular)),
+			selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
 			sortable: true,
 		},
 		{
 			name: "Origin Date",
-			selector: (row: FundingBreakdown) =>
-				row?.loan?.originationDate.toString(),
+			selector: (row: FundingBreakdown) => row.loan.originationDate.toString(),
 			sortable: true,
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: FundingBreakdown) => row?.loan?.maturityDate.toString(),
+			selector: (row: FundingBreakdown) => row.loan.maturityDate.toString(),
 			sortable: true,
 		},
 		{
 			name: `${currentMonthName} (Current)`,
-			selector: (row: FundingBreakdown) =>
-				moneyFormat(Number(row?.loan?.totalLoanAmount)),
+			selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
 			sortable: true,
 			conditionalCellStyles: [
 				{
-					when: (row: FundingBreakdown) => !!row?.loan?.totalLoanAmount,
+					when: (row: FundingBreakdown) => !!row.regular,
 					style: {
 						background: "#C79E631F",
 						color: "#C79E63",
@@ -111,41 +110,124 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			],
 		},
 	];
+	const getLoanColumns = () => {
+		const loanColumns = [];
+		const months = moment.months();
+
+		for (let month of months) {
+			loanColumns.push({
+				name: month,
+				selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
+			});
+		}
+
+		loanColumns.push({
+			name: "Annual Total",
+			selector: (row: FundingBreakdown) =>
+				moneyFormat(Number(row.regular) * 12),
+			conditionalCellStyles: [
+				{
+					when: (row: FundingBreakdown) => !!row.regular,
+					style: {
+						background: "#0085FF1F",
+						color: "#0085FF",
+					},
+				},
+			],
+		});
+
+		return loanColumns;
+	};
 
 	return (
-		<div className="flex flex-col items-center  gap-3 h-full w-full rounded-3xl">
-			<Table
-				handleSearchValue={setSearchValue}
-				columns={columns}
-				data={dkcLenderQuery?.data?.fundingBreakdowns}
-				loading={dkcLenderQuery?.isFetching}
-				onRowClicked={setModalData}
-			>
-				<>
-					<div className="relative w-[115px]">
-						<div className="absolute w-[200px]" style={{ top: "-8px" }}>
-							<BreadCrumb initialTab="Investors" actualTab={actualTab} />
+		<div className="flex flex-col w-full h-full">
+			<div className="flex justify-between items-center w-full bg-primary-500 px-4 mb-2">
+				<div className="relative w-[115px]">
+					<div className="absolute w-[200px]" style={{ top: "-8px" }}>
+						<BreadCrumb initialTab="Investors" actualTab={actualTab} />
+					</div>
+				</div>
+				<div className="relative z-10">
+					<Tabs
+						tabs={investorPortalsTabs}
+						actualTab={actualTab.toLowerCase()}
+					/>
+				</div>
+				<div
+					className={`flex justify-end gap-2 items-center bg-primary-500 h-[50px]`}
+					style={{ position: "relative", width: "180px" }}
+				>
+					<div
+						className="flex justify-end gap-1 items-center"
+						style={{ position: "absolute" }}
+					>
+						<div
+							className="flex gap-2 justify-end"
+							style={{
+								position: "relative",
+								right: "158px",
+								width: "350px",
+								zIndex: "0",
+							}}
+						>
+							<div
+								className={`${
+									searchVisible || searchValue
+										? "w-[200px] bg-transparent transition duration-500"
+										: "bg-transparent  w-[30px] transition duration-500 "
+								} `}
+								onMouseEnter={() => setSearchVisible(true)}
+								onMouseLeave={() => setSearchVisible(false)}
+							>
+								<Input
+									type="text"
+									value={searchValue}
+									placeholder="Search"
+									iconColor="white"
+									iconWidth={`${searchValue ? "12" : "20"}`}
+									iconName={`${searchValue ? "wrong" : "search"}`}
+									onChange={(data) => setSearchValue(data.target.value)}
+									clickIcon={() => setSearchValue("")}
+									className={`placeholder-gray-400 text-white text-[13px] font-normal font-weight-400 leading-normal w-full ${
+										searchVisible || searchValue
+											? "bg-black-200  "
+											: "bg-transparent "
+									}  tracking-wide flex h-3 p-4 items-center self-stretch rounded-md border-none outline-none `}
+								/>
+							</div>
 						</div>
 					</div>
-
-					<div className="relative z-10">
-						<Tabs
-							tabs={investorPortalsTabs}
-							actualTab={actualTab.toLowerCase()}
+				</div>
+			</div>
+			<div className="flex flex-col h-full gap-3 overflow-y-auto">
+				<div
+					className={`flex flex-col h-full ${
+						modalData ? "max-h-[75vh]" : ""
+					} bg-white rounded-2xl justify-between`}
+				>
+					<div className="rounded-t-2xl overflow-auto">
+						<DataTable
+							responsive={false}
+							columns={columns}
+							data={dkcLenderQuery.data?.fundingBreakdowns || []}
+							className="flex h-[100%]"
+							fixedHeader
+							progressPending={dkcLenderQuery?.isFetching}
+							onRowClicked={setModalData}
 						/>
 					</div>
-				</>
-			</Table>
-			{modalData && (
-        <div className="rounded-3xl h-[100%] overflow-auto">
-          <DataTable
-            responsive={false}
-            columns={columns}
-            data={[]}
-            className="h-[50vh]"
-          />
-        </div>
-			)}
+					<Footer data={dkcLenderQuery.data?.fundingBreakdowns || []} />
+				</div>
+				{modalData && (
+					<div className="flex min-h-[90px] bg-white rounded-2xl overflow-auto">
+						<DataTable
+							responsive={false}
+							columns={getLoanColumns()}
+							data={[modalData]}
+						/>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };
