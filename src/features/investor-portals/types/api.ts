@@ -85,7 +85,7 @@ export interface FundingBreakdown {
 	loan: Loan;
 }
 
-export interface DkcLenders {
+export interface Lenders {
 	data: Array<Datum>;
 	id: string;
 	createdAt: Date;
@@ -93,23 +93,4 @@ export interface DkcLenders {
 	name: string;
 	isSpecialCase: boolean;
 	fundingBreakdowns: Array<FundingBreakdown>;
-}
-
-export interface IBorrowerInformation {
-	id?: string;
-	ssnEin?: string;
-	zip?: string;
-	llc?: string;
-	streetAddress?: string;
-	accountNumber?: string;
-	routingNumber?: string;
-	accountType?: string;
-	bankingName?: string;
-	firstName?: string;
-	lastName?: string;
-	mailingAddress?: string;
-	email?: string;
-	phoneNumber?: string;
-	entityName?: string;
-	companyName?: string;
 }

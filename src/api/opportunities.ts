@@ -1,9 +1,7 @@
-import type {
-	Opportunity,
-	OpportunityMin,
-	Upload,
-} from "@/features/opportunities/types/api";
 import type { Opportunity as OpportunityFields } from "@/features/opportunities/types/fields";
+import { Opportunity } from "@/types/api/opportunity";
+import { OpportunityMin } from "@/types/api/opportunityMin";
+import { Upload } from "@/types/api/upload";
 import { authApiClient } from "@/utils/api-client";
 
 const createOpportunity = async (body: OpportunityFields) => {

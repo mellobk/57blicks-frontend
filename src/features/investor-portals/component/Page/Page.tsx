@@ -2,15 +2,16 @@ import { type FC, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
+
+import LendersService from "@/api/lenders";
 import { Input } from "@/components/forms/Input";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
-import type { FundingBreakdown } from "@/features/investor-portals/types/api";
-import { investorPortalsTabs } from "@/features/investor-portals/utils/tabs";
+import { Footer } from "@/features/investor-portals/component/Page/Footer/Footer";
 import investorPortalsStore from "@/features/investor-portals/stores/investor-portals-store";
-import DkcLendersService from "@/features/investor-portals/api/investor-portals";
+import { investorPortalsTabs } from "@/features/investor-portals/utils/tabs";
+import { FundingBreakdown } from "@/types/api/funding-breakdown";
 import { moneyFormat, percentageFormat } from "@/utils/formats";
-import { Footer } from "@/features/investor-portals/component/Page/Footer/Footer.tsx";
 
 interface Props {
 	actualTab: string;
@@ -36,14 +37,14 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const dkcLendersQuery = useQuery(
 		["dkc-lenders-query"],
 		() => {
-			return DkcLendersService.getLenders();
+			return LendersService.getLenders();
 		},
 		{ enabled: lenderData.length <= 0 }
 	);
 
 	const dkcLenderQuery = useQuery(
 		["dkc-lender-query"],
-		() => DkcLendersService.getLenderById(findDkcLender(), searchValue),
+		() => LendersService.getLenderById(findDkcLender(), searchValue),
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
@@ -210,8 +211,6 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 							responsive={false}
 							columns={columns}
 							data={dkcLenderQuery.data?.fundingBreakdowns || []}
-							className="flex h-[100%]"
-							fixedHeader
 							progressPending={dkcLenderQuery?.isFetching}
 							onRowClicked={setModalData}
 						/>

@@ -1,10 +1,10 @@
 import { type FC, useState } from "react";
 import type { UseFieldArrayAppend } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
+import InvestorsService from "@/api/investors";
 import { Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import InvestorsService from "@/features/create-loan/api/investors";
 import type { Loan } from "@/features/create-loan/types/fields";
 import { nameFormat } from "@/utils/formats";
 

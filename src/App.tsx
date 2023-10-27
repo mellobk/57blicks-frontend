@@ -1,16 +1,16 @@
 import "react-toastify/dist/ReactToastify.css";
 
+import { ReactElement } from "react";
+import { ToastContainer } from "react-toastify";
+import { ErrorBoundary } from "react-error-boundary";
+import { PrimeReactProvider } from "primereact/api";
+import { RouterProvider } from "@tanstack/router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { AuthProvider } from "./providers/AuthContextProvider";
-import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "@/components/ui/ErrorFallback";
-import type { FunctionComponent } from "./types";
-import { PrimeReactProvider } from "primereact/api";
 import { ReactQueryDevelopmentTools } from "@/utils/development-tools/ReactQueryDevelopmentTools";
-import { RouterProvider } from "@tanstack/router";
 import { TanStackRouterDevelopmentTools } from "@/utils/development-tools/TanStackRouterDevelopmentTools";
-import { ToastContainer } from "react-toastify";
 import { router } from "./routes";
 
 const queryClient = new QueryClient({
@@ -21,7 +21,7 @@ const queryClient = new QueryClient({
 	},
 });
 
-const App = (): FunctionComponent => {
+const App = (): ReactElement => {
 	return (
 		<PrimeReactProvider>
 			<ErrorBoundary fallback={<ErrorFallback />}>

@@ -1,7 +1,6 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, ReactElement, useEffect, useState } from "react";
 
 import type { AxisChart } from "../../types/chart-types";
-import type { FunctionComponent } from "@/types";
 import { Icon } from "@/components/ui/Icon";
 import { ResponsiveLine } from "@nivo/line";
 import { dateFormat } from "@/utils/formats";
@@ -86,7 +85,7 @@ const NumberOfLogin: FC<NumberOfLoginProps> = ({ data }) => {
 
 			<ResponsiveLine
 				animate
-				tooltip={({ point }): FunctionComponent => {
+				tooltip={({ point }): ReactElement => {
 					return (
 						<div className="shadow-lg rounded-[22px] bg-black text-white  align-middle  p-1 w-32	items-center">
 							<div className="items-center w-full text-center text-gray-600 text-xs	font-medium">

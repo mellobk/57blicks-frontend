@@ -4,12 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Loading } from "@/components/ui/Loading";
 import { Tabs } from "@/components/ui/Tabs";
-import OpportunitiesService from "@/features/opportunities/api/opportunities";
+import OpportunitiesService from "@/api/opportunities.ts";
 import { Details } from "@/features/opportunities/components/PastOpportunities/Details/Details";
 import { DocumentPreview } from "@/features/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview";
 import { List } from "@/features/opportunities/components/PastOpportunities/List/List";
-import type { OpportunityMin } from "@/features/opportunities/types/api";
 import { tabs } from "@/features/opportunities/utils/tabs";
+import { OpportunityMin } from "@/types/api/opportunityMin";
 
 export const PastOpportunities: FC = () => {
 	const [selectedOpportunity, setSelectedOpportunity] =

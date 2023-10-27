@@ -1,11 +1,7 @@
-import type { FC } from "react";
-import { useEffect, useRef, useState } from "react";
+import { type FC, useEffect, useRef, useState } from "react";
+
 import { Loading } from "@/components/ui/Loading";
 import { Name } from "@/features/opportunities/components/PastOpportunities/Name/Name";
-import type {
-	Investment,
-	Opportunity,
-} from "@/features/opportunities/types/api";
 import { Title } from "@/components/ui/Title";
 import { IconButton } from "@/components/ui/IconButton";
 import { Value } from "@/features/opportunities/components/PastOpportunities/Details/Value/Value";
@@ -14,8 +10,10 @@ import { Subtitle } from "@/features/opportunities/components/PastOpportunities/
 import { Table } from "@/components/ui/Table";
 import type { TableColumn } from "react-data-table-component";
 import { useMutation } from "@tanstack/react-query";
-import OpportunitiesService from "@/features/opportunities/api/opportunities";
+import OpportunitiesService from "@/api/opportunities";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
+import { Investment } from "@/types/api/investment";
+import { Opportunity } from "@/types/api/opportunity";
 
 interface Props {
 	data?: Opportunity;
