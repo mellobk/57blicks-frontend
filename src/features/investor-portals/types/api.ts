@@ -1,17 +1,3 @@
-export interface DkcInvestorPortals {
-	id?: string;
-	createdAt?: Date;
-	updatedAt?: Date;
-	borrower?: string;
-	collateralAddress?: string;
-	totalLoan?: string;
-	rate?: string;
-	sub?: string;
-	monthlyPayment?: string;
-	originDate?: string;
-	maturityDate?: string;
-}
-
 export interface Datum {
 	id: string;
 	createdAt: Date;
