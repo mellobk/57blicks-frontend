@@ -19,4 +19,5 @@ export interface Loan {
 	borrower?: Borrower;
 	collaterals: Array<Collateral>;
 	ltv: string;
+  participationBreakdowns: any;
 }

@@ -42,7 +42,12 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 				<Cell format="money" value={totals.regular} bold />
 				<Cell format="text" value="--" bold />
 				<Cell format="text" value="--" bold />
-				<Cell format="money" value={totals.regular} bold />
+				<Cell
+					className="bg-gold-500/[12%] text-gold-500"
+					format="money"
+					value={totals.regular}
+					bold
+				/>
 			</div>
 		</div>
 	);

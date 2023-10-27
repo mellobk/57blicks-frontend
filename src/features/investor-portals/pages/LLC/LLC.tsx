@@ -1,103 +1,73 @@
-import { type FC, useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
+import { type FC, useState } from "react";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 
-import LendersService from "@/api/lenders.ts";
-import investorPortalsStore from "@/features/investor-portals/stores/investor-portals-store";
-import { moneyFormat, percentageFormat } from "@/utils/formats.ts";
-import { BreadCrumb } from "@/components/ui/BreadCrumb";
-import { Tabs } from "@/components/ui/Tabs";
-import { investorPortalsTabs } from "@/features/investor-portals/utils/tabs";
+import InvestorsService from "@/api/investors";
 import { Input } from "@/components/forms/Input";
-import { Footer } from "@/features/investor-portals/component/Page/Footer/Footer";
-import { FundingBreakdown } from "@/types/api/funding-breakdown.ts";
+import { BreadCrumb } from "@/components/ui/BreadCrumb";
+import { Table } from "@/components/ui/Table";
+import { Tabs } from "@/components/ui/Tabs";
+import { Investor } from "@/types/api/investor";
+import { getLoanColumns } from "@/features/investor-portals/utils/common-funtions.ts";
+import { investorPortalsTabs } from "@/features/investor-portals/utils/tabs";
+import { ExpandedComponent } from "@/features/investor-portals/component/ExpandedComponent/ExpandedComponent";
 
 export const LLC: FC = () => {
-	const [modalData, setModalData] = useState<FundingBreakdown | null>(null);
+	const [modalData, setModalData] = useState<Investor>();
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
-	const setLenderData = investorPortalsStore((state) => state.setLender);
-	const lenderData = investorPortalsStore((state) => state.lenders);
 	const currentMonthName = moment().format("MMMM");
 
-	const findDkcLender = () => {
-		const findLender = lenderData.find(
-			(data) => data.name === "DKC lending LLC"
-		);
-
-		return findLender?.id || "";
-	};
-
-	const dkcLendersQuery = useQuery(
-		["dkc-lenders-query"],
-		() => {
-			return LendersService.getLenders();
-		},
-		{ enabled: lenderData.length <= 0 }
-	);
-
-	const dkcLenderQuery = useQuery(
-		["dkc-lender-query"],
-		() => LendersService.getLenderById(findDkcLender(), searchValue),
+	const investorsQuery = useQuery(
+		["investors-query"],
+		() => InvestorsService.getInvestorsWithLoans(searchValue),
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
-
-	useEffect(() => {
-		void dkcLenderQuery.refetch();
-	}, [searchValue, lenderData]);
-
-	useEffect(() => {
-		if (lenderData.length <= 0) {
-			setLenderData(dkcLendersQuery?.data?.data || []);
-		}
-	}, [dkcLendersQuery.isSuccess]);
 
 	const columns = [
 		{
 			name: "Investor",
-			selector: (row: FundingBreakdown) =>
-				row.loan.collaterals[0]?.address || "",
+			selector: (row: Investor) =>
+				`${row?.user?.firstName} ${row?.user?.lastName}`,
 			sortable: true,
 		},
 		{
 			name: "Total Loan Amount",
-			selector: (row: FundingBreakdown) =>
-				moneyFormat(Number(row.loan.totalLoanAmount)),
+			selector: () => "--",
 			sortable: true,
 		},
 		{
 			name: "Investor Equity",
-			selector: (row: FundingBreakdown) => moneyFormat(Number(row.amount)),
+			selector: () => "--",
 			sortable: true,
 		},
 		{
 			name: "Rate",
-			selector: (row: FundingBreakdown) => percentageFormat(Number(row.rate)),
+			selector: () => "--",
 			sortable: true,
 		},
 		{
 			name: "Regular Payment",
-			selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
+			selector: () => "--",
 			sortable: true,
 		},
 		{
 			name: "Origin Date",
-			selector: (row: FundingBreakdown) => row.loan.originationDate.toString(),
+			selector: () => "--",
 			sortable: true,
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: FundingBreakdown) => row.loan.maturityDate.toString(),
+			selector: () => "--",
 			sortable: true,
 		},
 		{
 			name: `${currentMonthName} (Current)`,
-			selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
+			selector: () => "--",
 			sortable: true,
 			conditionalCellStyles: [
 				{
-					when: (row: FundingBreakdown) => !!row.regular,
+					when: (row: Investor) => !!row,
 					style: {
 						background: "#C79E631F",
 						color: "#C79E63",
@@ -106,34 +76,6 @@ export const LLC: FC = () => {
 			],
 		},
 	];
-	const getLoanColumns = () => {
-		const loanColumns = [];
-		const months = moment.months();
-
-		for (let month of months) {
-			loanColumns.push({
-				name: month,
-				selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
-			});
-		}
-
-		loanColumns.push({
-			name: "Annual Total",
-			selector: (row: FundingBreakdown) =>
-				moneyFormat(Number(row.regular) * 12),
-			conditionalCellStyles: [
-				{
-					when: (row: FundingBreakdown) => !!row.regular,
-					style: {
-						background: "#0085FF1F",
-						color: "#0085FF",
-					},
-				},
-			],
-		});
-
-		return loanColumns;
-	};
 
 	return (
 		<div className="flex flex-col w-full h-full">
@@ -199,24 +141,27 @@ export const LLC: FC = () => {
 					} bg-white rounded-2xl justify-between`}
 				>
 					<div className="rounded-t-2xl overflow-auto">
-						<DataTable
-							responsive={false}
+						<Table
+							className="p-0 m-0 rounded-t-2xl"
 							columns={columns}
-							data={dkcLenderQuery.data?.fundingBreakdowns || []}
-							progressPending={dkcLenderQuery?.isFetching}
+							data={investorsQuery.data || []}
+							expandableRows
+							expandableRowDisabled={(row: Investor) =>
+								!row.participationBreakdowns?.length
+							}
+							expandableRowsComponent={ExpandedComponent}
 							onRowClicked={setModalData}
+							progressPending={investorsQuery.isFetching}
 						/>
 					</div>
-					<Footer data={dkcLenderQuery.data?.fundingBreakdowns || []} />
+					{/*<Footer data={investorsQuery.data || []} />*/}
 				</div>
 				{modalData && (
-					<div className="flex min-h-[90px] bg-white rounded-2xl overflow-auto">
-						<DataTable
-							responsive={false}
-							columns={getLoanColumns()}
-							data={[modalData]}
-						/>
-					</div>
+					<Table
+						className="min-h-[90px] p-0 m-0 rounded-2xl"
+						columns={getLoanColumns()}
+						data={[modalData]}
+					/>
 				)}
 			</div>
 		</div>

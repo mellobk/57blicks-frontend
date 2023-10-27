@@ -1,14 +1,15 @@
 import { type FC, useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 
 import LendersService from "@/api/lenders";
 import { Input } from "@/components/forms/Input";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
-import { Tabs } from "@/components/ui/Tabs/Tabs";
+import { Table } from "@/components/ui/Table";
+import { Tabs } from "@/components/ui/Tabs";
 import { Footer } from "@/features/investor-portals/component/Page/Footer/Footer";
 import investorPortalsStore from "@/features/investor-portals/stores/investor-portals-store";
+import { getLoanColumns } from "@/features/investor-portals/utils/common-funtions.ts";
 import { investorPortalsTabs } from "@/features/investor-portals/utils/tabs";
 import { FundingBreakdown } from "@/types/api/funding-breakdown";
 import { moneyFormat, percentageFormat } from "@/utils/formats";
@@ -34,29 +35,29 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		return findLender?.id || "";
 	};
 
-	const dkcLendersQuery = useQuery(
-		["dkc-lenders-query"],
+	const lendersQuery = useQuery(
+		["lenders-query"],
 		() => {
 			return LendersService.getLenders();
 		},
 		{ enabled: lenderData.length <= 0 }
 	);
 
-	const dkcLenderQuery = useQuery(
-		["dkc-lender-query"],
+	const lenderQuery = useQuery(
+		["lender-query"],
 		() => LendersService.getLenderById(findDkcLender(), searchValue),
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
 	useEffect(() => {
-		void dkcLenderQuery.refetch();
+		void lenderQuery.refetch();
 	}, [searchValue, lenderData]);
 
 	useEffect(() => {
 		if (lenderData.length <= 0) {
-			setLenderData(dkcLendersQuery?.data?.data || []);
+			setLenderData(lendersQuery?.data?.data || []);
 		}
-	}, [dkcLendersQuery.isSuccess]);
+	}, [lendersQuery.isSuccess]);
 
 	const columns = [
 		{
@@ -111,34 +112,6 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			],
 		},
 	];
-	const getLoanColumns = () => {
-		const loanColumns = [];
-		const months = moment.months();
-
-		for (let month of months) {
-			loanColumns.push({
-				name: month,
-				selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
-			});
-		}
-
-		loanColumns.push({
-			name: "Annual Total",
-			selector: (row: FundingBreakdown) =>
-				moneyFormat(Number(row.regular) * 12),
-			conditionalCellStyles: [
-				{
-					when: (row: FundingBreakdown) => !!row.regular,
-					style: {
-						background: "#0085FF1F",
-						color: "#0085FF",
-					},
-				},
-			],
-		});
-
-		return loanColumns;
-	};
 
 	return (
 		<div className="flex flex-col w-full h-full">
@@ -206,25 +179,21 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 						modalData ? "max-h-[75vh]" : ""
 					} bg-white rounded-2xl justify-between`}
 				>
-					<div className="rounded-t-2xl overflow-auto">
-						<DataTable
-							responsive={false}
-							columns={columns}
-							data={dkcLenderQuery.data?.fundingBreakdowns || []}
-							progressPending={dkcLenderQuery?.isFetching}
-							onRowClicked={setModalData}
-						/>
-					</div>
-					<Footer data={dkcLenderQuery.data?.fundingBreakdowns || []} />
+					<Table
+						className="p-0 m-0 rounded-t-2xl"
+						columns={columns}
+						data={lenderQuery.data?.fundingBreakdowns || []}
+						onRowClicked={setModalData}
+						progressPending={lenderQuery?.isFetching}
+					/>
+					<Footer data={lenderQuery.data?.fundingBreakdowns || []} />
 				</div>
 				{modalData && (
-					<div className="flex min-h-[90px] bg-white rounded-2xl overflow-auto">
-						<DataTable
-							responsive={false}
-							columns={getLoanColumns()}
-							data={[modalData]}
-						/>
-					</div>
+					<Table
+						className="min-h-[90px] p-0 m-0 rounded-2xl"
+						columns={getLoanColumns()}
+						data={[modalData]}
+					/>
 				)}
 			</div>
 		</div>

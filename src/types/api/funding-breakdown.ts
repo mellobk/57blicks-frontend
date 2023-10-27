@@ -4,6 +4,7 @@ export interface FundingBreakdown {
 	id: string;
 	createdAt: Date;
 	updatedAt: Date;
+	deletedAt?: Date;
 	amount: string;
 	rate: string;
 	prorated: string;
