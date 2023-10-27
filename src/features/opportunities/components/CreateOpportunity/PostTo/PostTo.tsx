@@ -9,16 +9,16 @@ import {
 import { pdf } from "@react-pdf/renderer";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
+import InvestorsService from "@/api/investors";
+import OpportunitiesService from "@/api/opportunities";
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
 import { DocumentPreview } from "@/features/opportunities/components/CreateOpportunity/DocumentPreview/DocumentPreview";
-import InvestorsService from "@/features/opportunities/api/investors";
-import OpportunitiesService from "@/features/opportunities/api/opportunities";
-import type { Investor } from "@/features/opportunities/types/api";
 import type { Opportunity } from "@/features/opportunities/types/fields";
+import { Investor } from "@/types/api/investor";
 import { nameFormat } from "@/utils/formats";
 
 interface Props {

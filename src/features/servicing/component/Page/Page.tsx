@@ -1,5 +1,7 @@
 import { type FC, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+
+import LendersService from "@/api/lenders";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { DkcServicing, FundingBreakdown } from "../../types/api";
@@ -8,7 +10,6 @@ import { Table } from "./Table/Table.tsx";
 import { Toggle } from "@/components/ui/Toggle";
 import { ShowModal } from "@/features/servicing/component/Page/ShowModal/ShowModal.tsx";
 import servicingStore from "../../stores/servicing-store";
-import DkcLendersService from "../../api/servicing";
 import { moneyFormat } from "@/utils/formats";
 import { validateDate } from "@/utils/common-funtions";
 
@@ -34,14 +35,14 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const dkcLendersQuery = useQuery(
 		["dkc-lenders-query"],
 		() => {
-			return DkcLendersService.getLenders();
+			return LendersService.getLenders();
 		},
 		{ enabled: lenderData.length <= 0 }
 	);
 
 	const dkcLenderQuery = useQuery(
 		["dkc-lender-query"],
-		() => DkcLendersService.getLenderById(findDkcLender(), searchValue),
+		() => LendersService.getLenderById(findDkcLender(), searchValue),
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 

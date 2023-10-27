@@ -11,7 +11,7 @@ import { FundingBreakdown } from "@/features/create-loan/components/FundingBreak
 import type { Loan } from "@/features/create-loan/types/fields";
 import { LoanInformation } from "@/features/create-loan/components/LoanInformation/LoanInformation";
 import { LoanSchema } from "@/features/create-loan/schemas/LoanSchema";
-import LoansService from "../../api/loans";
+import LoansService from "../../../../api/loans.ts";
 import { MultipleCollateral } from "@/features/create-loan/components/MultipleCollateral/MultipleCollateral";
 import { SelectLender } from "@/features/create-loan/components/SelectLender/SelectLender";
 import { defaultValues } from "@/features/create-loan/utils/values";

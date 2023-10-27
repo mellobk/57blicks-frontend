@@ -1,6 +1,7 @@
 import { type ComponentType, useEffect, useState } from "react";
+
 import { Cell } from "@/components/table/Cell";
-import { FundingBreakdown } from "@/features/investor-portals/types/api";
+import { FundingBreakdown } from "@/types/api/funding-breakdown";
 
 interface Props {
 	data: FundingBreakdown[];
@@ -8,22 +9,25 @@ interface Props {
 
 export const Footer: ComponentType<Props> = ({ data }) => {
 	const defaultTotals = {
-    amount: 0,
-    rate: 0,
-    regular: 0,
-    totalLoanAmount: 0,
-  };
+		amount: 0,
+		rate: 0,
+		regular: 0,
+		totalLoanAmount: 0,
+	};
 	const [totals, setTotals] = useState(defaultTotals);
 
 	useEffect(() => {
-		const newTotals = data.reduce((accumulator, { amount, loan, rate, regular }) => {
-      accumulator.amount += Number(amount);
-      accumulator.rate += Number(rate);
-      accumulator.regular += Number(regular);
-      accumulator.totalLoanAmount += Number(loan.totalLoanAmount);
+		const newTotals = data.reduce(
+			(accumulator, { amount, loan, rate, regular }) => {
+				accumulator.amount += Number(amount);
+				accumulator.rate += Number(rate);
+				accumulator.regular += Number(regular);
+				accumulator.totalLoanAmount += Number(loan.totalLoanAmount);
 
-			return accumulator;
-		}, defaultTotals);
+				return accumulator;
+			},
+			defaultTotals
+		);
 
 		setTotals(newTotals);
 	}, [data]);
