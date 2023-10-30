@@ -1,17 +1,16 @@
 import { type FC, useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-
-import LendersService from "@/api/lenders";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
-import type { DkcServicing, FundingBreakdown } from "../../types/api";
+import type { DkcLenders, DkcServicing, FundingBreakdown } from "../../types/api";
 import { servicingTabs } from "../../utils/tabs";
 import { Table } from "./Table/Table";
 import { Toggle } from "@/components/ui/Toggle";
 import { ShowModal } from "@/features/admin/components/servicing/component/Page/ShowModal/ShowModal";
-import servicingStore from "../../stores/servicing-store";
 import { moneyFormat } from "@/utils/formats";
 import { validateDate } from "@/utils/common-funtions";
+import LendersService from "@/api/lenders.ts";
+import type { Lender } from "@/types/api/lender";
 
 interface Props {
 	actualTab: string;
@@ -21,44 +20,61 @@ interface Props {
 export const Page: FC<Props> = ({ actualTab, id }) => {
 	const [modalData, setModalData] = useState<FundingBreakdown | null>(null);
 	const [searchValue, setSearchValue] = useState<string>("");
-	const setLenderData = servicingStore((state) => state.setLender);
-	const lenderData = servicingStore((state) => state.lenders);
+  const [lenders, setLenders] = useState<Array<Lender>>([]);
+    const [tableData, setTableData] = useState<Array<DkcLenders>>([]);
 
 	const findDkcLender = () => {
-		const findLender = lenderData.find(
+		const findLender = lenders?.find(
 			(data) => data.name === (id || actualTab)
 		);
 
 		return findLender?.id || "";
 	};
 
-	const lendersQuery = useQuery(
-		["lenders-query"],
+
+ 	const getDkcLenderQuery = useMutation(async () => {
+		return LendersService.getLenderById(findDkcLender(), searchValue)
+	    });
+
+
+	const dkcLendersQuery = useQuery(
+		["dkc-lenders-query"],
 		() => {
 			return LendersService.getLenders();
 		},
-		{ enabled: lenderData.length <= 0 }
+		{ enabled: true }
 	);
 
-	const lenderQuery = useQuery(
-		["lender-query"],
-		() => LendersService.getLenderById(findDkcLender(), searchValue),
-		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
-	);
+/* 	const dkcLenderQuery = useQuery(
+		["dkc-lender-query"],
+		() => DkcLendersService.getLenderById(findDkcLender(), searchValue),
+		{ enabled: true}
+	); */
 
-	const handleRefreshData = () => {
-		void lenderQuery.refetch();
+	const handleRefreshData = (): void => {
+		 getDkcLenderQuery.mutate();
 	};
 
 	useEffect(() => {
-		void lenderQuery.refetch();
-	}, [searchValue, lenderData]);
+		getDkcLenderQuery.mutate()
+	}, [searchValue, lenders]);
+
+
+  useEffect(()=>{
+
+    if(getDkcLenderQuery.isSuccess){
+    setTableData(getDkcLenderQuery?.data?.fundingBreakdowns || [])
+    getDkcLenderQuery.reset()
+    }
+
+  },[getDkcLenderQuery])
+
 
 	useEffect(() => {
-		if (lenderData.length <= 0) {
-			setLenderData(lendersQuery?.data || []);
-		}
-	}, [lendersQuery.isSuccess]);
+			 if(dkcLendersQuery?.data){
+        setLenders(dkcLendersQuery?.data || []);
+       }
+	}, [dkcLendersQuery.isFetching]);
 
 	const columns = [
 		{
@@ -178,8 +194,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			<Table
 				handleSearchValue={setSearchValue}
 				columns={columns}
-				data={lenderQuery?.data?.fundingBreakdowns}
-				loading={lenderQuery?.isFetching}
+				data={tableData}
+				loading={getDkcLenderQuery?.isLoading}
 				widthSearch="60px"
 				onRowClicked={setModalData}
 			>

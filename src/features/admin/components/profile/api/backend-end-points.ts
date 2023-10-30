@@ -9,3 +9,7 @@ export const deletePermissionData = (id: string): string => {
 export const addPermissionGroupPermissionData = (): string => {
 	return `/permission-groups/add-permissions`;
 };
+
+export const globalSearchApp = (search: string): string => {
+	return `/users/filter-data/global-search?search=${search}`;
+};

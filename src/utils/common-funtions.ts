@@ -1,3 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import type { Investor, User } from "@/features/admin/components/manage-user/types/api";
 import moment from "moment";
 
@@ -114,4 +122,9 @@ export const formatPhoneNumber = (phone: string): string => {
 		6,
 		10
 	)}`;
+};
+
+
+export const emptyObject = (object: any) => {
+ return Object.keys(object).length === 0 && object.constructor === Object;
 };

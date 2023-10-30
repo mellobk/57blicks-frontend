@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -48,7 +49,26 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		return ManageNotificationService.createNotifications(body);
 	});
 
+  	const createNotificationsLedger = (data: LedgerFormValues) => {
+		data.ledgers.map((value) => {
+			if (value.typeOfPayment === "Principal") {
+				const dataNotification = { id: data.loanId, ledgerId: value.id };
+				createLedgerQuery.mutate({
+					title: "Approve Ledger",
+					timestamp: new Date(),
+					content: `${localUserName} is creating a Principal payment and needs confirmation.`,
+					additionalData: JSON.stringify(dataNotification),
+					userFullName: localUserName,
+					priority: "HIGH",
+					type: "LEDGER",
+					roles: ["super-admin"],
+				});
+			}
+		});
+	};
+
 	const [openClassModal, setOpenClassModal] = useState<boolean>();
+  const [openLedgerData, setLedgerData] = useState<any>();
 	const [currentIndex, setCurrentIndex] = useState<number>();
 	const [ledgers] = useState<Array<Ledgers>>(ledgersData || []);
 
@@ -60,6 +80,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			onSuccess: (data) => {
 				if (data) {
 					refetchLedgers && refetchLedgers();
+          createNotificationsLedger(openLedgerData);
 				}
 			},
 		}
@@ -144,23 +165,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		setOpenClassModal(open);
 	};
 
-	const createNotificationsLedger = (data: LedgerFormValues) => {
-		data.ledgers.map((value) => {
-			if (value.typeOfPayment === "Principal") {
-				const dataNotification = { id: data.loanId, ledgerId: value.id };
-				createLedgerQuery.mutate({
-					title: "Approve Ledger",
-					timestamp: new Date(),
-					content: `${localUserName} is creating a Principal payment and needs confirmation.`,
-					redirectPath: JSON.stringify(dataNotification),
-					userFullName: localUserName,
-					priority: "HIGH",
-					type: "LEDGER",
-					roles: ["super-admin"],
-				});
-			}
-		});
-	};
+
 	const handleTotals = (): void => {
 		const { debits, credits, balance } = calculateBalance(allFields.ledgers);
 
@@ -265,8 +270,9 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 						}
 					});
 
+         console.log(loan.id)
 					createLedger.mutate({ ...sanedData, loanId: loan?.id || "" });
-					createNotificationsLedger({ ...sanedData, loanId: loan.id });
+					setLedgerData({ ...sanedData, loanId: loan.id });
 				})}
 			>
 				<div

@@ -47,11 +47,11 @@ export const PermissionToggle: FC<PermissionToggleProps> = ({
 					}}
 				>
 					<div>{type}</div>
-					<div>
+					<div className={` -rotate-90 ${showPermissions && 'rotate-0 '}`} >
 						<Icon name="arrowDown" width="10" color="black" />
 					</div>
 				</div>
-				{showPermissions &&
+				{showPermissions && permissions?.length ?
 					permissionsGroups?.map(
 						(permissionGroupData: PermissionGroup, key: number) => {
 							return (
@@ -83,7 +83,7 @@ export const PermissionToggle: FC<PermissionToggleProps> = ({
 								</div>
 							);
 						}
-					)}
+					): null}
 			</div>
 			<div className="w-full h-auto">
 				{showPermissions &&

@@ -100,13 +100,13 @@ export interface FundingBreakdown {
 }
 
 export interface DkcLenders {
-	data: Array<Datum>;
-	id: string;
-	createdAt: Date;
-	updatedAt: Date;
-	name: string;
-	isSpecialCase: boolean;
-	fundingBreakdowns: Array<FundingBreakdown>;
+	data?: Array<Datum>;
+	id?: string;
+	createdAt?: Date;
+	updatedAt?: Date;
+	name?: string;
+	isSpecialCase?: boolean;
+	fundingBreakdowns?: Array<FundingBreakdown>;
 }
 
 export interface IBorrowerInformation {

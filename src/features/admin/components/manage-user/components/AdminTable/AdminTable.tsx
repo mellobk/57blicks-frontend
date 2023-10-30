@@ -11,8 +11,10 @@ import { TableStatus } from "../TableStatus/TableStatus";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { User } from "../../types/api";
 import UserConfig from "../UserConfig/UserConfig";
-import { findIndex } from "@/utils/common-funtions";
+import { emptyObject, findIndex } from "@/utils/common-funtions";
 import { tabs } from "../../utils/tabs";
+import manageUserStore from "@/features/manage-user/stores/manage-user-store";
+
 
 interface SuccessProps {}
 
@@ -23,6 +25,17 @@ export const AdminTable: FC<SuccessProps> = () => {
 	const [deleteId, setDeleteId] = useState<string>("");
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+
+   const userInfo = manageUserStore((state) => state.userInfo);
+
+
+ useEffect(()=>{
+if(!emptyObject(userInfo)){
+  setSelectedUser(userInfo)
+ }
+ },[userInfo])
+
 
 	const adminQuery = useQuery(
 		["admin-query"],

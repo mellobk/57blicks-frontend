@@ -3,6 +3,7 @@ import type { Loan, Notification } from "../types/types";
 import {
 	createNotificationData,
 	getLoansById,
+	readAllNotification,
 	updateLedger,
 	updateLoan,
 	updateUserNotificationData,
@@ -34,6 +35,14 @@ const putUserNotification = async (id: string, body: Notification) => {
 	return response.data;
 };
 
+const putReadUserNotification = async () => {
+	const response = await authApiClient.post<Notification>(
+		readAllNotification(),
+
+	);
+	return response.data;
+};
+
 const createNotifications = async (body: Notification) => {
 	const response = await authApiClient.post<Notification>(
 		createNotificationData(),
@@ -56,6 +65,7 @@ const ManageNotificationService = {
 	createNotifications,
 	putUserNotification,
 	getUserNotification,
+  putReadUserNotification
 };
 
 export default ManageNotificationService;

@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { authApiClient } from "@/utils/api-client";
 import {
 	addPermissionGroupPermissionData,
 	createPermissionsGroups,
 	deletePermissionData,
+  globalSearchApp,
 } from "./backend-end-points";
-import type { PermissionGroup } from "@/features/admin/components/manage-user/types/api";
+import type { IGlobalSearch, PermissionGroup }  from "../../manage-user/types/api";
+
 
 const createPermissionGroup = async (body: PermissionGroup) => {
 	const response = await authApiClient.post<Array<any>>(
@@ -27,10 +31,17 @@ const deletePermissionGroup = async (id: string) => {
 	return response.data;
 };
 
+const getGlobalSearchData = async (search: string) => {
+	const response = await authApiClient.get<IGlobalSearch>(globalSearchApp(search));
+	return response.data;
+};
+
+
 const ManagePermissionGroupService = {
 	createPermissionGroup,
 	deletePermissionGroup,
 	addPermissionGroup,
+  getGlobalSearchData
 };
 
 export default ManagePermissionGroupService;

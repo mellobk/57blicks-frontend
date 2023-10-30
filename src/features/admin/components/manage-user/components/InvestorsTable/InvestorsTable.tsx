@@ -1,4 +1,6 @@
-import { findIndex, statusSort } from "@/utils/common-funtions";
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { emptyObject, findIndex, statusSort } from "@/utils/common-funtions";
 import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -18,10 +20,13 @@ import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBaking
 import UserConfig from "../UserConfig/UserConfig";
 import { tabs } from "../../utils/tabs";
 import { EnableInvestor } from "../EnableInvestor/EnableInvestor";
+import manageUserStore from "@/features/manage-user/stores/manage-user-store";
+
 
 interface SuccessProps {}
 
 export const InvestorsTable: FC<SuccessProps> = () => {
+
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 	const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
@@ -33,6 +38,25 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 	const [selectedUser, setSelectedUser] = useState<Investor | null>(null);
 	const [detailModal, setDetailModal] = useState<boolean>(true);
 	const [enableOpenModal, setEnableOpenModal] = useState<boolean>(false);
+
+
+
+
+ const userInfo = manageUserStore((state) => state.userInfo);
+
+
+ useEffect(()=>{
+
+
+ if(!emptyObject(userInfo)){
+  const { investor, ...others} = userInfo;
+  const investorUser = {
+    ...investor,
+    user: others
+  }
+  setSelectedUser(investorUser || null)
+ }
+ },[userInfo])
 
 	const investorQuery = useQuery(
 		["investor-query"],

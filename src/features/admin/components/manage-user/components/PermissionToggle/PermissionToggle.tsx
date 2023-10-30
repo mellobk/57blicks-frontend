@@ -46,7 +46,7 @@ export const PermissionToggle: FC<PermissionToggleProps> = ({
 					}}
 				>
 					<div>{type}</div>
-					<div>
+					<div className={` -rotate-90 ${showPermissions && 'rotate-0 '}`} >
 						<Icon name="arrowDown" width="10" color="black" />
 					</div>
 				</div>

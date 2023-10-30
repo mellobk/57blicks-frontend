@@ -50,7 +50,7 @@ export const NavbarRoutes = [
 		page: Admin,
 		routeComponent: null,
 		layout: DashboardLayout,
-		name: "Manage Users",
+		name: "Users",
 	},
 	{
 		path: "/support",

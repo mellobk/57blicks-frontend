@@ -17,12 +17,14 @@ interface LedgerListProps {
 }
 
 const LedgerList: FC<LedgerListProps> = ({ loan }) => {
+  console.log(loan, "data")
+
 	const [ledgers, setLedgers] = useState<Array<Ledgers>>([]);
 
 	const { refetch, isLoading } = useQuery(
 		["leger-get-by-loan"],
 		() => {
-			return ManageLedgerService.getLedgerByLoanId(loan?.id || "");
+			return ManageLedgerService.getLedgerByLoanId(loan.id || "");
 		},
 		{
 			onSuccess: (data) => {
