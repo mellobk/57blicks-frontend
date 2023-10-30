@@ -29,8 +29,7 @@ const createLoginLog = async () => {
 			entity: LogTable.USER,
 		};
 
-		const response = await authApiClient.post(createLog(), data);
-		return response;
+    return await authApiClient.post(createLog(), data);
 	} catch (error) {
 		return error;
 	}
