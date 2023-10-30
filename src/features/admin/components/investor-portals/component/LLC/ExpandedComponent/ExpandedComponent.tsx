@@ -2,8 +2,8 @@ import { ComponentType, useEffect, useState } from "react";
 import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
 
 import { Cell } from "@/components/table/Cell";
-import { FundingBreakdown } from "@/types/api/funding-breakdown.ts";
-import { Investor } from "@/types/api/investor.ts";
+import { FundingBreakdown } from "@/types/api/funding-breakdown";
+import { Investor } from "@/types/api/investor";
 
 interface Props extends ExpanderComponentProps<Investor> {
 	selectedParticipation?: FundingBreakdown;

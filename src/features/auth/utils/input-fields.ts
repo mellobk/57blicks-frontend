@@ -2,7 +2,7 @@ import type {
 	ChangePassWordFields,
 	CreatePassWordFields,
 	LoginFields,
-} from "../types/validations.ts";
+} from "../types/validations";
 
 const createPassWordFields: CreatePassWordFields = {
 	password: "password",

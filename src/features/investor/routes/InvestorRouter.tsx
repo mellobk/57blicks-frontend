@@ -4,11 +4,6 @@ import { BlankLayout } from "@/components/layout/BlankLayout";
 
 export const InvestorRoutes = [
 	{
-		path: "/investors",
-		page: HomeInvestor,
-		layout: BlankLayout,
-	},
-	{
 		path: "/investors/portfolio",
 		page: HomeInvestor,
 		layout: BlankLayout,

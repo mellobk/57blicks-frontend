@@ -2,17 +2,17 @@ import { type FC, useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import type { LedgerFormValues, Ledgers } from "../types";
 import { useFieldArray } from "react-hook-form";
-import { useZodForm } from "../UseZodForm.ts";
+import { useZodForm } from "../UseZodForm";
 import { validationSchema } from "../schema";
-import { LedgerAdd } from "./LedgerAdd.tsx";
+import { LedgerAdd } from "./LedgerAdd";
 
 import { useMutation } from "@tanstack/react-query";
-import ManageLedgerService from "@/features/admin/components/servicing/api/ledger.ts";
+import ManageLedgerService from "@/features/admin/components/servicing/api/ledger";
 
 import { Icon } from "@/components/ui/Icon";
-import { dateWithFormat, moneyFormat } from "@/utils/formats.ts";
-import { calculateBalance } from "../utils/calculate-balance.ts";
-import { TypeOfPayment } from "@/features/admin/components/servicing/component/TypeOfPayment/TypeOfPayment.tsx";
+import { dateWithFormat, moneyFormat } from "@/utils/formats";
+import { calculateBalance } from "../utils/calculate-balance";
+import { TypeOfPayment } from "@/features/admin/components/servicing/component/TypeOfPayment/TypeOfPayment";
 
 interface LedgerComponentProps {
 	loan?: string;

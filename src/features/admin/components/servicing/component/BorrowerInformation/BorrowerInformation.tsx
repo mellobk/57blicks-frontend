@@ -4,16 +4,16 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { Button } from "@/components/ui/Button";
 import { Select } from "@/components/forms/Select";
-import { ACCOUNT_OPTIONS } from "@/features/admin/components/manage-user/utils/constant.ts";
+import { ACCOUNT_OPTIONS } from "@/features/admin/components/manage-user/utils/constant";
 import { MaskInput } from "@/components/forms/MaskInput";
-import type { FundingBreakdown, IBorrowerInformation } from "../../types/api.ts";
-import { borrowerInformationFields } from "../../utils/input-fields.ts";
+import type { FundingBreakdown, IBorrowerInformation } from "../../types/api";
+import { borrowerInformationFields } from "../../utils/input-fields";
 import { useMutation } from "@tanstack/react-query";
-import DkcLendersService from "../../api/servicing.ts";
-import type { updateGeneralUserInformation } from "@/features/admin/components/manage-user/types/fields.ts";
-import ManageUsersService from "@/features/admin/components/manage-user/api/investors.ts";
-import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions.ts";
-import useStore from "@/stores/app-store.ts";
+import DkcLendersService from "../../api/servicing";
+import type { updateGeneralUserInformation } from "@/features/admin/components/manage-user/types/fields";
+import ManageUsersService from "@/features/admin/components/manage-user/api/investors";
+import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
+import useStore from "@/stores/app-store";
 
 interface InvestorBankInfoProps {
 	data?: FundingBreakdown;

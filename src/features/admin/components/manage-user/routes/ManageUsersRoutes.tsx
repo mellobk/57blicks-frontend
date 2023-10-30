@@ -1,6 +1,6 @@
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import { Accounting } from "@/features/admin/components/manage-user/pages/Accounting/Accounting.tsx";
-import { Investors } from "@/features/admin/components/manage-user/pages/Investors/Investors.tsx";
+import { Accounting } from "@/features/admin/components/manage-user/pages/Accounting/Accounting";
+import { Investors } from "@/features/admin/components/manage-user/pages/Investors/Investors";
 
 export const ManageUserRoutes = [
 	{

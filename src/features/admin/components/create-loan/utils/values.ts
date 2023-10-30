@@ -1,8 +1,8 @@
 import type {
 	FundingBreakdown,
 	Loan,
-} from "@/features/admin/components/create-loan/types/fields.ts";
-import { LENDERS } from "@/features/admin/components/create-loan/utils/selects.ts";
+} from "@/features/admin/components/create-loan/types/fields";
+import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
 
 export const defaultFundingBreakdown: FundingBreakdown[] = [
 	{

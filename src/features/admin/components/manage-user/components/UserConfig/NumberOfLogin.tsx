@@ -1,10 +1,10 @@
 import { type FC, ReactElement, useEffect, useState } from "react";
 
-import type { AxisChart } from "../../types/chart-types.ts";
+import type { AxisChart } from "../../types/chart-types";
 import { Icon } from "@/components/ui/Icon";
 import { ResponsiveLine } from "@nivo/line";
-import { dateFormat } from "@/utils/formats.ts";
-import type { UserActivity } from "../../types/logs.ts";
+import { dateFormat } from "@/utils/formats";
+import type { UserActivity } from "../../types/logs";
 
 interface NumberOfLoginProps {
 	data: UserActivity;

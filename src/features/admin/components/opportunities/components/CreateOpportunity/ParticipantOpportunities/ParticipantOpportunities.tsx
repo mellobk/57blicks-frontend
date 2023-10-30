@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import type { Control, FieldErrors, UseFormSetValue } from "react-hook-form";
 import { useWatch } from "react-hook-form";
 import { Title } from "@/components/ui/Title";
-import type { Opportunity } from "@/features/admin/components/opportunities/types/fields.ts";
-import { Switch } from "@/features/admin/components/opportunities/components/CreateOpportunity/ParticipantOpportunities/Switch/Switch.tsx";
+import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
+import { Switch } from "@/features/admin/components/opportunities/components/CreateOpportunity/ParticipantOpportunities/Switch/Switch";
 
 interface Props {
 	control: Control<Opportunity>;

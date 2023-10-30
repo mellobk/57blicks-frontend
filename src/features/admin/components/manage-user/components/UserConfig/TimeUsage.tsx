@@ -1,10 +1,10 @@
 import type { FC } from "react";
 import { type BarDatum, ResponsiveBar } from "@nivo/bar";
 import { Icon } from "@/components/ui/Icon";
-import { dateFormat } from "@/utils/formats.ts";
-import { fillMissingDates } from "./UserActivityUtils.ts";
-import type { DataEntry } from "../../types/chart-types.ts";
-import type { UserActivity } from "../../types/logs.ts";
+import { dateFormat } from "@/utils/formats";
+import { fillMissingDates } from "./UserActivityUtils";
+import type { DataEntry } from "../../types/chart-types";
+import type { UserActivity } from "../../types/logs";
 
 interface TimeUsageProps {
 	data: UserActivity;

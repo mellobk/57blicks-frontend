@@ -1,1 +1,1 @@
-export { InvoiceScreen } from "./Components/InvoiceScreen.tsx";
+export { InvoiceScreen } from "./Components/InvoiceScreen";

@@ -2,11 +2,11 @@ import { type FC, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import type { Invoice, InvoiceDataPdf, InvoiceSend } from "../../types";
 import { Modal } from "@/components/ui/Modal";
-import { SendInvoiceTo } from "@/features/admin/components/opportunities/components/CreateOpportunity/SendInvoiceTo/SendInvoiceTo.tsx";
-import { InvoiceDocumentPreview } from "../InvoiceList/InvoiceDocumentPreview.tsx";
+import { SendInvoiceTo } from "@/features/admin/components/opportunities/components/CreateOpportunity/SendInvoiceTo/SendInvoiceTo";
+import { InvoiceDocumentPreview } from "../InvoiceList/InvoiceDocumentPreview";
 import { BlobProvider } from "@react-pdf/renderer";
 import { useMutation } from "@tanstack/react-query";
-import ManageInvoiceService from "@/features/admin/components/servicing/api/invoices.ts";
+import ManageInvoiceService from "@/features/admin/components/servicing/api/invoices";
 
 interface SendInvoiceProps {
 	invoice: Invoice;

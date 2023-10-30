@@ -1,11 +1,11 @@
 import { type FC, useEffect, useState } from "react";
 import type { Invoice, InvoiceDataPdf, InvoiceDataPdfDetails } from "../types";
-import { InvoiceDocumentPreview } from "./InvoiceList/InvoiceDocumentPreview.tsx";
+import { InvoiceDocumentPreview } from "./InvoiceList/InvoiceDocumentPreview";
 import {
 	PDFDownloadLink,
 	PDFViewer as PDFViewerGenerator,
 } from "@react-pdf/renderer";
-import type { Loan } from "@/features/admin/components/servicing/types/api.ts";
+import type { Loan } from "@/features/admin/components/servicing/types/api";
 import {
 	type Ledgers,
 	LedgerType,
@@ -15,7 +15,7 @@ import {
 	dateFormatFormat,
 	dateFormatOptions,
 	moneyFormat,
-} from "@/utils/formats.ts";
+} from "@/utils/formats";
 import { Icon } from "@/components/ui/Icon";
 import SendInvoice from "./SendInvoice";
 

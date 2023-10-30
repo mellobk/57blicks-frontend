@@ -2,7 +2,7 @@ import { type FC, useEffect, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 
 import type { Invoice, InvoiceTypeArray } from "../../types";
-import { formatInvoiceName } from "../../utils/format-invoice-name.ts";
+import { formatInvoiceName } from "../../utils/format-invoice-name";
 
 interface InvoiceListScreenProps {
 	invoices: Array<Invoice>;

@@ -2,10 +2,10 @@ import { Modal } from "@/components/ui/Modal";
 
 import { type FC, useEffect, useState } from "react";
 
-import { approveModalTabs } from "@/features/admin/components/servicing/utils/tabs.ts";
+import { approveModalTabs } from "@/features/admin/components/servicing/utils/tabs";
 import { Tabs } from "@/features/admin/components/servicing/component/Tabs";
 import { useMutation } from "@tanstack/react-query";
-import ManageNotificationService from "../../api/notification.ts";
+import ManageNotificationService from "../../api/notification";
 import { LoanInformation } from "../LoanInformation";
 import { BorrowerInformation } from "../BorrowerInformation";
 import { LedgerList } from "../Ledger";
@@ -14,10 +14,10 @@ import {
 	ApprovalLedgerStateType,
 	LoanStatusType,
 	NotificationType,
-} from "@/components/layout/types/notifications.ts";
+} from "@/components/layout/types/notifications";
 import { Success } from "../Success";
-import { SuccessDecline } from "../SuccessDecline/Success.tsx";
-import type { Loan } from "../../types/types.ts";
+import { SuccessDecline } from "../SuccessDecline/Success";
+import type { Loan } from "../../types/types";
 
 interface ServicingModalProps {
 	openModal?: boolean;

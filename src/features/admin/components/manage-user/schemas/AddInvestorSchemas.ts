@@ -1,6 +1,6 @@
 import * as z from "zod";
-import { errorMessages } from "@/utils/error-messages.ts";
-import { addInvestorFields } from "../utils/input-fields.ts";
+import { errorMessages } from "@/utils/error-messages";
+import { addInvestorFields } from "../utils/input-fields";
 
 export const AddInvestorSchemas = z.object({
 	[addInvestorFields?.firstName]: z.string().nonempty(errorMessages.required),

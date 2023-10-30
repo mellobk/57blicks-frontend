@@ -6,7 +6,7 @@ import { CellInput } from "@/components/table/CellInput";
 import type {
 	FundingBreakdown,
 	LoanOverviewFields,
-} from "@/features/admin/components/loan-overview/types/fields.ts";
+} from "@/features/admin/components/loan-overview/types/fields";
 
 interface Props extends ExpanderComponentProps<FundingBreakdown> {
 	control: Control<LoanOverviewFields>;

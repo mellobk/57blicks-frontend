@@ -11,9 +11,9 @@ import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { Title } from "@/components/ui/Title/Title.tsx";
-import type { Loan } from "@/features/admin/components/create-loan/types/fields.ts";
-import { ASSET_TYPES } from "@/features/admin/components/create-loan/utils/selects.ts";
+import { Title } from "@/components/ui/Title/Title";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
+import { ASSET_TYPES } from "@/features/admin/components/create-loan/utils/selects";
 import { IconButton } from "@/components/ui/IconButton";
 import { MaskInput } from "@/components/forms/MaskInput";
 

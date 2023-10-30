@@ -1,11 +1,11 @@
 import { type FC, useEffect, useState } from "react";
 
-import { Modal } from "@/components/ui/Modal/Modal.tsx";
+import { Modal } from "@/components/ui/Modal/Modal";
 import { Tabs } from "@/features/admin/components/servicing/component/Tabs";
-import type { User } from "../../types/api.ts";
+import type { User } from "../../types/api";
 
-import { userTabs } from "@/features/admin/components/servicing/utils/tabs.ts";
-import UserActivity from "../UserConfig/UserActivity.tsx";
+import { userTabs } from "@/features/admin/components/servicing/utils/tabs";
+import UserActivity from "../UserConfig/UserActivity";
 
 interface UserConfigProps {
 	user: User;

@@ -1,8 +1,8 @@
-import { mfaCode, userEmail } from "../../utils/constants.ts";
+import { mfaCode, userEmail } from "../../utils/constants";
 
-import { CreatePassword } from "@/features/auth/components/CreatePassWord/CreatePassWord.tsx";
+import { CreatePassword } from "@/features/auth/components/CreatePassWord/CreatePassWord";
 import type { FC } from "react";
-import { getLocalStorage } from "@/utils/local-storage.ts";
+import { getLocalStorage } from "@/utils/local-storage";
 
 export const CreatePassWord: FC = () => {
 	const localEmail = getLocalStorage(userEmail);

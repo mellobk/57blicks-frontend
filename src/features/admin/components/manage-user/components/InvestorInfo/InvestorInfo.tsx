@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
-import { addInvestorFields } from "../../utils/input-fields.ts";
-import { AddInvestorSchemas } from "@/features/admin/components/manage-user/schemas/AddInvestorSchemas.ts";
-import type { AddInvestorFields } from "../../types/fields.ts";
+import { addInvestorFields } from "../../utils/input-fields";
+import { AddInvestorSchemas } from "@/features/admin/components/manage-user/schemas/AddInvestorSchemas";
+import type { AddInvestorFields } from "../../types/fields";
 import { MaskInput } from "@/components/forms/MaskInput";
 
 interface InvestorInfoProps {

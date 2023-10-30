@@ -10,18 +10,18 @@ import { Cell } from "@/components/table/Cell";
 import { CellInput } from "@/components/table/CellInput";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { Title } from "@/components/ui/Title/Title.tsx";
-import { Table } from "@/components/ui/Table/Table.tsx";
-import { Footer } from "@/features/admin/components/create-loan/components/FundingBreakdown/Footer/Footer.tsx";
+import { Title } from "@/components/ui/Title/Title";
+import { Table } from "@/components/ui/Table/Table";
+import { Footer } from "@/features/admin/components/create-loan/components/FundingBreakdown/Footer/Footer";
 import type {
 	FundingBreakdown as FundingBreakdownType,
 	Loan,
-} from "@/features/admin/components/create-loan/types/fields.ts";
-import { LENDERS } from "@/features/admin/components/create-loan/utils/selects.ts";
+} from "@/features/admin/components/create-loan/types/fields";
+import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
 import {
 	calculateProrated,
 	calculateRegular,
-} from "@/utils/common-funtions.ts";
+} from "@/utils/common-funtions";
 
 interface Props {
 	control: Control<Loan>;

@@ -1,14 +1,14 @@
 import { type FC, useState } from "react";
 import { Message } from "primereact/message";
 import { useNavigate } from "@tanstack/router";
-import { sendCode } from "@/lib/cognito.ts";
+import { sendCode } from "@/lib/cognito";
 import { Input } from "@/components/forms/Input";
 import { AuthenticateCode } from "@/components/ui/AuthenticateCode";
 import { Button } from "@/components/ui/Button";
-import { sendToLocalStorage } from "@/utils/local-storage.ts";
+import { sendToLocalStorage } from "@/utils/local-storage";
 import { LoginTitle } from "../LoginTitle";
 import { ToastMfa } from "../ToastMfa";
-import { mfaCode } from "../../utils/constants.ts";
+import { mfaCode } from "../../utils/constants";
 
 interface MfaProps {
 	title?: string;

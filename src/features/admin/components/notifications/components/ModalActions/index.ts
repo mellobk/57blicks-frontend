@@ -1,1 +1,1 @@
-export { ModalActions } from "./ModalActions.tsx";
+export { ModalActions } from "./ModalActions";

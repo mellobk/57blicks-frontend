@@ -1,4 +1,4 @@
-import { AdminTable } from "@/features/admin/components/manage-user/components/AdminTable/AdminTable.tsx";
+import { AdminTable } from "@/features/admin/components/manage-user/components/AdminTable/AdminTable";
 import type { FC } from "react";
 
 export const Admin: FC = () => {

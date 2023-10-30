@@ -3,17 +3,17 @@ import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/forms/Input";
 import { type FC, useEffect } from "react";
-import type { Investor } from "@/features/admin/components/manage-user/types/api.ts";
+import type { Investor } from "@/features/admin/components/manage-user/types/api";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { Select } from "@/components/forms/Select";
-import ManageUsersService from "../../api/investors.ts";
+import ManageUsersService from "../../api/investors";
 import { useMutation } from "@tanstack/react-query";
 
-import { userInvestorEditSchema } from "./general-schemas.ts";
-import type { InvestorFields } from "../../types/fields.ts";
-import useStore from "@/stores/app-store.ts";
-import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions.ts";
-import { ACCOUNT_OPTIONS } from "../../utils/constant.ts";
+import { userInvestorEditSchema } from "./general-schemas";
+import type { InvestorFields } from "../../types/fields";
+import useStore from "@/stores/app-store";
+import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
+import { ACCOUNT_OPTIONS } from "../../utils/constant";
 import { Icon } from "@/components/ui/Icon";
 
 interface EditInvestorProps {

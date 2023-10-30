@@ -1,6 +1,6 @@
-import { LogAction, LogTable, type UserActivity } from "../types/logs.ts";
-import { authApiClient } from "@/utils/api-client.ts";
-import { createLog } from "./backend-end-points.ts";
+import { LogAction, LogTable, type UserActivity } from "../types/logs";
+import { authApiClient } from "@/utils/api-client";
+import { createLog } from "./backend-end-points";
 
 const endpoint = "logs";
 

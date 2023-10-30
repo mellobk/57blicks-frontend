@@ -1,23 +1,23 @@
-import { findIndex, statusSort } from "@/utils/common-funtions.ts";
+import { findIndex, statusSort } from "@/utils/common-funtions";
 import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { AddInvestor } from "../AddInvestor/AddInvestor.tsx";
-import type { AddInvestorBankFields } from "../../types/fields.ts";
-import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb.tsx";
-import { DisableInvestor } from "../DisableInvestor/DisableInvestor.tsx";
+import { AddInvestor } from "../AddInvestor/AddInvestor";
+import type { AddInvestorBankFields } from "../../types/fields";
+import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
+import { DisableInvestor } from "../DisableInvestor/DisableInvestor";
 import { Icon } from "@/components/ui/Icon";
-import type { Investor } from "../../types/api.ts";
-import ManageUsersService from "../../api/investors.ts";
-import { Modal } from "@/components/ui/Modal/Modal.tsx";
+import type { Investor } from "../../types/api";
+import ManageUsersService from "../../api/investors";
+import { Modal } from "@/components/ui/Modal/Modal";
 import { Table } from "@/features/admin/components/manage-user/components/Table";
-import { TableStatus } from "../TableStatus/TableStatus.tsx";
-import { Tabs } from "@/components/ui/Tabs/Tabs.tsx";
-import { Toggle } from "@/components/ui/Toggle/Toggle.tsx";
-import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBakingInformation.tsx";
-import UserConfig from "../UserConfig/UserConfig.tsx";
-import { tabs } from "../../utils/tabs.ts";
-import { EnableInvestor } from "../EnableInvestor/EnableInvestor.tsx";
+import { TableStatus } from "../TableStatus/TableStatus";
+import { Tabs } from "@/components/ui/Tabs/Tabs";
+import { Toggle } from "@/components/ui/Toggle/Toggle";
+import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBakingInformation";
+import UserConfig from "../UserConfig/UserConfig";
+import { tabs } from "../../utils/tabs";
+import { EnableInvestor } from "../EnableInvestor/EnableInvestor";
 
 interface SuccessProps {}
 

@@ -1,8 +1,8 @@
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import { CL } from "@/features/admin/components/servicing/pages/CL/CL.tsx";
-import { FirstCapital } from "@/features/admin/components/servicing/pages/FirstCapital/FirstCapital.tsx";
-import { FL } from "@/features/admin/components/servicing/pages/FL/FL.tsx";
-import { IV } from "@/features/admin/components/servicing/pages/IV/IV.tsx";
+import { CL } from "@/features/admin/components/servicing/pages/CL/CL";
+import { FirstCapital } from "@/features/admin/components/servicing/pages/FirstCapital/FirstCapital";
+import { FL } from "@/features/admin/components/servicing/pages/FL/FL";
+import { IV } from "@/features/admin/components/servicing/pages/IV/IV";
 
 export const ServicingRoutes = [
 	{

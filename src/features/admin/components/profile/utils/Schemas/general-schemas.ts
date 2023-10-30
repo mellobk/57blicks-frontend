@@ -1,6 +1,6 @@
 import * as z from "zod";
-import { errorMessages } from "@/utils/error-messages.ts";
-import { generalInformationFields } from "../input-fields.ts";
+import { errorMessages } from "@/utils/error-messages";
+import { generalInformationFields } from "../input-fields";
 
 export const generalInformationSchema = z.object({
 	[generalInformationFields?.email]: z

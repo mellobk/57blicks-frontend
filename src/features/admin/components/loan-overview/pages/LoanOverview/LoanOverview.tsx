@@ -1,7 +1,7 @@
 import type { FC } from "react";
-import { OverviewByInvestor } from "@/features/admin/components/loan-overview/components/OverviewByInvestor/OverviewByInvestor.tsx";
-import { Overviews } from "@/features/admin/components/loan-overview/components/Overviews/Overviews.tsx";
-import type { LoanOverviewFields } from "@/features/admin/components/loan-overview/types/fields.ts";
+import { OverviewByInvestor } from "@/features/admin/components/loan-overview/components/OverviewByInvestor/OverviewByInvestor";
+import { Overviews } from "@/features/admin/components/loan-overview/components/Overviews/Overviews";
+import type { LoanOverviewFields } from "@/features/admin/components/loan-overview/types/fields";
 
 export const LoanOverview: FC = () => {
 	const data: LoanOverviewFields = {

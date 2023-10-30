@@ -1,8 +1,8 @@
 import type { FC } from "react";
 import { Mfa } from "@/features/auth/components/Mfa";
-import { getLocalStorage } from "@/utils/local-storage.ts";
-import { userEmail } from "../../utils/constants.ts";
-import { AuthRoutesNames } from "../../routes/AuthRouter.tsx";
+import { getLocalStorage } from "@/utils/local-storage";
+import { userEmail } from "../../utils/constants";
+import { AuthRoutesNames } from "../../routes/AuthRouter";
 
 export const ResetPasswordMfa: FC = () => {
 	const localEmail = getLocalStorage(userEmail);

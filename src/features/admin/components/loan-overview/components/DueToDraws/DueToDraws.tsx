@@ -5,9 +5,9 @@ import { Table } from "@/components/ui/Table";
 import type {
 	DueToDrawDetails,
 	LoanOverviewFields,
-} from "@/features/admin/components/loan-overview/types/fields.ts";
+} from "@/features/admin/components/loan-overview/types/fields";
 import { Title } from "@/components/ui/Title";
-import { moneyFormat } from "@/utils/formats.ts";
+import { moneyFormat } from "@/utils/formats";
 
 type Props = {
 	data: LoanOverviewFields;

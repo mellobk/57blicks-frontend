@@ -1,10 +1,10 @@
-import { authApiClient } from "@/utils/api-client.ts";
+import { authApiClient } from "@/utils/api-client";
 import {
 	addPermissionGroupPermissionData,
 	createPermissionsGroups,
 	deletePermissionData,
-} from "./backend-end-points.ts";
-import type { PermissionGroup } from "@/features/admin/components/manage-user/types/api.ts";
+} from "./backend-end-points";
+import type { PermissionGroup } from "@/features/admin/components/manage-user/types/api";
 
 const createPermissionGroup = async (body: PermissionGroup) => {
 	const response = await authApiClient.post<Array<any>>(

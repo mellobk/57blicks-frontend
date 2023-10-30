@@ -9,17 +9,17 @@ import {
 import { pdf } from "@react-pdf/renderer";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import InvestorsService from "@/api/investors.ts";
-import OpportunitiesService from "@/api/opportunities.ts";
+import InvestorsService from "@/api/investors";
+import OpportunitiesService from "@/api/opportunities";
 import { Button } from "@/components/ui/Button";
 import { IconButton } from "@/components/ui/IconButton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
-import { DocumentPreview } from "@/features/admin/components/opportunities/components/CreateOpportunity/DocumentPreview/DocumentPreview.tsx";
-import type { Opportunity } from "@/features/admin/components/opportunities/types/fields.ts";
-import { Investor } from "@/types/api/investor.ts";
-import { nameFormat } from "@/utils/formats.ts";
+import { DocumentPreview } from "@/features/admin/components/opportunities/components/CreateOpportunity/DocumentPreview/DocumentPreview";
+import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
+import { Investor } from "@/types/api/investor";
+import { nameFormat } from "@/utils/formats";
 
 interface Props {
 	control: Control<Opportunity>;

@@ -14,7 +14,7 @@ import {
 import { Icon } from "@/components/ui/Icon";
 import { Tag } from "@/components/ui/Tag";
 import { InputNumber } from "@/components/forms/InputNumber";
-import { dateWithFormatUS, moneyFormat } from "@/utils/formats.ts";
+import { dateWithFormatUS, moneyFormat } from "@/utils/formats";
 import { DatePicker } from "@/components/ui/DatePicker";
 
 interface LedgerAddProps {

@@ -1,1 +1,1 @@
-export { LedgerList } from "./Components/LedgerList.tsx";
+export { LedgerList } from "./Components/LedgerList";

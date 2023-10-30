@@ -1,4 +1,4 @@
-import { DashboardInformation } from "../../component/DashboardInformation/DashboardInformation.tsx";
+import { DashboardInformation } from "../../component/DashboardInformation/DashboardInformation";
 import type { FC } from "react";
 
 export const Profile: FC = () => {

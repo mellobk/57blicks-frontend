@@ -10,23 +10,23 @@ import {
 	type Ledgers,
 } from "../types";
 import { useFieldArray } from "react-hook-form";
-import { useZodForm } from "../UseZodForm.ts";
+import { useZodForm } from "../UseZodForm";
 import { validationSchema } from "../schema";
-import { LedgerAdd } from "./LedgerAdd.tsx";
+import { LedgerAdd } from "./LedgerAdd";
 import { Button } from "@/components/ui/Button";
-import { TypeOfPayment } from "../../TypeOfPayment/TypeOfPayment.tsx";
+import { TypeOfPayment } from "../../TypeOfPayment/TypeOfPayment";
 import { useMutation } from "@tanstack/react-query";
-import ManageLedgerService from "@/features/admin/components/servicing/api/ledger.ts";
+import ManageLedgerService from "@/features/admin/components/servicing/api/ledger";
 import { v4 as uuidv4 } from "uuid";
 import { Icon } from "@/components/ui/Icon";
-import { dateWithFormat, moneyFormat } from "@/utils/formats.ts";
-import { calculateBalance } from "../utils/calculate-balance.ts";
-import type { Loan } from "@/features/admin/components/servicing/types/api.ts";
+import { dateWithFormat, moneyFormat } from "@/utils/formats";
+import { calculateBalance } from "../utils/calculate-balance";
+import type { Loan } from "@/features/admin/components/servicing/types/api";
 import { toast } from "react-toastify";
-import { validateDataLedger } from "../utils/validate-data.ts";
-import ManageNotificationService from "@/features/admin/components/notifications/api/notification.ts";
-import { getLocalStorage } from "@/utils/local-storage.ts";
-import { userName } from "@/utils/constant.ts";
+import { validateDataLedger } from "../utils/validate-data";
+import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
+import { getLocalStorage } from "@/utils/local-storage";
+import { userName } from "@/utils/constant";
 
 interface LedgerComponentProps {
 	loan: Loan;

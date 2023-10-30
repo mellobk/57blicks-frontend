@@ -4,12 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Loading } from "@/components/ui/Loading";
 import { Tabs } from "@/components/ui/Tabs";
-import OpportunitiesService from "@/api/opportunities.ts";
-import { Details } from "@/features/admin/components/opportunities/components/PastOpportunities/Details/Details.tsx";
-import { DocumentPreview } from "@/features/admin/components/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview.tsx";
-import { List } from "@/features/admin/components/opportunities/components/PastOpportunities/List/List.tsx";
-import { tabs } from "@/features/admin/components/opportunities/utils/tabs.ts";
-import { OpportunityMin } from "@/types/api/opportunityMin.ts";
+import OpportunitiesService from "@/api/opportunities";
+import { Details } from "@/features/admin/components/opportunities/components/PastOpportunities/Details/Details";
+import { DocumentPreview } from "@/features/admin/components/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview";
+import { List } from "@/features/admin/components/opportunities/components/PastOpportunities/List/List";
+import { tabs } from "@/features/admin/components/opportunities/utils/tabs";
+import { OpportunityMin } from "@/types/api/opportunityMin";
 
 export const PastOpportunities: FC = () => {
 	const [selectedOpportunity, setSelectedOpportunity] =

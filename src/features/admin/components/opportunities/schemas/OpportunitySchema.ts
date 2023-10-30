@@ -1,6 +1,6 @@
 import * as z from "zod";
-import { InvestorsNotificationSchema } from "@/features/admin/components/opportunities/schemas/InvestorNotificationSchema.ts";
-import { errorMessages } from "@/utils/error-messages.ts";
+import { InvestorsNotificationSchema } from "@/features/admin/components/opportunities/schemas/InvestorNotificationSchema";
+import { errorMessages } from "@/utils/error-messages";
 
 export const OpportunitySchema = z.object({
 	additionalInformation: z

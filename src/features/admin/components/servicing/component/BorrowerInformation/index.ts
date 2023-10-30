@@ -1,1 +1,1 @@
-export { BorrowerInformation } from "./BorrowerInformation.tsx";
+export { BorrowerInformation } from "./BorrowerInformation";

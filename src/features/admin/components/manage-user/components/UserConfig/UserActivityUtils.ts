@@ -1,4 +1,4 @@
-import type { DataEntry } from "../../types/chart-types.ts";
+import type { DataEntry } from "../../types/chart-types";
 
 export const convertToHour = (minutes: number): number => {
 	if (minutes < 0) return 0;

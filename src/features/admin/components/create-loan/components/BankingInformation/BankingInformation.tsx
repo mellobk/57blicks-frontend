@@ -2,9 +2,9 @@ import type { FC } from "react";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
-import { Title } from "@/components/ui/Title/Title.tsx";
-import type { Loan } from "@/features/admin/components/create-loan/types/fields.ts";
-import { ACCOUNT_TYPES } from "@/features/admin/components/create-loan/utils/selects.ts";
+import { Title } from "@/components/ui/Title/Title";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
+import { ACCOUNT_TYPES } from "@/features/admin/components/create-loan/utils/selects";
 
 interface Props {
 	control: Control<Loan>;

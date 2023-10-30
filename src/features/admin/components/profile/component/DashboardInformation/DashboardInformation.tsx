@@ -1,9 +1,9 @@
-import type { User } from "@/features/admin/components/manage-user/types/api.ts";
-import { userBasicInformation } from "@/utils/constant.ts";
-import { getLocalStorage } from "@/utils/local-storage.ts";
+import type { User } from "@/features/admin/components/manage-user/types/api";
+import { userBasicInformation } from "@/utils/constant";
+import { getLocalStorage } from "@/utils/local-storage";
 import { type FC, useEffect, useState } from "react";
-import { PasswordInformation } from "../PasswordInformation/PasswordInformation.tsx";
-import { GeneralInformation } from "../GeneralInformation/GeneralInformation.tsx";
+import { PasswordInformation } from "../PasswordInformation/PasswordInformation";
+import { GeneralInformation } from "../GeneralInformation/GeneralInformation";
 
 export const DashboardInformation: FC = () => {
 	const [userData, setUserData] = useState<User>({});

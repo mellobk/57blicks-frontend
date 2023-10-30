@@ -4,22 +4,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
 import { SuccessModal } from "@/components/ui/SuccessModal";
-import { AddParticipant } from "@/features/admin/components/create-loan/components/AddParticipant/AddParticipant.tsx";
-import { BankingInformation } from "@/features/admin/components/create-loan/components/BankingInformation/BankingInformation.tsx";
-import { BorrowerInformation } from "@/features/admin/components/create-loan/components/BorrowerInformation/BorrowerInformation.tsx";
-import { FundingBreakdown } from "@/features/admin/components/create-loan/components/FundingBreakdown/FundingBreakdown.tsx";
-import type { Loan } from "@/features/admin/components/create-loan/types/fields.ts";
-import { LoanInformation } from "@/features/admin/components/create-loan/components/LoanInformation/LoanInformation.tsx";
-import { LoanSchema } from "@/features/admin/components/create-loan/schemas/LoanSchema.ts";
-import LoansService from "../../../../../../api/loans.ts";
-import { MultipleCollateral } from "@/features/admin/components/create-loan/components/MultipleCollateral/MultipleCollateral.tsx";
-import { SelectLender } from "@/features/admin/components/create-loan/components/SelectLender/SelectLender.tsx";
-import { defaultValues } from "@/features/admin/components/create-loan/utils/values.ts";
+import { AddParticipant } from "@/features/admin/components/create-loan/components/AddParticipant/AddParticipant";
+import { BankingInformation } from "@/features/admin/components/create-loan/components/BankingInformation/BankingInformation";
+import { BorrowerInformation } from "@/features/admin/components/create-loan/components/BorrowerInformation/BorrowerInformation";
+import { FundingBreakdown } from "@/features/admin/components/create-loan/components/FundingBreakdown/FundingBreakdown";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
+import { LoanInformation } from "@/features/admin/components/create-loan/components/LoanInformation/LoanInformation";
+import { LoanSchema } from "@/features/admin/components/create-loan/schemas/LoanSchema";
+import LoansService from "../../../../../../api/loans";
+import { MultipleCollateral } from "@/features/admin/components/create-loan/components/MultipleCollateral/MultipleCollateral";
+import { SelectLender } from "@/features/admin/components/create-loan/components/SelectLender/SelectLender";
+import { defaultValues } from "@/features/admin/components/create-loan/utils/values";
 import {
 	calculateProrated,
 	calculateRegular,
 	unFormatPhone,
-} from "@/utils/common-funtions.ts";
+} from "@/utils/common-funtions";
 
 export const CreateLoan: FC = () => {
 	const [openLenderModal, setOpenLenderModal] = useState(false);

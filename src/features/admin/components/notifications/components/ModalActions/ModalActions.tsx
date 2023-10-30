@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/Button";
 
 import type { FC } from "react";
-import { Approved } from "../Approved/Approved.tsx";
+import { Approved } from "../Approved/Approved";
 import { Modal } from "@/components/ui/Modal";
-import { Decline } from "../Decline/Decline.tsx";
-import { NotificationType } from "@/components/layout/types/notifications.ts";
+import { Decline } from "../Decline/Decline";
+import { NotificationType } from "@/components/layout/types/notifications";
 import { Icon } from "@/components/ui/Icon";
 
 interface ModalActionsProps {

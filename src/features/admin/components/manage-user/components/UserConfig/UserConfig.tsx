@@ -1,18 +1,18 @@
-import type { Investor, User } from "../../types/api.ts";
+import type { Investor, User } from "../../types/api";
 import { type FC, useEffect, useState } from "react";
 
-import { EditAccounting } from "./EditAccounting.tsx";
-import { EditAdmin } from "./EditAdmin.tsx";
-import { EditInvestor } from "./EditInvestor.tsx";
-import ManageRoleService from "../../api/roles.ts";
-import { Modal } from "@/components/ui/Modal/Modal.tsx";
+import { EditAccounting } from "./EditAccounting";
+import { EditAdmin } from "./EditAdmin";
+import { EditInvestor } from "./EditInvestor";
+import ManageRoleService from "../../api/roles";
+import { Modal } from "@/components/ui/Modal/Modal";
 import { Tabs } from "@/features/admin/components/servicing/component/Tabs";
-import UserActivity from "./UserActivity.tsx";
-import { getLocalStorage } from "@/utils/local-storage.ts";
+import UserActivity from "./UserActivity";
+import { getLocalStorage } from "@/utils/local-storage";
 import { useQuery } from "@tanstack/react-query";
-import { userBasicInformation } from "@/utils/constant.ts";
-import { investorUserTabs, userTabs } from "@/features/admin/components/servicing/utils/tabs.ts";
-import { PermissionsAdmin } from "./PermissionsAdmin.tsx";
+import { userBasicInformation } from "@/utils/constant";
+import { investorUserTabs, userTabs } from "@/features/admin/components/servicing/utils/tabs";
+import { PermissionsAdmin } from "./PermissionsAdmin";
 
 interface UserConfigProps {
 	user?: User;

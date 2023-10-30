@@ -1,19 +1,19 @@
 import { type FC, useEffect, useRef, useState } from "react";
 
 import { Loading } from "@/components/ui/Loading";
-import { Name } from "@/features/admin/components/opportunities/components/PastOpportunities/Name/Name.tsx";
+import { Name } from "@/features/admin/components/opportunities/components/PastOpportunities/Name/Name";
 import { Title } from "@/components/ui/Title";
 import { IconButton } from "@/components/ui/IconButton";
-import { Value } from "@/features/admin/components/opportunities/components/PastOpportunities/Details/Value/Value.tsx";
-import { dateFormat } from "@/utils/formats.ts";
-import { Subtitle } from "@/features/admin/components/opportunities/components/PastOpportunities/Subtitle/Subtitle.tsx";
+import { Value } from "@/features/admin/components/opportunities/components/PastOpportunities/Details/Value/Value";
+import { dateFormat } from "@/utils/formats";
+import { Subtitle } from "@/features/admin/components/opportunities/components/PastOpportunities/Subtitle/Subtitle";
 import { Table } from "@/components/ui/Table";
 import type { TableColumn } from "react-data-table-component";
 import { useMutation } from "@tanstack/react-query";
-import OpportunitiesService from "@/api/opportunities.ts";
+import OpportunitiesService from "@/api/opportunities";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
-import { Investment } from "@/types/api/investment.ts";
-import { Opportunity } from "@/types/api/opportunity.ts";
+import { Investment } from "@/types/api/investment";
+import { Opportunity } from "@/types/api/opportunity";
 
 interface Props {
 	data?: Opportunity;

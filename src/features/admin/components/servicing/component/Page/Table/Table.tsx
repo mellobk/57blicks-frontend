@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Input } from "@/components/forms/Input";
 import { Button } from "@/components/ui/Button";
-import { Toggle } from "@/components/ui/Toggle/Toggle.tsx";
+import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { Icon } from "@/components/ui/Icon";
-import { Modal } from "@/components/ui/Modal/Modal.tsx";
-import { useDebounce } from "@/hooks/debounce.tsx";
-import { FooterTable } from "@/components/ui/FooterTabs/FooterTabs.tsx";
-import type { FundingBreakdown } from "../../../types/api.ts";
-import { moneyFormat } from "@/utils/formats.ts";
+import { Modal } from "@/components/ui/Modal/Modal";
+import { useDebounce } from "@/hooks/debounce";
+import { FooterTable } from "@/components/ui/FooterTabs/FooterTabs";
+import type { FundingBreakdown } from "../../../types/api";
+import { moneyFormat } from "@/utils/formats";
 
 interface Column {
 	name?: string;

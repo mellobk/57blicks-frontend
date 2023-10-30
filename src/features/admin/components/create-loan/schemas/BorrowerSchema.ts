@@ -1,6 +1,6 @@
 import * as z from "zod";
-import { UserSchema } from "@/features/admin/components/create-loan/schemas/UserSchema.ts";
-import { errorMessages } from "@/utils/error-messages.ts";
+import { UserSchema } from "@/features/admin/components/create-loan/schemas/UserSchema";
+import { errorMessages } from "@/utils/error-messages";
 
 export const BorrowerSchema = z.object({
 	accountNumber: z.string().max(50, errorMessages.maxLength).optional(),

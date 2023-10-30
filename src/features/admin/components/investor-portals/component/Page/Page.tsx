@@ -2,17 +2,17 @@ import { type FC, useEffect, useState } from "react";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 
-import LendersService from "@/api/lenders.ts";
+import LendersService from "@/api/lenders";
 import { Input } from "@/components/forms/Input";
-import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb.tsx";
+import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Table } from "@/components/ui/Table";
 import { Tabs } from "@/components/ui/Tabs";
-import { Footer } from "@/features/admin/components/investor-portals/component/Page/Footer/Footer.tsx";
-import investorPortalsStore from "@/features/admin/components/investor-portals/stores/investor-portals-store.ts";
-import { getLoanColumns } from "@/features/admin/components/investor-portals/utils/common-funtions.ts";
-import { investorPortalsTabs } from "@/features/admin/components/investor-portals/utils/tabs.ts";
-import { FundingBreakdown } from "@/types/api/funding-breakdown.ts";
-import { moneyFormat, percentageFormat } from "@/utils/formats.ts";
+import { Footer } from "@/features/admin/components/investor-portals/component/Page/Footer/Footer";
+import investorPortalsStore from "@/features/admin/components/investor-portals/stores/investor-portals-store";
+import { getLoanColumns } from "@/features/admin/components/investor-portals/utils/common-funtions";
+import { investorPortalsTabs } from "@/features/admin/components/investor-portals/utils/tabs";
+import { FundingBreakdown } from "@/types/api/funding-breakdown";
+import { moneyFormat, percentageFormat } from "@/utils/formats";
 
 interface Props {
 	actualTab: string;

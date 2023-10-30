@@ -1,1 +1,1 @@
-export { LoanCollateralCard } from "./LoanCollateralCard.tsx";
+export { LoanCollateralCard } from "./LoanCollateralCard";

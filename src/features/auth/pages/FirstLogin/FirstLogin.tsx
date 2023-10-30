@@ -1,13 +1,13 @@
 import { type FC, useLayoutEffect } from "react";
 import { Mfa } from "@/features/auth/components/Mfa";
 import { useSearch } from "@tanstack/router";
-import { sendCode } from "@/lib/cognito.ts";
+import { sendCode } from "@/lib/cognito";
 import {
 	getLocalStorage,
 	removeLocalStorage,
 	sendToLocalStorage,
-} from "@/utils/local-storage.ts";
-import { emailStatus, userEmail } from "../../utils/constants.ts";
+} from "@/utils/local-storage";
+import { emailStatus, userEmail } from "../../utils/constants";
 
 export const FirstLogin: FC = () => {
 	const data: { email: string } = useSearch();
