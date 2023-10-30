@@ -2,17 +2,17 @@ import { type FC, useState } from "react";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 
-import InvestorsService from "@/api/investors.ts";
+import InvestorsService from "@/api/investors";
 import { Input } from "@/components/forms/Input";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Table } from "@/components/ui/Table";
 import { Tabs } from "@/components/ui/Tabs";
-import { ExpandedComponent } from "@/features/admin/components/investor-portals/component/LLC/ExpandedComponent/ExpandedComponent.tsx";
-import { Footer } from "@/features/admin/components/investor-portals/component/LLC/Footer/Footer.tsx";
-import { getLoanColumns } from "@/features/admin/components/investor-portals/utils/common-funtions.ts";
-import { investorPortalsTabs } from "@/features/admin/components/investor-portals/utils/tabs.ts";
-import { FundingBreakdown } from "@/types/api/funding-breakdown.ts";
-import { Loan } from "@/types/api/loan.ts";
+import { ExpandedComponent } from "@/features/admin/components/investor-portals/component/LLC/ExpandedComponent/ExpandedComponent";
+import { Footer } from "@/features/admin/components/investor-portals/component/LLC/Footer/Footer";
+import { investorPortalsTabs } from "@/features/admin/components/investor-portals/utils/tabs";
+import { FundingBreakdown } from "@/types/api/funding-breakdown";
+import { Loan } from "@/types/api/loan";
+import { getLoanColumns } from "@/utils/investors";
 
 export const LLC: FC = () => {
 	const [selectedLoan, setSelectedLoan] = useState<Loan>();

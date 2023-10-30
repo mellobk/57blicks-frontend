@@ -1,1 +1,1 @@
-export { SuccessDecline } from "./Success.tsx";
+export { SuccessDecline } from "./Success";

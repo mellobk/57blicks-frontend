@@ -1,5 +1,5 @@
-import type { UserNotification } from "@/components/layout/types/notifications.ts";
-import type { Loan, Notification } from "../types/types.ts";
+import type { UserNotification } from "@/components/layout/types/notifications";
+import type { Loan, Notification } from "../types/types";
 import {
 	createNotificationData,
 	getLoansById,
@@ -7,9 +7,9 @@ import {
 	updateLoan,
 	updateUserNotificationData,
 	userNotification,
-} from "./backend-end-points.ts";
+} from "./backend-end-points";
 
-import { authApiClient } from "@/utils/api-client.ts";
+import { authApiClient } from "@/utils/api-client";
 
 const loansById = async (id: string): Promise<Loan> => {
 	const response = await authApiClient.get<Loan>(getLoansById(id));

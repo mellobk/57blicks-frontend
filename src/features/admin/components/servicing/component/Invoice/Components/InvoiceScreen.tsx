@@ -1,11 +1,11 @@
 import { type FC, useEffect, useState } from "react";
-import IInvoicePdfPreview from "./InvoicePdfPreview.tsx";
+import IInvoicePdfPreview from "./InvoicePdfPreview";
 import type { Invoice } from "../types";
-import InvoiceDetail from "./InvoiceList/InvoiceDetail.tsx";
+import InvoiceDetail from "./InvoiceList/InvoiceDetail";
 import InvoiceList from "./InvoiceList";
 import { useQuery } from "@tanstack/react-query";
-import ManageInvoiceService from "@/features/admin/components/servicing/api/invoices.ts";
-import type { Loan } from "@/features/admin/components/servicing/types/api.ts";
+import ManageInvoiceService from "@/features/admin/components/servicing/api/invoices";
+import type { Loan } from "@/features/admin/components/servicing/types/api";
 import type { Ledgers } from "../../Ledger/types";
 
 interface InvoiceScreenProps {

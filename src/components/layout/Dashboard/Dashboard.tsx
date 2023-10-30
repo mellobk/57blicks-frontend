@@ -4,7 +4,7 @@ import { Icon } from "@/components/ui/Icon";
 import "@/assets/images/png/LogoGold_2x.png";
 import LogoGold from "@/assets/images/png/LogoGold.png";
 import { Avatar } from "@/components/ui/Avatar";
-import { NavbarRoutes } from "@/features/admin/routes/AdminRouter.tsx";
+import { NavbarRoutes } from "@/features/admin/routes/AdminRouter";
 import "./Dashboard.css";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ManageUsersService from "@/features/admin/components/manage-user/api/investors";

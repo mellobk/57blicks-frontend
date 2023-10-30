@@ -1,4 +1,4 @@
-import { InvestorsTable } from "@/features/admin/components/manage-user/components/InvestorsTable/InvestorsTable.tsx";
+import { InvestorsTable } from "@/features/admin/components/manage-user/components/InvestorsTable/InvestorsTable";
 import type { FC } from "react";
 
 export const Investors: FC = () => {

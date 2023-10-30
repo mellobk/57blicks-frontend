@@ -1,4 +1,4 @@
-import type { AddAdminFields } from "../../types/fields.ts";
+import type { AddAdminFields } from "../../types/fields";
 
 export const userEditFields: AddAdminFields = {
 	firstName: "firstName",

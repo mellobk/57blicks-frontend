@@ -1,12 +1,12 @@
 import { type FC, useEffect, useState } from "react";
 
-import { CalendarModal } from "@/components/ui/CalendarModal/CalendarModal.tsx";
+import { CalendarModal } from "@/components/ui/CalendarModal/CalendarModal";
 import { Icon } from "@/components/ui/Icon";
-import LastLogin from "./LastLogin.tsx";
-import ManageLogService from "../../api/logs.ts";
-import NumberOfLogin from "./NumberOfLogin.tsx";
-import TimeUsage from "./TimeUsage.tsx";
-import type { User } from "../../types/api.ts";
+import LastLogin from "./LastLogin";
+import ManageLogService from "../../api/logs";
+import NumberOfLogin from "./NumberOfLogin";
+import TimeUsage from "./TimeUsage";
+import type { User } from "../../types/api";
 import { useQuery } from "@tanstack/react-query";
 
 interface UserActivityProps {

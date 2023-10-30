@@ -1,6 +1,6 @@
 import type { FC } from "react";
 
-import type { PermissionGroup } from "@/features/admin/components/manage-user/types/api.ts";
+import type { PermissionGroup } from "@/features/admin/components/manage-user/types/api";
 import { Icon } from "@/components/ui/Icon";
 
 interface PermissionToggleProps {

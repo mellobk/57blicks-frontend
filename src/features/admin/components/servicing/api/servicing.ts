@@ -1,7 +1,7 @@
-import type { IBorrowerInformation } from "../types/api.ts";
-import { updateBorrowerData } from "./backend-end-points.ts";
+import type { IBorrowerInformation } from "../types/api";
+import { updateBorrowerData } from "./backend-end-points";
 
-import { authApiClient } from "@/utils/api-client.ts";
+import { authApiClient } from "@/utils/api-client";
 
 const updateBorrowerInfo = async (
 	id: string,

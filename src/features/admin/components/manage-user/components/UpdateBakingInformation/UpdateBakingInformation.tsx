@@ -1,9 +1,9 @@
 import { type FC, useEffect, useState } from "react";
-import type { AddInvestorBankFields } from "../../types/fields.ts";
-import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo.tsx";
+import type { AddInvestorBankFields } from "../../types/fields";
+import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo";
 import { Success } from "../Success";
-import type { Investor } from "../../types/api.ts";
-import ManageUsersService from "../../api/investors.ts";
+import type { Investor } from "../../types/api";
+import ManageUsersService from "../../api/investors";
 import { useMutation } from "@tanstack/react-query";
 
 interface UpdateBakingInformationProps {

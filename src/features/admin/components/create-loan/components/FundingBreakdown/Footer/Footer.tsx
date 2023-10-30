@@ -1,11 +1,11 @@
 import { type ComponentType, useEffect, useState } from "react";
 import { type Control, useWatch } from "react-hook-form";
 import { Cell } from "@/components/table/Cell";
-import type { Loan } from "@/features/admin/components/create-loan/types/fields.ts";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import {
 	calculateProrated,
 	calculateRegular,
-} from "@/utils/common-funtions.ts";
+} from "@/utils/common-funtions";
 
 interface Props {
 	control: Control<Loan>;

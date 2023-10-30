@@ -5,17 +5,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/forms/Input";
 
 import { type FC, useEffect, useState } from "react";
-import { getLocalStorage, sendToLocalStorage } from "@/utils/local-storage.ts";
-import { userBasicInformation } from "@/utils/constant.ts";
-import type { User } from "@/features/admin/components/manage-user/types/api.ts";
+import { getLocalStorage, sendToLocalStorage } from "@/utils/local-storage";
+import { userBasicInformation } from "@/utils/constant";
+import type { User } from "@/features/admin/components/manage-user/types/api";
 import { MaskInput } from "@/components/forms/MaskInput";
-import { generalInformationSchema } from "../../utils/Schemas/general-schemas.ts";
-import { generalInformationFields } from "../../utils/input-fields.ts";
-import ManageUsersService from "@/features/admin/components/manage-user/api/investors.ts";
-import type { updateGeneralUserInformation } from "@/features/admin/components/manage-user/types/fields.ts";
+import { generalInformationSchema } from "../../utils/Schemas/general-schemas";
+import { generalInformationFields } from "../../utils/input-fields";
+import ManageUsersService from "@/features/admin/components/manage-user/api/investors";
+import type { updateGeneralUserInformation } from "@/features/admin/components/manage-user/types/fields";
 import { useMutation } from "@tanstack/react-query";
-import useStore from "@/stores/app-store.ts";
-import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions.ts";
+import useStore from "@/stores/app-store";
+import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
 
 export const GeneralInformation: FC = () => {
 	const [userData, setUserData] = useState<User>();

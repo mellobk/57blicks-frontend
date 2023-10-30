@@ -1,1 +1,1 @@
-export { SuccessFirstLogin } from "./SuccessFirstLogin.tsx";
+export { SuccessFirstLogin } from "./SuccessFirstLogin";

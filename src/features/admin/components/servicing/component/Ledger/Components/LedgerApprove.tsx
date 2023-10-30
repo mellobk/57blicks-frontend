@@ -2,10 +2,10 @@ import { ApprovalStateType, type Ledger } from "../types";
 
 import type { FC } from "react";
 import { Icon } from "@/components/ui/Icon";
-import { getLocalStorage } from "@/utils/local-storage.ts";
-import { group } from "@/utils/constant.ts";
+import { getLocalStorage } from "@/utils/local-storage";
+import { group } from "@/utils/constant";
 import { useMutation } from "@tanstack/react-query";
-import ManageLedgerService from "@/features/admin/components/servicing/api/ledger.ts";
+import ManageLedgerService from "@/features/admin/components/servicing/api/ledger";
 import moment from "moment";
 
 interface LedgerApproveProps {

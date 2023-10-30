@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { Icon } from "@/components/ui/Icon";
 import type { Invoice } from "../../types";
-import { formatInvoiceName } from "../../utils/format-invoice-name.ts";
+import { formatInvoiceName } from "../../utils/format-invoice-name";
 
 interface InvoiceDetailProps {
 	invoice?: Invoice;

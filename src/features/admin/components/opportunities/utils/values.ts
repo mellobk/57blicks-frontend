@@ -1,4 +1,4 @@
-import { Opportunity } from "@/features/admin/components/opportunities/types/fields.ts";
+import { Opportunity } from "@/features/admin/components/opportunities/types/fields";
 
 export const defaultValues: Opportunity = {
 	additionalInformation: "",

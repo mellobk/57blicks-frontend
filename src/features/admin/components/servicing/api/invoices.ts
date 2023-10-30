@@ -1,8 +1,8 @@
 import type { Invoice, InvoiceSend } from "../component/Invoice/types";
-import { invoices, sendInvoices } from "./backend-end-points.ts";
+import { invoices, sendInvoices } from "./backend-end-points";
 
 import type { Ledgers } from "../component/Ledger/types";
-import { authApiClient } from "@/utils/api-client.ts";
+import { authApiClient } from "@/utils/api-client";
 
 const getInvoiceByLoanId = async (
 	id: string

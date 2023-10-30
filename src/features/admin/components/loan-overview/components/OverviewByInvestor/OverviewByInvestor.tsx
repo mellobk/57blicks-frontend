@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Table } from "@/components/ui/Table";
 import { Title } from "@/components/ui/Title";
-import { ExpandedComponent } from "@/features/admin/components/loan-overview/components/ExpandedComponent/ExpandedComponent.tsx";
-import { Footer } from "@/features/admin/components/loan-overview/components/Footer/Footer.tsx";
+import { ExpandedComponent } from "@/features/admin/components/loan-overview/components/ExpandedComponent/ExpandedComponent";
+import { Footer } from "@/features/admin/components/loan-overview/components/Footer/Footer";
 import type {
 	FundingBreakdown,
 	LoanOverviewFields,
-} from "@/features/admin/components/loan-overview/types/fields.ts";
+} from "@/features/admin/components/loan-overview/types/fields";
 
 type Props = {
 	data: LoanOverviewFields;

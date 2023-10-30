@@ -1,7 +1,7 @@
 import { type ComponentType, useEffect, useState } from "react";
 
 import { Cell } from "@/components/table/Cell";
-import { Loan } from "@/types/api/loan.ts";
+import { Loan } from "@/types/api/loan";
 
 interface Props {
 	data: Loan[];

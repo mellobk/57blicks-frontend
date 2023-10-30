@@ -1,4 +1,4 @@
-import type { IBorrowerInformation } from "../types/api.ts";
+import type { IBorrowerInformation } from "../types/api";
 
 export const borrowerInformationFields: IBorrowerInformation = {
 	accountNumber: "accountNumber",

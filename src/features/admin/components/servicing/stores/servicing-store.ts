@@ -1,5 +1,5 @@
 import { create, type SetState } from "zustand";
-import type { Datum } from "../types/api.ts";
+import type { Datum } from "../types/api";
 
 interface IServicingStore {
 	lenders: Array<Datum>;

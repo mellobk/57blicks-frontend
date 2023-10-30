@@ -3,9 +3,9 @@ import { type Control, type UseFormSetValue, useWatch } from "react-hook-form";
 import { type Option, Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import type { Loan } from "@/features/admin/components/create-loan/types/fields.ts";
-import { LENDERS } from "@/features/admin/components/create-loan/utils/selects.ts";
-import { defaultFundingBreakdown } from "@/features/admin/components/create-loan/utils/values.ts";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
+import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
+import { defaultFundingBreakdown } from "@/features/admin/components/create-loan/utils/values";
 
 interface Props {
 	control: Control<Loan>;

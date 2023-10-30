@@ -9,10 +9,10 @@ import {
 	View,
 } from "@react-pdf/renderer";
 import LogoNavy from "@/assets/images/png/LogoNavy.png";
-import { Detail } from "@/features/admin/components/opportunities/components/CreateOpportunity/DocumentPreview/Detail/Detail.tsx";
-import { Subtitle } from "@/features/admin/components/opportunities/components/CreateOpportunity/DocumentPreview/Subtitle/Subtitle.tsx";
-import type { Opportunity } from "@/features/admin/components/opportunities/types/fields.ts";
-import { moneyFormat, percentageFormat } from "@/utils/formats.ts";
+import { Detail } from "@/features/admin/components/opportunities/components/CreateOpportunity/DocumentPreview/Detail/Detail";
+import { Subtitle } from "@/features/admin/components/opportunities/components/CreateOpportunity/DocumentPreview/Subtitle/Subtitle";
+import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
+import { moneyFormat, percentageFormat } from "@/utils/formats";
 
 interface Props {
 	control: Control<Opportunity>;

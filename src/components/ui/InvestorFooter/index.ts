@@ -1,0 +1,1 @@
+export { InvestorFooter } from "./InvestorFooter";

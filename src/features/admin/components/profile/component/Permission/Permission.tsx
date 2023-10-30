@@ -1,16 +1,16 @@
 import { type FC, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import ManageUsersService from "@/features/admin/components/manage-user/api/investors.ts";
+import ManageUsersService from "@/features/admin/components/manage-user/api/investors";
 import { Button } from "@/components/ui/Button";
-import type { PermissionGroup } from "@/features/admin/components/manage-user/types/api.ts";
-import { PermissionToggle } from "../PermissionToggle/PermissionToggle.tsx";
-import { PermissionType } from "../../types/permission.ts";
-import { PermissionHeader } from "../PermissionHeader/PermissionHeader.tsx";
+import type { PermissionGroup } from "@/features/admin/components/manage-user/types/api";
+import { PermissionToggle } from "../PermissionToggle/PermissionToggle";
+import { PermissionType } from "../../types/permission";
+import { PermissionHeader } from "../PermissionHeader/PermissionHeader";
 import { Modal } from "@/components/ui/Modal";
-import { CreatePermission } from "../CreatePermission/CreatePermission.tsx";
-import ManagePermissionGroupService from "../../api/permission.ts";
-import { DeletePermissionGroup } from "../DeletePermissionGroup/DeletePermissionGroup.tsx";
-import useStore from "@/stores/app-store.ts";
+import { CreatePermission } from "../CreatePermission/CreatePermission";
+import ManagePermissionGroupService from "../../api/permission";
+import { DeletePermissionGroup } from "../DeletePermissionGroup/DeletePermissionGroup";
+import useStore from "@/stores/app-store";
 import { Input } from "@/components/forms/Input";
 
 export const Permission: FC = () => {

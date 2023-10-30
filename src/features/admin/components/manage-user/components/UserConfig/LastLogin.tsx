@@ -1,8 +1,8 @@
 import { type FC, useEffect, useState } from "react";
 
 import { Icon } from "@/components/ui/Icon";
-import { dateFormat } from "@/utils/formats.ts";
-import type { UserActivity } from "../../types/logs.ts";
+import { dateFormat } from "@/utils/formats";
+import type { UserActivity } from "../../types/logs";
 
 interface LastLoginProps {
 	data: UserActivity;

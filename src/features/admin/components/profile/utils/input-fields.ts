@@ -1,4 +1,4 @@
-import type { GeneralInformationFields } from "../types/validations.ts";
+import type { GeneralInformationFields } from "../types/validations";
 
 export const generalInformationFields: GeneralInformationFields = {
 	firstName: "firstName",

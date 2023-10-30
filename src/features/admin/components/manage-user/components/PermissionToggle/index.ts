@@ -1,1 +1,1 @@
-export { PermissionToggle } from "./PermissionToggle.tsx";
+export { PermissionToggle } from "./PermissionToggle";

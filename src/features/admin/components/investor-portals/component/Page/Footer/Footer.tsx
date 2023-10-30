@@ -1,7 +1,7 @@
 import { type ComponentType, useEffect, useState } from "react";
 
 import { Cell } from "@/components/table/Cell";
-import { FundingBreakdown } from "@/types/api/funding-breakdown.ts";
+import { FundingBreakdown } from "@/types/api/funding-breakdown";
 
 interface Props {
 	data: FundingBreakdown[];

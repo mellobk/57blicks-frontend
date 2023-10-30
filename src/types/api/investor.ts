@@ -1,5 +1,5 @@
 import { User } from "@/types/api/user";
-import { FundingBreakdown } from "@/types/api/funding-breakdown.ts";
+import { FundingBreakdown } from "@/types/api/funding-breakdown";
 
 export interface Investor {
 	target?: any;

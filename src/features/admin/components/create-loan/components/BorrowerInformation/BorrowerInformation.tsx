@@ -4,9 +4,9 @@ import { Control } from "react-hook-form";
 import { Dropdown } from "@/components/forms/Dropdown";
 import { Input } from "@/components/forms/Input";
 import { MaskInput } from "@/components/forms/MaskInput";
-import { Title } from "@/components/ui/Title/Title.tsx";
-import type { Loan } from "@/features/admin/components/create-loan/types/fields.ts";
-import { LENDERS } from "@/features/admin/components/create-loan/utils/selects.ts";
+import { Title } from "@/components/ui/Title/Title";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
+import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
 
 interface Props {
 	control: Control<Loan>;

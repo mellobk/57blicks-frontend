@@ -1,8 +1,8 @@
 import type { FC } from "react";
 import { LoanCard } from "../LoanCard";
 import { LoanCollateralCard } from "../LoanCollateralCard";
-import type { Collateral, Loan } from "@/features/admin/components/servicing/types/api.ts";
-import { moneyFormat } from "@/utils/formats.ts";
+import type { Collateral, Loan } from "@/features/admin/components/servicing/types/api";
+import { moneyFormat } from "@/utils/formats";
 
 interface LoanInformationProps {
 	data?: Loan | any;

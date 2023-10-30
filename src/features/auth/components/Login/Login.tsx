@@ -2,22 +2,22 @@ import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type FC, useState } from "react";
-import { LoginSchema } from "../../utils/Schemas/LoginSchemas.ts";
+import { LoginSchema } from "../../utils/Schemas/LoginSchemas";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
 import { Input } from "@/components/forms/Input";
-import { useAuth } from "@/providers/AuthContextProvider.tsx";
+import { useAuth } from "@/providers/AuthContextProvider";
 import { Message } from "primereact/message";
 import { LoginTitle } from "../LoginTitle";
-import { loginFields } from "../../utils/input-fields.ts";
-import type { LoginFields } from "../../types/validations.ts";
+import { loginFields } from "../../utils/input-fields";
+import type { LoginFields } from "../../types/validations";
 import { useNavigate } from "@tanstack/router";
-import { AuthRoutesNames } from "../../routes/AuthRouter.tsx";
-import { getSession } from "@/lib/cognito.ts";
-import { sendToLocalStorage } from "@/utils/local-storage.ts";
-import { accessToken, group, sub } from "@/utils/constant.ts";
+import { AuthRoutesNames } from "../../routes/AuthRouter";
+import { getSession } from "@/lib/cognito";
+import { sendToLocalStorage } from "@/utils/local-storage";
+import { accessToken, group, sub } from "@/utils/constant";
 import { useMutation } from "@tanstack/react-query";
-import ManageLogService from "@/features/admin/components/manage-user/api/logs.ts";
+import ManageLogService from "@/features/admin/components/manage-user/api/logs";
 
 type LoginData = {
 	email: string;
@@ -59,7 +59,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 			createLoginLog.mutate();
 
 			window.location.href =
-				groupAws === "investor" ? "/investors" : "/manage-users/admins";
+				groupAws === "investor" ? "/investors/portfolio" : "/manage-users/admins";
 		} catch (error) {
 			console.log(error);
 			setLoginError("Login failed. Please check your credentials.");

@@ -1,4 +1,4 @@
-import { formatDateString, getLabel } from "@/utils/common-funtions.ts";
+import { formatDateString, getLabel } from "@/utils/common-funtions";
 import type { FC } from "react";
 
 interface NotificationProps {

@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
-import { Title } from "@/components/ui/Title/Title.tsx";
-import type { Opportunity } from "@/features/admin/components/opportunities/types/fields.ts";
+import { Title } from "@/components/ui/Title/Title";
+import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
 import { TextArea } from "@/components/forms/TextArea";
 
 interface Props {

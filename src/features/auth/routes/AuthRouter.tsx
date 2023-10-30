@@ -1,4 +1,4 @@
-import { CreatePassWord } from "@/features/auth/pages/CreatePassword/CreatePassword.tsx";
+import { CreatePassWord } from "@/features/auth/pages/CreatePassword/CreatePassword";
 import { FirstLogin } from "../pages/FirstLogin";
 import { Login } from "../pages/Login";
 import { LoginLayout } from "@/components/layout/Login";
@@ -7,7 +7,7 @@ import { ResetPassword } from "../pages/ResetPassword";
 import { ResetPasswordMfa } from "../pages/ResetPasswordMfa";
 import { SuccessFirstLogin } from "../pages/SuccessFirstLogin";
 import { SuccessResetPassword } from "../pages/SuccessResetPassword";
-import UnauthenticatedRoute from "@/routes/routes.tsx";
+import UnauthenticatedRoute from "@/routes/routes";
 
 export const AuthRoutesNames = {
 	firstLogin: "first-login",

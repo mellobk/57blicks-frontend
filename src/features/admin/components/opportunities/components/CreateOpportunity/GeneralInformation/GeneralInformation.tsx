@@ -3,8 +3,8 @@ import type { FieldErrors, UseFormRegister } from "react-hook-form";
 import { FileUpload } from "@/components/forms/FileUpload";
 import { Input } from "@/components/forms/Input";
 import { TextArea } from "@/components/forms/TextArea";
-import { Title } from "@/components/ui/Title/Title.tsx";
-import type { Opportunity } from "@/features/admin/components/opportunities/types/fields.ts";
+import { Title } from "@/components/ui/Title/Title";
+import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
 
 interface Props {
 	errors: FieldErrors<Opportunity>;

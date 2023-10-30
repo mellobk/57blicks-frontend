@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import type { FC } from "react";
-import { LedgerComponent } from "./LedgerComponent.tsx";
+import { LedgerComponent } from "./LedgerComponent";
 import type { Ledgers } from "../types";
-import Loading from "@/assets/icons/loading.tsx";
-import ManageLedgerService from "@/features/admin/components/servicing/api/ledger.ts";
-import { calculateBalance } from "../utils/calculate-balance.ts";
-import { dateWithFormat } from "@/utils/formats.ts";
+import Loading from "@/assets/icons/loading";
+import ManageLedgerService from "@/features/admin/components/servicing/api/ledger";
+import { calculateBalance } from "../utils/calculate-balance";
+import { dateWithFormat } from "@/utils/formats";
 
 const orderLedgers = (): void => {};
 interface LedgerListProps {

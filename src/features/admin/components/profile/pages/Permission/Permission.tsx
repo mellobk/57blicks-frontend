@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Permission } from "../../component/Permission/Permission.tsx";
+import { Permission } from "../../component/Permission/Permission";
 
 export const PermissionPage: FC = () => {
 	return (

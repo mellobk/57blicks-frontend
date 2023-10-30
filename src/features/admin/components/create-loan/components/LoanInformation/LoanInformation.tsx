@@ -10,13 +10,13 @@ import { Dropdown } from "@/components/forms/Dropdown";
 import { FormatInput } from "@/components/forms/FormatInput";
 import { Input } from "@/components/forms/Input";
 import { MaskInput } from "@/components/forms/MaskInput";
-import { Title } from "@/components/ui/Title/Title.tsx";
-import type { Loan } from "@/features/admin/components/create-loan/types/fields.ts";
+import { Title } from "@/components/ui/Title/Title";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import {
 	ASSET_TYPES,
 	LEAD_SOURCES,
 	LOAN_TYPES,
-} from "@/features/admin/components/create-loan/utils/selects.ts";
+} from "@/features/admin/components/create-loan/utils/selects";
 
 interface Props {
 	control: Control<Loan>;

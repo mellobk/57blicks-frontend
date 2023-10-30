@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { LoanCard } from "../LoanCard";
 import { LoanLinkCard } from "../LoanLinkCard";
-import type { Collateral } from "../../types/types.ts";
+import type { Collateral } from "../../types/types";
 
 interface LoginTitleProps {
 	title?: string;

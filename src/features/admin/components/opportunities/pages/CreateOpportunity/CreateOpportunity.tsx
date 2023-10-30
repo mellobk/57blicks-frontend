@@ -8,17 +8,17 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { SuccessModal } from "@/components/ui/SuccessModal";
 import { Tabs } from "@/components/ui/Tabs";
-import { AdditionalInformation } from "@/features/admin/components/opportunities/components/CreateOpportunity/AdditionalInformation/AdditionalInformation.tsx";
-import { DocumentPreview } from "@/features/admin/components/opportunities/components/CreateOpportunity/DocumentPreview/DocumentPreview.tsx";
-import { GeneralInformation } from "@/features/admin/components/opportunities/components/CreateOpportunity/GeneralInformation/GeneralInformation.tsx";
-import { LoanDetails } from "@/features/admin/components/opportunities/components/CreateOpportunity/LoanDetails/LoanDetails.tsx";
-import { NotesOnTheBorrower } from "@/features/admin/components/opportunities/components/CreateOpportunity/NotesOnTheBorrower/NotesOnTheBorrower.tsx";
-import { ParticipantOpportunities } from "@/features/admin/components/opportunities/components/CreateOpportunity/ParticipantOpportunities/ParticipantOpportunities.tsx";
-import { PostTo } from "@/features/admin/components/opportunities/components/CreateOpportunity/PostTo/PostTo.tsx";
-import { OpportunitySchema } from "@/features/admin/components/opportunities/schemas/OpportunitySchema.ts";
-import type { Opportunity } from "@/features/admin/components/opportunities/types/fields.ts";
-import { tabs } from "@/features/admin/components/opportunities/utils/tabs.ts";
-import { defaultValues } from "@/features/admin/components/opportunities/utils/values.ts";
+import { AdditionalInformation } from "@/features/admin/components/opportunities/components/CreateOpportunity/AdditionalInformation/AdditionalInformation";
+import { DocumentPreview } from "@/features/admin/components/opportunities/components/CreateOpportunity/DocumentPreview/DocumentPreview";
+import { GeneralInformation } from "@/features/admin/components/opportunities/components/CreateOpportunity/GeneralInformation/GeneralInformation";
+import { LoanDetails } from "@/features/admin/components/opportunities/components/CreateOpportunity/LoanDetails/LoanDetails";
+import { NotesOnTheBorrower } from "@/features/admin/components/opportunities/components/CreateOpportunity/NotesOnTheBorrower/NotesOnTheBorrower";
+import { ParticipantOpportunities } from "@/features/admin/components/opportunities/components/CreateOpportunity/ParticipantOpportunities/ParticipantOpportunities";
+import { PostTo } from "@/features/admin/components/opportunities/components/CreateOpportunity/PostTo/PostTo";
+import { OpportunitySchema } from "@/features/admin/components/opportunities/schemas/OpportunitySchema";
+import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
+import { tabs } from "@/features/admin/components/opportunities/utils/tabs";
+import { defaultValues } from "@/features/admin/components/opportunities/utils/values";
 
 export const CreateOpportunity: FC = () => {
 	const [openPostToModal, setOpenPostToModal] = useState(false);

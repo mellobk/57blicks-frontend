@@ -1,7 +1,7 @@
 import { Input } from "@/components/forms/Input";
 import { Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
-import { LEDGER_OPTIONS } from "../../utils/constant.ts";
+import { LEDGER_OPTIONS } from "../../utils/constant";
 import { type FC, useState } from "react";
 
 interface EnableInvestorProps {

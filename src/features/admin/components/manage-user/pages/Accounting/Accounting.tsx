@@ -1,4 +1,4 @@
-import { AccountingTable } from "@/features/admin/components/manage-user/components/AccountingTable/AccountingTable.tsx";
+import { AccountingTable } from "@/features/admin/components/manage-user/components/AccountingTable/AccountingTable";
 import type { FC } from "react";
 
 export const Accounting: FC = () => {

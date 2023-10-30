@@ -2,13 +2,13 @@ import type {
 	AddAccountingFields,
 	AddAdminFields,
 	updateGeneralUserInformation,
-} from "../types/fields.ts";
+} from "../types/fields";
 import type {
 	Investor,
 	PermissionGroup,
 	Permissions,
 	User,
-} from "../types/api.ts";
+} from "../types/api";
 import {
 	assignPermissionRole,
 	createAccounting,
@@ -30,10 +30,10 @@ import {
 	updateUser,
 	userFilterAccountingData,
 	userFilterAdminData,
-} from "./backend-end-points.ts";
+} from "./backend-end-points";
 
 import type { AxiosResponse } from "axios";
-import { authApiClient } from "@/utils/api-client.ts";
+import { authApiClient } from "@/utils/api-client";
 
 const getUser = async (sub: string) => {
 	const response = await authApiClient.get<User>(getUserData(sub));

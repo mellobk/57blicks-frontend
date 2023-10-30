@@ -4,17 +4,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Button } from "@/components/ui/Button";
 import { type FC, useEffect, useRef, useState } from "react";
-import type { PermissionGroup, User } from "@/features/admin/components/manage-user/types/api.ts";
+import type { PermissionGroup, User } from "@/features/admin/components/manage-user/types/api";
 
-import ManageUsersService from "../../api/investors.ts";
+import ManageUsersService from "../../api/investors";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Icon } from "@/components/ui/Icon";
-import { PermissionToggle } from "../PermissionToggle/PermissionToggle.tsx";
+import { PermissionToggle } from "../PermissionToggle/PermissionToggle";
 import { Select } from "@/components/forms/Select";
 import { Input } from "@/components/forms/Input";
 import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
-import useStore from "@/stores/app-store.ts";
-import { PermissionType } from "@/features/admin/components/profile/types/permission.ts";
+import useStore from "@/stores/app-store";
+import { PermissionType } from "@/features/admin/components/profile/types/permission";
 
 interface PermissionsAdmin {
 	user: User;

@@ -1,6 +1,6 @@
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import { Profile } from "../pages/Profile/Profile.tsx";
-import { PermissionPage } from "../pages/Permission/Permission.tsx";
+import { Profile } from "../pages/Profile/Profile";
+import { PermissionPage } from "../pages/Permission/Permission";
 
 export const ProfileRoutes = [
 	{

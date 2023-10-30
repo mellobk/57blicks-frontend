@@ -1,1 +1,1 @@
-export { ToastMfa } from "./ToastMfa.tsx";
+export { ToastMfa } from "./ToastMfa";

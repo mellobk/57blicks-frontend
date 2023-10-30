@@ -1,5 +1,5 @@
 import { Icon } from "@/components/ui/Icon";
-import { useAuth } from "@/providers/AuthContextProvider.tsx";
+import { useAuth } from "@/providers/AuthContextProvider";
 import { useNavigate } from "@tanstack/router";
 import type { FC } from "react";
 

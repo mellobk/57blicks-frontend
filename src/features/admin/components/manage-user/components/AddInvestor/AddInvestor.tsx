@@ -1,14 +1,14 @@
 import { type FC, useEffect, useState } from "react";
-import { InvestorInfo } from "../InvestorInfo/InvestorInfo.tsx";
+import { InvestorInfo } from "../InvestorInfo/InvestorInfo";
 import type {
 	AddInvestorBankFields,
 	AddInvestorFields,
-} from "../../types/fields.ts";
-import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo.tsx";
-import { unFormatPhone } from "@/utils/common-funtions.ts";
+} from "../../types/fields";
+import { InvestorBankInfo } from "../InvestorBankInfo/InvestorBankInfo";
+import { unFormatPhone } from "@/utils/common-funtions";
 import { useMutation } from "@tanstack/react-query";
-import ManageUsersService from "../../api/investors.ts";
-import type { Investor } from "../../types/api.ts";
+import ManageUsersService from "../../api/investors";
+import type { Investor } from "../../types/api";
 
 interface AddInvestorProps {
 	handleSuccess?: () => void;

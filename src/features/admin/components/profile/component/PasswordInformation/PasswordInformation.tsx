@@ -3,14 +3,14 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useStore from "@/stores/app-store.ts";
-import { changePassword, getSession } from "@/lib/cognito.ts";
-import { changePassWordFields } from "@/features/auth/utils/input-fields.ts";
-import { passwordInitialsValidations } from "@/features/auth/utils/constants.ts";
-import { changePasswordSchema } from "@/features/auth/utils/Schemas/validations-change-password-schemas.ts";
-import type { PasswordValidations } from "@/features/auth/types/validations.ts";
+import useStore from "@/stores/app-store";
+import { changePassword, getSession } from "@/lib/cognito";
+import { changePassWordFields } from "@/features/auth/utils/input-fields";
+import { passwordInitialsValidations } from "@/features/auth/utils/constants";
+import { changePasswordSchema } from "@/features/auth/utils/Schemas/validations-change-password-schemas";
+import type { PasswordValidations } from "@/features/auth/types/validations";
 import { type FC, useEffect, useState } from "react";
-import { validPasswordRules } from "@/features/auth/utils/functions.ts";
+import { validPasswordRules } from "@/features/auth/utils/functions";
 
 export const PasswordInformation: FC = () => {
 	const { register, handleSubmit, watch, setValue } = useForm({

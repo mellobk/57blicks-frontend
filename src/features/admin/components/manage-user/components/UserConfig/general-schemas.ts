@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { errorMessages } from "@/utils/error-messages.ts";
+import { errorMessages } from "@/utils/error-messages";
 
 export const userAdminEditSchema = z.object({
 	email: z.string().nonempty(errorMessages.required),

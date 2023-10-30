@@ -1,8 +1,8 @@
 import type { FC } from "react";
-import { formatPhoneNumber } from "@/utils/common-funtions.ts";
+import { formatPhoneNumber } from "@/utils/common-funtions";
 
 import { LoanCard } from "../LoanCard";
-import type { Loan } from "../../types/types.ts";
+import type { Loan } from "../../types/types";
 
 interface InvestorBankInfoProps {
 	data?: Loan;

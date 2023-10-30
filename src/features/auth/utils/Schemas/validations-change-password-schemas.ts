@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { changePassWordFields } from "../input-fields.ts";
+import { changePassWordFields } from "../input-fields";
 
 export const changePasswordSchema = z.object({
 	[changePassWordFields?.newPassword]: z

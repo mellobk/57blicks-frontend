@@ -1,1 +1,1 @@
-export { Mfa } from "./Mfa.tsx";
+export { Mfa } from "./Mfa";

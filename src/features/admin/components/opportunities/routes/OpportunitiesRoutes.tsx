@@ -1,5 +1,5 @@
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import { PastOpportunities } from "@/features/admin/components/opportunities/pages/PastOpportunities/PastOpportunities.tsx";
+import { PastOpportunities } from "@/features/admin/components/opportunities/pages/PastOpportunities/PastOpportunities";
 
 export const OpportunitiesRoutes = [
 	{

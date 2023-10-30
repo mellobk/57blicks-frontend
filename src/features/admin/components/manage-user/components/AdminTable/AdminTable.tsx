@@ -1,18 +1,18 @@
 import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { AddAdmin } from "../AddAdmin/AddAdmin.tsx";
-import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb.tsx";
-import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin.tsx";
-import ManageUsersService from "../../api/investors.ts";
-import { Modal } from "@/components/ui/Modal/Modal.tsx";
+import { AddAdmin } from "../AddAdmin/AddAdmin";
+import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
+import { DeleteAdmin } from "../DeleteAdmin/DeleteAdmin";
+import ManageUsersService from "../../api/investors";
+import { Modal } from "@/components/ui/Modal/Modal";
 import { Table } from "@/features/admin/components/manage-user/components/Table";
-import { TableStatus } from "../TableStatus/TableStatus.tsx";
-import { Tabs } from "@/components/ui/Tabs/Tabs.tsx";
-import type { User } from "../../types/api.ts";
-import UserConfig from "../UserConfig/UserConfig.tsx";
-import { findIndex } from "@/utils/common-funtions.ts";
-import { tabs } from "../../utils/tabs.ts";
+import { TableStatus } from "../TableStatus/TableStatus";
+import { Tabs } from "@/components/ui/Tabs/Tabs";
+import type { User } from "../../types/api";
+import UserConfig from "../UserConfig/UserConfig";
+import { findIndex } from "@/utils/common-funtions";
+import { tabs } from "../../utils/tabs";
 
 interface SuccessProps {}
 

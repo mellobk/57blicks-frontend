@@ -1,8 +1,8 @@
 import * as z from "zod";
-import { BorrowerSchema } from "@/features/admin/components/create-loan/schemas/BorrowerSchema.ts";
-import { CollateralSchema } from "@/features/admin/components/create-loan/schemas/CollateralSchema.ts";
-import { FundingBreakdownSchema } from "@/features/admin/components/create-loan/schemas/FundingBreakdownSchema.ts";
-import { errorMessages } from "@/utils/error-messages.ts";
+import { BorrowerSchema } from "@/features/admin/components/create-loan/schemas/BorrowerSchema";
+import { CollateralSchema } from "@/features/admin/components/create-loan/schemas/CollateralSchema";
+import { FundingBreakdownSchema } from "@/features/admin/components/create-loan/schemas/FundingBreakdownSchema";
+import { errorMessages } from "@/utils/error-messages";
 
 export const LoanSchema = z.object({
 	amountDrawn: z

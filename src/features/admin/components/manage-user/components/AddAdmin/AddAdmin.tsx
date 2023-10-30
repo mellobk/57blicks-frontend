@@ -3,14 +3,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
-import { AddAdminSchema } from "@/features/admin/components/manage-user/schemas/AddAdminSchemas.ts";
-import { addAdminFields } from "../../utils/input-fields.ts";
+import { AddAdminSchema } from "@/features/admin/components/manage-user/schemas/AddAdminSchemas";
+import { addAdminFields } from "../../utils/input-fields";
 import { type FC, useEffect } from "react";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { useMutation } from "@tanstack/react-query";
-import type { User } from "../../types/api.ts";
-import ManageUsersService from "../../api/investors.ts";
-import { unFormatPhone } from "@/utils/common-funtions.ts";
+import type { User } from "../../types/api";
+import ManageUsersService from "../../api/investors";
+import { unFormatPhone } from "@/utils/common-funtions";
 
 interface AddAdminProps {
 	handleSuccess?: () => void;

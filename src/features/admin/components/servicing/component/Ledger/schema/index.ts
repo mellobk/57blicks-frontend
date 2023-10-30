@@ -2,7 +2,7 @@ import * as z from "zod";
 
 import { ApprovalStateType, LedgerType, LedgerTypeOfPayment } from "../types";
 
-import { errorMessages } from "@/utils/error-messages.ts";
+import { errorMessages } from "@/utils/error-messages";
 
 export const validationSchema = z.object({
 	ledgers: z.array(

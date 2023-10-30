@@ -1,8 +1,8 @@
 import { type FC, useState } from "react";
-import { DueToDraws } from "@/features/admin/components/loan-overview/components/DueToDraws/DueToDraws.tsx";
-import { Subtitle } from "@/features/admin/components/loan-overview/components/Subtitle/Subtitle.tsx";
-import { Value } from "@/features/admin/components/loan-overview/components/Value/Value.tsx";
-import type { LoanOverviewFields } from "@/features/admin/components/loan-overview/types/fields.ts";
+import { DueToDraws } from "@/features/admin/components/loan-overview/components/DueToDraws/DueToDraws";
+import { Subtitle } from "@/features/admin/components/loan-overview/components/Subtitle/Subtitle";
+import { Value } from "@/features/admin/components/loan-overview/components/Value/Value";
+import type { LoanOverviewFields } from "@/features/admin/components/loan-overview/types/fields";
 
 type Props = {
 	data: LoanOverviewFields;

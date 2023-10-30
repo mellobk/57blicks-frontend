@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/Button";
 import DataTable from "react-data-table-component";
 import { Icon } from "@/components/ui/Icon";
 import { Input } from "@/components/forms/Input";
-import { Modal } from "@/components/ui/Modal/Modal.tsx";
-import { Toggle } from "@/components/ui/Toggle/Toggle.tsx";
-import { useDebounce } from "@/hooks/debounce.tsx";
+import { Modal } from "@/components/ui/Modal/Modal";
+import { Toggle } from "@/components/ui/Toggle/Toggle";
+import { useDebounce } from "@/hooks/debounce";
 
 interface Column {
 	name?: string;

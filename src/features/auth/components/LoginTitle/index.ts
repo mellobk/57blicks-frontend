@@ -1,1 +1,1 @@
-export { LoginTitle } from "./LoginTitle.tsx";
+export { LoginTitle } from "./LoginTitle";

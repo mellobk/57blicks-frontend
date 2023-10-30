@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import { moneyFormat } from "@/utils/formats.ts";
+import { moneyFormat } from "@/utils/formats";
 
 type Props = {
 	action?: () => void;

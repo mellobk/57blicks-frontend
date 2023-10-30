@@ -1,17 +1,17 @@
 import { type FC, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import LendersService from "@/api/lenders.ts";
-import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb.tsx";
-import { Tabs } from "@/components/ui/Tabs/Tabs.tsx";
-import type { DkcServicing, FundingBreakdown } from "../../types/api.ts";
-import { servicingTabs } from "../../utils/tabs.ts";
-import { Table } from "./Table/Table.tsx";
+import LendersService from "@/api/lenders";
+import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
+import { Tabs } from "@/components/ui/Tabs/Tabs";
+import type { DkcServicing, FundingBreakdown } from "../../types/api";
+import { servicingTabs } from "../../utils/tabs";
+import { Table } from "./Table/Table";
 import { Toggle } from "@/components/ui/Toggle";
-import { ShowModal } from "@/features/admin/components/servicing/component/Page/ShowModal/ShowModal.tsx";
-import servicingStore from "../../stores/servicing-store.ts";
-import { moneyFormat } from "@/utils/formats.ts";
-import { validateDate } from "@/utils/common-funtions.ts";
+import { ShowModal } from "@/features/admin/components/servicing/component/Page/ShowModal/ShowModal";
+import servicingStore from "../../stores/servicing-store";
+import { moneyFormat } from "@/utils/formats";
+import { validateDate } from "@/utils/common-funtions";
 
 interface Props {
 	actualTab: string;

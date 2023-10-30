@@ -1,8 +1,8 @@
 import type { FC } from "react";
-import { CreatePassword } from "@/features/auth/components/CreatePassWord/CreatePassWord.tsx";
-import { getLocalStorage } from "@/utils/local-storage.ts";
-import { mfaCode, userEmail } from "../../utils/constants.ts";
-import { AuthRoutesNames } from "../../routes/AuthRouter.tsx";
+import { CreatePassword } from "@/features/auth/components/CreatePassWord/CreatePassWord";
+import { getLocalStorage } from "@/utils/local-storage";
+import { mfaCode, userEmail } from "../../utils/constants";
+import { AuthRoutesNames } from "../../routes/AuthRouter";
 
 export const ResetCreatePassWord: FC = () => {
 	const localEmail = getLocalStorage(userEmail);

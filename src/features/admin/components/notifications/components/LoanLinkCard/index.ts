@@ -1,1 +1,1 @@
-export { LoanLinkCard } from "./LoanLinkCard.tsx";
+export { LoanLinkCard } from "./LoanLinkCard";

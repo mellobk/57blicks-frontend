@@ -1,1 +1,1 @@
-export { LoanInformation } from "./LoanInformation.tsx";
+export { LoanInformation } from "./LoanInformation";

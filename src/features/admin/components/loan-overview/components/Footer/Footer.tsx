@@ -1,7 +1,7 @@
 import type { ComponentType } from "react";
 import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
 import { Cell } from "@/components/table/Cell";
-import type { FundingBreakdown } from "@/features/admin/components/loan-overview/types/fields.ts";
+import type { FundingBreakdown } from "@/features/admin/components/loan-overview/types/fields";
 
 interface Props extends ExpanderComponentProps<any> {
 	data: Array<FundingBreakdown>;

@@ -4,7 +4,7 @@ import { LoanInformation } from "../../LoanInformation";
 import { BorrowerInformation } from "../../BorrowerInformation";
 import { LedgerList } from "../../Ledger";
 import { InvoiceScreen } from "../../Invoice";
-import type { FundingBreakdown } from "@/features/admin/components/investor-portals/types/api.ts";
+import type { FundingBreakdown } from "@/features/admin/components/investor-portals/types/api";
 
 interface Props {
 	openModal?: boolean;

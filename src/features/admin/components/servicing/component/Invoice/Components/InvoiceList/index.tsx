@@ -1,9 +1,9 @@
 import { type FC, useState } from "react";
-import InvoiceListScreen from "./InvoiceListScreen.tsx";
-import ManageInvoiceService from "@/features/admin/components/servicing/api/invoices.ts";
+import InvoiceListScreen from "./InvoiceListScreen";
+import ManageInvoiceService from "@/features/admin/components/servicing/api/invoices";
 import { useQuery } from "@tanstack/react-query";
 import type { Invoice } from "../../types";
-import Loading from "@/assets/icons/loading.tsx";
+import Loading from "@/assets/icons/loading";
 
 interface InvoiceListProps {
 	loanId: string;
