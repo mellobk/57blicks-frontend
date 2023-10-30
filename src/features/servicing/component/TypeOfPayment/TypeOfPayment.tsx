@@ -25,6 +25,7 @@ export const TypeOfPayment: FC<EnableInvestorProps> = ({ handleConfirm }) => {
 						label="Type of Payment"
 						placeholder="Type of Payment"
 						options={LEDGER_OPTIONS}
+						value={typeOfPayment}
 						onChange={(event): void => {
 							setTypeOfPayment(event.target.value as string);
 							setTypeOfPaymentDescription(event.target.value as string);
