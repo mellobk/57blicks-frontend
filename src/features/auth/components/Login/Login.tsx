@@ -2,22 +2,22 @@ import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type FC, useState } from "react";
-import { LoginSchema } from "../../utils/Schemas/LoginSchemas";
+import { LoginSchema } from "../../utils/Schemas/LoginSchemas.ts";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
 import { Input } from "@/components/forms/Input";
-import { useAuth } from "@/providers/AuthContextProvider";
+import { useAuth } from "@/providers/AuthContextProvider.tsx";
 import { Message } from "primereact/message";
 import { LoginTitle } from "../LoginTitle";
-import { loginFields } from "../../utils/input-fields";
-import type { LoginFields } from "../../types/validations";
+import { loginFields } from "../../utils/input-fields.ts";
+import type { LoginFields } from "../../types/validations.ts";
 import { useNavigate } from "@tanstack/router";
-import { loginRoutesNames } from "../../routes/LoginRouter";
-import { getSession } from "@/lib/cognito";
-import { sendToLocalStorage } from "@/utils/local-storage";
-import { accessToken, group, sub } from "@/utils/constant";
+import { AuthRoutesNames } from "../../routes/AuthRouter.tsx";
+import { getSession } from "@/lib/cognito.ts";
+import { sendToLocalStorage } from "@/utils/local-storage.ts";
+import { accessToken, group, sub } from "@/utils/constant.ts";
 import { useMutation } from "@tanstack/react-query";
-import ManageLogService from "@/features/manage-user/api/logs";
+import ManageLogService from "@/features/admin/components/manage-user/api/logs.ts";
 
 type LoginData = {
 	email: string;
@@ -67,7 +67,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 	};
 
 	const ResetPassword = (): void => {
-		void navigate({ to: `/${loginRoutesNames.resetPassword}` });
+		void navigate({ to: `/${AuthRoutesNames.resetPassword}` });
 	};
 
 	return (

@@ -1,29 +1,20 @@
 import { Router } from "@tanstack/router";
-import LoginRouter from "@/features/auth/routes/LoginRouter";
-import DashboardRouter from "@/features/dashboard/routes/DashboardRouter";
-import InvestorPortalsRouter from "@/features/investor-portals/routes/InvestorPortalsRoutes";
+
+import AuthRouter from "@/features/auth/routes/AuthRouter";
+import AdminRouter from "@/features/admin/routes/AdminRouter";
 import InvestorRouter from "@/features/investor/routes/InvestorRouter";
-import ManageUserRouter from "@/features/manage-user/routes/ManageUsersRouter";
-import OpportunitiesRouter from "@/features/opportunities/routes/OpportunitiesRouter";
-import ProfileRouter from "@/features/profile/routes/ProfileRoutes";
-import ServicingRouter from "@/features/servicing/routes/ServicingRoutes";
-import { rootRoute } from "./RootRoute";
-import AppRouter from "./AppRoutes";
+import AppRouter from "./AppRouter";
+import { RootRoute } from "./RootRoute";
 
 //array of all routes
 const allRoutes = [
   ...AppRouter,
-  ...DashboardRouter,
+  ...AdminRouter,
   ...InvestorRouter,
-  ...InvestorPortalsRouter,
-  ...LoginRouter,
-  ...ManageUserRouter,
-  ...OpportunitiesRouter,
-  ...ProfileRouter,
-  ...ServicingRouter,
+  ...AuthRouter,
 ];
 
-const routeTree = rootRoute.addChildren([...allRoutes]);
+const routeTree = RootRoute.addChildren([...allRoutes]);
 
 const router = new Router({ routeTree });
 

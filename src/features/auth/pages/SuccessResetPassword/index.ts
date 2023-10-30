@@ -1,1 +1,1 @@
-export { SuccessResetPassword } from "./SuccessResetPassword";
+export { SuccessResetPassword } from "./SuccessResetPassword.tsx";

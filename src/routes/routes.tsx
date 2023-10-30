@@ -1,6 +1,6 @@
 import type { ComponentType, ReactElement, ReactNode } from "react";
 import { Route } from "@tanstack/router";
-import { rootRoute } from "./RootRoute";
+import { RootRoute } from "./RootRoute";
 import { getLocalStorage, removeLocalStorage } from "@/utils/local-storage";
 import { accessToken, group } from "@/utils/constant";
 import { signOut } from "@/lib/cognito";
@@ -19,7 +19,7 @@ const UnauthenticatedRoute = (routes: Array<Props>) => {
 	return routes.map(({ page: Page, layout: Layout, path }) => {
 		return new Route({
 			path,
-			getParentRoute: (): typeof rootRoute => rootRoute,
+			getParentRoute: (): typeof RootRoute => RootRoute,
 			component: (): ReactElement => {
 				return Layout ? (
 					<Layout>
@@ -37,7 +37,7 @@ export const AuthenticatedRoute = (routes: Array<Props>) => {
 	return routes.map(({ page: Page, layout: Layout, path }) => {
 		return new Route({
 			path,
-			getParentRoute: (): typeof rootRoute => rootRoute,
+			getParentRoute: (): typeof RootRoute => RootRoute,
 			component: (): ReactElement => {
 				const cognitoGroup = getLocalStorage(group)
 					? JSON?.parse(getLocalStorage(group))
@@ -66,7 +66,7 @@ export const InvestorRoute = (routes: Array<Props>) => {
 	return routes.map(({ page: Page, layout: Layout, path }) => {
 		return new Route({
 			path,
-			getParentRoute: (): typeof rootRoute => rootRoute,
+			getParentRoute: (): typeof RootRoute => RootRoute,
 			component: (): ReactElement => {
 				if (!getLocalStorage(accessToken)) {
 					signOut();

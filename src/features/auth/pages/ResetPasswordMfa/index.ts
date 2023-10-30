@@ -1,1 +1,1 @@
-export { ResetPasswordMfa } from "./ResetPasswordMfa";
+export { ResetPasswordMfa } from "./ResetPasswordMfa.tsx";

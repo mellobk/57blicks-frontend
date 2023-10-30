@@ -4,13 +4,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
-import { loginFields } from "@/features/auth/utils/input-fields";
-import { ResetPasswordSchemas } from "@/features/auth/utils/Schemas/ResetPasswordSchemas";
+import { loginFields } from "@/features/auth/utils/input-fields.ts";
+import { ResetPasswordSchemas } from "@/features/auth/utils/Schemas/ResetPasswordSchemas.ts";
 import { LoginTitle } from "../LoginTitle";
-import { sendCode } from "@/lib/cognito";
+import { sendCode } from "@/lib/cognito.ts";
 import { useNavigate } from "@tanstack/router";
-import { sendToLocalStorage } from "@/utils/local-storage";
-import { userEmail } from "../../utils/constants";
+import { sendToLocalStorage } from "@/utils/local-storage.ts";
+import { userEmail } from "../../utils/constants.ts";
 import { Message } from "primereact/message";
 
 export const ResetPassword: FC = () => {

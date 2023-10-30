@@ -1,1 +1,1 @@
-export { FirstLogin } from "./FirstLogin";
+export { FirstLogin } from "./FirstLogin.tsx";

@@ -1,4 +1,4 @@
-import type { PasswordValidations } from "../types/validations";
+import type { PasswordValidations } from "../types/validations.ts";
 
 export const validPasswordRules = (
 	text: string,

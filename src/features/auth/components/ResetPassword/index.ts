@@ -1,1 +1,1 @@
-export { ResetPassword as ResetPasswordForm } from "./ResetPassword";
+export { ResetPassword as ResetPasswordForm } from "./ResetPassword.tsx";

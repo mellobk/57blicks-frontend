@@ -1,1 +1,1 @@
-export { CreatePassword } from "./CreatePassWord";
+export { CreatePassword } from "./CreatePassWord.tsx";

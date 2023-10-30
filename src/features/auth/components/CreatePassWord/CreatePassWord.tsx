@@ -3,20 +3,20 @@ import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
-import createPassWordFields from "@/features/auth/utils/input-fields";
-import { createPasswordSchema } from "@/features/auth/utils/Schemas/validations-schemas";
+import createPassWordFields from "@/features/auth/utils/input-fields.ts";
+import { createPasswordSchema } from "@/features/auth/utils/Schemas/validations-schemas.ts";
 import {
 	mfaCode as localMfa,
 	passwordInitialsValidations,
 	userEmail,
-} from "@/features/auth/utils/constants";
-import { validPasswordRules } from "@/features/auth/utils/functions";
-import type { PasswordValidations } from "@/features/auth/types/validations";
+} from "@/features/auth/utils/constants.ts";
+import { validPasswordRules } from "@/features/auth/utils/functions.ts";
+import type { PasswordValidations } from "@/features/auth/types/validations.ts";
 import { LoginTitle } from "../LoginTitle";
-import { forgotPassword } from "@/lib/cognito";
+import { forgotPassword } from "@/lib/cognito.ts";
 import { useNavigate } from "@tanstack/router";
 import { Message } from "primereact/message";
-import { removeLocalStorage } from "@/utils/local-storage";
+import { removeLocalStorage } from "@/utils/local-storage.ts";
 
 interface MfaProps {
 	title?: string;
