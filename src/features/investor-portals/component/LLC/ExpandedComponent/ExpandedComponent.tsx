@@ -1,13 +1,20 @@
-import type { ComponentType } from "react";
-import { useEffect, useState } from "react";
+import { ComponentType, useEffect, useState } from "react";
 import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
 
 import { Cell } from "@/components/table/Cell";
-import { Investor } from "@/types/api/investor";
+import { FundingBreakdown } from "@/types/api/funding-breakdown.ts";
+import { Investor } from "@/types/api/investor.ts";
 
-interface Props extends ExpanderComponentProps<Investor> {}
+interface Props extends ExpanderComponentProps<Investor> {
+	selectedParticipation?: FundingBreakdown;
+	selectParticipation?: (row: FundingBreakdown) => void;
+}
 
-export const ExpandedComponent: ComponentType<Props> = ({ data }) => {
+export const ExpandedComponent: ComponentType<Props> = ({
+	data,
+	selectedParticipation,
+	selectParticipation,
+}) => {
 	const defaultTotals = {
 		amount: 0,
 		rate: 0,
@@ -37,7 +44,14 @@ export const ExpandedComponent: ComponentType<Props> = ({ data }) => {
 			{data.participationBreakdowns?.length && (
 				<>
 					{data.participationBreakdowns?.map((participant) => (
-						<div className="flex flex-row h-12 bg-white">
+						<div
+							className={`flex flex-row h-12 ${
+								selectedParticipation?.id === participant.id
+									? "bg-blue-200/[15%]"
+									: "bg-white"
+							}`}
+							onClick={() => selectParticipation?.(participant)}
+						>
 							<div className="w-12" />
 							<div className="grid grid-cols-8 w-full items-center">
 								<Cell
@@ -66,7 +80,11 @@ export const ExpandedComponent: ComponentType<Props> = ({ data }) => {
 									bold
 								/>
 								<Cell
-									className="bg-gold-500/[12%] text-gold-500"
+									className={
+										selectedParticipation?.id === participant.id
+											? "bg-blue-200/[24%] text-blue-200 border-2 border-blue-200"
+											: "bg-gold-500/[12%] text-gold-500"
+									}
 									format="money"
 									value={participant.regular}
 									bold

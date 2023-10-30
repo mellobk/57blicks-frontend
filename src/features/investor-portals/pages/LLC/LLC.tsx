@@ -7,28 +7,41 @@ import { Input } from "@/components/forms/Input";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Table } from "@/components/ui/Table";
 import { Tabs } from "@/components/ui/Tabs";
-import { Investor } from "@/types/api/investor";
-import { getLoanColumns } from "@/features/investor-portals/utils/common-funtions.ts";
+import { ExpandedComponent } from "@/features/investor-portals/component/LLC/ExpandedComponent/ExpandedComponent";
+import { Footer } from "@/features/investor-portals/component/LLC/Footer/Footer";
+import { getLoanColumns } from "@/features/investor-portals/utils/common-funtions";
 import { investorPortalsTabs } from "@/features/investor-portals/utils/tabs";
-import { ExpandedComponent } from "@/features/investor-portals/component/ExpandedComponent/ExpandedComponent";
+import { FundingBreakdown } from "@/types/api/funding-breakdown";
+import { Loan } from "@/types/api/loan";
 
 export const LLC: FC = () => {
-	const [modalData, setModalData] = useState<Investor>();
+	const [selectedLoan, setSelectedLoan] = useState<Loan>();
+	const [selectedParticipation, setSelectedParticipation] =
+		useState<FundingBreakdown>();
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const currentMonthName = moment().format("MMMM");
 
-	const investorsQuery = useQuery(
-		["investors-query"],
-		() => InvestorsService.getInvestorsWithLoans(searchValue),
-		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
+	const investorsQuery = useQuery(["investors-query"], () =>
+		InvestorsService.getInvestorsWithLoans(searchValue)
 	);
+
+	const conditionalRowStyles = [
+		{
+			when: (row: Loan) => selectedLoan?.id === row.id,
+			style: {
+				background: "#0085FF3D",
+				borderColor: "#0085FF",
+				borderWidth: 2,
+				color: "#0085FF",
+			},
+		},
+	];
 
 	const columns = [
 		{
 			name: "Investor",
-			selector: (row: Investor) =>
-				`${row?.user?.firstName} ${row?.user?.lastName}`,
+			selector: (row: Loan) => `${row?.user?.firstName} ${row?.user?.lastName}`,
 			sortable: true,
 		},
 		{
@@ -67,7 +80,7 @@ export const LLC: FC = () => {
 			sortable: true,
 			conditionalCellStyles: [
 				{
-					when: (row: Investor) => !!row,
+					when: (row: Loan) => !!row,
 					style: {
 						background: "#C79E631F",
 						color: "#C79E63",
@@ -76,6 +89,16 @@ export const LLC: FC = () => {
 			],
 		},
 	];
+
+	const selectInvestor = (loan: Loan) => {
+		setSelectedLoan(loan);
+		setSelectedParticipation(undefined);
+	};
+
+	const selectParticipation = (participation: FundingBreakdown) => {
+		setSelectedLoan(undefined);
+		setSelectedParticipation(participation);
+	};
 
 	return (
 		<div className="flex flex-col w-full h-full">
@@ -136,33 +159,45 @@ export const LLC: FC = () => {
 			</div>
 			<div className="flex flex-col h-full gap-3 overflow-y-auto">
 				<div
-					className={`flex flex-col h-full ${
-						modalData ? "max-h-[75vh]" : ""
-					} bg-white rounded-2xl justify-between`}
+					className={`flex flex-col ${
+						selectedLoan ? "h-[50%]" : "h-full"
+					} bg-white rounded-2xl justify-between overflow-y-auto`}
 				>
-					<div className="rounded-t-2xl overflow-auto">
-						<Table
-							className="p-0 m-0 rounded-t-2xl"
-							columns={columns}
-							data={investorsQuery.data || []}
-							expandableRows
-							expandableRowDisabled={(row: Investor) =>
-								!row.participationBreakdowns?.length
-							}
-							expandableRowsComponent={ExpandedComponent}
-							onRowClicked={setModalData}
-							progressPending={investorsQuery.isFetching}
-						/>
-					</div>
-					{/*<Footer data={investorsQuery.data || []} />*/}
-				</div>
-				{modalData && (
 					<Table
-						className="min-h-[90px] p-0 m-0 rounded-2xl"
-						columns={getLoanColumns()}
-						data={[modalData]}
+						className="h-full p-0 m-0 rounded-t-2xl overflow-y-auto"
+						columns={columns}
+						data={investorsQuery.data || []}
+						expandableRows
+						expandableRowDisabled={(row: Loan) =>
+							!row.participationBreakdowns?.length
+						}
+						expandableRowsComponent={ExpandedComponent}
+						expandableRowsComponentProps={{
+							selectedParticipation,
+							selectParticipation,
+						}}
+						onRowClicked={selectInvestor}
+						conditionalRowStyles={conditionalRowStyles}
+						progressPending={investorsQuery.isFetching}
+						fixedHeader
 					/>
-				)}
+					<Footer data={investorsQuery.data || []} />
+				</div>
+				<Table
+					className={`flex flex-col ${
+						selectedLoan
+							? "h-[50%]"
+							: selectedParticipation
+							? "min-h-[88px]"
+							: "hidden"
+					}  bg-white rounded-2xl p-0 m-0 overflow-y-auto`}
+					columns={getLoanColumns()}
+					data={
+						selectedLoan?.participationBreakdowns ||
+						(selectedParticipation ? [selectedParticipation] : [])
+					}
+					fixedHeader
+				/>
 			</div>
 		</div>
 	);

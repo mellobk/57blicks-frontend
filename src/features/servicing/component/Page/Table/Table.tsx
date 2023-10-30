@@ -7,7 +7,6 @@ import { Toggle } from "@/components/ui/Toggle/Toggle.tsx";
 import { Icon } from "@/components/ui/Icon";
 import { Modal } from "@/components/ui/Modal/Modal.tsx";
 import { useDebounce } from "@/hooks/debounce.tsx";
-import "./Table.css";
 import { FooterTable } from "@/components/ui/FooterTabs/FooterTabs.tsx";
 import type { FundingBreakdown } from "../../../types/api.ts";
 import { moneyFormat } from "@/utils/formats.ts";

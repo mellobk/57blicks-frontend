@@ -1,5 +1,3 @@
-import "./Table.css";
-
 import type { FC, ReactElement } from "react";
 import { useEffect, useState } from "react";
 

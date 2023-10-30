@@ -20,7 +20,7 @@ interface Props {
 }
 
 export const Page: FC<Props> = ({ actualTab, id }) => {
-	const [modalData, setModalData] = useState<FundingBreakdown | null>(null);
+	const [selectedRow, setSelectedRow] = useState<FundingBreakdown | null>(null);
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const setLenderData = investorPortalsStore((state) => state.setLender);
@@ -46,22 +46,21 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const lenderQuery = useQuery(
 		["lender-query"],
 		() => LendersService.getLenderById(findDkcLender(), searchValue),
-		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
+		{ enabled: lenderData.length > 0 }
 	);
 
-	useEffect(() => {
-		void lenderQuery.refetch();
-	}, [searchValue, lenderData]);
-
-	useEffect(() => {
-		if (lenderData.length <= 0) {
-			setLenderData(lendersQuery?.data?.data || []);
-		}
-	}, [lendersQuery.isSuccess]);
+	const conditionalRowStyles = [
+		{
+			when: (row: FundingBreakdown) => selectedRow?.id === row.id,
+			style: {
+				background: "#0085FF20",
+			},
+		},
+	];
 
 	const columns = [
 		{
-			name: "Investor",
+			name: "Collateral Address",
 			selector: (row: FundingBreakdown) =>
 				row.loan.collaterals[0]?.address || "",
 			sortable: true,
@@ -103,15 +102,34 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			sortable: true,
 			conditionalCellStyles: [
 				{
-					when: (row: FundingBreakdown) => !!row.regular,
+					when: (row: FundingBreakdown) => selectedRow?.id !== row.id,
 					style: {
 						background: "#C79E631F",
 						color: "#C79E63",
 					},
 				},
+				{
+					when: (row: FundingBreakdown) => selectedRow?.id === row.id,
+					style: {
+						background: "#0085FF3D",
+						color: "#0085FF",
+						borderColor: "#0085FF",
+						borderWidth: 2,
+					},
+				},
 			],
 		},
 	];
+
+	useEffect(() => {
+		void lenderQuery.refetch();
+	}, [searchValue, lenderData]);
+
+	useEffect(() => {
+		if (lenderData.length <= 0) {
+			setLenderData(lendersQuery.data || []);
+		}
+	}, [lendersQuery.isSuccess]);
 
 	return (
 		<div className="flex flex-col w-full h-full">
@@ -174,25 +192,24 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				</div>
 			</div>
 			<div className="flex flex-col h-full gap-3 overflow-y-auto">
-				<div
-					className={`flex flex-col h-full ${
-						modalData ? "max-h-[75vh]" : ""
-					} bg-white rounded-2xl justify-between`}
-				>
+				<div className="flex flex-col h-full bg-white rounded-2xl justify-between overflow-y-auto">
 					<Table
-						className="p-0 m-0 rounded-t-2xl"
+						className="h-full p-0 m-0 rounded-t-2xl overflow-y-auto"
 						columns={columns}
+						conditionalRowStyles={conditionalRowStyles}
 						data={lenderQuery.data?.fundingBreakdowns || []}
-						onRowClicked={setModalData}
+						onRowClicked={setSelectedRow}
 						progressPending={lenderQuery?.isFetching}
+						fixedHeader
 					/>
 					<Footer data={lenderQuery.data?.fundingBreakdowns || []} />
 				</div>
-				{modalData && (
+				{selectedRow && (
 					<Table
-						className="min-h-[90px] p-0 m-0 rounded-2xl"
+						className="flex flex-col min-h-[88px] bg-white rounded-2xl p-0 m-0 overflow-y-auto"
 						columns={getLoanColumns()}
-						data={[modalData]}
+						data={[selectedRow]}
+						fixedHeader
 					/>
 				)}
 			</div>

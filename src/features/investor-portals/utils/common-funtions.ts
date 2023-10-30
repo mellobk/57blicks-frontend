@@ -11,6 +11,15 @@ export const getLoanColumns = () => {
 		loanColumns.push({
 			name: month,
 			selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
+      conditionalCellStyles: [
+        {
+          when: () => month === moment().format('MMMM'),
+          style: {
+            background: "#C79E631F",
+            color: "#C79E63",
+          },
+        },
+      ],
 		});
 	}
 

@@ -56,7 +56,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 
 	useEffect(() => {
 		if (lenderData.length <= 0) {
-			setLenderData(lendersQuery?.data?.data || []);
+			setLenderData(lendersQuery?.data || []);
 		}
 	}, [lendersQuery.isSuccess]);
 
