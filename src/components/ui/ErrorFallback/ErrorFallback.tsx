@@ -1,8 +1,7 @@
-import { useEffect, useRef } from "react";
+import { ReactElement, useEffect, useRef } from "react";
 import { Toast } from "primereact/toast";
-import type { FunctionComponent } from "@/types";
 
-export const ErrorFallback = (): FunctionComponent => {
+export const ErrorFallback = (): ReactElement => {
 	const toast = useRef<Toast>(null);
 
 	useEffect(() => {

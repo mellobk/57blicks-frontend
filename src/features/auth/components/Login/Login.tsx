@@ -12,12 +12,12 @@ import { LoginTitle } from "../LoginTitle";
 import { loginFields } from "../../utils/input-fields";
 import type { LoginFields } from "../../types/validations";
 import { useNavigate } from "@tanstack/router";
-import { loginRoutesNames } from "../../routes/LoginRouter";
+import { AuthRoutesNames } from "../../routes/AuthRouter";
 import { getSession } from "@/lib/cognito";
 import { sendToLocalStorage } from "@/utils/local-storage";
 import { accessToken, group, sub } from "@/utils/constant";
 import { useMutation } from "@tanstack/react-query";
-import ManageLogService from "@/features/manage-user/api/logs";
+import ManageLogService from "@/features/admin/components/manage-user/api/logs";
 
 type LoginData = {
 	email: string;
@@ -59,7 +59,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 			createLoginLog.mutate();
 
 			window.location.href =
-				groupAws === "investor" ? "/investors" : "/manage-users/admins";
+				groupAws === "investor" ? "/investors/portfolio" : "/manage-users/admins";
 		} catch (error) {
 			console.log(error);
 			setLoginError("Login failed. Please check your credentials.");
@@ -67,7 +67,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 	};
 
 	const ResetPassword = (): void => {
-		void navigate({ to: `/${loginRoutesNames.resetPassword}` });
+		void navigate({ to: `/${AuthRoutesNames.resetPassword}` });
 	};
 
 	return (

@@ -1,4 +1,4 @@
-import type { IErrorResponse } from "@/features/manage-user/types/api";
+import type { IErrorResponse } from "@/features/admin/components/manage-user/types/api";
 import { accessToken } from "./constant";
 import axios from "axios";
 import { getLocalStorage } from "./local-storage";

@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { Mfa } from "@/features/auth/components/Mfa";
 import { getLocalStorage } from "@/utils/local-storage";
 import { userEmail } from "../../utils/constants";
-import { loginRoutesNames } from "../../routes/LoginRouter";
+import { AuthRoutesNames } from "../../routes/AuthRouter";
 
 export const ResetPasswordMfa: FC = () => {
 	const localEmail = getLocalStorage(userEmail);
@@ -19,8 +19,8 @@ export const ResetPasswordMfa: FC = () => {
 				buttonText="Continue"
 				receptorCode={localEmail}
 				labelData={hiddenEmail}
-				navigateTo={loginRoutesNames.ResetCreatePassWord}
-				backRoute={loginRoutesNames.resetPassword}
+				navigateTo={AuthRoutesNames.ResetCreatePassWord}
+				backRoute={AuthRoutesNames.resetPassword}
 			/>
 		</div>
 	);

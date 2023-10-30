@@ -1,13 +1,15 @@
-import { Admin } from "@/features/manage-user/pages/Admin/Admin";
+
 import { AuthenticatedRoute } from "@/routes/routes";
-import { CreateLoan } from "@/features/create-loan/pages/CreateLoan/CreateLoan";
-import { CreateOpportunity } from "@/features/opportunities/pages/CreateOpportunity/CreateOpportunity";
+
+import { LLC as ServicingLLC } from "@/features/admin/components/servicing/pages/LLC/LLC";
+import { LLC as InvestorPortalsLLC } from "@/features/admin/components/servicing/pages/LLC/LLC";
+import { Admin } from "@/features/admin/components/manage-user/pages/Admin/Admin";
+import { LoanOverview } from "@/features/admin/components/loan-overview/pages/LoanOverview/LoanOverview";
+import { Support } from "@/features/admin/pages/Support/Support";
+import { Reporting } from "@/features/admin/pages/Reporting/Reporting";
 import { DashboardLayout } from "@/components/layout/Dashboard";
-import { LLC as ServicingLLC } from "@/features/servicing/pages/LLC/LLC";
-import { LLC as InvestorPortalsLLC } from "@/features/investor-portals/pages/LLC/LLC";
-import { LoanOverview } from "@/features/loan-overview/pages/LoanOverview/LoanOverview";
-import { Reporting } from "../pages/Reporting/Reporting";
-import { Support } from "../pages/Support/Support";
+import { CreateOpportunity } from "@/features/admin/components/opportunities/pages/CreateOpportunity/CreateOpportunity";
+import { CreateLoan } from "@/features/admin/components/create-loan/pages/CreateLoan/CreateLoan";
 
 export const NavbarRoutes = [
 	{
@@ -45,7 +47,7 @@ export const NavbarRoutes = [
 		page: Admin,
 		routeComponent: null,
 		layout: DashboardLayout,
-		name: "Manage Users",
+		name: "Users",
 	},
 
 	{

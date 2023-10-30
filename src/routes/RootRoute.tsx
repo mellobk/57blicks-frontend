@@ -1,6 +1,6 @@
-import { Outlet, RootRoute } from "@tanstack/router";
-import type { FunctionComponent } from "@/types";
+import { ReactElement } from "react";
+import { Outlet, RootRoute as TanstackRootRoute } from "@tanstack/router";
 
-export const rootRoute = new RootRoute({
-	component: (): FunctionComponent => <Outlet />,
+export const RootRoute = new TanstackRootRoute({
+	component: (): ReactElement => <Outlet />,
 });

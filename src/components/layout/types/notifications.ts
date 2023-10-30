@@ -7,6 +7,7 @@ export interface Notification {
 	content: string;
 	timestamp: Date;
 	redirectPath: string;
+  additionalData?: string;
 	priority: string;
 	type: string;
 	userFullName: string;
