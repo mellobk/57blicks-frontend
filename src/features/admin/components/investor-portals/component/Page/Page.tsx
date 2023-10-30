@@ -4,15 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 
 import LendersService from "@/api/lenders";
 import { Input } from "@/components/forms/Input";
-import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
+import { BreadCrumb } from "@/components/ui/BreadCrumb";
+import { InvestorFooter } from "@/components/ui/InvestorFooter";
 import { Table } from "@/components/ui/Table";
 import { Tabs } from "@/components/ui/Tabs";
-import { Footer } from "@/features/admin/components/investor-portals/component/Page/Footer/Footer";
 import investorPortalsStore from "@/features/admin/components/investor-portals/stores/investor-portals-store";
-import { getLoanColumns } from "@/features/admin/components/investor-portals/utils/common-funtions";
 import { investorPortalsTabs } from "@/features/admin/components/investor-portals/utils/tabs";
 import { FundingBreakdown } from "@/types/api/funding-breakdown";
 import { moneyFormat, percentageFormat } from "@/utils/formats";
+import { getLoanColumns } from "@/utils/investors";
 
 interface Props {
 	actualTab: string;
@@ -126,9 +126,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	}, [searchValue, lenderData]);
 
 	useEffect(() => {
-		if (lenderData.length <= 0) {
-			setLenderData(lendersQuery.data || []);
-		}
+		setLenderData(lendersQuery.data || []);
 	}, [lendersQuery.isSuccess]);
 
 	return (
@@ -202,7 +200,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 						progressPending={lenderQuery?.isFetching}
 						fixedHeader
 					/>
-					<Footer data={lenderQuery.data?.fundingBreakdowns || []} />
+					<InvestorFooter data={lenderQuery.data?.fundingBreakdowns || []} />
 				</div>
 				{selectedRow && (
 					<Table

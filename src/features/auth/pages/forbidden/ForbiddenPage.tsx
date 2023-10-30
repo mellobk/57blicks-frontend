@@ -11,7 +11,7 @@ const ForbiddenPage: FC = () => {
 		? JSON?.parse(getLocalStorage(group))
 		: "";
 	const groupTo: string =
-		cognitoGroup === "investor" ? "/investors" : "/manage-users/admins";
+		cognitoGroup === "investor" ? "/investors/portfolio" : "/manage-users/admins";
 
 	const userQuery = useQuery(["user-query-forbidden"], () => {
 		return ManageUsersService.forbidden();

@@ -9,10 +9,10 @@ import { Table } from "@/components/ui/Table";
 import { Tabs } from "@/components/ui/Tabs";
 import { ExpandedComponent } from "@/features/admin/components/investor-portals/component/LLC/ExpandedComponent/ExpandedComponent";
 import { Footer } from "@/features/admin/components/investor-portals/component/LLC/Footer/Footer";
-import { getLoanColumns } from "@/features/admin/components/investor-portals/utils/common-funtions";
 import { investorPortalsTabs } from "@/features/admin/components/investor-portals/utils/tabs";
 import { FundingBreakdown } from "@/types/api/funding-breakdown";
 import { Loan } from "@/types/api/loan";
+import { getLoanColumns } from "@/utils/investors";
 
 export const LLC: FC = () => {
 	const [selectedLoan, setSelectedLoan] = useState<Loan>();
