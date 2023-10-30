@@ -1,13 +1,13 @@
 import type { FC } from "react";
 import PDF from "@/assets/images/png/PDF.png";
-import { Subtitle } from "@/features/admin/components/opportunities/components/PastOpportunities/Subtitle/Subtitle";
+import { Subtitle } from "@/features/admin/components/opportunities/components/PastOpportunities/Subtitle/Subtitle.tsx";
 
 interface Props {
 	filename: string;
 	selected: boolean;
 }
 
-export const Name: FC<Props> = ({ filename, selected }) => (
+export const OpportunityName: FC<Props> = ({ filename, selected }) => (
 	<div className="flex flex-row justify-between items-center">
 		<Subtitle subtitle={filename} selected={selected} />
 

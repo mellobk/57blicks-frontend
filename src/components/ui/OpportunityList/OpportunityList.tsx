@@ -1,6 +1,6 @@
 import type { FC } from "react";
 
-import { Name } from "@/features/admin/components/opportunities/components/PastOpportunities/Name/Name";
+import { OpportunityName } from "@/components/ui/OpportunityName";
 import { OpportunityMin } from "@/types/api/opportunityMin";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 	setSelectedOpportunity: (selectedOpportunity?: OpportunityMin) => void;
 }
 
-export const List: FC<Props> = ({
+export const OpportunityList: FC<Props> = ({
 	data,
 	getFilename,
 	selectedOpportunity,
@@ -28,7 +28,7 @@ export const List: FC<Props> = ({
 				setSelectedOpportunity(opportunity);
 			}}
 		>
-			<Name
+			<OpportunityName
 				filename={getFilename(opportunity.referenceId)}
 				selected={selectedOpportunity?.id === opportunity.id}
 			/>
