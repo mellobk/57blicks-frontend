@@ -134,6 +134,7 @@ export interface Notification {
 	content?: string;
 	timestamp?: Date;
 	redirectPath?: string;
+  additionalData?: string;
 	userFullName?: string;
 	priority?: string;
 	type?: string;

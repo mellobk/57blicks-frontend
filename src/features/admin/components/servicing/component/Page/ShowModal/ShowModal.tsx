@@ -4,13 +4,12 @@ import { LoanInformation } from "../../LoanInformation";
 import { BorrowerInformation } from "../../BorrowerInformation";
 import { LedgerList } from "../../Ledger";
 import { InvoiceScreen } from "../../Invoice";
-import type { FundingBreakdown } from "@/features/admin/components/investor-portals/types/api";
 
 interface Props {
 	openModal?: boolean;
 	handleOnCLose?: () => void;
 	handleRefreshData?: () => void;
-	data?: FundingBreakdown;
+	data?: any;
 }
 
 const TABS = [
@@ -27,6 +26,8 @@ export const ShowModal: FC<Props> = ({
 	handleRefreshData,
 	data,
 }) => {
+
+  console.log(data)
 	const [actualTabData, setActualTabData] = useState(TABS[0]);
 
 	return (
@@ -46,9 +47,7 @@ export const ShowModal: FC<Props> = ({
 						{TABS?.map((tab, index) => (
 							<div
 								key={index}
-								onClick={(): void => {
-									setActualTabData(tab);
-								}}
+								onClick={() => setActualTabData(tab)}
 								className={`px-5 cursor-pointer ${
 									tab.label === actualTabData?.label
 										? "bg-white text-black"

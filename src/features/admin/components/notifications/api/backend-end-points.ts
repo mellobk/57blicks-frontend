@@ -21,3 +21,7 @@ export const updateUserNotificationData = (id: string): string => {
 export const userNotification = (): string => {
 	return `/user-notifications?page=1&take=20`;
 };
+
+export const readAllNotification = (): string => {
+	return `/user-notifications/read-all-notifications`;
+};

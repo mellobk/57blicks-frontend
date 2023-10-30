@@ -9,7 +9,7 @@ import { Details } from "@/features/admin/components/opportunities/components/Pa
 import { DocumentPreview } from "@/features/admin/components/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview";
 import { List } from "@/features/admin/components/opportunities/components/PastOpportunities/List/List";
 import { tabs } from "@/features/admin/components/opportunities/utils/tabs";
-import { OpportunityMin } from "@/types/api/opportunityMin";
+import type { OpportunityMin } from "@/types/api/opportunityMin";
 
 export const PastOpportunities: FC = () => {
 	const [selectedOpportunity, setSelectedOpportunity] =

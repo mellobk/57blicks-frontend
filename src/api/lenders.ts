@@ -1,9 +1,9 @@
-import { Lender } from "@/types/api/lender";
-import { Pagination } from "@/types/api/pagination";
+import type { Lender } from "@/types/api/lender";
+import type { Pagination } from "@/types/api/pagination";
 import { authApiClient } from "@/utils/api-client";
 
-const getLenders = async (): Promise<Lender[]> => {
-	const response = await authApiClient.get<Pagination<Lender[]>>("/lenders");
+const getLenders = async (): Promise<Array<Lender>> => {
+	const response = await authApiClient.get<Pagination<Array<Lender>>>("/lenders");
 
 	return response.data.data;
 };

@@ -1,3 +1,5 @@
+import type { Collateral } from "@/types/api/collateral";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Role {
 	id: string;
@@ -40,6 +42,17 @@ export interface User {
 	permission_group_id?: string;
 	role?: Role;
 	permissionGroup?: any;
+  investor?: {	target?: any;
+	id?: string;
+	createdAt?: Date;
+	updatedAt?: Date;
+	ssnEin?: string;
+	streetAddress?: string;
+	zip?: string;
+	bankingName?: string;
+	routingNumber?: string;
+	accountNumber?: string;
+	accountType?: string;};
 }
 
 export interface Investor {
@@ -104,4 +117,10 @@ export interface Permissions {
 	viewPqrs: boolean;
 	editPqrs: boolean;
 	roleId?: string;
+}
+
+
+export interface IGlobalSearch {
+  users: Array<User>;
+  collaterals: Array<Collateral>;
 }

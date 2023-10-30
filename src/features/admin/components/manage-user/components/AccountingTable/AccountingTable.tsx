@@ -11,8 +11,10 @@ import { TableStatus } from "../TableStatus/TableStatus";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { User } from "../../types/api";
 import UserConfig from "../UserConfig/UserConfig";
-import { findIndex } from "@/utils/common-funtions";
+import { emptyObject, findIndex } from "@/utils/common-funtions";
 import { tabs } from "../../utils/tabs";
+import manageUserStore from "@/features/manage-user/stores/manage-user-store";
+
 
 export const AccountingTable: FC = () => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
@@ -29,6 +31,15 @@ export const AccountingTable: FC = () => {
 		},
 		{ enabled: true, staleTime: 1000 * 60 }
 	);
+
+     const userInfo = manageUserStore((state) => state.userInfo);
+
+
+ useEffect(()=>{
+if(!emptyObject(userInfo)){
+  setSelectedUser(userInfo)
+ }
+ },[userInfo])
 
 	const deleteAdminMutation = useMutation((id: string) => {
 		return ManageUsersService.deleteUser(id);
