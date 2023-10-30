@@ -1,5 +1,5 @@
 import * as z from "zod";
-import createPassWordFields from "../input-fields";
+import createPassWordFields from "../input-fields.ts";
 
 export const createPasswordSchema = z.object({
 	[createPassWordFields?.password]: z

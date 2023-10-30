@@ -1,1 +1,1 @@
-export { ResetCreatePassWord } from "./ResetCreatePassword";
+export { ResetCreatePassWord } from "./ResetCreatePassword.tsx";

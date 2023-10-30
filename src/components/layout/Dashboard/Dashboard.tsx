@@ -4,20 +4,20 @@ import { Icon } from "@/components/ui/Icon";
 import "@/assets/images/png/LogoGold_2x.png";
 import LogoGold from "@/assets/images/png/LogoGold.png";
 import { Avatar } from "@/components/ui/Avatar";
-import { NavbarRoutes } from "@/features/dashboard/routes/DashboardRouter";
+import { NavbarRoutes } from "@/features/admin/routes/AdminRouter.tsx";
 import "./Dashboard.css";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import ManageUsersService from "@/features/manage-user/api/investors";
+import ManageUsersService from "@/features/admin/components/manage-user/api/investors";
 import { getLocalStorage, sendToLocalStorage } from "@/utils/local-storage";
 import { sub, userBasicInformation, userName } from "@/utils/constant";
-import { LogOff } from "@/features/profile/component/LogOff/LogOff";
+import { LogOff } from "@/features/admin/components/profile/component/LogOff/LogOff";
 import socket from "../../../socket";
-import type { User } from "@/features/servicing/types/api";
+import type { User } from "@/features/admin/components/servicing/types/api";
 import type { UserNotification } from "../types/notifications";
-import { ServicingModal } from "@/features/notifications/components/ServicingModal/ServicingModal";
-import { Notification } from "@/features/notifications/components/Notification/Notification";
+import { ServicingModal } from "@/features/admin/components/notifications/components/ServicingModal/ServicingModal";
+import { Notification } from "@/features/admin/components/notifications/components/Notification/Notification";
 import { Button } from "@/components/ui/Button";
-import ManageNotificationService from "@/features/notifications/api/notification";
+import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
 
 type Props = {
 	children?: ReactNode;

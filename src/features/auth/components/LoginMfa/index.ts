@@ -1,1 +1,1 @@
-export { LoginMfaComponent } from "./LoginMfa";
+export { LoginMfaComponent } from "./LoginMfa.tsx";

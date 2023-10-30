@@ -1,4 +1,4 @@
-import type { Loan } from "@/features/create-loan/types/fields";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import { authApiClient } from "@/utils/api-client";
 
 const createLoan = async (body: Loan) => {

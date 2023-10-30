@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
-import { Outlet, RootRoute } from "@tanstack/router";
+import { Outlet, RootRoute as TanstackRootRoute } from "@tanstack/router";
 
-export const rootRoute = new RootRoute({
+export const RootRoute = new TanstackRootRoute({
 	component: (): ReactElement => <Outlet />,
 });

@@ -1,4 +1,4 @@
-import type { Investor, User } from "@/features/manage-user/types/api";
+import type { Investor, User } from "@/features/admin/components/manage-user/types/api";
 import moment from "moment";
 
 export const statusSort = (rowA: Investor, rowB: Investor) => {

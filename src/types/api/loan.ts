@@ -1,5 +1,7 @@
 import { Borrower } from "@/types/api/borrower";
 import { Collateral } from "@/types/api/collateral";
+import { FundingBreakdown } from "@/types/api/funding-breakdown.ts";
+import { User } from "@/types/api/user.ts";
 
 export interface Loan {
 	id?: string;
@@ -17,7 +19,8 @@ export interface Loan {
 	loanConsultant: string;
 	leadSource: string;
 	borrower?: Borrower;
-	collaterals: Array<Collateral>;
+	collaterals: Collateral[];
 	ltv: string;
-  participationBreakdowns: any;
+	participationBreakdowns: FundingBreakdown[];
+	user: User;
 }

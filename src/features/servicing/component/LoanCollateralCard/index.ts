@@ -1,1 +1,0 @@
-export { LoanCollateralCard } from "./LoanCollateralCard";
