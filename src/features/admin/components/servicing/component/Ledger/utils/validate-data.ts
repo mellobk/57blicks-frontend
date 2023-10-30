@@ -13,7 +13,7 @@ export const validateDataLedger = (ledgers: Array<Ledgers>): string => {
 	let error = "";
 	ledgers.forEach((ledger) => {
 		totalAdd += 1;
-		if (ledger.action === "add") {
+		if (ledger.action === "add" || ledger.action === "edit") {
 			add += 1;
 			const { debit, credit } = ledger;
 			if (debit === 0 && credit === 0) {
@@ -21,6 +21,7 @@ export const validateDataLedger = (ledgers: Array<Ledgers>): string => {
 			}
 		}
 	});
+
 	if (add === 0) {
 		return "You need to add a row";
 	}

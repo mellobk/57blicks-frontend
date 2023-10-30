@@ -90,6 +90,11 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							maxDate={new Date()}
 							minDate={moment(loan.originationDate).toDate()}
 							name={`ledgers.${index}.ledgerDate`}
+							value={
+								dataLedgers.ledgerDate
+									? moment(dataLedgers.ledgerDate, "MMDDYYYY").toDate()
+									: moment(dataLedgers.ledgerDate).toDate()
+							}
 							invalid={!!errors?.ledgers?.[index]?.ledgerDate}
 							onChange={(date: Date): void => {
 								handleSetDate(`ledgerDate`, date, index);
