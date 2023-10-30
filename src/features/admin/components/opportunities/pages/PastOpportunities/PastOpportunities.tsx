@@ -1,13 +1,13 @@
 import { type FC, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
+import OpportunitiesService from "@/api/opportunities";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Loading } from "@/components/ui/Loading";
+import {OpportunityList} from "@/components/ui/OpportunityList";
 import { Tabs } from "@/components/ui/Tabs";
-import OpportunitiesService from "@/api/opportunities";
 import { Details } from "@/features/admin/components/opportunities/components/PastOpportunities/Details/Details";
 import { DocumentPreview } from "@/features/admin/components/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview";
-import { List } from "@/features/admin/components/opportunities/components/PastOpportunities/List/List";
 import { tabs } from "@/features/admin/components/opportunities/utils/tabs";
 import { OpportunityMin } from "@/types/api/opportunityMin";
 
@@ -56,7 +56,7 @@ export const PastOpportunities: FC = () => {
 				) : (
 					<div className="grid lg:grid-cols-9 gap-6 w-full">
 						<div className="lg:col-span-2 col-span-1 flex flex-col gap-6 p-3 bg-gold-300 overflow-y-auto">
-							<List
+							<OpportunityList
 								data={getOpportunitiesQuery.data}
 								getFilename={getFilename}
 								selectedOpportunity={selectedOpportunity}

@@ -1,19 +1,19 @@
 import { type FC, useEffect, useRef, useState } from "react";
-
-import { Loading } from "@/components/ui/Loading";
-import { Name } from "@/features/admin/components/opportunities/components/PastOpportunities/Name/Name";
-import { Title } from "@/components/ui/Title";
-import { IconButton } from "@/components/ui/IconButton";
-import { Value } from "@/features/admin/components/opportunities/components/PastOpportunities/Details/Value/Value";
-import { dateFormat } from "@/utils/formats";
-import { Subtitle } from "@/features/admin/components/opportunities/components/PastOpportunities/Subtitle/Subtitle";
-import { Table } from "@/components/ui/Table";
 import type { TableColumn } from "react-data-table-component";
 import { useMutation } from "@tanstack/react-query";
+
 import OpportunitiesService from "@/api/opportunities";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
+import { IconButton } from "@/components/ui/IconButton";
+import { Loading } from "@/components/ui/Loading";
+import { OpportunityName } from "@/components/ui/OpportunityName";
+import { Table } from "@/components/ui/Table";
+import { Title } from "@/components/ui/Title";
+import { Value } from "@/features/admin/components/opportunities/components/PastOpportunities/Details/Value/Value";
+import { Subtitle } from "@/features/admin/components/opportunities/components/PastOpportunities/Subtitle/Subtitle";
 import { Investment } from "@/types/api/investment";
 import { Opportunity } from "@/types/api/opportunity";
+import { dateFormat } from "@/utils/formats";
 
 interface Props {
 	data?: Opportunity;
@@ -112,7 +112,7 @@ export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
 					</div>
 				</div>
 				<div className="flex flex-col gap-3 divide-y divide-gray-200">
-					<Name filename={getFilename(data.referenceId)} selected />
+					<OpportunityName filename={getFilename(data.referenceId)} selected />
 					<div>
 						<Value label="Creation Date" value={dateFormat(data.createdAt)} />
 						<Value label="ID Number" value={`#${data.referenceId}`} />
