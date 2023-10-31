@@ -8,13 +8,13 @@ import ManageRoleService from "../../api/roles";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { Tabs } from "@/features/admin/components/servicing/component/Tabs";
 import UserActivity from "./UserActivity";
-import { getLocalStorage } from "@/utils/local-storage";
 import { useQuery } from "@tanstack/react-query";
-import { userBasicInformation } from "@/utils/constant";
-import { investorUserTabs, userTabs } from "@/features/admin/components/servicing/utils/tabs";
+import {
+	investorUserTabs,
+	userTabs,
+} from "@/features/admin/components/servicing/utils/tabs";
 import { PermissionsAdmin } from "./PermissionsAdmin";
 import manageUserStore from "@/features/manage-user/stores/manage-user-store";
-
 
 interface UserConfigProps {
 	user?: User;
@@ -41,9 +41,8 @@ const UserConfig: FC<UserConfigProps> = ({
 }) => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [role, setRole] = useState<string>();
-	const userData = getLocalStorage(userBasicInformation);
-	const parseData = JSON.parse(userData || "") as User;
-     const setUserInfo = manageUserStore((state) => state.setUserInfo);
+	const userInfo = manageUserStore((state) => state.loggedUserInfo);
+	const setUserInfo = manageUserStore((state) => state.setUserInfo);
 
 	const dkcRoleQuery = useQuery(
 		["dkc-role-by-id-query"],
@@ -61,8 +60,7 @@ const UserConfig: FC<UserConfigProps> = ({
 		if (setUser) {
 			setUser(null);
 		}
-setUserInfo({})
-
+		setUserInfo({});
 	};
 
 	const tabHandlerData = (value: string): void => {
@@ -71,11 +69,11 @@ setUserInfo({})
 
 	useEffect(() => {
 		//TODO: change roles are defined in the backend
-		if (parseData) {
-			setSearchValue(parseData.id || "");
+		if (userInfo) {
+			setSearchValue(userInfo.id || "");
 			void dkcRoleQuery.refetch();
 		}
-	}, [parseData]);
+	}, [userInfo]);
 
 	useEffect(() => {
 		//TODO: change roles are defined in the backend
