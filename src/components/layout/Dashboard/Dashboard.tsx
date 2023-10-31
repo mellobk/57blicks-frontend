@@ -22,6 +22,8 @@ import { Button } from "@/components/ui/Button";
 import { GlobalSearch } from "@/features/profile/component/GlobalSearch/GlobalSearch";
 import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
 import DashboardUserService from "../api/user";
+import { findPermission } from "@/utils/common-funtions";
+import { PermissionType } from "@/types/api/permissions-type";
 
 type Props = {
 	children?: ReactNode;
@@ -182,14 +184,20 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 					))}
 				</ul>
 				<div className="flex space-x-2 items-center">
-					<Link
-						className="button-text px-4 py-2 rounded-2xl bg-white font-bold"
-						to={createLoanTo}
-						params={{}}
-						search={{}}
-					>
-						Create Loan
-					</Link>
+					{findPermission(
+						userLoggedQuery?.data?.role,
+						userLoggedQuery.data?.permissionGroup?.permissions,
+						PermissionType.CREATE_LOAN
+					) && (
+						<Link
+							className="button-text px-4 py-2 rounded-2xl bg-white font-bold"
+							to={createLoanTo}
+							params={{}}
+							search={{}}
+						>
+							Create Loan
+						</Link>
+					)}
 					<div
 						onClick={handleOpenModalNotification}
 						className="relative cursor-pointer"
