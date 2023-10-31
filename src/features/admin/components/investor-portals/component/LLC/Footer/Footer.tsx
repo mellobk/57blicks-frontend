@@ -1,4 +1,4 @@
-import { type ComponentType, useEffect, useState } from "react";
+import { type ComponentType } from "react";
 
 import { Cell } from "@/components/table/Cell";
 import { Loan } from "@/types/api/loan";
@@ -8,33 +8,22 @@ interface Props {
 }
 
 export const Footer: ComponentType<Props> = ({ data }) => {
-	const defaultTotals = {
-		amount: 0,
-		rate: 0,
-		regular: 0,
-		totalLoanAmount: 0,
-	};
-	const [totals, setTotals] = useState(defaultTotals);
+	const totals = data.reduce(
+		(accumulator, { participationBreakdowns }) => {
+			participationBreakdowns.forEach(({ rate, regular, loan }) => {
+				accumulator.rate += Number(rate);
+				accumulator.regular += Number(regular);
+				accumulator.totalLoanAmount += Number(loan.totalLoanAmount);
+			});
 
-	useEffect(() => {
-		const newTotals = data.reduce(
-			(accumulator, { participationBreakdowns }) => {
-				participationBreakdowns.forEach((participation) => {
-					accumulator.amount += Number(participation.amount);
-					accumulator.rate += Number(participation.rate);
-					accumulator.regular += Number(participation.regular);
-					accumulator.totalLoanAmount += Number(
-						participation.loan.totalLoanAmount
-					);
-				});
-
-				return accumulator;
-			},
-			defaultTotals
-		);
-
-		setTotals(newTotals);
-	}, [data]);
+			return accumulator;
+		},
+		{
+			rate: 0,
+			regular: 0,
+			totalLoanAmount: 0,
+		}
+	);
 
 	return (
 		<div className="flex flex-row min-h-12 h-12 bg-gray-200 rounded-b-2xl">
@@ -42,7 +31,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 			<div className="grid grid-cols-8 w-full items-center">
 				<Cell format="text" value={`Total: ${data.length}`} bold />
 				<Cell format="money" value={totals.totalLoanAmount} bold />
-				<Cell format="money" value={totals.amount} bold />
+				<Cell format="money" value={totals.totalLoanAmount * 0.99} bold />
 				<Cell format="percentage" value={totals.rate} bold />
 				<Cell format="money" value={totals.regular} bold />
 				<Cell format="text" value="--" bold />
