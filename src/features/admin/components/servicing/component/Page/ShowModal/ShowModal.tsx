@@ -26,8 +26,6 @@ export const ShowModal: FC<Props> = ({
 	handleRefreshData,
 	data,
 }) => {
-
-  console.log(data)
 	const [actualTabData, setActualTabData] = useState(TABS[0]);
 
 	return (
