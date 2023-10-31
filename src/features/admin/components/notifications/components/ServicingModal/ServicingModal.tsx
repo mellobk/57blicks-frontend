@@ -14,7 +14,7 @@ import {
 	ApprovalLedgerStateType,
 	LoanStatusType,
 	NotificationType,
-} from "@/components/layout/types/notifications";
+} from "@/types/api/notifications.ts";
 import { Success } from "../Success";
 import { SuccessDecline } from "../SuccessDecline/Success";
 import type { Loan } from "../../types/types";

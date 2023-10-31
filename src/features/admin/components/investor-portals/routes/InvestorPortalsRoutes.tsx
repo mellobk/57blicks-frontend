@@ -1,4 +1,4 @@
-import { DashboardLayout } from "@/components/layout/Dashboard";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { CL } from "@/features/admin/components/investor-portals/pages/CL/CL";
 import { FirstCapital } from "@/features/admin/components/investor-portals/pages/FirstCapital/FirstCapital";
 import { FL } from "@/features/admin/components/investor-portals/pages/FL/FL";

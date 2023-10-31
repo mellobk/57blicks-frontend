@@ -14,7 +14,7 @@ import {
 	userTabs,
 } from "@/features/admin/components/servicing/utils/tabs";
 import { PermissionsAdmin } from "./PermissionsAdmin";
-import manageUserStore from "@/features/manage-user/stores/manage-user-store";
+import userStore from "@/stores/user-store.ts";
 
 interface UserConfigProps {
 	user?: User;
@@ -41,8 +41,8 @@ const UserConfig: FC<UserConfigProps> = ({
 }) => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [role, setRole] = useState<string>();
-	const userInfo = manageUserStore((state) => state.loggedUserInfo);
-	const setUserInfo = manageUserStore((state) => state.setUserInfo);
+	const userInfo = userStore((state) => state.loggedUserInfo);
+	const setUserInfo = userStore((state) => state.setUserInfo);
 
 	const dkcRoleQuery = useQuery(
 		["dkc-role-by-id-query"],

@@ -1,4 +1,4 @@
-import type { UserNotification } from "@/components/layout/types/notifications";
+import type { UserNotification } from "@/types/api/notifications.ts";
 import type { Loan, Notification } from "../types/types";
 import {
 	createNotificationData,

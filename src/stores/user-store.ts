@@ -1,4 +1,4 @@
-import type { User } from "@/features/admin/components/manage-user/types/api";
+import type { User } from "@/features/admin/components/manage-user/types/api.ts";
 import { create, type SetState } from "zustand";
 
 interface IState {
@@ -8,7 +8,7 @@ interface IState {
 	setLoggedUserInfo: (userData: User | null) => void;
 }
 
-const manageUserStore = create<IState>((set: SetState<IState>) => ({
+const userStore = create<IState>((set: SetState<IState>) => ({
 	userInfo: {},
 	loggedUserInfo: {},
 	setUserInfo: (userData): void => {
@@ -19,4 +19,4 @@ const manageUserStore = create<IState>((set: SetState<IState>) => ({
 	},
 }));
 
-export default manageUserStore;
+export default userStore;

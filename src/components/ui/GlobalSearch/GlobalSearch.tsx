@@ -8,13 +8,13 @@ import { useState, useEffect } from "react";
 import type { FC } from "react";
 
 
-import { getLabel } from "@/utils/common-funtions";
-import { useDebounce } from "@/hooks/debounce";
+import { getLabel } from "@/utils/common-funtions.ts";
+import { useDebounce } from "@/hooks/debounce.tsx";
 
 import { useNavigate } from "@tanstack/router";
-import manageUserStore from "@/features/manage-user/stores/manage-user-store";
-import ManagePermissionGroupService from "@/features/admin/components/profile/api/permission";
-import type { User } from "@/features/admin/components/manage-user/types/api";
+import userStore from "@/stores/user-store.ts";
+import ManagePermissionGroupService from "@/features/admin/components/profile/api/permission.ts";
+import type { User } from "@/features/admin/components/manage-user/types/api.ts";
 
 
 interface GlobalSearchProps {
@@ -28,7 +28,7 @@ export const GlobalSearch: FC<GlobalSearchProps> = ({ handleOpenGlobalSearch }) 
   const [searchValue, setSearchValue] = useState<string>("")
   const debouncedSearchTerm = useDebounce(searchValue, 1500);
 
-  const setUserInfo = manageUserStore((state) => state.setUserInfo);
+  const setUserInfo = userStore((state) => state.setUserInfo);
 
 
   const globalSearchQuery = useQuery(

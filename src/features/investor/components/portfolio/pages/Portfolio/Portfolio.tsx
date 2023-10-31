@@ -11,12 +11,16 @@ import { FundingBreakdown } from "@/types/api/funding-breakdown";
 import { Loan } from "@/types/api/loan";
 import { moneyFormat, percentageFormat } from "@/utils/formats";
 import { getLoanColumns } from "@/utils/investors";
+import userStore from "@/stores/user-store.ts";
 
 export const Portfolio: FC = () => {
 	const [selectedLoan, setSelectedLoan] = useState<Loan>();
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const currentMonthName = moment().format("MMMM");
+
+  const userInfo = userStore((state) => state.loggedUserInfo);
+  console.log(userInfo);
 
 	const investorsQuery = useQuery(["investors-query"], () =>
 		InvestorsService.getInvestorsWithLoans(searchValue)
