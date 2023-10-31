@@ -4,7 +4,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Button } from "@/components/ui/Button";
 import { type FC, useEffect, useRef, useState } from "react";
-import type { PermissionGroup, User } from "@/features/admin/components/manage-user/types/api";
+import type {
+	PermissionGroup,
+	User,
+} from "@/features/admin/components/manage-user/types/api";
 
 import ManageUsersService from "../../api/investors";
 import { useMutation, useQuery } from "@tanstack/react-query";

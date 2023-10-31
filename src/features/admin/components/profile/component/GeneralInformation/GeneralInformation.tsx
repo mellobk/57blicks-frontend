@@ -5,8 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/forms/Input";
 
 import { type FC, useEffect, useState } from "react";
-import { getLocalStorage, sendToLocalStorage } from "@/utils/local-storage";
-import { userBasicInformation } from "@/utils/constant";
+
 import type { User } from "@/features/admin/components/manage-user/types/api";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { generalInformationSchema } from "../../utils/Schemas/general-schemas";
@@ -16,9 +15,12 @@ import type { updateGeneralUserInformation } from "@/features/admin/components/m
 import { useMutation } from "@tanstack/react-query";
 import useStore from "@/stores/app-store";
 import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
+import manageUserStore from "@/features/manage-user/stores/manage-user-store";
 
 export const GeneralInformation: FC = () => {
+	const userInfo = manageUserStore((state) => state.loggedUserInfo);
 	const [userData, setUserData] = useState<User>();
+	const [userInfoData, setUserInfoData] = useState<User>();
 	const {
 		register,
 		handleSubmit,
@@ -42,38 +44,39 @@ export const GeneralInformation: FC = () => {
 				clearSuccessMessage();
 			}, 500);
 			updateAdmin.reset();
-			sendToLocalStorage(userBasicInformation, JSON.stringify(userData));
 		}
 	}, [updateAdmin]);
 
 	useEffect(() => {
-		const userData = getLocalStorage(userBasicInformation);
-		const parseData = JSON.parse(userData) as User;
+		console.log(userInfo);
+		setUserInfoData(userInfo);
+	}, [userInfo]);
 
+	useEffect(() => {
 		setValue(
 			generalInformationFields?.firstName || "firstName",
-			parseData?.firstName
+			userInfoData?.firstName
 		);
 
 		setValue(
 			generalInformationFields?.lastName || "lastName",
-			parseData?.lastName
+			userInfoData?.lastName
 		);
 
 		setValue(
 			generalInformationFields?.phoneNumber || "phoneNumber",
-			removeCountryCode(parseData?.phoneNumber || "")
+			removeCountryCode(userInfoData?.phoneNumber || "")
 		);
 
-		setValue(generalInformationFields?.email || "email", parseData?.email);
+		setValue(generalInformationFields?.email || "email", userInfoData?.email);
 
 		setValue(
 			generalInformationFields?.companyName || "company",
-			parseData?.companyName
+			userInfoData?.companyName
 		);
 
-		setUserData(parseData);
-	}, []);
+		setUserData(userInfoData);
+	}, [userInfoData]);
 
 	const onSubmit: SubmitHandler<any> = async (
 		data: updateGeneralUserInformation

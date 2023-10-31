@@ -1,17 +1,16 @@
 import type { User } from "@/features/admin/components/manage-user/types/api";
-import { userBasicInformation } from "@/utils/constant";
-import { getLocalStorage } from "@/utils/local-storage";
 import { type FC, useEffect, useState } from "react";
 import { PasswordInformation } from "../PasswordInformation/PasswordInformation";
 import { GeneralInformation } from "../GeneralInformation/GeneralInformation";
+import manageUserStore from "@/features/manage-user/stores/manage-user-store";
 
 export const DashboardInformation: FC = () => {
+	const userInfo = manageUserStore((state) => state.loggedUserInfo);
 	const [userData, setUserData] = useState<User>({});
 
 	useEffect(() => {
-		const userInformation = JSON?.parse(getLocalStorage(userBasicInformation));
-		setUserData(userInformation as User);
-	}, []);
+		setUserData(userInfo);
+	}, [userInfo]);
 
 	const getLabel = (name: string): string => {
 		if (!name) return "";

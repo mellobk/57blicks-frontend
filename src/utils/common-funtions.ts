@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
+import type { Permissions } from "./../features/admin/components/manage-user/types/api";
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -6,7 +8,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type { Investor, User } from "@/features/admin/components/manage-user/types/api";
+import type {
+	Investor,
+	Role,
+	User,
+} from "@/features/admin/components/manage-user/types/api";
+import { RoleType } from "@/types/api/permissions-type";
 import moment from "moment";
 
 export const statusSort = (rowA: Investor, rowB: Investor) => {
@@ -124,7 +131,22 @@ export const formatPhoneNumber = (phone: string): string => {
 	)}`;
 };
 
-
 export const emptyObject = (object: any) => {
- return Object.keys(object).length === 0 && object.constructor === Object;
+	return Object.keys(object).length === 0 && object.constructor === Object;
+};
+
+export const findPermission = (
+	role?: Role,
+	permissions?: Array<Permissions>,
+	permission?: string
+): boolean => {
+	if (role?.name === RoleType.SUPER_ADMIN) {
+		return true;
+	}
+
+	const foundPermissions = permissions?.some(
+		(data) => data.name === permission
+	);
+
+	return foundPermissions || false;
 };
