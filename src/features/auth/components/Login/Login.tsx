@@ -15,7 +15,7 @@ import { useNavigate } from "@tanstack/router";
 import { AuthRoutesNames } from "../../routes/AuthRouter";
 import { getSession } from "@/lib/cognito";
 import { sendToLocalStorage } from "@/utils/local-storage";
-import { accessToken, group, sub } from "@/utils/constant";
+import { accessToken, group } from "@/utils/constant";
 import { useMutation } from "@tanstack/react-query";
 import ManageLogService from "@/features/admin/components/manage-user/api/logs";
 

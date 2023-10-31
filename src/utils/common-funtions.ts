@@ -32,7 +32,7 @@ export const statusSort = (rowA: Investor, rowB: Investor) => {
 };
 
 export const unFormatPhone = (number: string): string => {
-	return number.replaceAll(/[\s()-]/g, "");
+	return number.replace(/[\s()-]/g, "");
 };
 
 export const removeCountryCode = (number: string): string => {
@@ -119,7 +119,7 @@ export const formatDateString = (isoString: string): string => {
 
 export const formatPhoneNumber = (phone: string): string => {
 	// Remove all non-numeric characters
-	let numbers = phone.replaceAll(/\D/g, "");
+	let numbers = phone.replace(/\D/g, "");
 
 	// Extract the last 10 digits (ignoring country code)
 	numbers = numbers.slice(-10);

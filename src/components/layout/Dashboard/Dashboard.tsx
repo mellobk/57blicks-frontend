@@ -186,7 +186,7 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 				<div className="flex space-x-2 items-center">
 					{findPermission(
 						userLoggedQuery?.data?.role,
-						userLoggedQuery.data?.permissionGroup?.permissions,
+						userLoggedQuery.data?.permissionGroup?.permissions || [],
 						PermissionType.CREATE_LOAN
 					) && (
 						<Link

@@ -41,7 +41,7 @@ export interface User {
 	companyName?: string;
 	permission_group_id?: string;
 	role?: Role;
-	permissionGroup?: { permissions: Array<{ id: string; name: string }> };
+	permissionGroup?: any;
 	investor?: {
 		target?: any;
 		id?: string;
