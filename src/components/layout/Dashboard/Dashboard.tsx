@@ -9,359 +9,353 @@ import { Avatar } from "@/components/ui/Avatar";
 import { NavbarRoutes } from "@/features/admin/routes/AdminRouter";
 import "./Dashboard.css";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import ManageUsersService from "@/features/admin/components/manage-user/api/investors";
+import manageUserStore from "@/features/manage-user/stores/manage-user-store";
 import { getLocalStorage, sendToLocalStorage } from "@/utils/local-storage";
-import { sub, userBasicInformation, userName } from "@/utils/constant";
+import { userName } from "@/utils/constant";
 import { LogOff } from "@/features/admin/components/profile/component/LogOff/LogOff";
 import socket from "../../../socket";
-import type { User } from "@/features/admin/components/servicing/types/api";
+
 import type { UserNotification } from "../types/notifications";
 import { ServicingModal } from "@/features/admin/components/notifications/components/ServicingModal/ServicingModal";
 import { Notification } from "@/features/admin/components/notifications/components/Notification/Notification";
 import { Button } from "@/components/ui/Button";
 import { GlobalSearch } from "@/features/profile/component/GlobalSearch/GlobalSearch";
 import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
-
-
+import DashboardUserService from "../api/user";
 
 type Props = {
-    children?: ReactNode;
+	children?: ReactNode;
 };
 
 export const DashboardLayout: FC<Props> = ({ children }: Props) => {
-    const navigate = useNavigate();
-    const createLoanTo: string = "/create-loan";
-    const localSub = getLocalStorage(sub);
-    const localUserName = getLocalStorage(userName);
-    const [enabled, setEnabled] = useState<boolean>(!getLocalStorage(userName));
-    const [notifications, setNotifications] = useState<Array<UserNotification>>();
-    const [notificationsCount, setNotificationsCount] = useState<number>();
-    const [openLoanId, setLoanId] = useState<string>();
-    const [ledgerId, setLedgerId] = useState<string>();
-    const [typeNotification, setTypeNotification] = useState<string>();
-    const [openNotificationTitle, setNotificationTitle] = useState<string>();
-    const [openModalUser, setOpenModalUser] = useState<boolean>();
-    const [openModalLoan, setOpenModalLoan] = useState<boolean>();
-    const [openModalGeneralSearch, setOpenModalGeneralSearch] = useState<boolean>(false);
-    const [openModalNotification, setOpenModalNotification] = useState<boolean>();
-    const userData = getLocalStorage(userBasicInformation);
-    const parseData = userData && (JSON.parse(userData || "") as User);
+	const navigate = useNavigate();
+	const createLoanTo: string = "/create-loan";
+	const localUserName = getLocalStorage(userName);
+	const [notifications, setNotifications] = useState<Array<UserNotification>>();
+	const [notificationsCount, setNotificationsCount] = useState<number>();
+	const [openLoanId, setLoanId] = useState<string>();
+	const [ledgerId, setLedgerId] = useState<string>();
+	const [typeNotification, setTypeNotification] = useState<string>();
+	const [openNotificationTitle, setNotificationTitle] = useState<string>();
+	const [openModalUser, setOpenModalUser] = useState<boolean>();
+	const [openModalLoan, setOpenModalLoan] = useState<boolean>();
+	const [openModalGeneralSearch, setOpenModalGeneralSearch] =
+		useState<boolean>(false);
+	const [openModalNotification, setOpenModalNotification] = useState<boolean>();
 
-    const userQuery = useQuery(
-        ["user-query"],
-        () => {
-            return ManageUsersService.getUser(localSub);
-        },
-        { enabled }
-    );
+	const userLoggedInfo = manageUserStore((state) => state.setLoggedUserInfo);
+	const userInfo = manageUserStore((state) => state.loggedUserInfo);
 
-    const userNotification = useQuery(
-        ["user-notification-query"],
-        () => {
-            return ManageNotificationService.getUserNotification();
-        },
-        { enabled: true, staleTime: 1000 * 60 * 60 * 24 }
-    );
+	const userLoggedQuery = useQuery(
+		["user-logged-query"],
+		() => {
+			return DashboardUserService.getMyUserInfo();
+		},
+		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
+	);
 
+	const userNotification = useQuery(
+		["user-notification-query"],
+		() => {
+			return ManageNotificationService.getUserNotification();
+		},
+		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
+	);
 
-    const updateReadNotificationQuery = useMutation(
-        async () => {
-            return ManageNotificationService.putReadUserNotification();
-        }
-    );
+	const updateReadNotificationQuery = useMutation(async () => {
+		return ManageNotificationService.putReadUserNotification();
+	});
 
-    const updateNotificationQuery = useMutation(
-        async (body: UserNotification) => {
-            return ManageNotificationService.putUserNotification(body.id || "", {
-              status: body.status,
-            });
-        }
-    );
+	const updateNotificationQuery = useMutation(
+		async (body: UserNotification) => {
+			return ManageNotificationService.putUserNotification(body.id || "", {
+				status: body.status,
+			});
+		}
+	);
 
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.ctrlKey && event.keyCode === 70) {
-                 event.preventDefault()
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.ctrlKey && event.keyCode === 70) {
+				event.preventDefault();
 
-           setOpenModalGeneralSearch(!openModalGeneralSearch);
-            }
-        };
+				setOpenModalGeneralSearch(!openModalGeneralSearch);
+			}
+		};
 
-        window.addEventListener('keydown', handleKeyDown);
+		window.addEventListener("keydown", handleKeyDown);
 
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [openModalGeneralSearch]);
+		return () => {
+			window.removeEventListener("keydown", handleKeyDown);
+		};
+	}, [openModalGeneralSearch]);
 
-    useEffect(() => {
-        if (parseData) {
-            socket.emit("join", parseData.id);
+	useEffect(() => {
+		socket.emit("join", userInfo.id);
 
-            socket.on("notification", () => {
-                void userNotification.refetch();
-                void userNotification.refetch();
-            });
-        }
-        return () => {
-            socket.off("notification");
-        };
-    }, [parseData]);
+		socket.on("notification", () => {
+			void userNotification.refetch();
+			void userNotification.refetch();
+		});
+		return () => {
+			socket.off("notification");
+		};
+	}, [userInfo]);
 
-    useEffect(() => {
-        if (updateReadNotificationQuery.isSuccess) {
-            void userNotification.refetch();
-  updateReadNotificationQuery.reset()
-        }
+	useEffect(() => {
+		if (updateReadNotificationQuery.isSuccess) {
+			void userNotification.refetch();
+			updateReadNotificationQuery.reset();
+		}
+	}, [updateReadNotificationQuery]);
 
+	useEffect(() => {
+		console.log(userLoggedQuery.data);
+		if (userLoggedQuery.data) {
+			sendToLocalStorage(
+				userName,
+				`${userLoggedQuery.data?.firstName} ${userLoggedQuery.data?.lastName}`
+			);
+			/* 			sendToLocalStorage(
+				userBasicInformation,
+				JSON.stringify(userLoggedQuery.data)
+			); */
+			userLoggedInfo(userLoggedQuery.data);
+		}
+	}, [userLoggedQuery.isFetching]);
 
+	useEffect(() => {
+		setNotifications(userNotification.data?.data || []);
+		setNotificationsCount(
+			userNotification.data?.data?.filter((data) => data?.status === "SENT")
+				?.length
+		);
+	}, [userNotification.isFetching]);
 
-    }, [updateReadNotificationQuery])
+	useEffect(() => {
+		if (updateNotificationQuery.isSuccess) {
+			void userNotification.refetch();
+			updateNotificationQuery.reset();
+			userNotification.remove();
+		}
+	}, [updateNotificationQuery]);
 
-    useEffect(() => {
-        if (userQuery.data && !getLocalStorage(userName)) {
-            sendToLocalStorage(
-                userName,
-                `${userQuery.data?.firstName} ${userQuery.data?.lastName}`
-            );
-            sendToLocalStorage(userBasicInformation, JSON.stringify(userQuery.data));
-            setEnabled(false);
-        }
-    }, [userQuery]);
+	const handleOpenModal = (): void => {
+		setOpenModalUser(!openModalUser);
+	};
+	const handleOpenModalNotification = (): void => {
+		setOpenModalNotification(!openModalNotification);
+	};
 
-    useEffect(() => {
-        setNotifications(userNotification.data?.data || []);
-        setNotificationsCount(userNotification.data?.data?.filter(
-            (data) => data?.status === "SENT"
-        )?.length)
-    }, [userNotification.isFetching]);
+	const navigateToProfile = (): void => {
+		void navigate({ to: `/profile` });
+	};
 
-    useEffect(() => {
-        if (updateNotificationQuery.isSuccess) {
-            void userNotification.refetch();
-               updateNotificationQuery.reset();
-            userNotification.remove();
-        }
+	const navigateToPermission = (): void => {
+		void navigate({ to: `/permissions` });
+	};
 
-    }, [updateNotificationQuery]);
+	const markAllReadNotifications = () => {
+		updateReadNotificationQuery.mutate();
+	};
 
-    const handleOpenModal = (): void => {
-        setOpenModalUser(!openModalUser);
-    };
-    const handleOpenModalNotification = (): void => {
-        setOpenModalNotification(!openModalNotification);
-    };
+	const handleClickOpenGlobalSearch = (): void => {
+		setOpenModalGeneralSearch(!openModalGeneralSearch);
+	};
+	return (
+		<div className="flex flex-col h-screen bg-gradient relative">
+			<div className="flex items-center justify-between px-12 py-4">
+				<img src={LogoGold} alt="DKC Logo" />
+				<ul className="flex space-x-2">
+					{NavbarRoutes.map((route) => (
+						<Link
+							key={route.path}
+							to={route.path}
+							className="link-text font-inter font-semibold px-4 py-2"
+							activeProps={{ className: "text-white" }}
+							inactiveProps={{ className: "opacity-40 text-gray-1000" }}
+							params={{}}
+							search={{}}
+						>
+							{route.name}
+						</Link>
+					))}
+				</ul>
+				<div className="flex space-x-2 items-center">
+					<Link
+						className="button-text px-4 py-2 rounded-2xl bg-white font-bold"
+						to={createLoanTo}
+						params={{}}
+						search={{}}
+					>
+						Create Loan
+					</Link>
+					<div
+						onClick={handleOpenModalNotification}
+						className="relative cursor-pointer"
+					>
+						{notificationsCount !== 0 && (
+							<div
+								className="w-[15px] h-[15px] rounded-full  bg-red-500 absolute text-[10px] justify-center items-center flex text-white"
+								style={{
+									top: "-5px",
+									right: "-2px",
+								}}
+							>
+								{notificationsCount}
+							</div>
+						)}
+						<Icon name="notification" color={"#dcdfe0"} width="25" />
+					</div>
+					<div onClick={handleOpenModal} className="flex cursor-pointer">
+						<Avatar />
+					</div>
+				</div>
+			</div>
 
-    const navigateToProfile = (): void => {
-        void navigate({ to: `/profile` });
-    };
+			<div className="flex m-2 h-screen overflow-y-auto">{children}</div>
+			{openModalUser && (
+				<>
+					<div
+						className="w-full h-full absolute bg-gray-400 opacity-30 z-30"
+						onClick={handleOpenModal}
+					></div>
+					<div
+						className="absolute rounded-[13px] bg-white flex flex-col gap-2 "
+						style={{
+							width: "15%",
+							right: "50px",
+							top: "55px",
+							padding: "10px",
+							zIndex: "100",
+						}}
+					>
+						<div className="border-b border-gray-200 pb-2 flex gap-2 items-center">
+							<Avatar name={localUserName} />
+							{localUserName}
+						</div>
 
-    const navigateToPermission = (): void => {
-        void navigate({ to: `/permissions` });
-    };
+						<div
+							className=" flex gap-3 items-center p-1 cursor-pointer"
+							onClick={navigateToProfile}
+						>
+							<Icon name="passwordProfile" color="black" width="20" />
+							My profile
+						</div>
 
-    const markAllReadNotifications = () => {
-        updateReadNotificationQuery.mutate()
-    }
+						<div
+							className=" flex gap-3 items-center p-1 cursor-pointer"
+							onClick={navigateToPermission}
+						>
+							<Icon name="permission" color="black" width="20" />
+							Permissions
+						</div>
+						<LogOff />
+					</div>
+				</>
+			)}
 
-    const handleClickOpenGlobalSearch = ():void  => { setOpenModalGeneralSearch(!openModalGeneralSearch); }
-    return (
-        <div className="flex flex-col h-screen bg-gradient relative">
-            <div className="flex items-center justify-between px-12 py-4">
-                <img src={LogoGold} alt="DKC Logo" />
-                <ul className="flex space-x-2">
-                    {NavbarRoutes.map((route) => (
-                        <Link
-                            key={route.path}
-                            to={route.path}
-                            className="link-text font-inter font-semibold px-4 py-2"
-                            activeProps={{ className: "text-white" }}
-                            inactiveProps={{ className: "opacity-40 text-gray-1000" }}
-                            params={{}}
-                            search={{}}
-                        >
-                            {route.name}
-                        </Link>
-                    ))}
-                </ul>
-                <div className="flex space-x-2 items-center">
-                    <Link
-                        className="button-text px-4 py-2 rounded-2xl bg-white font-bold"
-                        to={createLoanTo}
-                        params={{}}
-                        search={{}}
-                    >
-                        Create Loan
-                    </Link>
-                    <div
-                        onClick={handleOpenModalNotification}
-                        className="relative cursor-pointer"
-                    >
-                        {notificationsCount !== 0 && (
-                            <div
-                                className="w-[15px] h-[15px] rounded-full  bg-red-500 absolute text-[10px] justify-center items-center flex text-white"
-                                style={{
-                                    top: "-5px",
-                                    right: "-2px",
-                                }}
-                            >
-                                {
-                                    notificationsCount
-                                }
-                            </div>
-                        )}
-                        <Icon name="notification" color={"#dcdfe0"} width="25" />
-                    </div>
-                    <div onClick={handleOpenModal} className="flex cursor-pointer">
-                        <Avatar />
-                    </div>
-                </div>
-            </div>
+			{openModalNotification && (
+				<>
+					<div
+						className="w-full h-full absolute bg-gray-400 opacity-30 z-30"
+						onClick={handleOpenModalNotification}
+					></div>
+					<div
+						className="absolute rounded-[13px] bg-white flex flex-col gap-2 "
+						style={{
+							width: "350px",
+							right: "100px",
+							top: "60px",
+							padding: "15px",
+							zIndex: "100",
+							maxHeight: "80%",
+							overflow: "overlay",
+						}}
+					>
+						<div className="border-b border-gray-200 pb-2 flex gap-2 items-center justify-between">
+							<div className="text-[18px]">Notifications</div>{" "}
+							<div
+								className="w-[24px] h-[24px] rounded-full flex justify-center items-center bg-gray-200 cursor-pointer"
+								onClick={() => {
+									setOpenModalNotification(false);
+								}}
+							>
+								<Icon name="close" width="10" />
+							</div>
+						</div>
 
-            <div className="flex m-2 h-screen overflow-y-auto">{children}</div>
-            {openModalUser && (
-                <>
-                    <div
-                        className="w-full h-full absolute bg-gray-400 opacity-30 z-30"
-                        onClick={handleOpenModal}
-                    ></div>
-                    <div
-                        className="absolute rounded-[13px] bg-white flex flex-col gap-2 "
-                        style={{
-                            width: "15%",
-                            right: "50px",
-                            top: "55px",
-                            padding: "10px",
-                            zIndex: "100",
-                        }}
-                    >
-                        <div className="border-b border-gray-200 pb-2 flex gap-2 items-center">
-                            <Avatar name={localUserName} />
-                            {localUserName}
-                        </div>
+						<div className="flex flex-col gap-2">
+							{notifications?.map((data: UserNotification, key: number) => {
+								return (
+									<div key={key}>
+										<Notification
+											text={data.notification?.content}
+											userFullName={data.notification?.userFullName}
+											state={data.status}
+											date={data.createdAt?.toString()}
+											handleOnClick={() => {
+												const parseData = data.notification?.additionalData;
+												const jsonString = parseData?.replace(
+													/: ([\da-f\-]{36}),/g,
+													': "$1",'
+												);
 
-                        <div
-                            className=" flex gap-3 items-center p-1 cursor-pointer"
-                            onClick={navigateToProfile}
-                        >
-                            <Icon name="passwordProfile" color="black" width="20" />
-                            My profile
-                        </div>
+												if (parseData) {
+													console.log(parseData);
+													const data = JSON.parse(jsonString || "") as {
+														id: string;
+														ledgerId: string;
+													};
+													setLoanId(data.id);
+													setLedgerId(data.ledgerId);
+												}
 
-                        <div
-                            className=" flex gap-3 items-center p-1 cursor-pointer"
-                            onClick={navigateToPermission}
-                        >
-                            <Icon name="permission" color="black" width="20" />
-                            Permissions
-                        </div>
-                        <LogOff />
-                    </div>
-                </>
-            )}
+												setOpenModalLoan(true);
+												setNotificationTitle(data?.notification?.title);
+												setTypeNotification(data.notification?.type);
+												if (data.status !== "READ") {
+													updateNotificationQuery.mutate({
+														id: data.id,
+														status: "READ",
+													});
+												}
+											}}
+										/>
+									</div>
+								);
+							})}
+						</div>
 
-            {openModalNotification && (
-                <>
-                    <div
-                        className="w-full h-full absolute bg-gray-400 opacity-30 z-30"
-                        onClick={handleOpenModalNotification}
-                    ></div>
-                    <div
-                        className="absolute rounded-[13px] bg-white flex flex-col gap-2 "
-                        style={{
-                            width: "350px",
-                            right: "100px",
-                            top: "60px",
-                            padding: "15px",
-                            zIndex: "100",
-                            maxHeight: "80%",
-                            overflow: "overlay",
-                        }}
-                    >
-                        <div className="border-b border-gray-200 pb-2 flex gap-2 items-center justify-between">
-                            <div className="text-[18px]">Notifications</div>{" "}
-                            <div
-                                className="w-[24px] h-[24px] rounded-full flex justify-center items-center bg-gray-200 cursor-pointer"
-                                onClick={() => {
-                                    setOpenModalNotification(false);
-                                }}
-                            >
-                                <Icon name="close" width="10" />
-                            </div>
-                        </div>
+						<div className="border-t border-gray-200 pt-2 flex gap-2 items-center w-full justify-end ">
+							<Button
+								buttonText="Mark all as read"
+								className="rounded-3xl mt-2 text-black bg-gray-200"
+								onClick={markAllReadNotifications}
+							/>
+						</div>
+					</div>
+				</>
+			)}
 
-                        <div className="flex flex-col gap-2">
-                            {notifications?.map((data: UserNotification, key: number) => {
-                                return (
-                                    <div key={key}>
-                                        <Notification
-                                            text={data.notification?.content}
-                                            userFullName={data.notification?.userFullName}
-                                            state={data.status}
-                                            date={data.createdAt?.toString()}
-                                            handleOnClick={() => {
-                                                const parseData = data.notification?.additionalData;
-                                                const jsonString = parseData?.replace(
-                                                    /: ([\da-f\-]{36}),/g,
-                                                    ': "$1",'
-                                                );
+			<ServicingModal
+				title={openNotificationTitle}
+				id={openLoanId}
+				ledgerId={ledgerId}
+				openModal={openModalLoan}
+				handleRefreshData={() => {
+					void userNotification.refetch();
+					setOpenModalLoan(false);
+				}}
+				handleOnCLose={(): void => {
+					setOpenModalLoan(false);
+				}}
+				type={typeNotification}
+			/>
 
-                                                if (parseData) {
-                                                    console.log(parseData)
-                                                    const data = JSON.parse(jsonString || "") as {
-                                                        id: string;
-                                                        ledgerId: string;
-                                                    };
-                                                    setLoanId(data.id);
-                                                    setLedgerId(data.ledgerId);
-                                                }
-
-                                                setOpenModalLoan(true);
-                                                setNotificationTitle(data?.notification?.title);
-                                                setTypeNotification(data.notification?.type);
-                                                if (data.status !== "READ") {
-                                                    updateNotificationQuery.mutate({
-                                                        id: data.id,
-                                                        status: "READ",
-                                                    });
-                                                }
-                                            }}
-                                        />
-                                    </div>
-                                );
-                            })}
-                        </div>
-
-                        <div className="border-t border-gray-200 pt-2 flex gap-2 items-center w-full justify-end ">
-                            <Button
-                                buttonText="Mark all as read"
-                                className="rounded-3xl mt-2 text-black bg-gray-200"
-                                onClick={markAllReadNotifications}
-
-
-                            />
-                        </div>
-                    </div>
-                </>
-            )}
-
-            <ServicingModal
-                title={openNotificationTitle}
-                id={openLoanId}
-                ledgerId={ledgerId}
-                openModal={openModalLoan}
-                handleRefreshData={() => {
-                    void userNotification.refetch();
-                    setOpenModalLoan(false);
-                }}
-                handleOnCLose={(): void => {
-                    setOpenModalLoan(false);
-                }}
-                type={typeNotification}
-            />
-
-           {openModalGeneralSearch &&
-             <GlobalSearch handleOpenGlobalSearch={handleClickOpenGlobalSearch}/>}
-        </div>
-    );
+			{openModalGeneralSearch && (
+				<GlobalSearch handleOpenGlobalSearch={handleClickOpenGlobalSearch} />
+			)}
+		</div>
+	);
 };

@@ -55,11 +55,13 @@ export const LoginForm: FC<LoginFormProps> = () => {
 			);
 			sendToLocalStorage(group, groupAws);
 			sendToLocalStorage(accessToken, `${sessionData?.idToken?.jwtToken}`);
-			sendToLocalStorage(sub, `${sessionData?.idToken?.payload?.sub}`);
+
 			createLoginLog.mutate();
 
 			window.location.href =
-				groupAws === "investor" ? "/investors/portfolio" : "/manage-users/admins";
+				groupAws === "investor"
+					? "/investors/portfolio"
+					: "/manage-users/admins";
 		} catch (error) {
 			console.log(error);
 			setLoginError("Login failed. Please check your credentials.");
