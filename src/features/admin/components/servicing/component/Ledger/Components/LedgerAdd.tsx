@@ -93,7 +93,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							value={
 								dataLedgers.ledgerDate
 									? moment(dataLedgers.ledgerDate, "MMDDYYYY").toDate()
-									: moment(dataLedgers.ledgerDate).toDate()
+									: undefined
 							}
 							invalid={!!errors?.ledgers?.[index]?.ledgerDate}
 							onChange={(date: Date): void => {
