@@ -49,7 +49,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		return ManageNotificationService.createNotifications(body);
 	});
 
-  	const createNotificationsLedger = (data: LedgerFormValues) => {
+	const createNotificationsLedger = (data: LedgerFormValues) => {
 		data.ledgers.map((value) => {
 			if (value.typeOfPayment === "Principal") {
 				const dataNotification = { id: data.loanId, ledgerId: value.id };
@@ -68,7 +68,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	};
 
 	const [openClassModal, setOpenClassModal] = useState<boolean>();
-  const [openLedgerData, setLedgerData] = useState<any>();
+	const [openLedgerData, setLedgerData] = useState<any>();
 	const [currentIndex, setCurrentIndex] = useState<number>();
 	const [ledgers] = useState<Array<Ledgers>>(ledgersData || []);
 
@@ -80,7 +80,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			onSuccess: (data) => {
 				if (data) {
 					refetchLedgers && refetchLedgers();
-          createNotificationsLedger(openLedgerData);
+					createNotificationsLedger(openLedgerData);
 				}
 			},
 		}
@@ -164,7 +164,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		setCurrentIndex(id);
 		setOpenClassModal(open);
 	};
-
 
 	const handleTotals = (): void => {
 		const { debits, credits, balance } = calculateBalance(allFields.ledgers);
@@ -270,7 +269,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 						}
 					});
 
-         console.log(loan.id)
 					createLedger.mutate({ ...sanedData, loanId: loan?.id || "" });
 					setLedgerData({ ...sanedData, loanId: loan.id });
 				})}
