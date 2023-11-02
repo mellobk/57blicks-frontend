@@ -1,7 +1,7 @@
-import { Lender } from "@/types/api/lender";
-import { Loan } from "@/types/api/loan";
+import { Investor } from "@/types/api/investor";
+import { Loan } from "@/types/api/loan.ts";
 
-export interface FundingBreakdown {
+export interface ParticipationBreakdown {
 	id: string;
 	createdAt: Date;
 	updatedAt: Date;
@@ -11,6 +11,6 @@ export interface FundingBreakdown {
 	rate: string;
 	prorated: string;
 	regular: string;
-	lender: Lender;
+	investor: Investor;
 	loan: Loan;
 }

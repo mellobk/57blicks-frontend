@@ -4,6 +4,9 @@ import { LoanInformation } from "../../LoanInformation";
 import { BorrowerInformation } from "../../BorrowerInformation";
 import { LedgerList } from "../../Ledger";
 import { InvoiceScreen } from "../../Invoice";
+import { FundingBreakdown } from "@/features/admin/components/servicing/component/FundingBreakdown/FundingBreakdown.tsx";
+import { useQuery } from "@tanstack/react-query";
+import LoansService from "@/api/loans";
 
 interface Props {
 	openModal?: boolean;
@@ -28,6 +31,12 @@ export const ShowModal: FC<Props> = ({
 }) => {
 	const [actualTabData, setActualTabData] = useState(TABS[0]);
 
+	const loanQuery = useQuery(
+		["loan-query", data?.loan.id],
+		() => LoansService.getLoan(data?.loan.id),
+		{ enabled: !!data?.loan.id }
+	);
+
 	return (
 		<Modal
 			visible={openModal}
@@ -41,7 +50,7 @@ export const ShowModal: FC<Props> = ({
 				style={{ left: "0", top: "30px", zIndex: 0 }}
 			>
 				<div className="w-auto">
-					<div className="flex  w-full h-full  gap-1 text-gray-1000 items-center justify-center p-[5px] bg-gray-200 rounded-[16px]">
+					<div className="flex w-full h-full gap-1 text-gray-1000 items-center justify-center p-[5px] bg-gray-200 rounded-[16px]">
 						{TABS?.map((tab, index) => (
 							<div
 								key={index}
@@ -68,9 +77,9 @@ export const ShowModal: FC<Props> = ({
 			{actualTabData?.label === "Ledger" && data && (
 				<LedgerList loan={data.loan} />
 			)}
-			{/*{tabTitle === "Funding Breakdown" && data && (*/}
-			{/*	<FundingBreakdown loan={data.loan} />*/}
-			{/*)}*/}
+			{actualTabData?.label === "Funding" && data && (
+				<FundingBreakdown data={loanQuery.data} />
+			)}
 			{actualTabData?.label === "Invoices" && data && (
 				<InvoiceScreen loan={data.loan} />
 			)}

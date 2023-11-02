@@ -346,7 +346,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 							</tr>
 						</tbody>
 					</table>
-					<div className="w-[98%] absolute bottom-[5px] rounded-xl">
+					<div className="w-[98%] absolute bottom-6 rounded-xl">
 						<table className="w-full  rounded-xl bg-white flex flex-col justify-between  ">
 							<tfoot className="bg-gray-200 h-10 ">
 								<tr>
@@ -401,6 +401,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					Add row
 				</Button>
 			</form>
+
 			<Modal
 				visible={openClassModal}
 				title="Type of Payment"
