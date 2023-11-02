@@ -13,7 +13,7 @@ import type { User } from "../../types/api";
 import UserConfig from "../UserConfig/UserConfig";
 import { emptyObject, findIndex } from "@/utils/common-funtions";
 import { tabs } from "../../utils/tabs";
-import manageUserStore from "@/features/manage-user/stores/manage-user-store";
+import userStore from "@/stores/user-store.ts";
 
 interface SuccessProps {}
 
@@ -25,7 +25,7 @@ export const AdminTable: FC<SuccessProps> = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-	const userInfo = manageUserStore((state) => state.userInfo);
+	const userInfo = userStore((state) => state.userInfo);
 
 	useEffect(() => {
 		if (!emptyObject(userInfo)) {

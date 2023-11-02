@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { type FC, type ReactNode, useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/router";
 import { Icon } from "@/components/ui/Icon";
@@ -7,21 +5,21 @@ import "@/assets/images/png/LogoGold_2x.png";
 import LogoGold from "@/assets/images/png/LogoGold.png";
 import { Avatar } from "@/components/ui/Avatar";
 import { NavbarRoutes } from "@/features/admin/routes/AdminRouter";
-import "./Dashboard.css";
+import "./DashboardLayout.css";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import manageUserStore from "@/features/manage-user/stores/manage-user-store";
+import userStore from "@/stores/user-store.ts";
 import { getLocalStorage, sendToLocalStorage } from "@/utils/local-storage";
 import { userName } from "@/utils/constant";
 import { LogOff } from "@/features/admin/components/profile/component/LogOff/LogOff";
 import socket from "../../../socket";
 
-import type { UserNotification } from "../types/notifications";
+import type { UserNotification } from "@/types/api/notifications.ts";
 import { ServicingModal } from "@/features/admin/components/notifications/components/ServicingModal/ServicingModal";
 import { Notification } from "@/features/admin/components/notifications/components/Notification/Notification";
 import { Button } from "@/components/ui/Button";
-import { GlobalSearch } from "@/features/profile/component/GlobalSearch/GlobalSearch";
+import { GlobalSearch } from "@/components/ui/GlobalSearch/GlobalSearch";
 import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
-import DashboardUserService from "../api/user";
+import UserService from "../../../api/user.ts";
 import { findPermission } from "@/utils/common-funtions";
 import { PermissionType } from "@/types/api/permissions-type";
 
@@ -45,13 +43,13 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 		useState<boolean>(false);
 	const [openModalNotification, setOpenModalNotification] = useState<boolean>();
 
-	const userLoggedInfo = manageUserStore((state) => state.setLoggedUserInfo);
-	const userInfo = manageUserStore((state) => state.loggedUserInfo);
+	const userLoggedInfo = userStore((state) => state.setLoggedUserInfo);
+	const userInfo = userStore((state) => state.loggedUserInfo);
 
 	const userLoggedQuery = useQuery(
 		["user-logged-query"],
 		() => {
-			return DashboardUserService.getMyUserInfo();
+			return UserService.getMyInfo();
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -112,7 +110,6 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 	}, [updateReadNotificationQuery]);
 
 	useEffect(() => {
-		console.log(userLoggedQuery.data);
 		if (userLoggedQuery.data) {
 			sendToLocalStorage(
 				userName,
@@ -140,7 +137,7 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 			updateNotificationQuery.reset();
 			userNotification.remove();
 		}
-	}, [updateNotificationQuery]);
+	}, [updateNotificationQuery.isSuccess]);
 
 	const handleOpenModal = (): void => {
 		setOpenModalUser(!openModalUser);
@@ -164,6 +161,7 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 	const handleClickOpenGlobalSearch = (): void => {
 		setOpenModalGeneralSearch(!openModalGeneralSearch);
 	};
+
 	return (
 		<div className="flex flex-col h-screen bg-gradient relative">
 			<div className="flex items-center justify-between px-12 py-4">

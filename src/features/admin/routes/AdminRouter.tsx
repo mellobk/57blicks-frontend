@@ -1,4 +1,4 @@
-import { DashboardLayout } from "@/components/layout/Dashboard";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { CreateLoan } from "@/features/admin/components/create-loan/pages/CreateLoan/CreateLoan";
 import { CreateOpportunity } from "@/features/admin/components/opportunities/pages/CreateOpportunity/CreateOpportunity";
 import { LLC as ServicingLLC } from "@/features/admin/components/servicing/pages/LLC/LLC";

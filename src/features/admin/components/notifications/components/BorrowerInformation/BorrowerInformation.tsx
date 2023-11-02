@@ -1,8 +1,8 @@
 import type { FC } from "react";
 import { formatPhoneNumber } from "@/utils/common-funtions";
+import {Loan} from "@/types/api/loan";
 
 import { LoanCard } from "../LoanCard";
-import type { Loan } from "../../types/types";
 
 interface InvestorBankInfoProps {
 	data?: Loan;

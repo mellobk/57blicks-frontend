@@ -20,7 +20,7 @@ import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBaking
 import UserConfig from "../UserConfig/UserConfig";
 import { tabs } from "../../utils/tabs";
 import { EnableInvestor } from "../EnableInvestor/EnableInvestor";
-import manageUserStore from "@/features/manage-user/stores/manage-user-store";
+import userStore from "@/stores/user-store.ts";
 
 
 interface SuccessProps {}
@@ -42,7 +42,7 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 
 
 
- const userInfo = manageUserStore((state) => state.userInfo);
+ const userInfo = userStore((state) => state.userInfo);
 
 
  useEffect(()=>{

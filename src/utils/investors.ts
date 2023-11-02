@@ -1,5 +1,6 @@
 import moment from "moment/moment";
 import { FundingBreakdown } from "@/types/api/funding-breakdown";
+import { ParticipationBreakdown } from "@/types/api/paticipation-breakdown";
 import { moneyFormat } from "@/utils/formats";
 
 export const getLoanColumns = () => {
@@ -39,7 +40,9 @@ export const getLoanColumns = () => {
 	return loanColumns;
 };
 
-export const getFooterData = (data: FundingBreakdown[]) => {
+export const getFooterData = (
+	data: (FundingBreakdown | ParticipationBreakdown)[]
+) => {
 	return data.reduce(
 		(accumulator, { loan, rate, regular }) => {
 			accumulator.rate += Number(rate);

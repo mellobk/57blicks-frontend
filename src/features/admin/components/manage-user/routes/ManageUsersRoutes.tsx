@@ -1,4 +1,4 @@
-import { DashboardLayout } from "@/components/layout/Dashboard";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Accounting } from "@/features/admin/components/manage-user/pages/Accounting/Accounting";
 import { Investors } from "@/features/admin/components/manage-user/pages/Investors/Investors";
 

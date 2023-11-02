@@ -13,7 +13,7 @@ import type { User } from "../../types/api";
 import UserConfig from "../UserConfig/UserConfig";
 import { emptyObject, findIndex } from "@/utils/common-funtions";
 import { tabs } from "../../utils/tabs";
-import manageUserStore from "@/features/manage-user/stores/manage-user-store";
+import userStore from "@/stores/user-store.ts";
 
 
 export const AccountingTable: FC = () => {
@@ -32,7 +32,7 @@ export const AccountingTable: FC = () => {
 		{ enabled: true, staleTime: 1000 * 60 }
 	);
 
-     const userInfo = manageUserStore((state) => state.userInfo);
+     const userInfo = userStore((state) => state.userInfo);
 
 
  useEffect(()=>{
