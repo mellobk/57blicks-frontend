@@ -36,10 +36,8 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 }) => {
 	const setSuccessMessage = useStore((state) => state.setSuccessMessage);
 	const clearSuccessMessage = useStore((state) => state.clearSuccessMessage);
-
 	const [userData, _] = useState<User>(user);
 	const [groupPermission, setGroupPermission] = useState<string>();
-
 	const [arrayRolesData, setArrayRolesData] = useState<
 		Array<{ name: string; code: string }>
 	>([]);
@@ -53,15 +51,12 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 		useState<Array<PermissionGroup>>();
 	const [setPermissionsGroup, setSetPermissionsGroup] =
 		useState<Array<PermissionGroup>>();
-
 	const filterByPermissionType = (type: string): Array<PermissionGroup> => {
 		return allPermissions?.filter((data) => data.permissionType === type) || [];
 	};
-
 	const permissionGroupMutation = useMutation((id: string) => {
 		return ManageUsersService.permissionGroupById(id || "");
 	});
-
 	const permissionGroup = useQuery(
 		["all-permission-group-query"],
 		() => {
@@ -69,7 +64,6 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
-
 	const roles = useQuery(
 		["all-role-query"],
 		() => {
@@ -77,17 +71,14 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
-
 	useEffect(() => {
 		setValue("permissionAdminSelect", groupPermission);
-
 		const findPermission = allPermissionsGroup?.filter(
 			(data) => data.name === groupPermission
 		);
 		console.log(findPermission, allPermissionsGroup);
 		setSetPermissionsGroup(findPermission);
 	}, [groupPermission]);
-
 	const updateAdmin = useMutation(
 		(data: User) => {
 			return ManageUsersService.updateUserGroupPermission(data);
@@ -110,29 +101,23 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 		const find = permissionData?.find(
 			(data: PermissionGroup) => data.name === selectData.permissionAdminSelect
 		);
-
 		await updateAdmin.mutateAsync({
 			id: user.id || "",
 			permissionGroup: find?.id,
 		});
-
 		if (callBack) {
 			callBack();
 		}
 	};
-
 	useEffect(() => {
 		return () => {
 			permissionGroup.remove();
 			roles.remove();
 		};
 	}, []);
-
 	useEffect(() => {
 		const permissionData = roles?.data as Array<PermissionGroup>;
-
 		setAllPermissions(permissionData);
-
 		originalSearch.current = permissionData;
 	}, [permissionGroupMutation.isSuccess]);
 
@@ -140,15 +125,12 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 		if (arrayRolesData?.length === 0) {
 			const permissionGroupData: PermissionGroup | any =
 				permissionGroup?.data || [];
-
 			setAllPermissionsGroup(permissionGroupData);
-
 			const permissionsOption = permissionGroupData.map(
 				(value: PermissionGroup) => {
 					return { name: value.name || "", code: value.name || "" };
 				}
 			);
-
 			setArrayRolesData(permissionsOption);
 		}
 	}, [permissionGroup.isFetching]);
@@ -162,38 +144,29 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 				(data: PermissionGroup) => data.id === userData.permissionGroup?.id
 			);
 			console.log(find?.name);
-
 			setGroupPermission(find?.name);
-
 			const permissionData = roles?.data;
-
 			setAllPermissions(permissionData);
 		}
 	};
-
 	const getPermissionData = (name: string): void => {
 		setGroupPermission(name);
 		setValue("permissionAdminSelect", name);
 	};
-
 	useEffect(() => {
 		void getDataPermissions();
 	}, [roles]);
-
 	useEffect(() => {
 		const foundPermissions = allPermissions?.filter(
 			(value: PermissionGroup) =>
 				value?.name?.toLowerCase().includes(searchValue?.toLowerCase() || "")
 		);
-
 		console.log(foundPermissions);
-
 		if (foundPermissions?.length) {
 			setAllPermissions(foundPermissions); // Update the state with the found permissions
 		} else {
 			setAllPermissions(originalSearch.current); // If you want to show no results when there's no match, otherwise skip this line
 		}
-
 		if (!searchValue) {
 			setAllPermissions(originalSearch.current);
 		}
