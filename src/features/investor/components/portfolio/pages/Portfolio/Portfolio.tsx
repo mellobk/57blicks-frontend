@@ -5,8 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import InvestorsService from "@/api/investors";
 import { Input } from "@/components/forms/Input";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
-import { InvestorFooter } from "@/components/ui/InvestorFooter";
 import { Table } from "@/components/ui/Table";
+import { Footer } from "@/features/investor/components/portfolio/components/Footer/Footer";
 import { FundingBreakdown } from "@/types/api/funding-breakdown";
 import { Loan } from "@/types/api/loan";
 import { moneyFormat, percentageFormat } from "@/utils/formats";
@@ -147,7 +147,7 @@ export const Portfolio: FC = () => {
 						progressPending={investorsQuery.isFetching}
 						fixedHeader
 					/>
-					<InvestorFooter data={selectedLoan?.participationBreakdowns || []} />
+					<Footer data={selectedLoan?.participationBreakdowns || []} />
 				</div>
 				<Table
 					className="flex flex-col h-[50%] bg-white rounded-2xl p-0 m-0 overflow-y-auto"

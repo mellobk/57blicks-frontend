@@ -42,17 +42,19 @@ export interface User {
 	permission_group_id?: string;
 	role?: Role;
 	permissionGroup?: any;
-  investor?: {	target?: any;
-	id?: string;
-	createdAt?: Date;
-	updatedAt?: Date;
-	ssnEin?: string;
-	streetAddress?: string;
-	zip?: string;
-	bankingName?: string;
-	routingNumber?: string;
-	accountNumber?: string;
-	accountType?: string;};
+	investor?: {
+		target?: any;
+		id?: string;
+		createdAt?: Date;
+		updatedAt?: Date;
+		ssnEin?: string;
+		streetAddress?: string;
+		zip?: string;
+		bankingName?: string;
+		routingNumber?: string;
+		accountNumber?: string;
+		accountType?: string;
+	};
 }
 
 export interface Investor {
@@ -85,42 +87,9 @@ export interface Permissions {
 	updatedAt?: Date;
 	deletedAt?: null;
 	name?: string;
-	user?: User;
-	description?: string;
-	inviteAdmins: boolean;
-	inviteAccounters: boolean;
-	inviteInvestors: boolean;
-	viewInvestors: boolean;
-	viewAdmins: boolean;
-	viewAccounts: boolean;
-	editAdmins: boolean;
-	editInvestors: boolean;
-	editAccounting: boolean;
-	editBorrowers: boolean;
-	disableUsers: boolean;
-	approveUsersModifications: boolean;
-	grantPermissions: boolean;
-	createLoan: boolean;
-	viewLoans: boolean;
-	inputTransactionsLedger: boolean;
-	approveNewLoans: boolean;
-	approveLoanChanges: boolean;
-	sendInvoice: boolean;
-	loanOverview: boolean;
-	createOpportunity: boolean;
-	viewOpportunities: boolean;
-	editOpportunities: boolean;
-	sendOpportunities: boolean;
-	downloadOpportunities: boolean;
-	approveOpportunities: boolean;
-	reporting: boolean;
-	viewPqrs: boolean;
-	editPqrs: boolean;
-	roleId?: string;
 }
 
-
 export interface IGlobalSearch {
-  users: Array<User>;
-  collaterals: Array<Collateral>;
+	users: Array<User>;
+	collaterals: Array<Collateral>;
 }

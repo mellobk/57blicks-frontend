@@ -15,7 +15,7 @@ import { useNavigate } from "@tanstack/router";
 import { AuthRoutesNames } from "../../routes/AuthRouter";
 import { getSession } from "@/lib/cognito";
 import { sendToLocalStorage } from "@/utils/local-storage";
-import { accessToken, group, sub } from "@/utils/constant";
+import { accessToken, group } from "@/utils/constant";
 import { useMutation } from "@tanstack/react-query";
 import ManageLogService from "@/features/admin/components/manage-user/api/logs";
 
@@ -55,11 +55,13 @@ export const LoginForm: FC<LoginFormProps> = () => {
 			);
 			sendToLocalStorage(group, groupAws);
 			sendToLocalStorage(accessToken, `${sessionData?.idToken?.jwtToken}`);
-			sendToLocalStorage(sub, `${sessionData?.idToken?.payload?.sub}`);
+
 			createLoginLog.mutate();
 
 			window.location.href =
-				groupAws === "investor" ? "/investors/portfolio" : "/manage-users/admins";
+				groupAws === "investor"
+					? "/investors/portfolio"
+					: "/manage-users/admins";
 		} catch (error) {
 			console.log(error);
 			setLoginError("Login failed. Please check your credentials.");
