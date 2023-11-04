@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const TrashBin: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const TrashBin: FC<Props> = ({ color = "#BBBBBB", width = "48" }) => {
 	return (
 		<svg
 			width={width}

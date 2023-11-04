@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const TimeUsage: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const TimeUsage: FC<Props> = ({ color = "#BBBBBB", width = "48" }) => {
 	return (
 		<svg
 			width={width}

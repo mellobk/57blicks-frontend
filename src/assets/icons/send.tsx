@@ -10,7 +10,7 @@ const Send: FC<Props> = ({
 	color = "#BBBBBB",
 	width = "12",
 	height = "13",
-}: Props) => {
+}) => {
 	return (
 		<svg
 			width={width}

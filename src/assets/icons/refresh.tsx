@@ -10,7 +10,7 @@ const Refresh: FC<Props> = ({
 	color = "#BBBBBB",
 	width = "12",
 	height = "12",
-}: Props) => {
+}) => {
 	return (
 		<svg
 			width={width}

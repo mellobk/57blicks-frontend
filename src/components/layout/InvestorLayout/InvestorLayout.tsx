@@ -11,7 +11,7 @@ type Props = {
 	children?: ReactNode;
 };
 
-export const InvestorLayout: FC<Props> = ({ children }: Props) => {
+export const InvestorLayout: FC<Props> = ({ children }) => {
 	const userLoggedInfo = userStore((state) => state.setLoggedUserInfo);
 
 	const userLoggedQuery = useQuery(

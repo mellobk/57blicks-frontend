@@ -10,7 +10,7 @@ const SVG403: FC<Props> = ({
 	color = "#0E2130",
 	width = "423",
 	height = "333",
-}: Props) => {
+}) => {
 	return (
 		<svg
 			width={width}
