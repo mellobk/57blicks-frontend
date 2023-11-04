@@ -33,3 +33,4 @@ storybook-static
 
 # tests
 /coverage/
+**/__snapshots__/
