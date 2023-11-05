@@ -2,10 +2,10 @@ import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { SuccessModal } from "./SuccessModal";
 
-describe("SuccessModal", () => {
-	const mockSetOpenModal = jest.fn();
-	const mockOnClick = jest.fn();
+const mockSetOpenModal = jest.fn();
+const mockOnClick = jest.fn();
 
+describe("SuccessModal", () => {
 	it("renders correctly when openModal is true", () => {
 		render(
 			<SuccessModal
