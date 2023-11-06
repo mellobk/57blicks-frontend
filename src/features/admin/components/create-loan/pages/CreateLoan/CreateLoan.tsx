@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { type FC, useEffect, useState } from "react";
 import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,9 +21,17 @@ import {
 	calculateRegular,
 	unFormatPhone,
 } from "@/utils/common-funtions";
+import ManageNotificationService from "../../../notifications/api/notification";
+import { userName } from "@/utils/constant";
+import { getLocalStorage } from "@/utils/local-storage";
 
 export const CreateLoan: FC = () => {
+	const createLedgerQuery = useMutation(async (body: any) => {
+		return ManageNotificationService.createNotifications(body);
+	});
+	const localUserName = getLocalStorage(userName);
 	const [openLenderModal, setOpenLenderModal] = useState(false);
+
 	const [openParticipantModal, setOpenParticipantModal] = useState(false);
 	const [openSuccessModal, setOpenSuccessModal] = useState(false);
 
@@ -58,6 +67,7 @@ export const CreateLoan: FC = () => {
 		isSuccess,
 		mutate,
 		reset: resetMutation,
+		data,
 	} = useMutation((data: Loan) => {
 		return LoansService.createLoan(data);
 	});
@@ -106,6 +116,17 @@ export const CreateLoan: FC = () => {
 			reset();
 			resetMutation();
 			setOpenSuccessModal(true);
+			const dataNotification = { id: data.id, ledgerId: "" };
+			createLedgerQuery.mutate({
+				title: "Approve Loan",
+				timestamp: new Date(),
+				content: `Pending Loan Approval!  from ${localUserName} needs action.`,
+				additionalData: JSON.stringify(dataNotification),
+				userFullName: localUserName,
+				priority: "HIGH",
+				type: "LOAN",
+				roles: ["super-admin"],
+			});
 		}
 	}, [isSuccess]);
 

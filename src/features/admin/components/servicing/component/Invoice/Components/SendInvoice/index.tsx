@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import type { Invoice, InvoiceDataPdf, InvoiceSend } from "../../types";
@@ -7,6 +9,9 @@ import { InvoiceDocumentPreview } from "../InvoiceList/InvoiceDocumentPreview";
 import { BlobProvider } from "@react-pdf/renderer";
 import { useMutation } from "@tanstack/react-query";
 import ManageInvoiceService from "@/features/admin/components/servicing/api/invoices";
+import userStore from "@/stores/user-store";
+import { PermissionType } from "@/types/api/permissions-type";
+import { findPermission } from "@/utils/common-funtions";
 
 interface SendInvoiceProps {
 	invoice: Invoice;
@@ -28,6 +33,7 @@ const stringToBase64 = (string: string) => {
 };
 
 const SendInvoice: FC<SendInvoiceProps> = ({ invoice, invoiceDataPdf }) => {
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [openModal, setOpenModal] = useState<boolean>();
 	const [blob, setBlob] = useState<Blob | null>(null);
 
@@ -60,25 +66,32 @@ const SendInvoice: FC<SendInvoiceProps> = ({ invoice, invoiceDataPdf }) => {
 
 	return (
 		<>
-			<div
-				className={`absolute w-8 h-8  ${
-					invoice ? "bg-green-800" : "bg-gray-150"
-				}  rounded-full mr-4  align-middle  pt-[8px] pl-[12px]  cursor-pointer`}
-				style={{
-					left: "575px",
-					top: "36px",
-				}}
-				onClick={(): void => {
-					setOpenModal(true);
-				}}
-			>
-				<Icon
-					name="send"
-					color={`${invoice ? "#00BA35" : "#b8bcc1"}`}
-					width="12"
-					height="13"
-				/>
-			</div>
+			{findPermission(
+				userLoggedInfo?.role,
+				userLoggedInfo?.permissionGroup?.permissions || [],
+				PermissionType.SEND_INVOICE
+			) && (
+				<div
+					className={`absolute w-8 h-8  ${
+						invoice ? "bg-green-800" : "bg-gray-150"
+					}  rounded-full mr-4  align-middle  pt-[8px] pl-[12px]  cursor-pointer`}
+					style={{
+						left: "575px",
+						top: "36px",
+					}}
+					onClick={(): void => {
+						setOpenModal(true);
+					}}
+				>
+					<Icon
+						name="send"
+						color={`${invoice ? "#00BA35" : "#b8bcc1"}`}
+						width="12"
+						height="13"
+					/>
+				</div>
+			)}
+
 			<Modal
 				visible={openModal}
 				title="Send Invoice"

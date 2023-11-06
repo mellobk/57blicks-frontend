@@ -19,6 +19,7 @@ interface Column {
 interface TableProps {
 	columns?: Array<Column>;
 	data?: any;
+	showAddButton?: boolean;
 	children?: ReactElement;
 	buttonText?: string;
 	checkedValue?: boolean;
@@ -44,6 +45,7 @@ export const Table: FC<TableProps> = ({
 	widthSearch = "158px",
 	loading,
 	onRowClicked,
+	showAddButton,
 }) => {
 	const [visible, setVisible] = useState(false);
 	const [stateColumns, setStateColumns] = useState<Array<Column>>(columns);
@@ -118,7 +120,7 @@ export const Table: FC<TableProps> = ({
 									checked={checkedValue}
 									checkedClassName="bg-green-500"
 									label="Show Disabled"
-									labelClassName="text-white text-[13px] w-32"
+									labelClassName="text-white text-[13px] w-[95px]"
 									onChecked={(data): void => {
 										if (handleCheckValue) {
 											handleCheckValue(data);
@@ -185,7 +187,7 @@ export const Table: FC<TableProps> = ({
 						/>
 					</div>
 
-					{buttonText && (
+					{buttonText && showAddButton && (
 						<div className="">
 							<Button
 								buttonText={buttonText}
