@@ -10,7 +10,7 @@ import type { Loan } from "@/features/admin/components/create-loan/types/fields"
 import { defaultValues } from "@/features/admin/components/create-loan/utils/values";
 import { LoanInformation } from "./LoanInformation";
 
-const TEST_DATA_IDS = {
+const DATA_TEST_IDS = {
 	loanType: "loan-information-loan-type",
 	collateralAddress: "loan-information-collateral-address",
 	totalLoanAmount: "loan-information-loan-amount",
@@ -93,7 +93,7 @@ describe("LoanInformation", () => {
 		expect(screen.getByText("Loan Information")).toBeInTheDocument();
 	});
 
-	Object.entries(TEST_DATA_IDS).forEach(([key, testId]) => {
+	Object.entries(DATA_TEST_IDS).forEach(([key, testId]) => {
 		it(`registers ${key} input correctly`, () => {
 			render(<WrappedLoanInformation />);
 			expect(screen.getByTestId(testId)).toBeInTheDocument();
@@ -104,7 +104,7 @@ describe("LoanInformation", () => {
 		it(`sets ${key} form value correctly`, async () => {
 			render(<WrappedLoanInformation />);
 
-			const testId = TEST_DATA_IDS[key as keyof typeof TEST_DATA_IDS];
+			const testId = DATA_TEST_IDS[key as keyof typeof DATA_TEST_IDS];
 			const element = screen.getByTestId(testId);
 
 			if (element.className.includes("p-dropdown")) {
@@ -128,18 +128,18 @@ describe("LoanInformation", () => {
 		render(<WrappedLoanInformation />);
 
 		await userEvent.type(
-			screen.getByTestId(TEST_DATA_IDS.totalLoanAmount),
+			screen.getByTestId(DATA_TEST_IDS.totalLoanAmount),
 			"100000",
 			{ delay: 1 }
 		);
 		await userEvent.type(
-			screen.getByTestId(TEST_DATA_IDS.constructionHoldback),
+			screen.getByTestId(DATA_TEST_IDS.constructionHoldback),
 			"20000",
 			{ delay: 1 }
 		);
 
 		await waitFor(() => {
-			expect(screen.getByTestId(TEST_DATA_IDS.amountDrawn)).toHaveValue(
+			expect(screen.getByTestId(DATA_TEST_IDS.amountDrawn)).toHaveValue(
 				"$80,000.00"
 			);
 		});
