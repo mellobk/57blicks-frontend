@@ -22,6 +22,7 @@ export const BorrowerInformation: FC<Props> = ({
 	<div>
 		<Title text="Borrower Information" />
 		<Dropdown
+      data-testid="borrower-information-llc"
 			control={control}
 			error={errors?.borrower?.llc?.message}
 			className="mt-6"
@@ -32,6 +33,7 @@ export const BorrowerInformation: FC<Props> = ({
 		/>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 			<Input
+        data-testid="borrower-information-first-name"
 				error={errors?.borrower?.user?.firstName?.message}
 				label="First Name"
 				placeholder="Enter First Name"
@@ -40,6 +42,7 @@ export const BorrowerInformation: FC<Props> = ({
 				required
 			/>
 			<Input
+        data-testid="borrower-information-last-name"
 				error={errors?.borrower?.user?.lastName?.message}
 				label="Last Name"
 				placeholder="Enter Last Name"
@@ -49,6 +52,7 @@ export const BorrowerInformation: FC<Props> = ({
 			/>
 		</div>
 		<MaskInput
+      data-testid="borrower-information-phone-number"
 			error={errors?.borrower?.user?.phoneNumber?.message}
 			label="Borrower Phone Number"
 			mask="(999) 999-9999"
@@ -58,6 +62,7 @@ export const BorrowerInformation: FC<Props> = ({
 			required
 		/>
 		<Input
+      data-testid="borrower-information-email"
 			error={errors?.borrower?.user?.email?.message}
 			label="Borrower Email Address"
 			placeholder="Enter Borrower Email Address"
@@ -66,6 +71,7 @@ export const BorrowerInformation: FC<Props> = ({
 			required
 		/>
 		<MaskInput
+      data-testid="borrower-Information-ssn-ein"
 			error={errors?.borrower?.ssnEin?.message}
 			label="EIN/SSN"
 			mask="999999999"
@@ -75,6 +81,7 @@ export const BorrowerInformation: FC<Props> = ({
 			required
 		/>
 		<Input
+      data-testid="borrower-Information-mailing-address"
 			error={errors?.borrower?.user?.mailingAddress?.message}
 			label="Mailing Address"
 			placeholder="Enter Mailing Address"
