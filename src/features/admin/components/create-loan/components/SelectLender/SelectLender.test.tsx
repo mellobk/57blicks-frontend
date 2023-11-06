@@ -2,12 +2,12 @@ import "@testing-library/jest-dom";
 
 import React from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { LoanSchema } from "@/features/admin/components/create-loan/schemas/LoanSchema";
 import type { Loan } from "@/features/admin/components/create-loan/types/fields";
-import { defaultValues } from "@/features/admin/components/create-loan/utils/values.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LoanSchema } from "@/features/admin/components/create-loan/schemas/LoanSchema.ts";
+import { defaultValues } from "@/features/admin/components/create-loan/utils/values";
 import { SelectLender } from "./SelectLender";
 
 interface Props {
@@ -23,7 +23,7 @@ jest.mock("@/features/admin/components/create-loan/utils/selects", () => ({
 
 const mockSetOpenModal = jest.fn();
 
-const WrapperSelectLender: React.FC<Props> = ({ openModal = true }) => {
+const WrappedSelectLender: React.FC<Props> = ({ openModal = true }) => {
 	const { control, setValue } = useForm<Loan>({
 		defaultValues,
 		resolver: zodResolver(LoanSchema),
@@ -41,23 +41,23 @@ const WrapperSelectLender: React.FC<Props> = ({ openModal = true }) => {
 
 describe("SelectLender", () => {
 	it("renders correctly when openModal is true", () => {
-		render(<WrapperSelectLender />);
+		render(<WrappedSelectLender />);
 		expect(screen.getByText("Select Lender")).toBeInTheDocument();
 	});
 
 	it("does not render when openModal is false", () => {
-		render(<WrapperSelectLender openModal={false} />);
+		render(<WrappedSelectLender openModal={false} />);
 		expect(screen.queryByText("Select Lender")).not.toBeInTheDocument();
 	});
 
 	it("renders the select and button", () => {
-		render(<WrapperSelectLender />);
+		render(<WrappedSelectLender />);
 		expect(screen.getByTestId("select-lender-select")).toBeInTheDocument();
 		expect(screen.getByTestId("select-lender-button")).toBeInTheDocument();
 	});
 
 	it("updates selected lender on select change", async () => {
-		render(<WrapperSelectLender />);
+		render(<WrappedSelectLender />);
 
 		const dropdown = screen.getByTestId("select-lender-select");
 		void userEvent.click(dropdown);
@@ -65,12 +65,11 @@ describe("SelectLender", () => {
 		const option = await screen.findByText("Lender B");
 		void userEvent.click(option);
 
-		const label = screen.getByText("Lender B");
-		expect(label).toBeInTheDocument();
+		expect(screen.getByText("Lender B")).toBeInTheDocument();
 	});
 
 	it("calls setOpenModal with false when the select button is clicked", async () => {
-		render(<WrapperSelectLender />);
+		render(<WrappedSelectLender />);
 		fireEvent.click(screen.getByTestId("select-lender-button"));
 		expect(mockSetOpenModal).toHaveBeenCalledWith(false);
 	});
