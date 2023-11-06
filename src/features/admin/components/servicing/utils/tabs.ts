@@ -24,6 +24,13 @@ export const userTabs = [
 	{ label: "Edit", routeTo: "manage-users/admins" },
 ];
 
+export const userTabsData = {
+	activity: { label: "Activity", routeTo: "manage-users/admins" },
+	permission: { label: "Permission", routeTo: "manage-users/admins" },
+	edit: { label: "Edit", routeTo: "manage-users/admins" },
+	empty: { label: "", routeTo: "" },
+};
+
 export const investorUserTabs = [
 	{ label: "Activity", routeTo: "manage-users/admins" },
 	{ label: "Edit", routeTo: "manage-users/admins" },

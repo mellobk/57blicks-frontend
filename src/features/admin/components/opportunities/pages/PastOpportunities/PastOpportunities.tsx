@@ -1,17 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import OpportunitiesService from "@/api/opportunities";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Loading } from "@/components/ui/Loading";
-import {OpportunityList} from "@/components/ui/OpportunityList";
+import { OpportunityList } from "@/components/ui/OpportunityList";
 import { Tabs } from "@/components/ui/Tabs";
 import { Details } from "@/features/admin/components/opportunities/components/PastOpportunities/Details/Details";
 import { DocumentPreview } from "@/features/admin/components/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview";
-import { tabs } from "@/features/admin/components/opportunities/utils/tabs";
 import type { OpportunityMin } from "@/types/api/opportunityMin";
+import userStore from "@/stores/user-store";
+import { findPermission } from "@/utils/common-funtions";
+import { PermissionType } from "@/types/api/permissions-type";
+import { tabsOpportunity } from "../../utils/tabs";
 
 export const PastOpportunities: FC = () => {
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
+	const idQueryParameter = new URLSearchParams(window.location.search);
+	const id = idQueryParameter.get("id");
+
 	const [selectedOpportunity, setSelectedOpportunity] =
 		useState<OpportunityMin>();
 
@@ -32,8 +41,14 @@ export const PastOpportunities: FC = () => {
 	};
 
 	useEffect(() => {
-		setSelectedOpportunity(getOpportunitiesQuery?.data?.[0]);
-	}, [getOpportunitiesQuery?.data]);
+		const getOpportunityBYId = getOpportunitiesQuery?.data?.find(
+			(data) => data.id === id
+		);
+
+		setSelectedOpportunity(
+			getOpportunityBYId || getOpportunitiesQuery?.data?.[0] || {}
+		);
+	}, [getOpportunitiesQuery?.data, id]);
 
 	return (
 		<div className="flex flex-col w-full h-full">
@@ -45,7 +60,26 @@ export const PastOpportunities: FC = () => {
 					/>
 				</div>
 				<div className="relative z-10">
-					<Tabs tabs={tabs} actualTab="past opportunities" />
+					<Tabs
+						tabs={[
+							findPermission(
+								userLoggedInfo?.role,
+								userLoggedInfo?.permissionGroup?.permissions || [],
+								PermissionType.CREATE_OPPORTUNITY
+							)
+								? tabsOpportunity.create
+								: tabsOpportunity.empty,
+
+							findPermission(
+								userLoggedInfo?.role,
+								userLoggedInfo?.permissionGroup?.permissions || [],
+								PermissionType.VIEW_OPPORTUNITIES
+							)
+								? tabsOpportunity.past
+								: tabsOpportunity.empty,
+						]}
+						actualTab="past opportunities"
+					/>
 				</div>
 				<div></div>
 			</div>

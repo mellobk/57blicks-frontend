@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, useEffect, useRef, useState } from "react";
 import type { TableColumn } from "react-data-table-component";
 import { useMutation } from "@tanstack/react-query";
@@ -11,9 +13,12 @@ import { Table } from "@/components/ui/Table";
 import { Title } from "@/components/ui/Title";
 import { Value } from "@/features/admin/components/opportunities/components/PastOpportunities/Details/Value/Value";
 import { Subtitle } from "@/features/admin/components/opportunities/components/PastOpportunities/Subtitle/Subtitle";
-import { Investment } from "@/types/api/investment";
-import { Opportunity } from "@/types/api/opportunity";
+import type { Investment } from "@/types/api/investment";
+import type { Opportunity } from "@/types/api/opportunity";
 import { dateFormat } from "@/utils/formats";
+import { findPermission } from "@/utils/common-funtions";
+import userStore from "@/stores/user-store";
+import { PermissionType } from "@/types/api/permissions-type";
 
 interface Props {
 	data?: Opportunity;
@@ -22,6 +27,7 @@ interface Props {
 }
 
 export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
 	const anchorRef = useRef<HTMLAnchorElement | null>(null);
 
@@ -91,13 +97,19 @@ export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
 									download
 								/>
 
-								<IconButton
-									bgColor="bg-blue-200/[.12]"
-									color="#0085FF"
-									name="download"
-									onClick={() => anchorRef.current?.click()}
-									width="16"
-								/>
+								{findPermission(
+									userLoggedInfo?.role,
+									userLoggedInfo?.permissionGroup?.permissions || [],
+									PermissionType.DOWNLOAD_OPPORTUNITIES
+								) && (
+									<IconButton
+										bgColor="bg-blue-200/[.12]"
+										color="#0085FF"
+										name="download"
+										onClick={() => anchorRef.current?.click()}
+										width="16"
+									/>
+								)}
 							</>
 						)}
 						<IconButton

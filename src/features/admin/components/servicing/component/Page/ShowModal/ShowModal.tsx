@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { LoanInformation } from "../../LoanInformation";
@@ -7,6 +9,9 @@ import { InvoiceScreen } from "../../Invoice";
 import { FundingBreakdown } from "@/features/admin/components/servicing/component/FundingBreakdown/FundingBreakdown.tsx";
 import { useQuery } from "@tanstack/react-query";
 import LoansService from "@/api/loans";
+import userStore from "@/stores/user-store";
+import { PermissionType } from "@/types/api/permissions-type";
+import { findPermission } from "@/utils/common-funtions";
 
 interface Props {
 	openModal?: boolean;
@@ -15,13 +20,14 @@ interface Props {
 	data?: any;
 }
 
-const TABS = [
-	{ label: "Loan", title: "Loan Information" },
-	{ label: "Borrower", title: "Borrower Information" },
-	{ label: "Ledger", title: "Ledger" },
-	{ label: "Funding", title: "Funding Breakdown" },
-	{ label: "Invoices", title: "Invoices" },
-];
+const tabsPermissions = {
+	loan: { label: "Loan", title: "Loan Information" },
+	borrower: { label: "Borrower", title: "Borrower Information" },
+	ledger: { label: "Ledger", title: "Ledger" },
+	funding: { label: "Funding", title: "Funding Breakdown" },
+	invoice: { label: "Invoices", title: "Invoices" },
+	empty: { label: "", title: "" },
+};
 
 export const ShowModal: FC<Props> = ({
 	openModal,
@@ -29,6 +35,35 @@ export const ShowModal: FC<Props> = ({
 	handleRefreshData,
 	data,
 }) => {
+	const userInfo = userStore((state) => state.loggedUserInfo);
+
+	const TABS = [
+		findPermission(
+			userInfo?.role,
+			userInfo?.permissionGroup?.permissions || [],
+			PermissionType.VIEW_LOANS
+		)
+			? tabsPermissions.loan
+			: tabsPermissions.empty,
+		findPermission(
+			userInfo?.role,
+			userInfo?.permissionGroup?.permissions || [],
+			PermissionType.EDIT_BORROWERS
+		)
+			? tabsPermissions.borrower
+			: tabsPermissions.empty,
+
+		findPermission(
+			userInfo?.role,
+			userInfo?.permissionGroup?.permissions || [],
+			PermissionType.INPUT_TRANSACTIONS_LEDGER
+		)
+			? tabsPermissions.ledger
+			: tabsPermissions.empty,
+		tabsPermissions.funding,
+		tabsPermissions.invoice,
+	];
+
 	const [actualTabData, setActualTabData] = useState(TABS[0]);
 
 	const loanQuery = useQuery(
@@ -51,19 +86,22 @@ export const ShowModal: FC<Props> = ({
 			>
 				<div className="w-auto">
 					<div className="flex w-full h-full gap-1 text-gray-1000 items-center justify-center p-[5px] bg-gray-200 rounded-[16px]">
-						{TABS?.map((tab, index) => (
-							<div
-								key={index}
-								onClick={() => setActualTabData(tab)}
-								className={`px-5 cursor-pointer ${
-									tab.label === actualTabData?.label
-										? "bg-white text-black"
-										: ""
-								} rounded-[16px] text-[13px]`}
-							>
-								{tab.label}
-							</div>
-						))}
+						{TABS?.map(
+							(tab, index) =>
+								tab.label && (
+									<div
+										key={index}
+										onClick={() => setActualTabData(tab)}
+										className={`px-5 cursor-pointer ${
+											tab.label === actualTabData?.label
+												? "bg-white text-black"
+												: ""
+										} rounded-[16px] text-[13px]`}
+									>
+										{tab.label}
+									</div>
+								)
+						)}
 					</div>
 				</div>
 			</div>
