@@ -27,7 +27,7 @@ export interface PermissionGroup {
 }
 
 export interface User {
-	data: any;
+	data?: any;
 	id?: string;
 	createdAt?: Date;
 	updatedAt?: Date;

@@ -6,14 +6,14 @@ export type InvestorsNotifications = {
 };
 
 export type Opportunity = {
-	id: string;
+	id?: string;
 	additionalInformation: string;
 	assetValue: string;
 	dkcRepeatBorrower: string;
 	documentS3Path: string;
 	googleDriveLink: string;
 	image: any;
-	referenceId: number;
+	referenceId?: number;
 	investmentBorrower: string;
 	investmentBorrowerBackground: string;
 	investmentCollateral: string;

@@ -4,7 +4,7 @@
 import { Input } from "@/components/forms/Input";
 import { Icon } from "@/components/ui/Icon";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import type { FC } from "react";
 
 import { getLabel } from "@/utils/common-funtions";
@@ -67,8 +67,6 @@ export const GlobalSearch: FC<GlobalSearchProps> = ({
 		void navigate({
 			to: `/manage-users/${getPluralRole(data.role?.name || "")}`,
 		});
-
-		setUserInfo(data);
 
 		if (handleOpenGlobalSearch) {
 			handleOpenGlobalSearch();
@@ -164,7 +162,7 @@ export const GlobalSearch: FC<GlobalSearchProps> = ({
 												key={opportunityData.id}
 												className="flex gap-3 items-center px-[5px] cursor-pointer"
 												onClick={(): void => {
-													navigateOpportunities(opportunityData.id);
+													navigateOpportunities(opportunityData?.id || "");
 												}}
 											>
 												<div>

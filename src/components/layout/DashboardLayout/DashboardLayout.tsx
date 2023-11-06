@@ -6,7 +6,7 @@ import { Icon } from "@/components/ui/Icon";
 import "@/assets/images/png/LogoGold_2x.png";
 import LogoGold from "@/assets/images/png/LogoGold.png";
 import { Avatar } from "@/components/ui/Avatar";
-import { NavbarData, NavbarRoutes } from "@/features/admin/routes/AdminRouter";
+import { NavbarData } from "@/features/admin/routes/AdminRouter";
 import "./DashboardLayout.css";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import userStore from "@/stores/user-store.ts";

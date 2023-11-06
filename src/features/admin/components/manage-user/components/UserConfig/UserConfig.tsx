@@ -11,10 +11,7 @@ import { Modal } from "@/components/ui/Modal/Modal";
 import { Tabs } from "@/features/admin/components/servicing/component/Tabs";
 import UserActivity from "./UserActivity";
 import { useQuery } from "@tanstack/react-query";
-import {
-	investorUserTabs,
-	userTabsData,
-} from "@/features/admin/components/servicing/utils/tabs";
+import { userTabsData } from "@/features/admin/components/servicing/utils/tabs";
 import { PermissionsAdmin } from "./PermissionsAdmin";
 import userStore from "@/stores/user-store.ts";
 import { PermissionType, RoleType } from "@/types/api/permissions-type";
