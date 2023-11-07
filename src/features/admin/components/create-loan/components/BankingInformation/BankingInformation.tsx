@@ -20,6 +20,7 @@ export const BankingInformation: FC<Props> = ({
 	<div className="pt-6">
 		<Title text="Banking Information" />
 		<Input
+      data-testid="banking-information-banking-name"
 			error={errors?.borrower?.bankingName?.message}
 			label="Banking Name"
 			placeholder="Enter Banking Name"
@@ -27,6 +28,7 @@ export const BankingInformation: FC<Props> = ({
 			wrapperClassName="mt-6"
 		/>
 		<Input
+      data-testid="banking-information-routing-number"
 			error={errors?.borrower?.routingNumber?.message}
 			label="Routing Number"
 			placeholder="Enter Routing Number"
@@ -35,6 +37,7 @@ export const BankingInformation: FC<Props> = ({
 			wrapperClassName="mt-6"
 		/>
 		<Input
+      data-testid="banking-information-account-number"
 			error={errors?.borrower?.accountNumber?.message}
 			label="Account Number"
 			placeholder="Enter Account Number"
@@ -43,6 +46,7 @@ export const BankingInformation: FC<Props> = ({
 			wrapperClassName="mt-6"
 		/>
 		<Dropdown
+      data-testid="banking-information-account-type"
 			control={control}
 			error={errors?.borrower?.accountType?.message}
 			className="mt-6"

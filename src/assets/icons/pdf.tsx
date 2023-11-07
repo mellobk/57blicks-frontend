@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const Pdf: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const Pdf: FC<Props> = ({ color = "#BBBBBB", width = "48" }) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

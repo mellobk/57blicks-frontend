@@ -10,7 +10,7 @@ const ArrowRight: FC<Props> = ({
 	color = "#BBBBBB",
 	width = "7",
 	height = "13",
-}: Props) => {
+}) => {
 	return (
 		<svg
 			width={width}

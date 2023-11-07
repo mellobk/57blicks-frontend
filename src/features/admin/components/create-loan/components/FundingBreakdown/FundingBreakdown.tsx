@@ -54,6 +54,7 @@ export const FundingBreakdown: FC<Props> = ({
 				if (rowIndex === 0) {
 					return (
 						<button
+              data-testid="funding-breakdown-select-lender"
 							className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200"
 							onClick={() => {
 								setOpenLenderModal(true);
@@ -163,6 +164,7 @@ export const FundingBreakdown: FC<Props> = ({
 			<div className="flex flex-row justify-between">
 				<Title text="Funding Breakdown" />
 				<Button
+          data-testid="funding-breakdown-add-participant"
 					buttonText={
 						<div className="ml-2 font-inter font-semibold text-sm text-primary leading-[17px] tracking-[-0.7px]">
 							Add Participant

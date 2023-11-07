@@ -15,6 +15,7 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
 	<>
 		<Title text="General Information" />
 		<Input
+      data-testid="general-information-post-title"
 			error={errors?.postTitle?.message}
 			label="Post Title"
 			placeholder="Enter Post Title"
@@ -22,6 +23,7 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
 			wrapperClassName="mt-6"
 		/>
 		<Input
+      data-testid="general-information-investment-collateral"
 			error={errors?.investmentCollateral?.message}
 			label="Investment Collateral"
 			placeholder="Enter Investment Collateral"
@@ -30,6 +32,7 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
 			required
 		/>
 		<Input
+      data-testid="general-information-google-drive-link"
 			error={errors?.googleDriveLink?.message}
 			label="Google Drive Link"
 			placeholder="Enter Google Drive Link"
@@ -38,6 +41,7 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
 			required
 		/>
 		<FileUpload
+      data-testid="general-information-image"
 			accept="image/*"
 			error={errors?.image?.message}
 			label="Choose File"
@@ -47,6 +51,7 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
 			required
 		/>
 		<TextArea
+      data-testid="general-information-investment-summary"
 			error={errors?.investmentSummary?.message}
 			label="Investment Summary"
 			maxLength={2000}

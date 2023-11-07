@@ -29,7 +29,7 @@ type Props = {
 	children?: ReactNode;
 };
 
-export const DashboardLayout: FC<Props> = ({ children }: Props) => {
+export const DashboardLayout: FC<Props> = ({ children }) => {
 	const navigate = useNavigate();
 	const createLoanTo: string = "/create-loan";
 	const localUserName = getLocalStorage(userName);

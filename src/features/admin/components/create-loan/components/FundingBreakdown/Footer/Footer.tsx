@@ -1,24 +1,14 @@
-import { type ComponentType, useEffect, useState } from "react";
+import { type ComponentType } from "react";
 import { type Control, useWatch } from "react-hook-form";
 import { Cell } from "@/components/table/Cell";
 import type { Loan } from "@/features/admin/components/create-loan/types/fields";
-import {
-	calculateProrated,
-	calculateRegular,
-} from "@/utils/common-funtions";
+import { calculateProrated, calculateRegular } from "@/utils/common-funtions";
 
 interface Props {
 	control: Control<Loan>;
 }
 
 export const Footer: ComponentType<Props> = ({ control }) => {
-	const defaultTotals = {
-		amount: 0,
-		prorated: 0,
-		rate: 0,
-		regular: 0,
-	};
-	const [totals, setTotals] = useState(defaultTotals);
 	const [
 		fundingBreakdown,
 		originationDate,
@@ -34,23 +24,24 @@ export const Footer: ComponentType<Props> = ({ control }) => {
 		],
 	});
 
-	useEffect(() => {
-		const newTotals = [...fundingBreakdown, ...participationBreakdown].reduce(
-			(accumulator, { amount, rate }) => {
-				accumulator.amount += Number(amount);
-				accumulator.prorated += Number(
-					calculateProrated(amount, rate, originationDate)
-				);
-				accumulator.rate += Number(rate);
-				accumulator.regular += Number(calculateRegular(amount, rate));
+	const totals = [...fundingBreakdown, ...participationBreakdown].reduce(
+		(accumulator, { amount, rate }) => {
+			accumulator.amount += Number(amount);
+			accumulator.prorated += Number(
+				calculateProrated(amount, rate, originationDate)
+			);
+			accumulator.rate += Number(rate);
+			accumulator.regular += Number(calculateRegular(amount, rate));
 
-				return accumulator;
-			},
-			defaultTotals
-		);
-
-		setTotals(newTotals);
-	}, [fundingBreakdown, participationBreakdown]);
+			return accumulator;
+		},
+		{
+			amount: 0,
+			prorated: 0,
+			rate: 0,
+			regular: 0,
+		}
+	);
 
 	return (
 		<div className="flex flex-row h-10 bg-gray-200 rounded-b-2xl">

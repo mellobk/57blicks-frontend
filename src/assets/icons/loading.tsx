@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const Loading: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const Loading: FC<Props> = ({ color = "#BBBBBB", width = "48" }) => {
 	return (
 		<svg
 			className="animate-spin "

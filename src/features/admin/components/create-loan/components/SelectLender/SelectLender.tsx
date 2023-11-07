@@ -63,6 +63,7 @@ export const SelectLender: FC<Props> = ({
 			visible={openModal}
 		>
 			<Select
+				data-testid="select-lender-select"
 				className="mt-6"
 				label="Lender"
 				onChange={(e) => setSelectedLender(e.target.value)}
@@ -72,6 +73,7 @@ export const SelectLender: FC<Props> = ({
 				required
 			/>
 			<Button
+				data-testid="select-lender-button"
 				buttonText="Select"
 				className="bg-primary-500 w-full mt-6 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
 				onClick={selectLender}

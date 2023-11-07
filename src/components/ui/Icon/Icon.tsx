@@ -106,8 +106,14 @@ export interface IconProps {
 	width?: string;
 }
 
-export const Icon: FC<IconProps> = ({ name, ...props }) => {
-	const IconComponent = ICONS[name];
+export const Icon: FC<IconProps> = (props) => {
+	const IconComponent = ICONS[props.name];
 
-	return IconComponent ? <IconComponent {...props} /> : <></>;
+	return IconComponent ? (
+		<div {...props}>
+			<IconComponent {...props} />
+		</div>
+	) : (
+		<></>
+	);
 };

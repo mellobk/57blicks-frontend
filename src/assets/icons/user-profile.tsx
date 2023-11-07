@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const UserProfile: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const UserProfile: FC<Props> = ({ color = "#BBBBBB", width = "48" }) => {
 	return (
 		<svg
 			fill={color}

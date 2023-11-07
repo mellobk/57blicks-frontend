@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const Ok: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const Ok: FC<Props> = ({ color = "#BBBBBB", width = "48" }) => {
 	return (
 		<svg
 			width={width}

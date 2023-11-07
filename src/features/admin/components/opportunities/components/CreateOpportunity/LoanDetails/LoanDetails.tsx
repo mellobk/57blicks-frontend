@@ -18,6 +18,7 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 		<Title text="Loan Details" />
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 			<FormatInput
+        data-testid="loan-details-asset-value"
 				control={control}
 				error={errors?.assetValue?.message}
 				format="money"
@@ -27,6 +28,7 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 				required
 			/>
 			<FormatInput
+        data-testid="loan-details-loan-amount"
 				control={control}
 				error={errors?.loanAmount?.message}
 				format="money"
@@ -38,6 +40,7 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 		</div>
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 			<FormatInput
+        data-testid="loan-details-loan-to-value"
 				control={control}
 				error={errors?.loanToValue?.message}
 				format="percentage"
@@ -48,6 +51,7 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 				required
 			/>
 			<Input
+        data-testid="loan-details-loan-term"
 				error={errors?.loanTerm?.message}
 				label="Loan Term"
 				placeholder="Enter Loan Term"
@@ -57,6 +61,7 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 			/>
 		</div>
 		<Dropdown
+      data-testid="loan-details-loan-type"
 			control={control}
 			error={errors?.loanType?.message}
 			className="mt-6"
@@ -66,6 +71,7 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 			required
 		/>
 		<Input
+      data-testid="loan-details-investment-permanent-penalty"
 			error={errors?.investmentPermanentPenalty?.message}
 			label="Investment Permanent Penalty"
 			placeholder="Enter Investment Permanent Penalty"
@@ -74,6 +80,7 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 			required
 		/>
 		<FormatInput
+      data-testid="loan-details-investment-monthly-interested-offered-to-investor"
 			control={control}
 			error={errors?.investmentMonthlyInterestedOfferedToInvestor?.message}
 			format="percentage"
