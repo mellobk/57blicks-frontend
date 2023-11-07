@@ -1,4 +1,5 @@
 import type { Collateral } from "@/types/api/collateral";
+import type { Opportunity } from "../../opportunities/types/fields";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Role {
@@ -26,6 +27,7 @@ export interface PermissionGroup {
 }
 
 export interface User {
+	data?: any;
 	id?: string;
 	createdAt?: Date;
 	updatedAt?: Date;
@@ -90,6 +92,7 @@ export interface Permissions {
 }
 
 export interface IGlobalSearch {
-	users: Array<User>;
-	collaterals: Array<Collateral>;
+	users?: Array<User>;
+	collaterals?: Array<Collateral>;
+	opportunities?: Array<Opportunity>;
 }

@@ -2,7 +2,11 @@ import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
-import type { DkcLenders, DkcServicing, FundingBreakdown } from "../../types/api";
+import type {
+	DkcLenders,
+	DkcServicing,
+	FundingBreakdown,
+} from "../../types/api";
 import { servicingTabs } from "../../utils/tabs";
 import { Table } from "./Table/Table";
 import { Toggle } from "@/components/ui/Toggle";
@@ -20,22 +24,18 @@ interface Props {
 export const Page: FC<Props> = ({ actualTab, id }) => {
 	const [modalData, setModalData] = useState<FundingBreakdown | null>(null);
 	const [searchValue, setSearchValue] = useState<string>("");
-  const [lenders, setLenders] = useState<Array<Lender>>([]);
-    const [tableData, setTableData] = useState<Array<DkcLenders>>([]);
+	const [lenders, setLenders] = useState<Array<Lender>>([]);
+	const [tableData, setTableData] = useState<Array<DkcLenders>>([]);
 
 	const findDkcLender = () => {
-		const findLender = lenders?.find(
-			(data) => data.name === (id || actualTab)
-		);
+		const findLender = lenders?.find((data) => data.name === (id || actualTab));
 
 		return findLender?.id || "";
 	};
 
-
- 	const getDkcLenderQuery = useMutation(async () => {
-		return LendersService.getLenderById(findDkcLender(), searchValue)
-	    });
-
+	const getDkcLenderQuery = useMutation(async () => {
+		return LendersService.getLenderById(findDkcLender(), searchValue);
+	});
 
 	const dkcLendersQuery = useQuery(
 		["dkc-lenders-query"],
@@ -45,35 +45,31 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{ enabled: true }
 	);
 
-/* 	const dkcLenderQuery = useQuery(
+	/* 	const dkcLenderQuery = useQuery(
 		["dkc-lender-query"],
 		() => DkcLendersService.getLenderById(findDkcLender(), searchValue),
 		{ enabled: true}
 	); */
 
 	const handleRefreshData = (): void => {
-		 getDkcLenderQuery.mutate();
+		getDkcLenderQuery.mutate();
 	};
 
 	useEffect(() => {
-		getDkcLenderQuery.mutate()
+		getDkcLenderQuery.mutate();
 	}, [searchValue, lenders]);
 
-
-  useEffect(()=>{
-
-    if(getDkcLenderQuery.isSuccess){
-    setTableData(getDkcLenderQuery?.data?.fundingBreakdowns || [])
-    getDkcLenderQuery.reset()
-    }
-
-  },[getDkcLenderQuery])
-
+	useEffect(() => {
+		if (getDkcLenderQuery.isSuccess) {
+			setTableData(getDkcLenderQuery?.data?.fundingBreakdowns || []);
+			getDkcLenderQuery.reset();
+		}
+	}, [getDkcLenderQuery]);
 
 	useEffect(() => {
-			 if(dkcLendersQuery?.data){
-        setLenders(dkcLendersQuery?.data || []);
-       }
+		if (dkcLendersQuery?.data) {
+			setLenders(dkcLendersQuery?.data || []);
+		}
 	}, [dkcLendersQuery.isFetching]);
 
 	const columns = [

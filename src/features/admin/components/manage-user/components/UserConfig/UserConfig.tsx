@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type { Investor, User } from "../../types/api";
 import { type FC, useEffect, useState } from "react";
 
@@ -9,12 +11,11 @@ import { Modal } from "@/components/ui/Modal/Modal";
 import { Tabs } from "@/features/admin/components/servicing/component/Tabs";
 import UserActivity from "./UserActivity";
 import { useQuery } from "@tanstack/react-query";
-import {
-	investorUserTabs,
-	userTabs,
-} from "@/features/admin/components/servicing/utils/tabs";
+import { userTabsData } from "@/features/admin/components/servicing/utils/tabs";
 import { PermissionsAdmin } from "./PermissionsAdmin";
 import userStore from "@/stores/user-store.ts";
+import { PermissionType, RoleType } from "@/types/api/permissions-type";
+import { findPermission } from "@/utils/common-funtions";
 
 interface UserConfigProps {
 	user?: User;
@@ -39,6 +40,7 @@ const UserConfig: FC<UserConfigProps> = ({
 	activityModal,
 	enableUser,
 }) => {
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [role, setRole] = useState<string>();
 	const userInfo = userStore((state) => state.loggedUserInfo);
@@ -97,6 +99,8 @@ const UserConfig: FC<UserConfigProps> = ({
 		callBack ? callBack() : null;
 	};
 
+	console.log(type);
+
 	return (
 		<div>
 			<Modal
@@ -121,7 +125,32 @@ const UserConfig: FC<UserConfigProps> = ({
 						</div>
 						<div className="absolute top-10 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-normal ">
 							<Tabs
-								tabs={investor?.user ? investorUserTabs : userTabs}
+								tabs={[
+									userTabsData.activity,
+									userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN
+										? userTabsData.permission
+										: userTabsData.empty,
+									(findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_ADMINS
+									) &&
+										type === "admin") ||
+									(findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_ACCOUNTING
+									) &&
+										type === "accounting") ||
+									(findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_INVESTORS
+									) &&
+										type === "investor")
+										? userTabsData.edit
+										: userTabsData.empty,
+								]}
 								actualTab={actualTabData}
 								onClick={tabHandlerData}
 							/>
@@ -140,48 +169,70 @@ const UserConfig: FC<UserConfigProps> = ({
 					/>
 				)}
 
-				{actualTabData === "permission" && user && (
-					<PermissionsAdmin
-						user={user}
-						deleteUser={deleteUser}
-						callBack={callBack}
-					/>
-				)}
-				{actualTabData === "permission" && investor?.user && (
-					<PermissionsAdmin
-						callBack={callBack}
-						user={investor.user}
-						deleteUser={deleteUser}
-						enableUser={enableUser}
-					/>
-				)}
+				{actualTabData === "permission" &&
+					user &&
+					userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN && (
+						<PermissionsAdmin
+							user={user}
+							deleteUser={deleteUser}
+							callBack={callBack}
+						/>
+					)}
+				{actualTabData === "permission" &&
+					investor?.user &&
+					userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN && (
+						<PermissionsAdmin
+							callBack={callBack}
+							user={investor.user}
+							deleteUser={deleteUser}
+							enableUser={enableUser}
+						/>
+					)}
 				{actualTabData === "edit" && (
 					<>
-						{type === "admin" && user && (
-							<EditAdmin
-								user={user}
-								setUser={handleSetUser}
-								role={role || ""}
-								deleteUser={deleteUser}
-							/>
-						)}
-						{type === "accounting" && user && (
-							<EditAccounting
-								user={user}
-								setUser={handleSetUser}
-								role={role || ""}
-								deleteUser={deleteUser}
-							/>
-						)}
-						{type === "investor" && investor && (
-							<EditInvestor
-								investor={investor}
-								setUser={handleSetUser}
-								role={role || ""}
-								deleteUser={deleteUser}
-								enableUser={enableUser}
-							/>
-						)}
+						{type === "admin" &&
+							user &&
+							findPermission(
+								userLoggedInfo?.role,
+								userLoggedInfo?.permissionGroup?.permissions || [],
+								PermissionType.EDIT_ADMINS
+							) && (
+								<EditAdmin
+									user={user}
+									setUser={handleSetUser}
+									role={role || ""}
+									deleteUser={deleteUser}
+								/>
+							)}
+						{type === "accounting" &&
+							user &&
+							findPermission(
+								userLoggedInfo?.role,
+								userLoggedInfo?.permissionGroup?.permissions || [],
+								PermissionType.EDIT_ACCOUNTING
+							) && (
+								<EditAccounting
+									user={user}
+									setUser={handleSetUser}
+									role={role || ""}
+									deleteUser={deleteUser}
+								/>
+							)}
+						{type === "investor" &&
+							investor &&
+							findPermission(
+								userLoggedInfo?.role,
+								userLoggedInfo?.permissionGroup?.permissions || [],
+								PermissionType.EDIT_INVESTORS
+							) && (
+								<EditInvestor
+									investor={investor}
+									setUser={handleSetUser}
+									role={role || ""}
+									deleteUser={deleteUser}
+									enableUser={enableUser}
+								/>
+							)}
 					</>
 				)}
 			</Modal>

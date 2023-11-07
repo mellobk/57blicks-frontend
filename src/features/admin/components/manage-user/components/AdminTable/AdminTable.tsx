@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -11,13 +15,20 @@ import { TableStatus } from "../TableStatus/TableStatus";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { User } from "../../types/api";
 import UserConfig from "../UserConfig/UserConfig";
-import { emptyObject, findIndex } from "@/utils/common-funtions";
-import { tabs } from "../../utils/tabs";
+import {
+	emptyObject,
+	findIndex,
+	findPermission,
+} from "@/utils/common-funtions";
+import { TabData } from "../../utils/tabs";
 import userStore from "@/stores/user-store.ts";
+import { PermissionType } from "@/types/api/permissions-type";
+import { useNavigate } from "@tanstack/router";
 
 interface SuccessProps {}
 
 export const AdminTable: FC<SuccessProps> = () => {
+	const navigate = useNavigate();
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 	const [detailModal, setDetailModal] = useState<boolean>(true);
@@ -26,6 +37,19 @@ export const AdminTable: FC<SuccessProps> = () => {
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
 	const userInfo = userStore((state) => state.userInfo);
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
+
+	useEffect(() => {
+		const find = findPermission(
+			userLoggedInfo?.role,
+			userLoggedInfo?.permissionGroup?.permissions || [],
+			PermissionType.VIEW_ADMINS
+		);
+
+		if (!find) {
+			void navigate({ to: `/manage-users/investors` });
+		}
+	}, [userLoggedInfo]);
 
 	useEffect(() => {
 		if (!emptyObject(userInfo)) {
@@ -36,7 +60,13 @@ export const AdminTable: FC<SuccessProps> = () => {
 	const adminQuery = useQuery(
 		["admin-query"],
 		() => {
-			return ManageUsersService.filterAllAdmins(searchValue);
+			return findPermission(
+				userLoggedInfo?.role,
+				userLoggedInfo?.permissionGroup?.permissions || [],
+				PermissionType.VIEW_ADMINS
+			)
+				? ManageUsersService.filterAllAdmins(searchValue)
+				: [];
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -159,13 +189,26 @@ export const AdminTable: FC<SuccessProps> = () => {
 		<>
 			{adminQuery.data && (
 				<Table
+					showAddButton={findPermission(
+						userLoggedInfo?.role,
+						userLoggedInfo?.permissionGroup?.permissions || [],
+						PermissionType.INVITE_ADMINS
+					)}
 					handleSearchValue={handleSearch}
 					onClickButton={addAdmin}
 					columns={columns}
 					data={adminQuery.data}
 					loading={adminQuery.isLoading}
 					buttonText="Add admin"
-					widthSearch="150px"
+					widthSearch={
+						findPermission(
+							userLoggedInfo?.role,
+							userLoggedInfo?.permissionGroup?.permissions || [],
+							PermissionType.INVITE_ADMINS
+						)
+							? "150px"
+							: "50px"
+					}
 					conditionalRowStyles={conditionalRowStyles}
 					onRowClicked={handleRowClicked}
 				>
@@ -174,7 +217,32 @@ export const AdminTable: FC<SuccessProps> = () => {
 							<BreadCrumb initialTab="Manage Users" actualTab="Admins" />
 						</div>
 						<div className="relative z-10">
-							<Tabs tabs={tabs} actualTab="admins" />
+							<Tabs
+								tabs={[
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.VIEW_ADMINS
+									)
+										? TabData.admins
+										: TabData.empty,
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.VIEW_INVESTORS
+									)
+										? TabData.investors
+										: TabData.empty,
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.VIEW_ACCOUNTS
+									)
+										? TabData.accounting
+										: TabData.empty,
+								]}
+								actualTab="admins"
+							/>
 						</div>
 					</>
 				</Table>

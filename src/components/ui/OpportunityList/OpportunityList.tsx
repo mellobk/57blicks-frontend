@@ -29,7 +29,7 @@ export const OpportunityList: FC<Props> = ({
 			}}
 		>
 			<OpportunityName
-				filename={getFilename(opportunity.referenceId)}
+				filename={getFilename(opportunity.referenceId || 0)}
 				selected={selectedOpportunity?.id === opportunity.id}
 			/>
 		</div>

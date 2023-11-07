@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 
@@ -18,6 +20,9 @@ import {
 import { Success } from "../Success";
 import { SuccessDecline } from "../SuccessDecline/Success";
 import type { Loan } from "../../types/types";
+import { findPermission } from "@/utils/common-funtions";
+import userStore from "@/stores/user-store";
+import { PermissionType } from "@/types/api/permissions-type";
 
 interface ServicingModalProps {
 	openModal?: boolean;
@@ -40,6 +45,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 	type,
 	status,
 }) => {
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const approvalQuery = useMutation(async (id: string) => {
 		return LoansService.getLoan(id || "");
 	});
@@ -128,6 +134,20 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 
 	const typeData = type === NotificationType.LOAN ? " Loan" : "Ledger";
 
+	const approvePermissions = (): boolean => {
+		return ledgerId
+			? findPermission(
+					userLoggedInfo?.role,
+					userLoggedInfo?.permissionGroup?.permissions || [],
+					PermissionType.INPUT_TRANSACTIONS_LEDGER
+			  ) || false
+			: findPermission(
+					userLoggedInfo?.role,
+					userLoggedInfo?.permissionGroup?.permissions || [],
+					PermissionType.APPROVE_NEW_LOANS
+			  ) || false;
+	};
+
 	return (
 		<div className="relative w-[98%]">
 			<Modal
@@ -167,6 +187,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 
 							setTypeProcess("approve");
 						}}
+						viewOnly={approvePermissions()}
 						onDecline={() => {
 							if (ledgerId) {
 								updateLedgerQuery.mutate({

@@ -16,6 +16,7 @@ interface ModalActionsProps {
 	openApproved?: boolean;
 	openDecline?: boolean;
 	status?: string;
+	viewOnly?: boolean;
 }
 
 export const ModalActions: FC<ModalActionsProps> = ({
@@ -26,6 +27,7 @@ export const ModalActions: FC<ModalActionsProps> = ({
 	onOpenDecline,
 	openDecline,
 	openApproved,
+	viewOnly,
 }) => {
 	const typeData = type === NotificationType.LOAN ? " Loan" : "Ledger";
 	return (
@@ -38,21 +40,25 @@ export const ModalActions: FC<ModalActionsProps> = ({
 				/>
 			</div>
 
-			<div className="cursor-pointer">
-				<Button
-					buttonText="Approve"
-					className=" rounded-3xl bg-green-900 text-green-500"
-					onClick={onOpenApproved}
-				/>
-			</div>
+			{viewOnly && (
+				<>
+					<div className="cursor-pointer">
+						<Button
+							buttonText="Approve"
+							className=" rounded-3xl bg-green-900 text-green-500"
+							onClick={onOpenApproved}
+						/>
+					</div>
 
-			<div className="cursor-pointer">
-				<Button
-					buttonText="Decline"
-					className=" rounded-3xl bg-red-200 text-red-500"
-					onClick={onOpenDecline}
-				/>
-			</div>
+					<div className="cursor-pointer">
+						<Button
+							buttonText="Decline"
+							className=" rounded-3xl bg-red-200 text-red-500"
+							onClick={onOpenDecline}
+						/>
+					</div>
+				</>
+			)}
 
 			<Modal
 				visible={openApproved}

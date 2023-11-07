@@ -78,4 +78,56 @@ const AdminRouter = AuthenticatedRoute([
 	...ProfileRoutes,
 ]);
 
+export const NavbarData = {
+	report: {
+		path: "/reporting",
+		page: Reporting,
+		layout: DashboardLayout,
+		name: "Reporting",
+	},
+	loanOverview: {
+		path: "/loan-overview",
+		page: LoanOverview,
+		layout: DashboardLayout,
+		name: "Loan Overview",
+	},
+	servicing: {
+		path: "/servicing/dkc-llc",
+		page: ServicingLLC,
+		layout: DashboardLayout,
+		name: "Servicing",
+	},
+	investorPortal: {
+		path: "/investor-portals/dkc-llc",
+		page: InvestorPortalsLLC,
+		layout: DashboardLayout,
+		name: "Investor Portals",
+	},
+	opportunities: {
+		path: "/opportunities/create-opportunity",
+		page: CreateOpportunity,
+		layout: DashboardLayout,
+		name: "Opportunities",
+	},
+	users: {
+		path: "/manage-users/admins",
+		page: Admin,
+		routeComponent: null,
+		layout: DashboardLayout,
+		name: "Users",
+	},
+	support: {
+		path: "/support",
+		page: Support,
+		layout: DashboardLayout,
+		name: "Support",
+	},
+	empty: {
+		path: "",
+		page: null,
+		layout: DashboardLayout,
+		name: "",
+	},
+};
+
 export default AdminRouter;
