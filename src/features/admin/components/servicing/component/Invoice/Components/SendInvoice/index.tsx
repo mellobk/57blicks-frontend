@@ -1,48 +1,27 @@
 import { type FC, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
-import type { Invoice, InvoiceDataPdf, InvoiceSend } from "../../types";
+import type { Invoice, InvoiceSend } from "../../types";
 import { Modal } from "@/components/ui/Modal";
 import { SendInvoiceTo } from "@/features/admin/components/opportunities/components/CreateOpportunity/SendInvoiceTo/SendInvoiceTo";
-import { InvoiceDocumentPreview } from "../InvoiceList/InvoiceDocumentPreview";
-import { BlobProvider } from "@react-pdf/renderer";
 import { useMutation } from "@tanstack/react-query";
 import ManageInvoiceService from "@/features/admin/components/servicing/api/invoices";
 
 interface SendInvoiceProps {
 	invoice: Invoice;
-	invoiceDataPdf: InvoiceDataPdf;
 }
 
-const blobToBinaryString = (blob: Blob) => {
-	const reader = new FileReader();
-	reader.readAsBinaryString(blob);
-	return new Promise((resolve) => {
-		reader.onloadend = () => {
-			resolve(reader.result);
-		};
-	});
-};
-
-const stringToBase64 = (string: string) => {
-	return btoa(string);
-};
-
-const SendInvoice: FC<SendInvoiceProps> = ({ invoice, invoiceDataPdf }) => {
+const SendInvoice: FC<SendInvoiceProps> = ({ invoice }) => {
 	const [openModal, setOpenModal] = useState<boolean>();
-	const [blob, setBlob] = useState<Blob | null>(null);
 
 	const invoiceMutation = useMutation((data: InvoiceSend) => {
 		return ManageInvoiceService.sendInvoice(data);
 	});
 
-	const handleSendInvoice = async (
+	const handleSendInvoice = (
 		sms: boolean,
 		email: boolean,
 		note: string
-	): Promise<void> => {
-		let file: string = (await blobToBinaryString(blob as Blob)) as string;
-		file = stringToBase64(file);
-
+	): void => {
 		const data: InvoiceSend = {
 			invoiceId: invoice.id || 0,
 			notification: {
@@ -50,7 +29,6 @@ const SendInvoice: FC<SendInvoiceProps> = ({ invoice, invoiceDataPdf }) => {
 				email,
 				note,
 			},
-			file,
 		};
 		invoiceMutation.mutate(data, {
 			onSuccess: () => {},
@@ -65,8 +43,8 @@ const SendInvoice: FC<SendInvoiceProps> = ({ invoice, invoiceDataPdf }) => {
 					invoice ? "bg-green-800" : "bg-gray-150"
 				}  rounded-full mr-4  align-middle  pt-[8px] pl-[12px]  cursor-pointer`}
 				style={{
-					left: "575px",
-					top: "36px",
+					right: "115px",
+					top: "12px",
 				}}
 				onClick={(): void => {
 					setOpenModal(true);
@@ -94,15 +72,6 @@ const SendInvoice: FC<SendInvoiceProps> = ({ invoice, invoiceDataPdf }) => {
 					handleSendInvoice={handleSendInvoice}
 				/>
 			</Modal>
-
-			<BlobProvider
-				document={<InvoiceDocumentPreview invoiceDataPdf={invoiceDataPdf} />}
-			>
-				{({ blob }) => {
-					setBlob(blob);
-					return <div></div>;
-				}}
-			</BlobProvider>
 		</>
 	);
 };

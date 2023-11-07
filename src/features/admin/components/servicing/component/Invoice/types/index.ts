@@ -39,5 +39,4 @@ export interface notification {
 export interface InvoiceSend {
 	invoiceId: number;
 	notification: notification;
-	file: string;
 }

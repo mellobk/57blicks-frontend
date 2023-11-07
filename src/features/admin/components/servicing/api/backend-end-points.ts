@@ -1,3 +1,4 @@
+import { Invoice } from "./../component/Invoice/types/index";
 export const lenders = (): string => {
 	return `/lenders`;
 };
@@ -28,4 +29,8 @@ export const invoices = (): string => {
 
 export const sendInvoices = (): string => {
 	return `/invoices/send`;
+};
+
+export const downloadInvoiceApi = (invoiceId: number): string => {
+	return `/invoices/download/${invoiceId}`;
 };

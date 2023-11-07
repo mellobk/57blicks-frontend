@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import type { Invoice, InvoiceSend } from "../component/Invoice/types";
-import { invoices, sendInvoices } from "./backend-end-points";
+import {
+	downloadInvoiceApi,
+	invoices,
+	sendInvoices,
+} from "./backend-end-points";
 
 import type { Ledgers } from "../component/Ledger/types";
 import { authApiClient } from "@/utils/api-client";
@@ -44,10 +49,21 @@ const sendInvoice = async (data: InvoiceSend): Promise<void> => {
 	}
 };
 
+const downloadInvoice = async (invoiceId: number): Promise<string> => {
+	try {
+		const data = await authApiClient.post(downloadInvoiceApi(invoiceId), {});
+		return data.data;
+	} catch {
+		/* empty */
+	}
+	return "";
+};
+
 const ManageInvoiceService = {
 	getInvoiceByLoanId,
 	getInvoiceDetails,
 	sendInvoice,
+	downloadInvoice,
 };
 
 export default ManageInvoiceService;
