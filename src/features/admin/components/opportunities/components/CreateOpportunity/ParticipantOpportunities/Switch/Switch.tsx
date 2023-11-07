@@ -27,7 +27,7 @@ export const Switch: FC<Props> = ({
 			<FormatInput
 				className={
 					!!participantOpportunities[percentage]
-						? "disabled:bg-green-500/[16%] disabled:text-green-500"
+						? "disabled:bg-green-500/[0.2] disabled:text-green-500"
 						: ""
 				}
 				control={control}
