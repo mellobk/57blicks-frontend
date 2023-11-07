@@ -1,4 +1,3 @@
-import { Invoice } from "./../component/Invoice/types/index";
 export const lenders = (): string => {
 	return `/lenders`;
 };
