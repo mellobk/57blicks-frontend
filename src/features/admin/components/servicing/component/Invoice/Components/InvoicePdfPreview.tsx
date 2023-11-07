@@ -1,10 +1,7 @@
 import { type FC, useEffect, useState } from "react";
 import type { Invoice, InvoiceDataPdf, InvoiceDataPdfDetails } from "../types";
 import { InvoiceDocumentPreview } from "./InvoiceList/InvoiceDocumentPreview";
-import {
-	PDFDownloadLink,
-	PDFViewer as PDFViewerGenerator,
-} from "@react-pdf/renderer";
+import { PDFViewer as PDFViewerGenerator } from "@react-pdf/renderer";
 import type { Loan } from "@/features/admin/components/servicing/types/api";
 import {
 	type Ledgers,
@@ -16,8 +13,6 @@ import {
 	dateFormatOptions,
 	moneyFormat,
 } from "@/utils/formats";
-import { Icon } from "@/components/ui/Icon";
-import SendInvoice from "./SendInvoice";
 
 interface IInvoicePdfPreviewProps {
 	invoice: Invoice;
@@ -90,45 +85,6 @@ const IInvoicePdfPreview: FC<IInvoicePdfPreviewProps> = ({
 
 	return (
 		<>
-			<div
-				className={`absolute w-8 h-8 ${
-					invoice ? "bg-blue-70" : "bg-gray-150"
-				}   rounded-full mr-4  align-middle pt-[6px] pl-[8px] cursor-pointer `}
-				style={{
-					left: "631px",
-					top: "36px",
-				}}
-			>
-				{invoiceDataPdf && (
-					<PDFDownloadLink
-						document={
-							<InvoiceDocumentPreview
-								invoiceDataPdf={invoiceDataPdf}
-								setPages={setPages}
-							/>
-						}
-						fileName="somename.pdf"
-					>
-						{({ loading }) =>
-							loading ? (
-								""
-							) : (
-								<>
-									{" "}
-									<Icon
-										name="download"
-										color={`${invoice ? "#0085FF" : "#b8bcc1"}`}
-										width="16"
-									/>
-								</>
-							)
-						}
-					</PDFDownloadLink>
-				)}
-			</div>
-			{invoiceDataPdf && (
-				<SendInvoice invoice={invoice} invoiceDataPdf={invoiceDataPdf} />
-			)}
 			<div
 				className="lg:col-span-3 col-span-1 lg:pl-6"
 				style={{
