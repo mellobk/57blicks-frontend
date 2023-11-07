@@ -1,11 +1,3 @@
-export const getLoansById = (id: string): string => {
-	return `/loans/${id}`;
-};
-
-export const updateLoan = (id: string): string => {
-	return `/loans/${id}`;
-};
-
 export const updateLedger = (id: string): string => {
 	return `/ledgers/${id}`;
 };

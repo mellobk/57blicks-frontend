@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, useEffect, useState } from "react";
 import { type SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,13 +19,31 @@ import { ParticipantOpportunities } from "@/features/admin/components/opportunit
 import { PostTo } from "@/features/admin/components/opportunities/components/CreateOpportunity/PostTo/PostTo";
 import { OpportunitySchema } from "@/features/admin/components/opportunities/schemas/OpportunitySchema";
 import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
-import { tabs } from "@/features/admin/components/opportunities/utils/tabs";
+import { tabsOpportunity } from "@/features/admin/components/opportunities/utils/tabs";
 import { defaultValues } from "@/features/admin/components/opportunities/utils/values";
+import { findPermission } from "@/utils/common-funtions";
+import userStore from "@/stores/user-store";
+import { PermissionType } from "@/types/api/permissions-type";
+import { useNavigate } from "@tanstack/router";
 
 export const CreateOpportunity: FC = () => {
+	const navigate = useNavigate();
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [openPostToModal, setOpenPostToModal] = useState(false);
 	const [openSuccessModal, setOpenSuccessModal] = useState<boolean>(false);
 	const [showPreview, setShowPreview] = useState(false);
+
+	useEffect(() => {
+		const find = findPermission(
+			userLoggedInfo?.role,
+			userLoggedInfo?.permissionGroup?.permissions || [],
+			PermissionType.CREATE_OPPORTUNITY
+		);
+
+		if (!find) {
+			void navigate({ to: `/opportunities/past-opportunities` });
+		}
+	}, [userLoggedInfo]);
 
 	const {
 		control,
@@ -72,7 +92,26 @@ export const CreateOpportunity: FC = () => {
 					/>
 				</div>
 				<div className="relative z-10">
-					<Tabs tabs={tabs} actualTab="create opportunity" />
+					<Tabs
+						tabs={[
+							findPermission(
+								userLoggedInfo?.role,
+								userLoggedInfo?.permissionGroup?.permissions || [],
+								PermissionType.CREATE_OPPORTUNITY
+							)
+								? tabsOpportunity.create
+								: tabsOpportunity.empty,
+
+							findPermission(
+								userLoggedInfo?.role,
+								userLoggedInfo?.permissionGroup?.permissions || [],
+								PermissionType.VIEW_OPPORTUNITIES
+							)
+								? tabsOpportunity.past
+								: tabsOpportunity.empty,
+						]}
+						actualTab="create opportunity"
+					/>
 				</div>
 				<div>
 					<Button

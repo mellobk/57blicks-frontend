@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const Cellphone: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const Cellphone: FC<Props> = ({ color = "#BBBBBB", width = "48" }) => {
 	return (
 		<svg
 			width={width}

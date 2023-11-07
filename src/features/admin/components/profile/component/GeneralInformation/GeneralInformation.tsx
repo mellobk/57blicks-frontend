@@ -15,10 +15,10 @@ import type { updateGeneralUserInformation } from "@/features/admin/components/m
 import { useMutation } from "@tanstack/react-query";
 import useStore from "@/stores/app-store";
 import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
-import manageUserStore from "@/features/manage-user/stores/manage-user-store";
+import userStore from "@/stores/user-store.ts";
 
 export const GeneralInformation: FC = () => {
-	const userInfo = manageUserStore((state) => state.loggedUserInfo);
+	const userInfo = userStore((state) => state.loggedUserInfo);
 	const [userData, setUserData] = useState<User>();
 	const [userInfoData, setUserInfoData] = useState<User>();
 	const {

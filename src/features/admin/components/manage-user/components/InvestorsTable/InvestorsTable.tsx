@@ -1,6 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { emptyObject, findIndex, statusSort } from "@/utils/common-funtions";
+import {
+	emptyObject,
+	findIndex,
+	findPermission,
+	statusSort,
+} from "@/utils/common-funtions";
 import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -18,14 +24,17 @@ import { Tabs } from "@/components/ui/Tabs/Tabs";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { UpdateBakingInformation } from "../UpdateBakingInformation/UpdateBakingInformation";
 import UserConfig from "../UserConfig/UserConfig";
-import { tabs } from "../../utils/tabs";
+import { TabData } from "../../utils/tabs";
 import { EnableInvestor } from "../EnableInvestor/EnableInvestor";
-import manageUserStore from "@/features/manage-user/stores/manage-user-store";
-
+import userStore from "@/stores/user-store.ts";
+import { PermissionType } from "@/types/api/permissions-type";
+import { useNavigate } from "@tanstack/router";
 
 interface SuccessProps {}
 
 export const InvestorsTable: FC<SuccessProps> = () => {
+	const navigate = useNavigate();
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
@@ -39,29 +48,41 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 	const [detailModal, setDetailModal] = useState<boolean>(true);
 	const [enableOpenModal, setEnableOpenModal] = useState<boolean>(false);
 
+	const userInfo = userStore((state) => state.userInfo);
 
+	useEffect(() => {
+		const find = findPermission(
+			userLoggedInfo?.role,
+			userLoggedInfo?.permissionGroup?.permissions || [],
+			PermissionType.VIEW_INVESTORS
+		);
 
+		if (!find) {
+			void navigate({ to: `/manage-users/accounting` });
+		}
+	}, [userLoggedInfo]);
 
- const userInfo = manageUserStore((state) => state.userInfo);
-
-
- useEffect(()=>{
-
-
- if(!emptyObject(userInfo)){
-  const { investor, ...others} = userInfo;
-  const investorUser = {
-    ...investor,
-    user: others
-  }
-  setSelectedUser(investorUser || null)
- }
- },[userInfo])
+	useEffect(() => {
+		if (!emptyObject(userInfo)) {
+			const { investor, ...others } = userInfo;
+			const investorUser = {
+				...investor,
+				user: others,
+			};
+			setSelectedUser(investorUser || null);
+		}
+	}, [userInfo]);
 
 	const investorQuery = useQuery(
 		["investor-query"],
 		() => {
-			return ManageUsersService.filterAllInvestors(searchValue, checkState);
+			return findPermission(
+				userLoggedInfo?.role,
+				userLoggedInfo?.permissionGroup?.permissions || [],
+				PermissionType.VIEW_INVESTORS
+			)
+				? ManageUsersService.filterAllInvestors(searchValue, checkState)
+				: [];
 		},
 		{ enabled: true, staleTime: 1000 * 60 }
 	);
@@ -279,6 +300,11 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 		<>
 			{investorQuery.data && (
 				<Table
+					showAddButton={findPermission(
+						userLoggedInfo?.role,
+						userLoggedInfo?.permissionGroup?.permissions || [],
+						PermissionType.INVITE_INVESTORS
+					)}
 					handleSearchValue={handleSearch}
 					handleCheckValue={handleCheckedToggle}
 					checkedValue={checkState}
@@ -288,7 +314,15 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 					data={investorQuery.data}
 					buttonText="Add Investor"
 					conditionalRowStyles={conditionalRowStyles}
-					widthSearch="160px"
+					widthSearch={
+						findPermission(
+							userLoggedInfo?.role,
+							userLoggedInfo?.permissionGroup?.permissions || [],
+							PermissionType.INVITE_INVESTORS
+						)
+							? "160px"
+							: "60px"
+					}
 					onRowClicked={handleRowClicked}
 				>
 					<>
@@ -296,7 +330,32 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 							<BreadCrumb initialTab="Manage Users" actualTab="Investors" />
 						</div>
 						<div className="relative z-10">
-							<Tabs tabs={tabs} actualTab="investors" />
+							<Tabs
+								tabs={[
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.VIEW_ADMINS
+									)
+										? TabData.admins
+										: TabData.empty,
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.VIEW_INVESTORS
+									)
+										? TabData.investors
+										: TabData.empty,
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.VIEW_ACCOUNTS
+									)
+										? TabData.accounting
+										: TabData.empty,
+								]}
+								actualTab="investors"
+							/>
 						</div>
 					</>
 				</Table>

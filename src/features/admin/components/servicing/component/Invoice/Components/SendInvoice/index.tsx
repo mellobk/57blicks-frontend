@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import type { Invoice, InvoiceSend } from "../../types";

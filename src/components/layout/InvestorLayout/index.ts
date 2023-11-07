@@ -1,0 +1,1 @@
+export { InvestorLayout } from "./InvestorLayout";

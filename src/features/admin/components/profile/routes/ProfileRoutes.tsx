@@ -1,4 +1,4 @@
-import { DashboardLayout } from "@/components/layout/Dashboard";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Profile } from "../pages/Profile/Profile";
 import { PermissionPage } from "../pages/Permission/Permission";
 

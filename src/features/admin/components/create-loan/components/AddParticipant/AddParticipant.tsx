@@ -57,6 +57,7 @@ export const AddParticipant: FC<Props> = ({
 			visible={openModal}
 		>
 			<Select
+				data-testid="add-participant-select"
 				className="mt-6"
 				label="Participant"
 				onChange={(e) => {
@@ -70,6 +71,7 @@ export const AddParticipant: FC<Props> = ({
 				required
 			/>
 			<Button
+				data-testid="add-participant-button"
 				buttonText="Add"
 				className="bg-primary-500 w-full mt-6 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
 				onClick={addParticipant}

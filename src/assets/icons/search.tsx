@@ -5,7 +5,7 @@ type Props = {
 	width?: string;
 };
 
-const Search: FC<Props> = ({ color = "#BBBBBB", width = "48" }: Props) => {
+const Search: FC<Props> = ({ color = "#BBBBBB", width = "48" }) => {
 	return (
 		<svg
 			width={width}

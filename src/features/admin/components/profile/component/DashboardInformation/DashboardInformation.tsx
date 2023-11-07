@@ -2,10 +2,10 @@ import type { User } from "@/features/admin/components/manage-user/types/api";
 import { type FC, useEffect, useState } from "react";
 import { PasswordInformation } from "../PasswordInformation/PasswordInformation";
 import { GeneralInformation } from "../GeneralInformation/GeneralInformation";
-import manageUserStore from "@/features/manage-user/stores/manage-user-store";
+import userStore from "@/stores/user-store.ts";
 
 export const DashboardInformation: FC = () => {
-	const userInfo = manageUserStore((state) => state.loggedUserInfo);
+	const userInfo = userStore((state) => state.loggedUserInfo);
 	const [userData, setUserData] = useState<User>({});
 
 	useEffect(() => {

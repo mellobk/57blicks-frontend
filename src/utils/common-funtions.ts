@@ -1,13 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 import type { Permissions } from "./../features/admin/components/manage-user/types/api";
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import type {
 	Investor,
 	Role,
@@ -67,9 +58,9 @@ export const calculateProrated = (
 	rate: string,
 	originationDate: string
 ) => {
-	const date = originationDate
-		? moment(originationDate, "MM-DD-YYYY")
-		: moment();
+	let date = originationDate ? moment(originationDate, "MM-DD-YYYY") : moment();
+	date = date.isValid() ? date : moment();
+
 	const lastDayOfMonth = date.clone().endOf("month");
 	const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days") + 1;
 	const dailyRate = Number(rate) / 100 / 365;

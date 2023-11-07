@@ -1,25 +1,3 @@
-export interface DkcServicing {
-	id?: string;
-	createdAt?: Date;
-	updatedAt?: Date;
-	borrower?: string;
-	collateralAddress?: string;
-	totalLoan?: string;
-	rate?: string;
-	sub?: string;
-	monthlyPayment?: string;
-	originDate?: string;
-	maturityDate?: string;
-}
-
-export interface Datum {
-	id: string;
-	createdAt: Date;
-	updatedAt: Date;
-	name: string;
-	isSpecialCase: boolean;
-}
-
 export interface Meta {
 	page: number;
 	take: number;
@@ -98,35 +76,6 @@ export interface FundingBreakdown {
 	prorated: string;
 	regular: string;
 	loan: Loan;
-}
-
-export interface DkcLenders {
-	data: Array<Datum>;
-	id: string;
-	createdAt: Date;
-	updatedAt: Date;
-	name: string;
-	isSpecialCase: boolean;
-	fundingBreakdowns: Array<FundingBreakdown>;
-}
-
-export interface IBorrowerInformation {
-	id?: string;
-	ssnEin?: string;
-	zip?: string;
-	llc?: string;
-	streetAddress?: string;
-	accountNumber?: string;
-	routingNumber?: string;
-	accountType?: string;
-	bankingName?: string;
-	firstName?: string;
-	lastName?: string;
-	mailingAddress?: string;
-	email?: string;
-	phoneNumber?: string;
-	entityName?: string;
-	companyName?: string;
 }
 
 export interface Notification {

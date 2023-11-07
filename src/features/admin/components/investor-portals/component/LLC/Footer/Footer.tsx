@@ -10,7 +10,7 @@ interface Props {
 export const Footer: ComponentType<Props> = ({ data }) => {
 	const totals = data.reduce(
 		(accumulator, { participationBreakdowns }) => {
-			participationBreakdowns.forEach(({ rate, regular, loan }) => {
+			participationBreakdowns?.forEach(({ rate, regular, loan }) => {
 				accumulator.rate += Number(rate);
 				accumulator.regular += Number(regular);
 				accumulator.totalLoanAmount += Number(loan.totalLoanAmount);

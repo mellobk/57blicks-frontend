@@ -1,11 +1,11 @@
 import { type ComponentType } from "react";
 
 import { Cell } from "@/components/table/Cell";
-import { FundingBreakdown } from "@/types/api/funding-breakdown";
+import { ParticipationBreakdown } from "@/types/api/paticipation-breakdown";
 import { getFooterData } from "@/utils/investors";
 
 interface Props {
-	data: FundingBreakdown[];
+	data: ParticipationBreakdown[];
 }
 
 export const Footer: ComponentType<Props> = ({ data }) => {

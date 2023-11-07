@@ -1,0 +1,16 @@
+.button-text {
+  font-size: 14px;
+  letter-spacing: -0.05em;
+  line-height: 17px;
+}
+
+.link-text {
+  font-size: 13px;
+  letter-spacing: -0.05em;
+  line-height: 16px;
+}
+
+.bg-gradient {
+  background: rgb(14, 33, 48);
+  background: linear-gradient(180deg, rgba(14, 33, 48, 1) 0%, rgba(14, 33, 48, 1) 73%, rgba(191, 154, 105, 1) 100%);
+}

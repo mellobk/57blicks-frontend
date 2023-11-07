@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, type ReactElement, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -11,12 +13,17 @@ import { TableStatus } from "../TableStatus/TableStatus";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
 import type { User } from "../../types/api";
 import UserConfig from "../UserConfig/UserConfig";
-import { emptyObject, findIndex } from "@/utils/common-funtions";
-import { tabs } from "../../utils/tabs";
-import manageUserStore from "@/features/manage-user/stores/manage-user-store";
-
+import {
+	emptyObject,
+	findIndex,
+	findPermission,
+} from "@/utils/common-funtions";
+import userStore from "@/stores/user-store.ts";
+import { PermissionType } from "@/types/api/permissions-type";
+import { TabData } from "../../utils/tabs";
 
 export const AccountingTable: FC = () => {
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 	const [deleteId, setDeleteId] = useState<string>("");
@@ -32,14 +39,13 @@ export const AccountingTable: FC = () => {
 		{ enabled: true, staleTime: 1000 * 60 }
 	);
 
-     const userInfo = manageUserStore((state) => state.userInfo);
+	const userInfo = userStore((state) => state.userInfo);
 
-
- useEffect(()=>{
-if(!emptyObject(userInfo)){
-  setSelectedUser(userInfo)
- }
- },[userInfo])
+	useEffect(() => {
+		if (!emptyObject(userInfo)) {
+			setSelectedUser(userInfo);
+		}
+	}, [userInfo]);
 
 	const deleteAdminMutation = useMutation((id: string) => {
 		return ManageUsersService.deleteUser(id);
@@ -157,13 +163,26 @@ if(!emptyObject(userInfo)){
 		<>
 			{accountQuery.data && (
 				<Table
+					showAddButton={findPermission(
+						userLoggedInfo?.role,
+						userLoggedInfo?.permissionGroup?.permissions || [],
+						PermissionType.INVITE_ACCOUNTERS
+					)}
 					handleSearchValue={handleSearch}
 					onClickButton={addAdmin}
 					columns={columns}
 					loading={accountQuery.isLoading}
 					data={accountQuery.data}
 					buttonText="Add Accounting"
-					widthSearch="185px"
+					widthSearch={
+						findPermission(
+							userLoggedInfo?.role,
+							userLoggedInfo?.permissionGroup?.permissions || [],
+							PermissionType.INVITE_ACCOUNTERS
+						)
+							? "185px"
+							: "50px"
+					}
 					conditionalRowStyles={conditionalRowStyles}
 					onRowClicked={handleRowClicked}
 				>
@@ -172,7 +191,32 @@ if(!emptyObject(userInfo)){
 							<BreadCrumb initialTab="Manage Users" actualTab="Accounting" />
 						</div>
 						<div className="relative z-10">
-							<Tabs tabs={tabs} actualTab="accounting" />
+							<Tabs
+								tabs={[
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.VIEW_ADMINS
+									)
+										? TabData.admins
+										: TabData.empty,
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.VIEW_INVESTORS
+									)
+										? TabData.investors
+										: TabData.empty,
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.VIEW_ACCOUNTS
+									)
+										? TabData.accounting
+										: TabData.empty,
+								]}
+								actualTab="accounting"
+							/>
 						</div>
 					</>
 				</Table>

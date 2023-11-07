@@ -1,27 +1,27 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, type ReactNode, useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/router";
 import { Icon } from "@/components/ui/Icon";
 import "@/assets/images/png/LogoGold_2x.png";
 import LogoGold from "@/assets/images/png/LogoGold.png";
 import { Avatar } from "@/components/ui/Avatar";
-import { NavbarRoutes } from "@/features/admin/routes/AdminRouter";
-import "./Dashboard.css";
+import { NavbarData } from "@/features/admin/routes/AdminRouter";
+import "./DashboardLayout.css";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import manageUserStore from "@/features/manage-user/stores/manage-user-store";
+import userStore from "@/stores/user-store.ts";
 import { getLocalStorage, sendToLocalStorage } from "@/utils/local-storage";
 import { userName } from "@/utils/constant";
 import { LogOff } from "@/features/admin/components/profile/component/LogOff/LogOff";
 import socket from "../../../socket";
 
-import type { UserNotification } from "../types/notifications";
+import type { UserNotification } from "@/types/api/notifications.ts";
 import { ServicingModal } from "@/features/admin/components/notifications/components/ServicingModal/ServicingModal";
 import { Notification } from "@/features/admin/components/notifications/components/Notification/Notification";
 import { Button } from "@/components/ui/Button";
-import { GlobalSearch } from "@/features/profile/component/GlobalSearch/GlobalSearch";
+import { GlobalSearch } from "@/components/ui/GlobalSearch/GlobalSearch";
 import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
-import DashboardUserService from "../api/user";
+import UserService from "../../../api/user.ts";
 import { findPermission } from "@/utils/common-funtions";
 import { PermissionType } from "@/types/api/permissions-type";
 
@@ -29,7 +29,7 @@ type Props = {
 	children?: ReactNode;
 };
 
-export const DashboardLayout: FC<Props> = ({ children }: Props) => {
+export const DashboardLayout: FC<Props> = ({ children }) => {
 	const navigate = useNavigate();
 	const createLoanTo: string = "/create-loan";
 	const localUserName = getLocalStorage(userName);
@@ -45,13 +45,13 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 		useState<boolean>(false);
 	const [openModalNotification, setOpenModalNotification] = useState<boolean>();
 
-	const userLoggedInfo = manageUserStore((state) => state.setLoggedUserInfo);
-	const userInfo = manageUserStore((state) => state.loggedUserInfo);
+	const userLoggedInfo = userStore((state) => state.setLoggedUserInfo);
+	const userInfo = userStore((state) => state.loggedUserInfo);
 
 	const userLoggedQuery = useQuery(
 		["user-logged-query"],
 		() => {
-			return DashboardUserService.getMyUserInfo();
+			return UserService.getMyInfo();
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -112,7 +112,6 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 	}, [updateReadNotificationQuery]);
 
 	useEffect(() => {
-		console.log(userLoggedQuery.data);
 		if (userLoggedQuery.data) {
 			sendToLocalStorage(
 				userName,
@@ -140,7 +139,7 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 			updateNotificationQuery.reset();
 			userNotification.remove();
 		}
-	}, [updateNotificationQuery]);
+	}, [updateNotificationQuery.isSuccess]);
 
 	const handleOpenModal = (): void => {
 		setOpenModalUser(!openModalUser);
@@ -164,24 +163,86 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 	const handleClickOpenGlobalSearch = (): void => {
 		setOpenModalGeneralSearch(!openModalGeneralSearch);
 	};
+
+	const dasBoardPermissionsMenu = [
+		findPermission(
+			userLoggedQuery?.data?.role,
+			userLoggedQuery?.data?.permissionGroup?.permissions || [],
+			PermissionType.REPORTING
+		)
+			? NavbarData.report
+			: NavbarData.empty,
+		findPermission(
+			userLoggedQuery?.data?.role,
+			userLoggedQuery?.data?.permissionGroup?.permissions || [],
+			PermissionType.LOAN_OVERVIEW
+		)
+			? NavbarData.loanOverview
+			: NavbarData.empty,
+		findPermission(
+			userLoggedQuery?.data?.role,
+			userLoggedQuery?.data?.permissionGroup?.permissions || [],
+			PermissionType.VIEW_LOANS
+		)
+			? NavbarData.servicing
+			: NavbarData.empty,
+
+		findPermission(
+			userLoggedQuery?.data?.role,
+			userLoggedQuery?.data?.permissionGroup?.permissions || [],
+			PermissionType.VIEW_LOANS
+		)
+			? NavbarData.investorPortal
+			: NavbarData.empty,
+		findPermission(
+			userLoggedQuery?.data?.role,
+			userLoggedQuery?.data?.permissionGroup?.permissions || [],
+			PermissionType.VIEW_OPPORTUNITIES
+		)
+			? NavbarData.opportunities
+			: NavbarData.empty,
+
+		findPermission(
+			userLoggedQuery?.data?.role,
+			userLoggedQuery?.data?.permissionGroup?.permissions || [],
+			PermissionType.VIEW_INVESTORS
+		) ||
+		findPermission(
+			userLoggedQuery?.data?.role,
+			userLoggedQuery?.data?.permissionGroup?.permissions || [],
+			PermissionType.VIEW_ADMINS
+		) ||
+		findPermission(
+			userLoggedQuery?.data?.role,
+			userLoggedQuery?.data?.permissionGroup?.permissions || [],
+			PermissionType.VIEW_ACCOUNTS
+		)
+			? NavbarData.users
+			: NavbarData.empty,
+		NavbarData.support,
+	];
+
 	return (
 		<div className="flex flex-col h-screen bg-gradient relative">
 			<div className="flex items-center justify-between px-12 py-4">
 				<img src={LogoGold} alt="DKC Logo" />
 				<ul className="flex space-x-2">
-					{NavbarRoutes.map((route) => (
-						<Link
-							key={route.path}
-							to={route.path}
-							className="link-text font-inter font-semibold px-4 py-2"
-							activeProps={{ className: "text-white" }}
-							inactiveProps={{ className: "opacity-40 text-gray-1000" }}
-							params={{}}
-							search={{}}
-						>
-							{route.name}
-						</Link>
-					))}
+					{dasBoardPermissionsMenu.map(
+						(route) =>
+							route.name && (
+								<Link
+									key={route.path}
+									to={route.path}
+									className="link-text font-inter font-semibold px-4 py-2"
+									activeProps={{ className: "text-white" }}
+									inactiveProps={{ className: "opacity-40 text-gray-1000" }}
+									params={{}}
+									search={{}}
+								>
+									{route.name}
+								</Link>
+							)
+					)}
 				</ul>
 				<div className="flex space-x-2 items-center">
 					{findPermission(
@@ -198,23 +259,31 @@ export const DashboardLayout: FC<Props> = ({ children }: Props) => {
 							Create Loan
 						</Link>
 					)}
-					<div
-						onClick={handleOpenModalNotification}
-						className="relative cursor-pointer"
-					>
-						{notificationsCount !== 0 && (
-							<div
-								className="w-[15px] h-[15px] rounded-full  bg-red-500 absolute text-[10px] justify-center items-center flex text-white"
-								style={{
-									top: "-5px",
-									right: "-2px",
-								}}
-							>
-								{notificationsCount}
-							</div>
-						)}
-						<Icon name="notification" color={"#dcdfe0"} width="25" />
-					</div>
+
+					{findPermission(
+						userLoggedQuery?.data?.role,
+						userLoggedQuery?.data?.permissionGroup?.permissions || [],
+						PermissionType.VIEW_PQRS
+					) && (
+						<div
+							onClick={handleOpenModalNotification}
+							className="relative cursor-pointer"
+						>
+							{notificationsCount !== 0 && (
+								<div
+									className="w-[15px] h-[15px] rounded-full  bg-red-500 absolute text-[10px] justify-center items-center flex text-white"
+									style={{
+										top: "-5px",
+										right: "-2px",
+									}}
+								>
+									{notificationsCount}
+								</div>
+							)}
+							<Icon name="notification" color={"#dcdfe0"} width="25" />{" "}
+						</div>
+					)}
+
 					<div onClick={handleOpenModal} className="flex cursor-pointer">
 						<Avatar />
 					</div>

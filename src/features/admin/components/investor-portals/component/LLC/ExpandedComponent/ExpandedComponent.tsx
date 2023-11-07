@@ -41,7 +41,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 						/>
 						<Cell
 							format="money"
-							value={participant.loan.totalLoanAmount}
+							value={participant.loan?.totalLoanAmount || ""}
 							bold
 						/>
 						<Cell
@@ -53,12 +53,12 @@ export const ExpandedComponent: ComponentType<Props> = ({
 						<Cell format="money" value={participant.regular} bold />
 						<Cell
 							format="text"
-							value={participant.loan.originationDate.toString() || ""}
+							value={participant.loan.originationDate?.toString() || ""}
 							bold
 						/>
 						<Cell
 							format="text"
-							value={participant.loan.maturityDate.toString() || ""}
+							value={participant.loan.maturityDate?.toString() || ""}
 							bold
 						/>
 						<Cell
