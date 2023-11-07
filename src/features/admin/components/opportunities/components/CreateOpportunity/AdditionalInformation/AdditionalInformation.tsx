@@ -13,6 +13,7 @@ export const AdditionalInformation: FC<Props> = ({ errors, register }) => (
 	<div>
 		<Title text="Additional Information" />
 		<TextArea
+      data-testid="additional-information"
 			error={errors?.additionalInformation?.message}
 			label="Additional Information"
 			maxLength={2000}
