@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { render, fireEvent } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { Dropdown } from "./Dropdown"; // Adjust the import path to where your component is
 import { useForm, FormProvider } from "react-hook-form";
 
 // A helper component to wrap the Dropdown for testing purposes
-function TestComponent({ onSubmit }) {
+function TestComponent({ onSubmit }: any) {
 	const methods = useForm();
 	return (
 		<FormProvider {...methods}>
@@ -31,9 +33,7 @@ describe("Dropdown component", () => {
 
 	test("shows error text when there is an error", () => {
 		const errorMessage = "Error message";
-		const { getByText } = render(<TestComponent />, {
-			initialProps: { error: errorMessage },
-		});
+		const { getByText } = render(<TestComponent />);
 		expect(getByText(errorMessage)).toBeInTheDocument();
 	});
 

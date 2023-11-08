@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen, fireEvent } from "@testing-library/react";
 import { MaskInput } from "./MaskInput"; // Update the import path accordingly
 import { useForm, FormProvider } from "react-hook-form";
 
-const TestComponent = ({ props }) => {
+const TestComponent = ({ props }: any) => {
 	const methods = useForm();
 	return (
 		<FormProvider {...methods}>
@@ -44,7 +45,7 @@ describe("MaskInput component", () => {
 		const mask = "99/99/9999";
 		render(<TestComponent props={{ mask }} />);
 
-		const input = screen.getByRole("textbox");
+		const input: HTMLInputElement = screen.getByRole("textbox");
 		fireEvent.change(input, { target: { value: "12311999" } });
 
 		expect(input.value).toBe("12311999"); // assuming that the mask is applied, the displayed value should be formatted accordingly

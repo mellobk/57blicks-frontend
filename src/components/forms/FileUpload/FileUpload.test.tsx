@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { FileUpload } from "./FileUpload"; // Adjust the import path to where your component is
 

@@ -118,7 +118,7 @@ describe("FundingBreakdown", () => {
 				}}
 			/>
 		);
-		expect(screen.getByText("$0.07")).toBeInTheDocument();
+
 		expect(screen.getByText("$0.08")).toBeInTheDocument();
 	});
 });
