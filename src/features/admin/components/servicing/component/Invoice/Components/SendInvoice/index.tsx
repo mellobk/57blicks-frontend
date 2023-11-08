@@ -35,7 +35,6 @@ const SendInvoice: FC<SendInvoiceProps> = ({ invoice }) => {
 		invoiceMutation.mutate(data, {
 			onSuccess: () => {},
 		});
-		console.log("🚀 ~ file: index.tsx:35 ~ data:", data);
 	};
 
 	return (
