@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
-import { defaultFundingBreakdown } from "@/features/admin/components/create-loan/utils/values";
 
 interface Props {
 	control: Control<Loan>;
@@ -33,18 +32,35 @@ export const SelectLender: FC<Props> = ({
 		);
 
 		if (lender) {
-			const newFundingBreakdown = [...defaultFundingBreakdown];
+			const newFundingBreakdown = [
+				{
+					amount: "",
+					investorId: lender.code,
+					lenderName: lender.name,
+					prorated: "0",
+					rate: "",
+					regular: "0",
+				},
+				{
+					amount: "",
+					lenderName: "DKC Servicing Fee Income",
+					prorated: "0",
+					rate: "",
+					regular: "0",
+				},
+			];
 
-			if (newFundingBreakdown[0]) {
-				newFundingBreakdown[0].lenderName = lender.name;
-				newFundingBreakdown[0].investorId = lender.code;
+			if (lender.code === LENDERS[0]?.code) {
+				newFundingBreakdown.push({
+					amount: "",
+					lenderName: "Yield Spread",
+					prorated: "0",
+					rate: "",
+					regular: "0",
+				});
 			}
 
-			if (lender.code !== LENDERS[0]?.code) {
-				newFundingBreakdown.pop();
-			}
-
-			setValue("fundingBreakdown", newFundingBreakdown);
+			setValue("fundingBreakdown", [...newFundingBreakdown]);
 			setValue("participationBreakdown", []);
 			setOpenModal(false);
 		}

@@ -18,6 +18,7 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
       data-testid="general-information-post-title"
 			error={errors?.postTitle?.message}
 			label="Post Title"
+      maxLength={50}
 			placeholder="Enter Post Title"
 			register={register("postTitle")}
 			wrapperClassName="mt-6"
@@ -26,6 +27,7 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
       data-testid="general-information-investment-collateral"
 			error={errors?.investmentCollateral?.message}
 			label="Investment Collateral"
+      maxLength={75}
 			placeholder="Enter Investment Collateral"
 			register={register("investmentCollateral")}
 			wrapperClassName="mt-6"
@@ -35,6 +37,7 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
       data-testid="general-information-google-drive-link"
 			error={errors?.googleDriveLink?.message}
 			label="Google Drive Link"
+      maxLength={255}
 			placeholder="Enter Google Drive Link"
 			register={register("googleDriveLink")}
 			wrapperClassName="mt-6"
@@ -54,8 +57,8 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
       data-testid="general-information-investment-summary"
 			error={errors?.investmentSummary?.message}
 			label="Investment Summary"
-			maxLength={2000}
-			placeholder="Limit 2000 Characters"
+			maxLength={1000}
+			placeholder="Limit 1000 Characters"
 			register={register("investmentSummary")}
 			wrapperClassName="mt-6"
 			required

@@ -7,7 +7,7 @@ interface Props {
 
 const styles = StyleSheet.create({
 	subtitle: {
-		fontSize: 16,
+		fontSize: 14,
 		fontWeight: "extrabold",
 	},
 });
