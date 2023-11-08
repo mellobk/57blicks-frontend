@@ -1,6 +1,8 @@
+import DownloadInvoice from "../DownloadInvoice";
 import type { FC } from "react";
 import { Icon } from "@/components/ui/Icon";
 import type { Invoice } from "../../types";
+import SendInvoice from "../SendInvoice";
 import { formatInvoiceName } from "../../utils/format-invoice-name";
 
 interface InvoiceDetailProps {
@@ -10,13 +12,16 @@ interface InvoiceDetailProps {
 const InvoiceDetail: FC<InvoiceDetailProps> = ({ invoice }) => {
 	return (
 		<div className="mb-2">
-			<div className="flex justify-between border-b-[1px] border-gold-370  h-14 pt-3 mb-4 ">
+			<div className="flex justify-between border-b-[1px] border-gold-370  h-14 pt-3 mb-4 relative">
 				<h2 className="text-2xl">Invoice Detail</h2>
 				<div className="flex flex-row pr-4 ">
+					{invoice && <DownloadInvoice invoice={invoice} />}
+					{invoice && <SendInvoice invoice={invoice} />}
+
 					<div
 						className={`w-8 h-8 ${
 							invoice ? "bg-blue-70" : "bg-gray-150"
-						}   rounded-full mr-4  align-middle pt-[6px] pl-[8px] cursor-pointer`}
+						}   rounded-full mr-4  align-middle pt-[0px] pl-[0px] cursor-pointer`}
 					></div>
 					<div
 						className={`w-8 h-8 ${

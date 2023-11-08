@@ -29,3 +29,7 @@ export const invoices = (): string => {
 export const sendInvoices = (): string => {
 	return `/invoices/send`;
 };
+
+export const downloadInvoiceApi = (invoiceId: number): string => {
+	return `/invoices/download/${invoiceId}`;
+};
