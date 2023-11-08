@@ -32,7 +32,6 @@ export const CreateLoan: FC = () => {
 	});
 	const localUserName = getLocalStorage(userName);
 	const [openLenderModal, setOpenLenderModal] = useState(false);
-
 	const [openParticipantModal, setOpenParticipantModal] = useState(false);
 	const [openSuccessModal, setOpenSuccessModal] = useState(false);
 

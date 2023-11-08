@@ -24,14 +24,16 @@ export const Footer: ComponentType<Props> = ({ control }) => {
 		],
 	});
 
-	const totals = [...fundingBreakdown, ...participationBreakdown].reduce(
-		(accumulator, { amount, rate }) => {
-			accumulator.amount += Number(amount);
-			accumulator.prorated += Number(
-				calculateProrated(amount, rate, originationDate)
-			);
-			accumulator.rate += Number(rate);
-			accumulator.regular += Number(calculateRegular(amount, rate));
+	const totals = [fundingBreakdown[0], ...participationBreakdown].reduce(
+		(accumulator, row) => {
+			if (row) {
+				accumulator.amount += Number(row.amount);
+				accumulator.prorated += Number(
+					calculateProrated(row.amount, row.rate, originationDate)
+				);
+				accumulator.rate += Number(row.rate);
+				accumulator.regular += Number(calculateRegular(row.amount, row.rate));
+			}
 
 			return accumulator;
 		},
