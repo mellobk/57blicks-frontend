@@ -27,11 +27,11 @@ const styles = StyleSheet.create({
 	},
 	columns: {
 		flexDirection: "row",
-		marginVertical: 10,
+		marginTop: 5,
 	},
 	header: {
 		alignItems: "center",
-    marginTop: 10,
+		marginTop: 10,
 	},
 	logo: {
 		width: "35%",
@@ -184,15 +184,21 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 								form.investmentBorrowerBackground) && (
 								<View style={styles.section}>
 									<Subtitle subtitle="Notes On The Borrower:" />
-									<Detail title="Borrower" value={form.investmentBorrower} />
-									<Detail
-										title="DKC Repeat Borrower"
-										value={form.dkcRepeatBorrower}
-									/>
-									<Detail
-										title="Borrower Background"
-										value={form.investmentBorrowerBackground}
-									/>
+									{form.investmentBorrower && (
+										<Detail title="Borrower" value={form.investmentBorrower} />
+									)}
+									{form.dkcRepeatBorrower && (
+										<Detail
+											title="DKC Repeat Borrower"
+											value={form.dkcRepeatBorrower}
+										/>
+									)}
+									{form.investmentBorrowerBackground && (
+										<Detail
+											title="Borrower Background"
+											value={form.investmentBorrowerBackground}
+										/>
+									)}
 								</View>
 							)}
 						</View>
