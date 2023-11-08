@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
-import type { UseFormRegisterReturn } from "react-hook-form";
 import { ErrorText } from "@/components/forms/ErrorText";
 import { Label } from "@/components/forms/Label";
 import { Icon } from "@/components/ui/Icon";
@@ -9,7 +10,7 @@ import "./styles.css";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	error?: any;
 	label: string;
-	register?: UseFormRegisterReturn;
+	register?: any;
 	wrapperClassName?: string;
 }
 

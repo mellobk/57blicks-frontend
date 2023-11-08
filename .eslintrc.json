@@ -21,11 +21,7 @@
     "tailwind.config.js",
     "commitlint.config.cjs",
     "playwright.config.ts",
-    "vitest.setup.ts",
-    "jest.config.cjs",
-    "cssTransform.js",
-    "fileTransform.js",
-    "setupTests.js"
+    "vitest.setup.ts"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

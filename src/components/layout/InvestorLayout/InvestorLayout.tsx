@@ -18,7 +18,7 @@ type Props = {
 export const InvestorLayout: FC<Props> = ({ children }) => {
 	const userLoggedInfo = userStore((state) => state.setLoggedUserInfo);
 	const [openModalNotification, setOpenModalNotification] = useState<boolean>();
-	const [notificationsCount, setNotificationsCount] = useState<number>();
+	const [notificationsCount] = useState<number>();
 
 	const userLoggedQuery = useQuery(
 		["user-logged-query"],
@@ -49,7 +49,12 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 				<img src={LogoGold} alt="DKC Logo" />
 				<ul className="flex space-x-2">
 						{InvestorRoutes.map(
-							(route) =>
+							(route: {
+								path: string;
+								page: FC;
+								layout: FC<Props>;
+								name: string;
+							  }) =>
 								route.name && (
 									<Link
 										key={route.path}
