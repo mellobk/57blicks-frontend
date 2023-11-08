@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { type FC, useEffect, useState } from "react";
 import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 
 import LoansService from "@/api/loans";
-import { Button } from "@/components/ui/Button";
 import { SuccessModal } from "@/components/ui/SuccessModal";
 import { AddParticipant } from "@/features/admin/components/create-loan/components/AddParticipant/AddParticipant";
 import { BankingInformation } from "@/features/admin/components/create-loan/components/BankingInformation/BankingInformation";
@@ -17,12 +15,12 @@ import { LoanSchema } from "@/features/admin/components/create-loan/schemas/Loan
 import { MultipleCollateral } from "@/features/admin/components/create-loan/components/MultipleCollateral/MultipleCollateral";
 import { SelectLender } from "@/features/admin/components/create-loan/components/SelectLender/SelectLender";
 import { defaultValues } from "@/features/admin/components/create-loan/utils/values";
+import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
 import {
 	calculateProrated,
 	calculateRegular,
 	unFormatPhone,
 } from "@/utils/common-funtions";
-import ManageNotificationService from "../../../notifications/api/notification";
 import { userName } from "@/utils/constant";
 import { getLocalStorage } from "@/utils/local-storage";
 
@@ -180,14 +178,6 @@ export const CreateLoan: FC = () => {
 					setOpenLenderModal={setOpenLenderModal}
 					setOpenParticipantModal={setOpenParticipantModal}
 				/>
-
-				<div>
-					<Button
-						buttonText="Save Loan"
-						className="w-full rounded-2xl bg-gold-600 px-[18px] py-4 font-inter font-semibold text-sm text-primary-300 leading-[17px] tracking-[-0.7px]"
-						type="submit"
-					/>
-				</div>
 			</form>
 
 			<AddParticipant

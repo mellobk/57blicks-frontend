@@ -18,10 +18,7 @@ import type {
 	Loan,
 } from "@/features/admin/components/create-loan/types/fields";
 import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
-import {
-	calculateProrated,
-	calculateRegular,
-} from "@/utils/common-funtions";
+import { calculateProrated, calculateRegular } from "@/utils/common-funtions";
 
 interface Props {
 	control: Control<Loan>;
@@ -38,7 +35,12 @@ export const FundingBreakdown: FC<Props> = ({
 	setOpenLenderModal,
 	setOpenParticipantModal,
 }) => {
-	const [fundingBreakdown, originationDate, participationBreakdown] = useWatch({
+	const [
+		fundingBreakdown,
+		originationDate,
+		participationBreakdown,
+		totalLoanAmount,
+	] = useWatch({
 		control,
 		name: [
 			"fundingBreakdown",
@@ -48,13 +50,37 @@ export const FundingBreakdown: FC<Props> = ({
 		],
 	});
 
+	const totals = [fundingBreakdown[0], ...participationBreakdown].reduce(
+		(accumulator, row) => {
+			if (row) {
+				accumulator.amount += Number(row.amount);
+				accumulator.prorated += Number(
+					calculateProrated(row.amount, row.rate, originationDate)
+				);
+				accumulator.rate += Number(row.rate);
+				accumulator.regular += Number(calculateRegular(row.amount, row.rate));
+			}
+
+			return accumulator;
+		},
+		{
+			amount: 0,
+			prorated: 0,
+			rate: 0,
+			regular: 0,
+		}
+	);
+
+	const disabled =
+		Number(totalLoanAmount) <= 0 || totals.amount !== Number(totalLoanAmount);
+
 	const columns: Array<TableColumn<FundingBreakdownType>> = [
 		{
 			cell: (row, rowIndex) => {
 				if (rowIndex === 0) {
 					return (
 						<button
-              data-testid="funding-breakdown-select-lender"
+							data-testid="funding-breakdown-select-lender"
 							className="h-full w-full py-3 px-4 bg-white hover:bg-gray-200"
 							onClick={() => {
 								setOpenLenderModal(true);
@@ -160,31 +186,42 @@ export const FundingBreakdown: FC<Props> = ({
 	}
 
 	return (
-		<div className="pt-6">
-			<div className="flex flex-row justify-between">
-				<Title text="Funding Breakdown" />
+		<>
+			<div className="pt-6">
+				<div className="flex flex-row justify-between">
+					<Title text="Funding Breakdown" />
+					<Button
+						data-testid="funding-breakdown-add-participant"
+						buttonText={
+							<div className="ml-2 font-inter font-semibold text-sm text-primary leading-[17px] tracking-[-0.7px]">
+								Add Participant
+							</div>
+						}
+						className="rounded-2xl px-4 h-[34px] bg-gray-200"
+						icon={<Icon name="plus" color="#0E2130" width="12" />}
+						onClick={() => {
+							setOpenParticipantModal(true);
+						}}
+						type="button"
+						disabled={!canAddParticipant()}
+					/>
+				</div>
+				<Table
+					className="mt-6 rounded-3xl"
+					columns={columns}
+					data={[...fundingBreakdown, ...participationBreakdown]}
+				/>
+				<Footer disabled={disabled} totals={totals} />
+			</div>
+
+			<div>
 				<Button
-          data-testid="funding-breakdown-add-participant"
-					buttonText={
-						<div className="ml-2 font-inter font-semibold text-sm text-primary leading-[17px] tracking-[-0.7px]">
-							Add Participant
-						</div>
-					}
-					className="rounded-2xl px-4 h-[34px] bg-gray-200"
-					icon={<Icon name="plus" color="#0E2130" width="12" />}
-					onClick={() => {
-						setOpenParticipantModal(true);
-					}}
-					type="button"
-					disabled={!canAddParticipant()}
+					buttonText="Save Loan"
+					className="w-full rounded-2xl bg-gold-600 px-[18px] py-4 font-inter font-semibold text-sm text-primary-300 leading-[17px] tracking-[-0.7px]"
+					type="submit"
+					disabled={disabled}
 				/>
 			</div>
-			<Table
-				className="mt-6 rounded-3xl"
-				columns={columns}
-				data={[...fundingBreakdown, ...participationBreakdown]}
-			/>
-			<Footer control={control} />
-		</div>
+		</>
 	);
 };
