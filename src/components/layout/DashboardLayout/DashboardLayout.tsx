@@ -285,7 +285,7 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 					)}
 
 					<div onClick={handleOpenModal} className="flex cursor-pointer">
-						<Avatar />
+						<Avatar name={localUserName} />
 					</div>
 				</div>
 			</div>
@@ -320,13 +320,19 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 							My profile
 						</div>
 
-						<div
-							className=" flex gap-3 items-center p-1 cursor-pointer"
-							onClick={navigateToPermission}
-						>
-							<Icon name="permission" color="black" width="20" />
-							Permissions
-						</div>
+						{findPermission(
+							userLoggedQuery?.data?.role,
+							userLoggedQuery?.data?.permissionGroup?.permissions || [],
+							""
+						) && (
+							<div
+								className=" flex gap-3 items-center p-1 cursor-pointer"
+								onClick={navigateToPermission}
+							>
+								<Icon name="permission" color="black" width="20" />
+								Permissions
+							</div>
+						)}
 						<LogOff />
 					</div>
 				</>
@@ -352,13 +358,20 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 					>
 						<div className="border-b border-gray-200 pb-2 flex gap-2 items-center justify-between">
 							<div className="text-[18px]">Notifications</div>{" "}
-							<div
-								className="w-[24px] h-[24px] rounded-full flex justify-center items-center bg-gray-200 cursor-pointer"
-								onClick={() => {
-									setOpenModalNotification(false);
-								}}
-							>
-								<Icon name="close" width="10" />
+							<div className="flex justify-center items-center gap-3">
+								<Button
+									buttonText="Mark all as read"
+									className="rounded-3xl text-black bg-gray-200 h-[24px] px-4"
+									onClick={markAllReadNotifications}
+								/>
+								<div
+									className="w-[24px] h-[24px] rounded-full flex justify-center items-center bg-gray-200 cursor-pointer"
+									onClick={() => {
+										setOpenModalNotification(false);
+									}}
+								>
+									<Icon name="close" width="10" />
+								</div>
 							</div>
 						</div>
 
@@ -402,14 +415,6 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 									</div>
 								);
 							})}
-						</div>
-
-						<div className="border-t border-gray-200 pt-2 flex gap-2 items-center w-full justify-end ">
-							<Button
-								buttonText="Mark all as read"
-								className="rounded-3xl mt-2 text-black bg-gray-200"
-								onClick={markAllReadNotifications}
-							/>
 						</div>
 					</div>
 				</>

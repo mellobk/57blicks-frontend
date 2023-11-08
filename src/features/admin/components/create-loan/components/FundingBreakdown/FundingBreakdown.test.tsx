@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import React from "react";
+import type React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fireEvent, render, screen } from "@testing-library/react";
@@ -118,7 +118,7 @@ describe("FundingBreakdown", () => {
 				}}
 			/>
 		);
-    expect(screen.getByText("$0.07")).toBeInTheDocument();
-    expect(screen.getByText("$0.08")).toBeInTheDocument();
+		expect(screen.getByText("$0.07")).toBeInTheDocument();
+		expect(screen.getByText("$0.08")).toBeInTheDocument();
 	});
 });
