@@ -40,11 +40,7 @@ export const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = ({
 			{iconName && (
 				<div className={iconClassName} data-testid="icon">
 					<div onClick={clickIcon}>
-						<Icon
-							name={iconName || "search"}
-							width={iconWidth}
-							color={iconColor}
-						/>
+						<Icon name={iconName} width={iconWidth} color={iconColor} />
 					</div>
 				</div>
 			)}

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
 import { addInvestorBankFields } from "../../utils/input-fields";
-import { type FC, useEffect } from "react";
+import { type FC, useEffect, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { Select } from "@/components/forms/Select";
 import type { AddInvestorBankFields } from "../../types/fields";
@@ -28,6 +28,9 @@ export const InvestorBankInfo: FC<InvestorBankInfoProps> = ({
 }) => {
 	console.log(data?.accountType, "bank data");
 	const { register, handleSubmit, watch, setValue } = useForm<FieldValues>();
+	const [accountData, setAccountData] = useState<string>(
+		data?.accountType || ""
+	);
 
 	useEffect(() => {
 		if (data) {
@@ -56,6 +59,7 @@ export const InvestorBankInfo: FC<InvestorBankInfoProps> = ({
 			handleSuccess(data);
 		}
 	};
+	console.log(data);
 
 	return (
 		<div className="flex  flex-col justify-between w-full h-full gap-5">
@@ -92,8 +96,11 @@ export const InvestorBankInfo: FC<InvestorBankInfoProps> = ({
 									className="flex flex-col gap-2"
 									label="Account Type"
 									placeholder="Select Account Type"
-									value={data?.accountType}
+									value={accountData}
 									options={ACCOUNT_OPTIONS}
+									onChange={(event): void => {
+										setAccountData(event.target.value as string);
+									}}
 								/>
 								<div className="flex flex-col gap-1">
 									<Button
