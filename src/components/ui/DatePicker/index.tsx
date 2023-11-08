@@ -4,13 +4,15 @@ import { dateFormatShortCalendar } from "@/config/constants";
 interface DatePickerProps {
 	inputId?: string;
 	name?: string;
-	value?: Date;
+	value?: Date | string;
 	invalid?: boolean;
 	className?: string;
 	disabled?: boolean;
 	placeholder?: string;
 	maxDate?: Date;
 	minDate?: Date;
+	view?: "date" | "month" | "year";
+	dateFormat?: string;
 	onChange?: (event: Date) => void;
 }
 
@@ -24,6 +26,8 @@ export const DatePicker = ({
 	disabled,
 	maxDate,
 	minDate,
+	view = "date",
+	dateFormat = dateFormatShortCalendar,
 	onChange,
 }: DatePickerProps): JSX.Element => {
 	return (
@@ -35,6 +39,7 @@ export const DatePicker = ({
 			placeholder={placeholder}
 			maxDate={maxDate}
 			minDate={minDate}
+			view={view}
 			className={`${className}
         h-12 rounded-none [&>*]:rounded-none [&>*]:border-gold-500  [&>*]:border-2
         ${invalid ? "[&>*]:border-red-ERROR " : ""}
@@ -43,7 +48,7 @@ export const DatePicker = ({
 				const date = event.target.value as Date;
 				onChange && onChange(date);
 			}}
-			dateFormat={dateFormatShortCalendar}
+			dateFormat={dateFormat}
 			locale="en"
 		/>
 	);
