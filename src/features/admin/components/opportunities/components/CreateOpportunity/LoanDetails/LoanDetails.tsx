@@ -54,6 +54,7 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
         data-testid="loan-details-loan-term"
 				error={errors?.loanTerm?.message}
 				label="Loan Term"
+        maxLength={50}
 				placeholder="Enter Loan Term"
 				register={register("loanTerm")}
 				wrapperClassName="mt-6"
@@ -74,6 +75,7 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
       data-testid="loan-details-investment-permanent-penalty"
 			error={errors?.investmentPermanentPenalty?.message}
 			label="Investment Permanent Penalty"
+      maxLength={50}
 			placeholder="Enter Investment Permanent Penalty"
 			register={register("investmentPermanentPenalty")}
 			wrapperClassName="mt-6"

@@ -16,8 +16,8 @@ export const AdditionalInformation: FC<Props> = ({ errors, register }) => (
       data-testid="additional-information"
 			error={errors?.additionalInformation?.message}
 			label="Additional Information"
-			maxLength={2000}
-			placeholder="Limit 2000 Characters"
+			maxLength={1000}
+			placeholder="Limit 1000 Characters"
 			register={register("additionalInformation")}
 			wrapperClassName="mt-6"
 			required
