@@ -31,7 +31,7 @@ export const OpportunitySchema = z.object({
 	investmentBorrower: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(50, errorMessages.maxLength),
+		.max(75, errorMessages.maxLength),
 	investmentBorrowerBackground: z
 		.string()
 		.nonempty(errorMessages.required)
@@ -39,7 +39,7 @@ export const OpportunitySchema = z.object({
 	investmentCollateral: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(100, errorMessages.maxLength),
+		.max(75, errorMessages.maxLength),
 	investmentMonthlyInterestedOfferedToInvestor: z
 		.string()
 		.nonempty(errorMessages.required)
@@ -60,7 +60,7 @@ export const OpportunitySchema = z.object({
 	loanTerm: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(25, errorMessages.maxLength),
+		.max(50, errorMessages.maxLength),
 	loanToValue: z.string().nonempty(errorMessages.required),
 	loanType: z.string().nonempty(errorMessages.required),
 	participantOpportunities: z.object({
