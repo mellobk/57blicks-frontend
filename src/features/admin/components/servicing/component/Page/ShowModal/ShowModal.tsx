@@ -12,6 +12,7 @@ import LoansService from "@/api/loans";
 import userStore from "@/stores/user-store";
 import { PermissionType } from "@/types/api/permissions-type";
 import { findPermission } from "@/utils/common-funtions";
+import BorrowerNotifications from "../../BorrowerNotifications";
 
 interface Props {
 	openModal?: boolean;
@@ -24,6 +25,8 @@ const tabsPermissions = {
 	loan: { label: "Loan", title: "Loan Information" },
 	borrower: { label: "Borrower", title: "Borrower Information" },
 	ledger: { label: "Ledger", title: "Ledger" },
+	receivable: { label: "Receivable", title: "Receivable" },
+	payable: { label: "Payable", title: "Payable" },
 	funding: { label: "Funding", title: "Funding Breakdown" },
 	invoice: { label: "Invoices", title: "Invoices" },
 	empty: { label: "", title: "" },
@@ -58,13 +61,22 @@ export const ShowModal: FC<Props> = ({
 			userInfo?.permissionGroup?.permissions || [],
 			PermissionType.INPUT_TRANSACTIONS_LEDGER
 		)
-			? tabsPermissions.ledger
+			? tabsPermissions.receivable
+			: tabsPermissions.empty,
+		findPermission(
+			userInfo?.role,
+			userInfo?.permissionGroup?.permissions || [],
+			PermissionType.INPUT_TRANSACTIONS_LEDGER
+		)
+			? tabsPermissions.payable
 			: tabsPermissions.empty,
 		tabsPermissions.funding,
 		tabsPermissions.invoice,
 	];
 
-	const [actualTabData, setActualTabData] = useState(TABS[0]);
+	const [actualTabData, setActualTabData] = useState(
+		TABS.find((tab) => tab.label === "Loan")
+	);
 
 	const loanQuery = useQuery(
 		["loan-query", data?.loan.id],
@@ -91,7 +103,9 @@ export const ShowModal: FC<Props> = ({
 								tab.label && (
 									<div
 										key={index}
-										onClick={() => setActualTabData(tab)}
+										onClick={(): void => {
+											setActualTabData(tab);
+										}}
 										className={`px-5 cursor-pointer ${
 											tab.label === actualTabData?.label
 												? "bg-white text-black"
@@ -105,14 +119,24 @@ export const ShowModal: FC<Props> = ({
 					</div>
 				</div>
 			</div>
-			{actualTabData?.label === "Loan" && <LoanInformation data={data} />}
+
+			{actualTabData?.label === "Loan" && (
+				<>
+					<BorrowerNotifications single={true} data={data} />
+
+					<LoanInformation data={data} />
+				</>
+			)}
 			{actualTabData?.label === "Borrower" && (
 				<BorrowerInformation
 					data={data}
 					handleRefreshData={handleRefreshData}
 				/>
 			)}
-			{actualTabData?.label === "Ledger" && data && (
+			{actualTabData?.label === "Receivable" && data && (
+				<LedgerList loan={data.loan} />
+			)}
+			{actualTabData?.label === "Payable" && data && (
 				<LedgerList loan={data.loan} />
 			)}
 			{actualTabData?.label === "Funding" && data && (
