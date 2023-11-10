@@ -42,7 +42,12 @@ const BorrowerNotifications: FC<SendCommunicationsProps> = ({
 				{single ? (
 					<>
 						{data && data.loan && (
-							<SingleBorrowerNotification loan={data.loan} />
+							<SingleBorrowerNotification
+								loan={data.loan}
+								callBack={(): void => {
+									setOpenModal(false);
+								}}
+							/>
 						)}
 					</>
 				) : (

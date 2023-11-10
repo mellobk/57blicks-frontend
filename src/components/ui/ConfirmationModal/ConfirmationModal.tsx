@@ -9,6 +9,7 @@ interface Props extends ModalProps {
 	handelConfirmation: () => void;
 	loading?: boolean;
 	model: string;
+	customMessage?: string;
 }
 
 export const ConfirmationModal: FC<Props> = ({
@@ -18,16 +19,23 @@ export const ConfirmationModal: FC<Props> = ({
 	handelConfirmation,
 	loading,
 	model,
+	customMessage,
 	...props
 }) => (
 	<Modal width="500px" {...props}>
 		<div className="flex flex-col gap-6 font-inter text-base text-primary-500 leading-[19px] tracking-tighter">
 			<div className="flex items-center gap-1 justify-center">
-				Are you sure you want to
-				<div className={confirmation ? "text-green-500" : "text-red-500"}>
-					{action}
-				</div>
-				this {model}?
+				{customMessage ? (
+					<>{customMessage}</>
+				) : (
+					<>
+						Are you sure you want to
+						<div className={confirmation ? "text-green-500" : "text-red-500"}>
+							{action}
+						</div>
+						this {model}?
+					</>
+				)}
 			</div>
 			<Button
 				buttonText={buttonText}

@@ -1,20 +1,56 @@
 export interface BorrowerNotificationType {
 	name: string;
 	url: string;
+	validate: boolean;
+	message: string;
 }
 
 export const notificationTypes: Array<BorrowerNotificationType> = [
-	{ name: "Tax Default", url: "tax-default" },
-	{ name: "Interest Default", url: "interest-default" },
-	{ name: "Unauthorized Default", url: "unauthorized-default" },
-	{ name: "Insurance Default", url: "insurance-default" },
 	{
-		name: "Loan Maturity Notice",
-		url: "borrower-notification-loan-maturity",
+		name: "Tax Default",
+		url: "tax-default",
+		validate: true,
+		message:
+			"Are you sure you want to send this default notification? The loan status will be updated to default.",
 	},
-	{ name: "Property Tax Reminder", url: "property-tax" },
+	{
+		name: "Interest Default",
+		url: "interest-default",
+		validate: true,
+		message:
+			"Are you sure you want to send this default notification? The loan status will be updated to default.",
+	},
+	{
+		name: "Unauthorized Default",
+		url: "unauthorized-default",
+		validate: true,
+		message:
+			"Are you sure you want to send this default notification? The loan status will be updated to default.",
+	},
+	{
+		name: "Insurance Default",
+		url: "insurance-default",
+		validate: true,
+		message:
+			"Are you sure you want to send this default notification? The loan status will be updated to default.",
+	},
+
+	{
+		name: "Property Insurance Requirements",
+		url: "property-insurance-requirements",
+		validate: false,
+		message: "",
+	},
+	{
+		name: "Insurance Force Place",
+		url: "insurance-force-place",
+		validate: false,
+		message: "",
+	},
 	{
 		name: "Property Tax Requirements & Guidelines",
 		url: "property-tax-requirements-guidelines",
+		validate: false,
+		message: "",
 	},
 ];
