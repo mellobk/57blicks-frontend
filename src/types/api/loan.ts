@@ -1,8 +1,8 @@
-import { Borrower } from "@/types/api/borrower";
-import { Collateral } from "@/types/api/collateral";
-import { FundingBreakdown } from "@/types/api/funding-breakdown";
-import { User } from "@/types/api/user";
-import {ParticipationBreakdown} from "@/types/api/paticipation-breakdown.ts";
+import type { Borrower } from "@/types/api/borrower";
+import type { Collateral } from "@/types/api/collateral";
+import type { FundingBreakdown } from "@/types/api/funding-breakdown";
+import type { User } from "@/types/api/user";
+import type { ParticipationBreakdown } from "@/types/api/paticipation-breakdown.ts";
 
 export interface Loan {
 	id?: string;
@@ -20,9 +20,9 @@ export interface Loan {
 	loanConsultant: string;
 	leadSource: string;
 	borrower?: Borrower;
-	collaterals: Collateral[];
+	collaterals: Array<Collateral>;
 	ltv: string;
-	fundingBreakdowns: FundingBreakdown[];
-	participationBreakdowns: ParticipationBreakdown[];
+	fundingBreakdowns: Array<FundingBreakdown>;
+	participationBreakdowns: Array<ParticipationBreakdown>;
 	user: User;
 }

@@ -1,5 +1,5 @@
-import { Datum } from "@/types/api/datum";
-import { FundingBreakdown } from "@/types/api/funding-breakdown";
+import type { Datum } from "@/types/api/datum";
+import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 
 export interface Lender {
 	data: Array<Datum>;

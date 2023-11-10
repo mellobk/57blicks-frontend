@@ -1,8 +1,8 @@
-import { User } from "@/types/api/user";
-import { FundingBreakdown } from "@/types/api/funding-breakdown";
+import type { User } from "@/types/api/user";
+import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 
 export interface Investor {
-	target?: any;
+	target?: unknown;
 	id: string;
 	createdAt?: Date;
 	updatedAt?: Date;
@@ -15,5 +15,5 @@ export interface Investor {
 	accountNumber?: string;
 	accountType?: string;
 	user?: User;
-	participationBreakdowns?: FundingBreakdown[];
+	participationBreakdowns?: Array<FundingBreakdown>;
 }

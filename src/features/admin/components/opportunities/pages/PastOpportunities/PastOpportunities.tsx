@@ -10,11 +10,16 @@ import { OpportunityList } from "@/components/ui/OpportunityList";
 import { Tabs } from "@/components/ui/Tabs";
 import { Details } from "@/features/admin/components/opportunities/components/PastOpportunities/Details/Details";
 import { DocumentPreview } from "@/features/admin/components/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview";
-import type { OpportunityMin } from "@/types/api/opportunityMin";
+import type { OpportunityMin } from "@/types/api/opportunity-min";
 import userStore from "@/stores/user-store";
 import { findPermission } from "@/utils/common-funtions";
 import { PermissionType } from "@/types/api/permissions-type";
 import { tabsOpportunity } from "../../utils/tabs";
+
+
+const getFilename = (referenceId: number): string => {
+	return `DKC_Opportunity_${referenceId}.pdf`;
+};
 
 export const PastOpportunities: FC = () => {
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
@@ -35,10 +40,6 @@ export const PastOpportunities: FC = () => {
 		() => OpportunitiesService.getOpportunity(selectedOpportunity?.id),
 		{ enabled: !!selectedOpportunity?.id }
 	);
-
-	const getFilename = (referenceId: number) => {
-		return `DKC_Opportunity_${referenceId}.pdf`;
-	};
 
 	useEffect(() => {
 		const getOpportunityBYId = getOpportunitiesQuery?.data?.find(

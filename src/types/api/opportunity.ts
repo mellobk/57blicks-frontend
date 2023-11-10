@@ -1,4 +1,4 @@
-import { Investment } from "@/types/api/investment";
+import type { Investment } from "@/types/api/investment";
 
 export interface Opportunity {
 	additionalInformation: string;
