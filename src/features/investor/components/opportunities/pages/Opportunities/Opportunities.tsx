@@ -5,7 +5,11 @@ import OpportunitiesService from "@/api/opportunities";
 import { Loading } from "@/components/ui/Loading";
 import { DocumentPreview } from "@/features/investor/components/opportunities/components/DocumentPreview/DocumentPreview";
 import { OpportunityList } from "@/components/ui/OpportunityList/OpportunityList.tsx";
-import { OpportunityMin } from "@/types/api/opportunityMin";
+import type { OpportunityMin } from "@/types/api/opportunity-min";
+
+const getFilename = (referenceId: number):string => {
+	return `DKC_Opportunity_${referenceId}.pdf`;
+};
 
 export const Opportunities: FC = () => {
 	const [selectedOpportunity, setSelectedOpportunity] =
@@ -22,10 +26,6 @@ export const Opportunities: FC = () => {
 		() => OpportunitiesService.getOpportunity(selectedOpportunity?.id),
 		{ enabled: !!selectedOpportunity?.id }
 	);
-
-	const getFilename = (referenceId: number) => {
-		return `DKC_Opportunity_${referenceId}.pdf`;
-	};
 
 	useEffect(() => {
 		setSelectedOpportunity(getOpportunitiesQuery?.data?.[0]);

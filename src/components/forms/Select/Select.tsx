@@ -1,4 +1,4 @@
-import { type ForwardRefRenderFunction } from "react";
+import type { ForwardRefRenderFunction } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 import { Dropdown, type DropdownProps } from "primereact/dropdown";
 import { ErrorText } from "@/components/forms/ErrorText";

@@ -1,5 +1,5 @@
-import { Lender } from "@/types/api/lender";
-import { Loan } from "@/types/api/loan";
+import type { Lender } from "@/types/api/lender";
+import type { Loan } from "@/types/api/loan";
 
 export interface FundingBreakdown {
 	id: string;

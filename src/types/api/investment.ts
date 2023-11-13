@@ -1,4 +1,4 @@
-import { Investor } from "@/types/api/investor";
+import type { Investor } from "@/types/api/investor";
 
 export interface Investment {
 	createdAt: string;

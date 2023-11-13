@@ -4,7 +4,7 @@ import PDF from "@/assets/images/png/PDF.png";
 import { IconButton } from "@/components/ui/IconButton";
 import { Loading } from "@/components/ui/Loading";
 import { Title } from "@/components/ui/Title";
-import { Opportunity } from "@/types/api/opportunity.ts";
+import type { Opportunity } from "@/types/api/opportunity.ts";
 
 interface Props {
 	data?: Opportunity;
@@ -18,6 +18,9 @@ export const DocumentPreview: FC<Props> = ({
 	isLoading,
 }) => {
 	const anchorRef = useRef<HTMLAnchorElement | null>(null);
+	const handleClick = (): void => {
+		anchorRef.current?.click();
+	};
 
 	return isLoading ? (
 		<Loading />
@@ -47,7 +50,7 @@ export const DocumentPreview: FC<Props> = ({
 										bgColor="bg-blue-200/[.12]"
 										color="#0085FF"
 										name="download"
-										onClick={() => anchorRef.current?.click()}
+										onClick={handleClick}
 										width="16"
 									/>
 								</>

@@ -8,10 +8,10 @@ import { RootRoute } from "./RootRoute";
 
 //array of all routes
 const allRoutes = [
-  ...AppRouter,
-  ...AdminRouter,
-  ...InvestorRouter,
-  ...AuthRouter,
+	...AppRouter,
+	...AdminRouter,
+	...InvestorRouter,
+	...AuthRouter,
 ];
 
 const routeTree = RootRoute.addChildren([...allRoutes]);
