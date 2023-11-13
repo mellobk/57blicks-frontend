@@ -1,10 +1,10 @@
 import { useState, type FC } from "react";
 import { Icon } from "@/components/ui/Icon";
 import type { FundingBreakdown } from "@/features/admin/components/servicing/types/api";
-import { Modal } from "@/components/ui/Modal";
-import { ModalBlackAndWhite } from "@/components/ui/ModalBlackAndWhite";
+
 import SingleBorrowerNotification from "./SingleBorrowerNotification";
 import MultipleBorrowerNotification from "./MultipleBorrowerNotification";
+import { ModalBlackAndWhite } from "@/components/ui/ModalBlackAndWhite";
 interface SendCommunicationsProps {
 	single: boolean;
 	data?: FundingBreakdown;

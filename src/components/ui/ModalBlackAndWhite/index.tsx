@@ -1,7 +1,6 @@
 import type { FC, ReactNode } from "react";
 
 import { Dialog } from "primereact/dialog";
-import { Icon } from "../Icon";
 
 interface ModalBlackAndWhiteProps {
 	isOpen: boolean;

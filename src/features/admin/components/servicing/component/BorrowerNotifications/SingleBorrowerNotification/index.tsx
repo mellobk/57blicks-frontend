@@ -1,18 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { useState, type FC, useEffect } from "react";
+import { useState, type FC } from "react";
 import { ListBox, type ListBoxChangeEvent } from "primereact/listbox";
-import { type BorrowerNotificationType, notificationTypes } from "../types";
+
 import { Button } from "@/components/ui/Button";
 import "./index.css";
 import { useMutation } from "@tanstack/react-query";
-import ManageBorrowerNotificationsService, {
-	type BorrowerNotificationProps,
-} from "@/features/admin/components/servicing/api/borrower-notifications";
+
 import type { Loan } from "@/features/admin/components/servicing/types/api";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 import { Loading } from "@/components/ui/Loading";
 import { toast } from "react-toastify";
 import BorrowerTemplates from "../BorrowerTemplates";
+import ManageBorrowerNotificationsService, {
+	type BorrowerNotificationProps,
+} from "../../../api/borrower-notifications";
+import { notificationTypes, type BorrowerNotificationType } from "../types";
 interface SingleBorrowerNotificationProps {
 	loan: Loan;
 	width: string;
