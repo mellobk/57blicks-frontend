@@ -28,7 +28,7 @@ import { validateDataLedger } from "../utils/validate-data";
 import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
 import { getLocalStorage } from "@/utils/local-storage";
 import { userName } from "@/utils/constant";
-
+import moment from "moment";
 interface LedgerComponentProps {
 	loan: Loan;
 	ledgersData?: Array<Ledgers>;
@@ -49,7 +49,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		return ManageNotificationService.createNotifications(body);
 	});
 
-	const createNotificationsLedger = (data: LedgerFormValues) => {
+	const createNotificationsLedger = (data: LedgerFormValues): void => {
 		data.ledgers.map((value) => {
 			if (value.typeOfPayment === "Principal") {
 				const dataNotification = { id: data.loanId, ledgerId: value.id };
@@ -213,6 +213,18 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		);
 	};
 
+	const handleSetMonth = (name: string, value: Date, index: number): void => {
+		console.log(
+			"🚀 ~ file: LedgerComponent.tsx:217 ~ handleSetMonth ~ value:",
+			moment(value).format("YYYY-MM-DD"),
+			name
+		);
+		setValue(
+			`ledgers.${index}.${name}` as never,
+			moment(value).format("YYYY-MM-DD") as never
+		);
+	};
+
 	const handleEdit = (
 		name: string,
 		value: string | number | boolean,
@@ -256,6 +268,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 						ledgers: [],
 						loanId: loan?.id || "",
 					};
+
 					data.ledgers.forEach((ledger) => {
 						if (ledger.editable) {
 							const date = ledger.ledgerDate;
@@ -268,7 +281,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 							});
 						}
 					});
-
 					createLedger.mutate({ ...sanedData, loanId: loan?.id || "" });
 					setLedgerData({ ...sanedData, loanId: loan.id });
 				})}
@@ -294,6 +306,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 								<td className="font-semibold text-gray-600 pl-4">
 									Debit/Credit
 								</td>
+								<td className="font-semibold text-gray-600 pl-4">Month</td>
 								<td className="font-semibold text-gray-600 pl-4">Memo</td>
 								<td className="font-semibold text-gray-600 pl-4">
 									<div className="flex flex-row gap-2  align-middle">
@@ -328,6 +341,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 											handleOpenModal={handleOpenModal}
 											handleSetValue={handleSetValue}
 											handleSetDate={handleSetDate}
+											handleSetMonth={handleSetMonth}
 											handleEdit={handleEdit}
 											handleDeleteLedger={handleDeleteLedger}
 											refetchLedgers={refetchLedgers}

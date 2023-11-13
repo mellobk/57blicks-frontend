@@ -1,3 +1,22 @@
+export interface ApiParameters {
+	link: string;
+	id?: string;
+}
+
+export const createApiUrl = (
+	resource: string,
+	parameter: ApiParameters
+): string => {
+	let url = `/${resource}`;
+	if (parameter.link !== "") {
+		url += `/${parameter.link}`;
+	}
+	if (parameter.id) {
+		url += `/${parameter.id}`;
+	}
+	return url;
+};
+
 export const lenders = (): string => {
 	return `/lenders`;
 };
@@ -32,4 +51,12 @@ export const sendInvoices = (): string => {
 
 export const downloadInvoiceApi = (invoiceId: number): string => {
 	return `/invoices/download/${invoiceId}`;
+};
+
+export const borrowerNotificationsApi = (parameter: ApiParameters): string => {
+	return createApiUrl("communications", parameter);
+};
+
+export const borrowersApi = (parameter: ApiParameters): string => {
+	return createApiUrl("borrowers", parameter);
 };

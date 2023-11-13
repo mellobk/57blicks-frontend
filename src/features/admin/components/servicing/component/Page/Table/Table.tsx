@@ -1,15 +1,17 @@
 import type { FC, ReactElement } from "react";
 import { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import { Input } from "@/components/forms/Input";
+
+import BorrowerNotifications from "../../BorrowerNotifications";
 import { Button } from "@/components/ui/Button";
-import { Toggle } from "@/components/ui/Toggle/Toggle";
-import { Icon } from "@/components/ui/Icon";
-import { Modal } from "@/components/ui/Modal/Modal";
-import { useDebounce } from "@/hooks/debounce";
+import DataTable from "react-data-table-component";
 import { FooterTable } from "@/components/ui/FooterTabs/FooterTabs";
 import type { FundingBreakdown } from "../../../types/api";
+import { Icon } from "@/components/ui/Icon";
+import { Input } from "@/components/forms/Input";
+import { Modal } from "@/components/ui/Modal/Modal";
+import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { moneyFormat } from "@/utils/formats";
+import { useDebounce } from "@/hooks/debounce";
 
 interface Column {
 	name?: string;
@@ -161,6 +163,12 @@ export const Table: FC<Props> = ({
 									}}
 								/>
 							)}
+							<BorrowerNotifications
+								single={false}
+								right="1px"
+								top="1px"
+								className=""
+							/>
 							<div
 								className={`${
 									searchVisible || value
@@ -252,7 +260,6 @@ export const Table: FC<Props> = ({
 					<FooterTable tabs={createFooter(data as Array<FundingBreakdown>)} />
 				</div>
 			</div>
-
 			<Modal
 				visible={visible}
 				onHide={(): void => {
