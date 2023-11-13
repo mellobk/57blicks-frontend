@@ -1,9 +1,10 @@
-import {InvestorLayout} from "@/components/layout/InvestorLayout";
+import { InvestorLayout } from "@/components/layout/InvestorLayout";
 import { Opportunities } from "@/features/investor/components/opportunities/pages/Opportunities/Opportunities";
 import { Portfolio } from "@/features/investor/components/portfolio/pages/Portfolio/Portfolio";
 import { InvestorRoute } from "@/routes/routes";
 import { Support } from "@/features/admin/pages/Support/Support";
 import { Reporting } from "@/features/admin/pages/Reporting/Reporting";
+import { Profile } from "@/features/admin/components/profile/pages/Profile/Profile";
 
 export const InvestorRoutes = [
 	{
@@ -32,6 +33,15 @@ export const InvestorRoutes = [
 	},
 ];
 
-const InvestorRouter = InvestorRoute([...InvestorRoutes]);
+const profileRoutes = [
+	{
+		path: "/investors/Profile",
+		page: Profile,
+		layout: InvestorLayout,
+		name: "Profile",
+	},
+];
+
+const InvestorRouter = InvestorRoute([...InvestorRoutes, ...profileRoutes]);
 
 export default InvestorRouter;

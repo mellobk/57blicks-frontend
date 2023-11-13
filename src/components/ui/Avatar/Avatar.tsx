@@ -25,7 +25,9 @@ export const Avatar: FC<AvatarProps> = ({ image, name }) => {
 			label={getLabel()}
 			icon={<Icon name="user" color="white" />}
 			shape="circle"
-			className={!image && !name ? "avatar-icon bg-opacity-20 p-2" : ""}
+			className={
+				!image && !name ? "avatar-icon bg-opacity-20 p-2" : "w-[36px] h-[36px]"
+			}
 		/>
 	);
 };
