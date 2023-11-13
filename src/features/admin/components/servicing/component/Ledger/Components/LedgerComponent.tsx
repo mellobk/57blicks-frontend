@@ -281,10 +281,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 							});
 						}
 					});
-					console.log(
-						"🚀 ~ file: LedgerComponent.tsx:271 ~ onSubmit={handleSubmit ~ sanedData:",
-						sanedData
-					);
 					createLedger.mutate({ ...sanedData, loanId: loan?.id || "" });
 					setLedgerData({ ...sanedData, loanId: loan.id });
 				})}

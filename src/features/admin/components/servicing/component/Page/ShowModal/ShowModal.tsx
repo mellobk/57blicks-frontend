@@ -122,7 +122,13 @@ export const ShowModal: FC<Props> = ({
 
 			{actualTabData?.label === "Loan" && (
 				<>
-					<BorrowerNotifications single={true} data={data} />
+					<BorrowerNotifications
+						single={true}
+						data={data}
+						right="70px"
+						top="25px"
+						className="absolute "
+					/>
 
 					<LoanInformation data={data} />
 				</>

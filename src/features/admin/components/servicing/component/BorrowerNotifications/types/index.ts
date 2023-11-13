@@ -53,4 +53,10 @@ export const notificationTypes: Array<BorrowerNotificationType> = [
 		validate: false,
 		message: "",
 	},
+	{
+		name: "Send Custom Notification",
+		url: "custom-notification",
+		validate: false,
+		message: "",
+	},
 ];

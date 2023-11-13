@@ -1,4 +1,5 @@
-import { useState, type FC } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { useState, type FC, useEffect } from "react";
 import { ListBox, type ListBoxChangeEvent } from "primereact/listbox";
 import { type BorrowerNotificationType, notificationTypes } from "../types";
 import { Button } from "@/components/ui/Button";
@@ -11,14 +12,25 @@ import type { Loan } from "@/features/admin/components/servicing/types/api";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 import { Loading } from "@/components/ui/Loading";
 import { toast } from "react-toastify";
+import BorrowerTemplates from "../BorrowerTemplates";
 interface SingleBorrowerNotificationProps {
 	loan: Loan;
+	width: string;
+	showBlack: boolean;
+	setWidth: (width: string) => void;
+	setShowBlack: (showBlack: boolean) => void;
 	callBack?: () => void;
 }
 const SingleBorrowerNotification: FC<SingleBorrowerNotificationProps> = ({
 	loan,
+	setWidth,
+	showBlack,
+	setShowBlack,
 	callBack,
 }) => {
+	const [smsContent, setSmsContent] = useState<string>("");
+	const [emailContent, setEmailContent] = useState<string>("");
+
 	const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
 	const [selectedNotification, setSelectedNotification] =
 		useState<BorrowerNotificationType | null>();
@@ -31,7 +43,15 @@ const SingleBorrowerNotification: FC<SingleBorrowerNotificationProps> = ({
 
 	const handleSendNotification = (): void => {
 		const data: BorrowerNotificationProps = {
-			loans: [{ id: loan.id || "" }],
+			loans: [
+				{
+					id: loan.id || "",
+					sms: smsContent?.length > 0,
+					email: emailContent?.length > 0,
+					smsContent,
+					emailContent,
+				},
+			],
 			url: selectedNotification?.url || "",
 		};
 
@@ -66,6 +86,8 @@ const SingleBorrowerNotification: FC<SingleBorrowerNotificationProps> = ({
 	};
 
 	if (borrowerNotificationMutation.isLoading) {
+		setWidth("600px");
+		setShowBlack(false);
 		return (
 			<div className="flex flex-col w-full  items-center justify-items-center justify-center">
 				<div>
@@ -77,28 +99,56 @@ const SingleBorrowerNotification: FC<SingleBorrowerNotificationProps> = ({
 	}
 	return (
 		<>
-			<div className="card flex justify-content-center mt-4">
-				<ListBox
-					value={selectedNotification}
-					onChange={(event: ListBoxChangeEvent): void => {
-						setSelectedNotification(event.value as BorrowerNotificationType);
-					}}
-					options={notificationTypes}
-					optionLabel="name"
-					className="notification w-full md:w-14rem"
-				/>
-			</div>
-			<Button
-				buttonText="Send"
-				variant={"gold"}
-				disabled={!selectedNotification}
-				className="w-full md:w-14rem mt-4"
-				type="button"
-				onClick={(): void => {
-					setOpenConfirmation(true);
+			<div
+				className="flex"
+				style={{
+					width: "100%",
 				}}
-			/>
+			>
+				<div
+					className={`${
+						showBlack ? "w-1/2" : "w-full"
+					}   h-full bg-white pt-4 mt-4`}
+				>
+					<ListBox
+						value={selectedNotification}
+						onChange={(event: ListBoxChangeEvent): void => {
+							if (event.value.url === "custom-notification") {
+								setWidth("1200px");
+								setShowBlack(true);
+							} else {
+								setWidth("600px");
+								setShowBlack(false);
+							}
+							setSelectedNotification(event.value as BorrowerNotificationType);
+						}}
+						options={notificationTypes}
+						optionLabel="name"
+						className="notification w-full md:w-14rem"
+					/>
 
+					<Button
+						buttonText="Send"
+						variant={"primary"}
+						disabled={!selectedNotification}
+						className={`${showBlack ? "w-[96%]" : "w-[96%]"} mt-2 h-10`}
+						type="button"
+						onClick={(): void => {
+							setOpenConfirmation(true);
+						}}
+					/>
+				</div>
+				{showBlack && (
+					<div className="w-1/2  relative p-4">
+						<BorrowerTemplates
+							smsContent={smsContent}
+							setSmsContent={setSmsContent}
+							emailContent={emailContent}
+							setEmailContent={setEmailContent}
+						/>
+					</div>
+				)}
+			</div>
 			<ConfirmationModal
 				action="send"
 				buttonText="Send"

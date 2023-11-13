@@ -2,25 +2,34 @@ import { useState, type FC } from "react";
 import { Icon } from "@/components/ui/Icon";
 import type { FundingBreakdown } from "@/features/admin/components/servicing/types/api";
 import { Modal } from "@/components/ui/Modal";
-import SingleBorrowerNotification from "./SingleBorrorerNotification";
-
+import { ModalBlackAndWhite } from "@/components/ui/ModalBlackAndWhite";
+import SingleBorrowerNotification from "./SingleBorrowerNotification";
+import MultipleBorrowerNotification from "./MultipleBorrowerNotification";
 interface SendCommunicationsProps {
 	single: boolean;
 	data?: FundingBreakdown;
+	top: string;
+	right: string;
+	className: string;
 }
 
 const BorrowerNotifications: FC<SendCommunicationsProps> = ({
 	single,
+	top,
+	right,
 	data,
+	className,
 }) => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
+	const [showBlack, setShowBlack] = useState<boolean>(false);
+	const [width, setWidth] = useState<string>(showBlack ? "1200px" : "600px");
 	return (
 		<div>
 			<div
-				className={`absolute w-8 h-8 bg-green-800 rounded-full mr-4  align-middle  pt-[8px] pl-[12px] cursor-pointer z-10`}
+				className={`${className} w-8 h-8  bg-green-800 rounded-full mr-4  align-middle  pt-[8px] pl-[12px] cursor-pointer z-10`}
 				style={{
-					right: "100px",
-					top: "25px",
+					right,
+					top,
 				}}
 				onClick={(): void => {
 					setOpenModal(true);
@@ -29,21 +38,24 @@ const BorrowerNotifications: FC<SendCommunicationsProps> = ({
 				<Icon name="send" color={"#00BA35"} width="12" height="13" />
 			</div>
 
-			<Modal
-				visible={openModal}
+			<ModalBlackAndWhite
+				isOpen={openModal}
 				title="Send Notification"
-				width="860px"
-				minHeight="500px"
-				className="relative"
-				onHide={(): void => {
-					setOpenModal(false);
-				}}
+				showBlack={showBlack}
+				setShowBlack={setShowBlack}
+				width={width}
+				minHeight="600px"
+				setIsOpen={setOpenModal}
 			>
 				{single ? (
 					<>
 						{data && data.loan && (
 							<SingleBorrowerNotification
 								loan={data.loan}
+								width={width}
+								setWidth={setWidth}
+								showBlack={showBlack}
+								setShowBlack={setShowBlack}
 								callBack={(): void => {
 									setOpenModal(false);
 								}}
@@ -51,9 +63,19 @@ const BorrowerNotifications: FC<SendCommunicationsProps> = ({
 						)}
 					</>
 				) : (
-					<></>
+					<>
+						<MultipleBorrowerNotification
+							width={width}
+							setWidth={setWidth}
+							showBlack={showBlack}
+							setShowBlack={setShowBlack}
+							callBack={(): void => {
+								setOpenModal(false);
+							}}
+						/>
+					</>
 				)}
-			</Modal>
+			</ModalBlackAndWhite>
 		</div>
 	);
 };

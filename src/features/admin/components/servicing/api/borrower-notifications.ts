@@ -4,11 +4,17 @@ import {
 	borrowerNotificationsApi,
 } from "./backend-end-points";
 
+export interface LoanDataNotification {
+	id: string;
+	email?: boolean;
+	sms?: boolean;
+	smsContent?: string;
+	emailContent?: string;
+}
+
 export interface BorrowerNotificationProps {
-	loans: Array<{ id: string }>;
+	loans: Array<LoanDataNotification>;
 	url: string;
-	smsMessage?: string;
-	emailMessage?: string;
 }
 
 const sendBorrowerNotification = async (

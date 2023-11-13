@@ -4,6 +4,8 @@ import ArrowRight from "@/assets/icons/arrow-right";
 import Bank from "@/assets/icons/bank";
 import Cellphone from "@/assets/icons/cellphone";
 import Chart from "@/assets/icons/chart";
+import CheckBoxFalse from "@/assets/icons/check-box-false";
+import CheckBoxTrue from "@/assets/icons/check-box-true";
 import Clock from "@/assets/icons/clock";
 import ClockReverse from "@/assets/icons/clock-reverse";
 import Close from "@/assets/icons/close";
@@ -32,6 +34,7 @@ import OpenEye from "@/assets/icons/open-eye";
 import PasswordProfile from "@/assets/icons/password-profile";
 import Pdf from "@/assets/icons/pdf";
 import Pencil from "@/assets/icons/pencil";
+import Permission from "@/assets/icons/permission";
 import Plus from "@/assets/icons/plus";
 import Refresh from "@/assets/icons/refresh";
 import SVG403 from "@/assets/images/svg/403";
@@ -46,7 +49,6 @@ import Upload from "@/assets/icons/upload";
 import User from "@/assets/icons/user";
 import UserProfile from "@/assets/icons/user-profile";
 import Wrong from "@/assets/icons/wrong";
-import Permission from "@/assets/icons/permission";
 
 export const ICONS = {
 	arrowDown: ArrowDown,
@@ -97,6 +99,8 @@ export const ICONS = {
 	send: Send,
 	refresh: Refresh,
 	permission: Permission,
+	checkBoxFalse: CheckBoxFalse,
+	checkBoxTrue: CheckBoxTrue,
 };
 
 export interface IconProps {
