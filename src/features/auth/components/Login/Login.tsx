@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -50,13 +52,18 @@ export const LoginForm: FC<LoginFormProps> = () => {
 		try {
 			await signInWithEmail(data.email, data.password, "");
 			const sessionData: any = await getSession();
-			const groupAws = JSON.stringify(
-				sessionData?.accessToken?.payload["cognito:groups"][0] || "admin"
-			);
-			sendToLocalStorage(group, groupAws);
+			const groupAws: string =
+				sessionData?.accessToken?.payload["cognito:groups"][0] || "admin";
+
+			sendToLocalStorage(group, JSON.stringify(groupAws));
 			sendToLocalStorage(accessToken, `${sessionData?.idToken?.jwtToken}`);
 
 			createLoginLog.mutate();
+
+			console.log(
+				sessionData?.accessToken?.payload["cognito:groups"][0] === "investor",
+				"------------>"
+			);
 
 			window.location.href =
 				groupAws === "investor"
