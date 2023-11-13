@@ -1,8 +1,10 @@
 import type { FC } from "react";
+import { useEffect } from "react";
 import {
 	type Control,
 	type FieldErrors,
 	type UseFieldArrayRemove,
+	UseFormSetValue,
 	useWatch,
 } from "react-hook-form";
 import type { TableColumn } from "react-data-table-component";
@@ -26,6 +28,7 @@ interface Props {
 	remove: UseFieldArrayRemove;
 	setOpenLenderModal: (openLenderModal: boolean) => void;
 	setOpenParticipantModal: (openParticipantModal: boolean) => void;
+	setValue: UseFormSetValue<Loan>;
 }
 
 export const FundingBreakdown: FC<Props> = ({
@@ -34,16 +37,21 @@ export const FundingBreakdown: FC<Props> = ({
 	remove,
 	setOpenLenderModal,
 	setOpenParticipantModal,
+	setValue,
 }) => {
 	const [
+		constructionHoldback,
 		fundingBreakdown,
+		interestRate,
 		originationDate,
 		participationBreakdown,
 		totalLoanAmount,
 	] = useWatch({
 		control,
 		name: [
+			"constructionHoldback",
 			"fundingBreakdown",
+			"interestRate",
 			"originationDate",
 			"participationBreakdown",
 			"totalLoanAmount",
@@ -54,6 +62,7 @@ export const FundingBreakdown: FC<Props> = ({
 		(accumulator, row) => {
 			if (row) {
 				accumulator.amount += Number(row.amount);
+				accumulator.constructionHoldback += Number(row.constructionHoldback);
 				accumulator.prorated += Number(
 					calculateProrated(row.amount, row.rate, originationDate)
 				);
@@ -65,6 +74,7 @@ export const FundingBreakdown: FC<Props> = ({
 		},
 		{
 			amount: 0,
+			constructionHoldback: 0,
 			prorated: 0,
 			rate: 0,
 			regular: 0,
@@ -101,44 +111,59 @@ export const FundingBreakdown: FC<Props> = ({
 			style: { padding: 0 },
 		},
 		{
-			cell: (_, rowIndex) => (
-				<CellInput
-					control={control}
-					error={
-						rowIndex > 2
-							? errors?.participationBreakdown?.[rowIndex - 3]?.amount?.message
-							: errors?.fundingBreakdown?.[rowIndex]?.amount?.message
-					}
-					format="money"
-					name={
-						rowIndex > 2
-							? `participationBreakdown.${rowIndex - 3}.amount`
-							: `fundingBreakdown.${rowIndex}.amount`
-					}
-				/>
-			),
+			cell: (row, rowIndex) => {
+				if (row.investorId !== "servicing") {
+					return (
+						<CellInput
+							control={control}
+							error={
+								rowIndex > 1
+									? errors?.participationBreakdown?.[rowIndex - 2]?.amount
+											?.message
+									: errors?.fundingBreakdown?.[rowIndex]?.amount?.message
+							}
+							format="money"
+							name={
+								rowIndex > 1
+									? `participationBreakdown.${rowIndex - 2}.amount`
+									: `fundingBreakdown.${rowIndex}.amount`
+							}
+						/>
+					);
+				}
+
+				return <Cell format="money" value={row.amount} />;
+			},
 			name: "Amount",
 			style: { padding: 0 },
 		},
 		{
-			cell: (_, rowIndex) => (
-				<CellInput
-					control={control}
-					error={
-						rowIndex > 2
-							? errors?.participationBreakdown?.[rowIndex - 3]?.rate?.message
-							: errors?.fundingBreakdown?.[rowIndex]?.rate?.message
-					}
-					format="percentage"
-					name={
-						rowIndex > 2
-							? `participationBreakdown.${rowIndex - 3}.rate`
-							: `fundingBreakdown.${rowIndex}.rate`
-					}
-				/>
-			),
+			cell: (row, rowIndex) => {
+				if (row.investorId !== "servicing") {
+					return (
+						<CellInput
+							control={control}
+							error={
+								rowIndex > 1
+									? errors?.participationBreakdown?.[rowIndex - 2]?.rate
+											?.message
+									: errors?.fundingBreakdown?.[rowIndex]?.rate?.message
+							}
+							format="percentage"
+							name={
+								rowIndex > 1
+									? `participationBreakdown.${rowIndex - 2}.rate`
+									: `fundingBreakdown.${rowIndex}.rate`
+							}
+						/>
+					);
+				}
+				return <Cell format="percentage" value={row.rate} />;
+			},
 			name: "Rate",
-			style: { padding: 0 },
+			style: {
+				padding: 0,
+			},
 		},
 		{
 			cell: (row: FundingBreakdownType) => (
@@ -148,24 +173,59 @@ export const FundingBreakdown: FC<Props> = ({
 				/>
 			),
 			name: "Prorated",
-			style: { padding: 0 },
+			style: {
+				padding: 0,
+			},
 		},
 		{
 			cell: (row: FundingBreakdownType) => (
 				<Cell format="money" value={calculateRegular(row.amount, row.rate)} />
 			),
 			name: "Regular",
-			style: { padding: 0 },
+			style: {
+				padding: 0,
+			},
+		},
+		{
+			cell: (row, rowIndex) => {
+				if (row.investorId !== "servicing") {
+					return (
+						<CellInput
+							control={control}
+							error={
+								rowIndex > 1
+									? errors?.participationBreakdown?.[rowIndex - 2]
+											?.constructionHoldback?.message
+									: errors?.fundingBreakdown?.[rowIndex]?.constructionHoldback
+											?.message
+							}
+							format="money"
+							name={
+								rowIndex > 1
+									? `participationBreakdown.${
+											rowIndex - 2
+									  }.constructionHoldback`
+									: `fundingBreakdown.${rowIndex}.constructionHoldback`
+							}
+						/>
+					);
+				}
+				return <Cell format="money" value={row.constructionHoldback} />;
+			},
+			name: "Construction Holdback",
+			style: {
+				padding: 0,
+			},
 		},
 		{
 			cell: (_, rowIndex) => (
 				<>
-					{rowIndex > 2 && (
+					{rowIndex > 1 && (
 						<Button
 							className="bg-white px-0 py-2 mr-2"
 							icon={<Icon name="trashBin" color="#FF0033" width="24" />}
 							onClick={() => {
-								remove(rowIndex - 3);
+								remove(rowIndex - 2);
 							}}
 							type="button"
 						/>
@@ -174,16 +234,33 @@ export const FundingBreakdown: FC<Props> = ({
 			),
 			name: "",
 			right: true,
-			style: { padding: 0 },
+			style: {
+				padding: 0,
+			},
 			width: "48px",
 		},
 	];
 
-	function canAddParticipant() {
+	const canAddParticipant = () => {
 		const lender = fundingBreakdown[0]?.investorId === LENDERS[0]?.code;
 
 		return lender && participationBreakdown.length < 4;
-	}
+	};
+
+	useEffect(() => {
+		setValue("fundingBreakdown.1.constructionHoldback", constructionHoldback);
+	}, [constructionHoldback]);
+
+	useEffect(() => {
+		setValue("fundingBreakdown.1.amount", totalLoanAmount);
+	}, [totalLoanAmount]);
+
+	useEffect(() => {
+		setValue(
+			"fundingBreakdown.1.rate",
+			String(Number(interestRate) - Number(fundingBreakdown?.[0]?.rate))
+		);
+	}, [fundingBreakdown?.[0]?.rate, interestRate]);
 
 	return (
 		<>

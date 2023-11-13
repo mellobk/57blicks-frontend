@@ -22,6 +22,7 @@ const WrappedFundingBreakdown: React.FC<Props> = ({ values }) => {
 	const {
 		control,
 		formState: { errors },
+    setValue
 	} = useForm<Loan>({
 		defaultValues: values || defaultValues,
 		resolver: zodResolver(LoanSchema),
@@ -34,6 +35,7 @@ const WrappedFundingBreakdown: React.FC<Props> = ({ values }) => {
 			remove={mockRemoveParticipant}
 			setOpenLenderModal={mockSetOpenLenderModal}
 			setOpenParticipantModal={mockSetOpenParticipantModal}
+      setValue={setValue}
 		/>
 	);
 };
@@ -46,9 +48,8 @@ describe("FundingBreakdown", () => {
 
 	it("renders the table with initial data", () => {
 		render(<WrappedFundingBreakdown />);
-		expect(screen.getByText("DKC lending LLC")).toBeInTheDocument();
+		expect(screen.getByText("DKC Lending LLC")).toBeInTheDocument();
 		expect(screen.getByText("DKC Servicing Fee Income")).toBeInTheDocument();
-		expect(screen.getByText("Yield Spread")).toBeInTheDocument();
 	});
 
 	it('enables the "Add Participant" button when conditions are met', () => {
@@ -66,6 +67,7 @@ describe("FundingBreakdown", () => {
 					fundingBreakdown: [
 						{
 							amount: "",
+              constructionHoldback: "0",
 							investorId: LENDERS[1]?.code,
 							lenderName: LENDERS[1]?.name || "Other Lender",
 							prorated: "0",
@@ -105,6 +107,7 @@ describe("FundingBreakdown", () => {
 							rate: "1",
 							prorated: "0",
 							regular: "0",
+							constructionHoldback: "0",
 						},
 						{
 							lenderName: "Lender 2",
@@ -112,6 +115,7 @@ describe("FundingBreakdown", () => {
 							rate: "1",
 							prorated: "0",
 							regular: "0",
+              constructionHoldback: "0",
 						},
 					],
 					originationDate: "2022-01-01",
