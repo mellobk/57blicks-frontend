@@ -1,12 +1,14 @@
-import { type FC, useState } from "react";
+import { type FC } from "react";
 import type { UseFieldArrayAppend } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import InvestorsService from "@/api/investors";
-import { Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import { nameFormat } from "@/utils/formats";
+import { FormatInput } from "@/components/forms/FormatInput";
+import { Dropdown } from "@/components/forms/Dropdown";
 
 interface Props {
 	append: UseFieldArrayAppend<Loan, "participationBreakdown">;
@@ -14,27 +16,37 @@ interface Props {
 	setOpenModal: (openModal: boolean) => void;
 }
 
+interface Participant {
+	constructionHoldback?: string;
+	participant?: string;
+}
+
 export const AddParticipant: FC<Props> = ({
 	append,
 	openModal,
 	setOpenModal,
 }) => {
-	const [selectedParticipant, setSelectedParticipant] = useState<string>();
-
 	const investorsQuery = useQuery(
 		["investors-query"],
 		() => InvestorsService.getInvestors(),
 		{ enabled: openModal }
 	);
+	const { control, handleSubmit, reset } = useForm<Participant>();
 
-	const addParticipant = () => {
+	const [constructionHoldback, participant] = useWatch({
+		control,
+		name: ["constructionHoldback", "participant"],
+	});
+
+	const onSubmit = (data: Participant) => {
 		const participant = investorsQuery?.data?.find(
-			(participant) => participant.id === selectedParticipant
+			(participant) => participant.id === data.participant
 		);
 
 		if (participant) {
 			append({
 				amount: "",
+				constructionHoldback: data.constructionHoldback || "0",
 				investorId: participant.id,
 				lenderName: nameFormat(
 					`${participant.user?.firstName} ${participant.user?.lastName}`
@@ -43,7 +55,7 @@ export const AddParticipant: FC<Props> = ({
 				rate: "",
 				regular: "0",
 			});
-			setSelectedParticipant("");
+			reset();
 			setOpenModal(false);
 		}
 	};
@@ -56,26 +68,36 @@ export const AddParticipant: FC<Props> = ({
 			title="Select Participant"
 			visible={openModal}
 		>
-			<Select
-				data-testid="add-participant-select"
-				className="mt-6"
-				label="Participant"
-				onChange={(e) => {
-					setSelectedParticipant(e.target.value);
-				}}
-				options={investorsQuery?.data?.map(({ id, user }) => ({
-					code: id,
-					name: nameFormat(`${user?.firstName} ${user?.lastName}`),
-				}))}
-				placeholder="Select Participant"
-				required
-			/>
-			<Button
-				data-testid="add-participant-button"
-				buttonText="Add"
-				className="bg-primary-500 w-full mt-6 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
-				onClick={addParticipant}
-			/>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<Dropdown
+					data-testid="add-participant-select"
+					control={control}
+					className="mt-6"
+					label="Participant"
+					name="participant"
+					options={investorsQuery?.data?.map(({ id, user }) => ({
+						code: id,
+						name: nameFormat(`${user?.firstName} ${user?.lastName}`),
+					}))}
+					placeholder="Select Participant"
+					required
+				/>
+				<FormatInput
+					control={control}
+					format="money"
+					label="Construction Holdback"
+					name="constructionHoldback"
+					wrapperClassName="mt-6"
+					required
+				/>
+				<Button
+					data-testid="add-participant-button"
+					buttonText="Add"
+					className="bg-primary-500 w-full mt-6 px-8 py-[11px] font-inter font-semibold text-base text-white leading-[19px] tracking-tighter"
+					disabled={!participant || !constructionHoldback}
+					type="submit"
+				/>
+			</form>
 		</Modal>
 	);
 };

@@ -27,7 +27,7 @@ export const LEAD_SOURCES = [
 ];
 
 export const LENDERS = [
-	{ code: "dkc_lending_llc", name: "DKC lending LLC" },
+	{ code: "dkc_lending_llc", name: "DKC Lending LLC" },
 	{ code: "dkc_lending_fl", name: "DKC Lending FL" },
 	{ code: "dkc_lending_iv", name: "DKC Lending IV" },
 	{ code: "dkc_lending_cl", name: "DKC Lending CL" },
