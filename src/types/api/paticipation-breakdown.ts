@@ -1,5 +1,5 @@
-import { Investor } from "@/types/api/investor";
-import { Loan } from "@/types/api/loan.ts";
+import type { Investor } from "@/types/api/investor";
+import type { Loan } from "@/types/api/loan.ts";
 
 export interface ParticipationBreakdown {
 	id: string;

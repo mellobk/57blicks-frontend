@@ -1,4 +1,4 @@
-import { User } from "@/types/api/user";
+import type { User } from "@/types/api/user";
 
 export interface Borrower {
 	id: string;

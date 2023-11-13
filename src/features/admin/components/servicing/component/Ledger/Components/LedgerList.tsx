@@ -17,7 +17,7 @@ interface LedgerListProps {
 }
 
 const LedgerList: FC<LedgerListProps> = ({ loan }) => {
-  console.log(loan, "data")
+	console.log(loan, "data");
 
 	const [ledgers, setLedgers] = useState<Array<Ledgers>>([]);
 
@@ -31,10 +31,16 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 				if (data && data?.length > 0) {
 					const newData: Array<Ledgers> = [];
 					data.forEach((item: Ledgers) => {
+						console.log(
+							"🚀 ~ file: LedgerList.tsx:34 ~ data.forEach ~ item:",
+							item.month
+						);
+
 						const ledger: Ledgers = {
 							id: item.id,
 							ledgerDate:
 								item.ledgerDate && dateWithFormat(item.ledgerDate, "MMDDYYYY"),
+							month: item.month,
 							typeOfPayment: item.typeOfPayment,
 							typeOfPaymentDescription: item.typeOfPaymentDescription,
 							type: item.type,

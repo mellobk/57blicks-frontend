@@ -33,6 +33,7 @@ interface LedgerAddProps {
 		index: number
 	) => void;
 	handleSetDate: (field: string, value: Date, index: number) => void;
+	handleSetMonth: (field: string, value: Date, index: number) => void;
 	handleEdit: (
 		field: string,
 		value: string | number | boolean,
@@ -52,6 +53,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	loan,
 	handleSetValue,
 	handleSetDate,
+	handleSetMonth,
 	handleEdit,
 	register,
 	handleRemove,
@@ -153,6 +155,32 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						dataLedgers.credit > 0 && <Tag variant="danger" text="Credit" />
 					)}
 				</div>
+			</td>
+			<td style={{ paddingLeft: "20px", width: "150px" }}>
+				{dataLedgers?.editable ? (
+					<>
+						<DatePicker
+							placeholder="M, YYYY"
+							maxDate={new Date()}
+							minDate={moment(loan.originationDate).toDate()}
+							name={`ledgers.${index}.month`}
+							view="month"
+							dateFormat="M, yy"
+							value={
+								dataLedgers.month
+									? moment(dataLedgers.month).toDate()
+									: undefined
+							}
+							invalid={!!errors?.ledgers?.[index]?.month}
+							onChange={(date: Date): void => {
+								console.log("🚀 ~ file: LedgerAdd.tsx:174 ~ date:", date);
+								handleSetMonth(`month`, date, index);
+							}}
+						/>
+					</>
+				) : (
+					<>{dataLedgers && moment(dataLedgers.month).format("MMM, YYYY")}</>
+				)}
 			</td>
 			<td style={{ paddingLeft: "20px", width: "220px" }}>
 				{dataLedgers?.editable ? (

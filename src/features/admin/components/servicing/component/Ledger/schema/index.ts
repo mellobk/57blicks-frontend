@@ -9,6 +9,7 @@ export const validationSchema = z.object({
 		z.object({
 			id: z.string(),
 			ledgerDate: z.string(),
+			month: z.string(),
 			typeOfPayment: z.nativeEnum(LedgerTypeOfPayment),
 			typeOfPaymentDescription: z.string(),
 			type: z.nativeEnum(LedgerType),

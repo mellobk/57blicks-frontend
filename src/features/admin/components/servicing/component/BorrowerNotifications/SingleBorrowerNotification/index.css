@@ -1,0 +1,6 @@
+.notification ul .p-highlight {
+	background: #f3eee6 !important;
+	color: #c79e63 !important;
+	border: 1px solid #f3eee6 !important;
+	box-shadow: 0 0 0 0px #f3eee6 inset !important;
+}
