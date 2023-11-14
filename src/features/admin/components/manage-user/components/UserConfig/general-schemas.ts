@@ -1,4 +1,5 @@
 import * as z from "zod";
+
 import { errorMessages } from "@/utils/error-messages";
 
 export const userAdminEditSchema = z.object({
@@ -15,7 +16,7 @@ export const userAccountingEditSchema = z.object({
 	firstName: z.string().nonempty(errorMessages.required),
 	lastName: z.string().nonempty(errorMessages.required),
 	phoneNumber: z.string().nonempty(errorMessages.required),
-	company: z.string().nonempty(errorMessages.required),
+	companyName: z.string().nonempty(errorMessages.required),
 });
 
 export const userInvestorEditSchema = z.object({
@@ -27,7 +28,6 @@ export const userInvestorEditSchema = z.object({
 	ssnEin: z.string().nonempty(errorMessages.required),
 	entityName: z.string().nonempty(errorMessages.required),
 	zip: z.string().nonempty(errorMessages.required),
-	streetAddress: z.string().nonempty(errorMessages.required),
 	accountNumber: z.string().nonempty(errorMessages.required),
 	routingNumber: z.string().nonempty(errorMessages.required),
 	accountType: z.string().nonempty(errorMessages.required),

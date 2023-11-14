@@ -26,7 +26,7 @@ export type AddAccountingFields = {
 	mailingAddress?: string;
 	email?: string;
 	phoneNumber?: string;
-	company?: string;
+	companyName?: string;
 };
 
 export type AddInvestorFields = {

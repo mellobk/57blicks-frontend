@@ -41,7 +41,7 @@ export const EditAccounting: FC<EditAccountingProps> = ({
 			firstName: user.firstName,
 			lastName: user.lastName,
 			phoneNumber: user.phoneNumber,
-			company: user.company,
+			companyName: user.companyName,
 		},
 	});
 
@@ -78,7 +78,7 @@ export const EditAccounting: FC<EditAccountingProps> = ({
 			email: getValues("email") || "",
 			phoneNumber:
 				`+1` + removeCountryCode(unFormatPhone(getValues("phoneNumber") || "")),
-			company: getValues("company") || "",
+			companyName: getValues("companyName") || "",
 		});
 	};
 
@@ -167,8 +167,8 @@ export const EditAccounting: FC<EditAccountingProps> = ({
 						label="Company"
 						placeholder="Enter Company"
 						required
-						register={register("company")}
-						error={errors["company"] && errors["company"]?.message}
+						register={register("companyName")}
+						error={errors["companyName"] && errors["companyName"]?.message}
 					/>
 				</div>
 			</form>
