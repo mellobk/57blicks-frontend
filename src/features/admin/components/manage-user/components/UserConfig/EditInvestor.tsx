@@ -31,6 +31,7 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 	deleteUser,
 	enableUser,
 }) => {
+	console.log("🚀 ~ file: EditInvestor.tsx:34 ~ investor:", investor);
 	const {
 		register,
 		handleSubmit,
@@ -44,10 +45,10 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 			firstName: investor.user?.firstName,
 			lastName: investor.user?.lastName,
 			phoneNumber: investor.user?.phoneNumber,
-			entityName: "",
+			entityName: investor.user?.entityName,
 			ssnEin: investor.ssnEin,
 			zip: investor.zip,
-			streetAddress: investor.streetAddress,
+			streetAddress: "-",
 			accountNumber: investor.accountNumber,
 			routingNumber: investor.routingNumber,
 			accountType: investor.accountType,
@@ -55,8 +56,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 		},
 	});
 
-	const setErrorMessage = useStore((state) => state.setErrorMessage);
-	const clearErrorMessage = useStore((state) => state.clearErrorMessage);
 	const setSuccessMessage = useStore((state) => state.setSuccessMessage);
 	const clearSuccessMessage = useStore((state) => state.clearSuccessMessage);
 
@@ -70,12 +69,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 				setUser ? setUser(investor) : null;
 				setTimeout(() => {
 					clearSuccessMessage();
-				}, 500);
-			},
-			onError: (error: any) => {
-				setErrorMessage(`${error.response.data.message}`);
-				setTimeout(() => {
-					clearErrorMessage();
 				}, 500);
 			},
 		}
@@ -92,7 +85,7 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 			id: investor.id || "",
 			ssnEin: getValues("ssnEin") || "",
 			zip: getValues("zip") || "",
-			streetAddress: getValues("streetAddress") || "",
+			streetAddress: "-",
 			accountNumber: getValues("accountNumber") || "",
 			routingNumber: getValues("routingNumber") || "",
 			accountType: getValues("accountType") || "",
@@ -273,7 +266,7 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 										}
 										required
 										placeholder="Select Account Type"
-										value={""}
+										value={investor.accountType}
 										options={ACCOUNT_OPTIONS}
 									/>
 								</div>
