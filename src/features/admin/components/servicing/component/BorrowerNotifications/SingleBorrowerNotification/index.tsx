@@ -44,12 +44,20 @@ const SingleBorrowerNotification: FC<SingleBorrowerNotificationProps> = ({
 	);
 
 	const handleSendNotification = (): void => {
+    let  sms = true;
+    let email = true;
+    if(selectedNotification?.url === "custom-notification"){
+      sms = smsContent.length > 0;
+      email = emailContent.length > 0;
+    }
+
+
 		const data: BorrowerNotificationProps = {
 			loans: [
 				{
 					id: loan.id || "",
-					sms: smsContent?.length > 0,
-					email: emailContent?.length > 0,
+					sms,
+					email,
 					smsContent,
 					emailContent,
 				},
