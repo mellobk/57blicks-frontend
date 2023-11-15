@@ -139,12 +139,14 @@ export const FundingBreakdown: FC<Props> = ({
 		},
 		{
 			cell: (row, rowIndex) => {
-				if (row.investorId !== "servicing") {
+				if (rowIndex > 0) {
 					return (
 						<CellInput
 							control={control}
 							error={
-								rowIndex > 1
+								row.rate > interestRate || 0
+									? "ok"
+									: rowIndex > 1
 									? errors?.participationBreakdown?.[rowIndex - 2]?.rate
 											?.message
 									: errors?.fundingBreakdown?.[rowIndex]?.rate?.message
@@ -257,10 +259,10 @@ export const FundingBreakdown: FC<Props> = ({
 
 	useEffect(() => {
 		setValue(
-			"fundingBreakdown.1.rate",
-			String(Number(interestRate) - Number(fundingBreakdown?.[0]?.rate))
+			"fundingBreakdown.0.rate",
+			String(Number(interestRate) - Number(fundingBreakdown?.[1]?.rate))
 		);
-	}, [fundingBreakdown?.[0]?.rate, interestRate]);
+	}, [fundingBreakdown?.[1]?.rate, interestRate]);
 
 	return (
 		<>
