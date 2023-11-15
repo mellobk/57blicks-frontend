@@ -5,6 +5,10 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
+import {
+	calculateProrated,
+	calculateRegular,
+} from "@/utils/common-funtions.ts";
 
 interface Props {
 	control: Control<Loan>;
@@ -21,10 +25,16 @@ export const SelectLender: FC<Props> = ({
 }) => {
 	const [selectedLender, setSelectedLender] = useState<string>();
 
-	const fundingBreakdown = useWatch({
-		control,
-		name: "fundingBreakdown",
-	});
+	const [fundingBreakdown, interestRate, originationDate, totalLoanAmount] =
+		useWatch({
+			control,
+			name: [
+				"fundingBreakdown",
+				"interestRate",
+				"originationDate",
+				"totalLoanAmount",
+			],
+		});
 
 	const selectLender = () => {
 		const lender = LENDERS.find(
@@ -35,6 +45,7 @@ export const SelectLender: FC<Props> = ({
 			const newFundingBreakdown = [
 				{
 					amount: "",
+          constructionHoldback: "0",
 					investorId: lender.code,
 					lenderName: lender.name,
 					prorated: "0",
@@ -42,23 +53,19 @@ export const SelectLender: FC<Props> = ({
 					regular: "0",
 				},
 				{
-					amount: "",
+					amount: totalLoanAmount,
+          constructionHoldback: "0",
+          investorId: "servicing",
 					lenderName: "DKC Servicing Fee Income",
-					prorated: "0",
-					rate: "",
-					regular: "0",
+					prorated: calculateProrated(
+						totalLoanAmount,
+						interestRate,
+						originationDate
+					),
+					rate: interestRate,
+					regular: calculateRegular(totalLoanAmount, interestRate),
 				},
 			];
-
-			if (lender.code === LENDERS[0]?.code) {
-				newFundingBreakdown.push({
-					amount: "",
-					lenderName: "Yield Spread",
-					prorated: "0",
-					rate: "",
-					regular: "0",
-				});
-			}
 
 			setValue("fundingBreakdown", [...newFundingBreakdown]);
 			setValue("participationBreakdown", []);

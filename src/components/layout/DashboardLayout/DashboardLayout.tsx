@@ -392,7 +392,6 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 												);
 
 												if (parseData) {
-													console.log(parseData);
 													const data = JSON.parse(jsonString || "") as {
 														id: string;
 														ledgerId: string;
