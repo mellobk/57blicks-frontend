@@ -26,8 +26,10 @@ interface Props {
 	children?: ReactElement;
 	buttonText?: string;
 	checkedValue?: boolean;
+	archivedValue?: boolean;
 	handleSearchValue?: (value: string) => void;
 	handleCheckValue?: (value: any) => void;
+	setArchived?: () => void;
 	conditionalRowStyles?: any;
 	onClickButton?: () => void;
 	widthSearch?: string;
@@ -45,6 +47,8 @@ export const Table: FC<Props> = ({
 	checkedValue = true,
 	conditionalRowStyles,
 	onClickButton,
+	setArchived,
+	archivedValue,
 	widthSearch = "158px",
 	loading,
 	onRowClicked,
@@ -163,6 +167,21 @@ export const Table: FC<Props> = ({
 									}}
 								/>
 							)}
+
+							<Button
+								icon={
+									<Icon
+										name={`${archivedValue ? "openEye" : "closeEye"}`}
+										color={`${archivedValue ? "black" : "white"}`}
+										width="20"
+									/>
+								}
+								buttonText={`Archived`}
+								className={`${
+									archivedValue ? "bg-white text-black" : "bg-black-200"
+								}`}
+								onClick={setArchived}
+							/>
 							<BorrowerNotifications
 								single={false}
 								right="1px"

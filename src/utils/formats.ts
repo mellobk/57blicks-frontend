@@ -48,7 +48,7 @@ export const moneyFormat = (value: number, decimals = true) => {
 };
 
 export const nameFormat = (name: string) => {
-	return name.replace(/\b[a-z]/g, function (match) {
+	return name.replaceAll(/\b[a-z]/g, function (match) {
 		return match.toUpperCase();
 	});
 };
@@ -64,10 +64,19 @@ export const dateFormatFormat = (inputString: string | Date): string => {
 		const month = inputString.slice(0, 2);
 		const day = inputString.slice(2, 4);
 		const year = inputString.slice(4, 8);
+		console.log(month);
 		return `${month}-${day}-${year}`;
 	} catch {
 		return "Invalid date format";
 	}
+};
+
+export const formatDate = (dateString: string) => {
+	const date = new Date(dateString);
+	const day = date.getDate().toString().padStart(2, "0");
+	const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed
+	const year = date.getFullYear();
+	return `${month}-${day}-${year}`;
 };
 
 export const dateFormatOptions = (date: Date, dateFormat: string): string => {

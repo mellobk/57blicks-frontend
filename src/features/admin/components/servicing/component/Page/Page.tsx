@@ -1,20 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { BreadCrumb } from "@/components/ui/BreadCrumb/BreadCrumb";
 import { Tabs } from "@/components/ui/Tabs/Tabs";
-import type {
-	DkcLenders,
-	DkcServicing,
-	FundingBreakdown,
-} from "../../types/api";
+import type { DkcLenders, FundingBreakdown } from "../../types/api";
 import { servicingTabs } from "../../utils/tabs";
 import { Table } from "./Table/Table";
 import { Toggle } from "@/components/ui/Toggle";
 import { ShowModal } from "@/features/admin/components/servicing/component/Page/ShowModal/ShowModal";
-import { moneyFormat } from "@/utils/formats";
+import { formatDate, moneyFormat } from "@/utils/formats";
 import { validateDate } from "@/utils/common-funtions";
 import LendersService from "@/api/lenders.ts";
 import type { Lender } from "@/types/api/lender";
+import LoansService from "@/api/loans";
+import { LoanStatusType } from "@/types/api/notifications";
 
 interface Props {
 	actualTab: string;
@@ -24,17 +25,45 @@ interface Props {
 export const Page: FC<Props> = ({ actualTab, id }) => {
 	const [modalData, setModalData] = useState<FundingBreakdown | null>(null);
 	const [searchValue, setSearchValue] = useState<string>("");
+	const [archived, setArchived] = useState<boolean>(false);
 	const [lenders, setLenders] = useState<Array<Lender>>([]);
 	const [tableData, setTableData] = useState<Array<DkcLenders>>([]);
 
 	const findDkcLender = () => {
-		const findLender = lenders?.find((data) => data.name === (id || actualTab));
+		const findLender = lenders?.find(
+			(data) =>
+				data.name.toLocaleLowerCase() === (actualTab || id)?.toLowerCase()
+		);
 
 		return findLender?.id || "";
 	};
 
+	const updateLoanQuery = useMutation(
+		async (body: { id: string; taxesPaid?: boolean; status?: string }) => {
+			const dataTaxes = {
+				taxesPaid: body.taxesPaid || false,
+			};
+
+			const dataStatus = {
+				status: body.status || "",
+			};
+			return LoansService.updateLoan(
+				body.id || "",
+				body.status ? dataStatus : dataTaxes
+			);
+		}
+	);
+
+	/* 	const getLenderQuery = useQuery(
+		["lender-query-id"],
+		() => {
+			return LendersService.getLenderById(findDkcLender(), searchValue);
+		},
+		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
+	); */
+
 	const getDkcLenderQuery = useMutation(async () => {
-		return LendersService.getLenderById(findDkcLender(), searchValue);
+		return LendersService.getLenderById(findDkcLender(), searchValue, archived);
 	});
 
 	const dkcLendersQuery = useQuery(
@@ -45,19 +74,41 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{ enabled: true }
 	);
 
-	/* 	const dkcLenderQuery = useQuery(
-		["dkc-lender-query"],
-		() => DkcLendersService.getLenderById(findDkcLender(), searchValue),
-		{ enabled: true}
-	); */
-
 	const handleRefreshData = (): void => {
 		getDkcLenderQuery.mutate();
 	};
 
+	const handleTax = (id: string, data: boolean): void => {
+		updateLoanQuery.mutate({
+			id: id,
+			taxesPaid: data,
+		});
+	};
+
+	const handleDefault = (id: string, data: string): void => {
+		updateLoanQuery.mutate({
+			id: id,
+			status: data,
+		});
+	};
+
+	/* 	useEffect(() => {
+		if (getLenderQuery.data) {
+			setTableData(getLenderQuery?.data?.fundingBreakdowns);
+			getLenderQuery.remove();
+		}
+	}, [updateLoanQuery]); */
+
+	useEffect(() => {
+		if (updateLoanQuery.isSuccess) {
+			getDkcLenderQuery.mutate();
+			updateLoanQuery.reset();
+		}
+	}, [updateLoanQuery]);
+
 	useEffect(() => {
 		getDkcLenderQuery.mutate();
-	}, [searchValue, lenders]);
+	}, [searchValue, lenders, archived]);
 
 	useEffect(() => {
 		if (getDkcLenderQuery.isSuccess) {
@@ -71,6 +122,27 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			setLenders(dkcLendersQuery?.data || []);
 		}
 	}, [dkcLendersQuery.isFetching]);
+
+	const conditionalRowStyles = [
+		{
+			when: (row: FundingBreakdown) => row?.loan.status === LoanStatusType.PAID,
+			style: {
+				opacity: 0.4,
+			},
+		},
+		{
+			when: (row: FundingBreakdown) =>
+				row?.loan.status === LoanStatusType.DEFAULT,
+			style: {
+				backgroundColor: "#f7ece0",
+				color: "#de6903",
+				border: "#de6903",
+				borderTopStyle: "solid",
+				borderBottomStyle: "solid",
+				borderWidth: "thin",
+			},
+		},
+	];
 
 	const columns = [
 		{
@@ -111,16 +183,16 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			selector: (row: FundingBreakdown) =>
 				moneyFormat(Number.parseInt(row?.regular)),
 			omit: false,
-			maxWidth: "200px",
-			minWidth: "200px",
+			maxWidth: "150px",
+			minWidth: "150px",
 		},
 		{
 			name: "Origin Date",
 			selector: (row: FundingBreakdown) =>
-				row?.loan?.originationDate.toString(),
+				formatDate(row?.loan?.originationDate.toString()),
 			omit: false,
-			maxWidth: "200px",
-			minWidth: "200px",
+			maxWidth: "130px",
+			minWidth: "130px",
 			conditionalCellStyles: [
 				{
 					when: (row: FundingBreakdown) =>
@@ -134,13 +206,15 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: FundingBreakdown) => row?.loan?.maturityDate.toString(),
+			selector: (row: FundingBreakdown) =>
+				formatDate(row?.loan?.maturityDate.toString()),
 			omit: false,
-			maxWidth: "200px",
-			minWidth: "200px",
+			maxWidth: "130px",
+			minWidth: "130px",
 			conditionalCellStyles: [
 				{
-					when: (row: DkcServicing) => validateDate(row?.maturityDate || ""),
+					when: (row: FundingBreakdown) =>
+						validateDate(row?.loan?.maturityDate.toString() || ""),
 					style: {
 						background: "#fbf4f7",
 						color: "#fe3d64",
@@ -151,10 +225,12 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Insurance Expiration Date",
 			selector: (row: FundingBreakdown) =>
-				row?.loan.collaterals[0]?.insuranceExpirationDate.toString() || "",
+				formatDate(
+					row?.loan.collaterals[0]?.insuranceExpirationDate.toString() || ""
+				),
 			omit: false,
-			maxWidth: "200px",
-			minWidth: "200px",
+			maxWidth: "130px",
+			minWidth: "130px",
 			conditionalCellStyles: [
 				{
 					when: (row: FundingBreakdown) =>
@@ -171,10 +247,13 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Taxed Paid",
 			maxWidth: "50px",
-			selector: (row: DkcServicing) => (
+			selector: (row: FundingBreakdown) => (
 				<div key={row.id}>
 					<Toggle
-						checked={false}
+						checked={row.loan.taxesPaid}
+						onChecked={(data): void => {
+							handleTax(row.loan.id || "", data.target.checked);
+						}}
 						checkedClassName="bg-green-500"
 						label="Paid"
 						labelClassName="text-black text-[13px]"
@@ -183,17 +262,50 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			),
 			omit: false,
 		},
+
+		{
+			name: "In Default",
+			maxWidth: "50px",
+			selector: (row: FundingBreakdown) => (
+				<div key={row.id} className="flex justify-center items-center w-full">
+					<Toggle
+						checked={row.loan.status === LoanStatusType.DEFAULT}
+						onChecked={(): void => {
+							if (row.loan.status === LoanStatusType.DEFAULT)
+								handleDefault(row.loan.id || "", LoanStatusType.APPROVED);
+						}}
+						checkedClassName="bg-orange-500"
+						label=""
+						labelClassName="text-black text-[13px]"
+					/>
+				</div>
+			),
+			omit: false,
+		},
+
+		{
+			name: "Default Type",
+			maxWidth: "",
+			selector: (row: FundingBreakdown) => (
+				<div key={row.loan.id}>{row.loan.defaultType}</div>
+			),
+			omit: false,
+		},
 	];
 
 	return (
 		<div className="flex flex-col items-center  gap-3 h-full w-full rounded-3xl">
 			<Table
+				setArchived={(): void => {
+					setArchived(!archived);
+				}}
+				archivedValue={archived}
 				handleSearchValue={setSearchValue}
 				columns={columns}
 				data={tableData}
-				loading={getDkcLenderQuery?.isLoading}
 				widthSearch="60px"
 				onRowClicked={setModalData}
+				conditionalRowStyles={conditionalRowStyles}
 			>
 				<>
 					<div className="relative w-[115px]">

@@ -20,6 +20,7 @@ export interface Loan {
 	loanConsultant: string;
 	leadSource: string;
 	borrower?: Borrower;
+	taxedPaid?: boolean;
 	collaterals: Array<Collateral>;
 	ltv: string;
 	fundingBreakdowns: Array<FundingBreakdown>;

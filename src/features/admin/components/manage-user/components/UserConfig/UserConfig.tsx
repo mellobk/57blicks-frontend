@@ -127,7 +127,8 @@ const UserConfig: FC<UserConfigProps> = ({
 							<Tabs
 								tabs={[
 									userTabsData.activity,
-									userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN
+									userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN &&
+									type === "admin"
 										? userTabsData.permission
 										: userTabsData.empty,
 									(findPermission(

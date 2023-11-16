@@ -57,7 +57,7 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 			PermissionType.VIEW_INVESTORS
 		);
 
-		if (!find) {
+		if (!find && !emptyObject(userLoggedInfo)) {
 			void navigate({ to: `/manage-users/accounting` });
 		}
 	}, [userLoggedInfo]);

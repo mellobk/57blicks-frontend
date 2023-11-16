@@ -40,18 +40,6 @@ export const AdminTable: FC<SuccessProps> = () => {
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 
 	useEffect(() => {
-		const find = findPermission(
-			userLoggedInfo?.role,
-			userLoggedInfo?.permissionGroup?.permissions || [],
-			PermissionType.VIEW_ADMINS
-		);
-
-		if (!find) {
-			void navigate({ to: `/manage-users/investors` });
-		}
-	}, [userLoggedInfo]);
-
-	useEffect(() => {
 		if (!emptyObject(userInfo)) {
 			setSelectedUser(userInfo);
 		}
@@ -184,6 +172,19 @@ export const AdminTable: FC<SuccessProps> = () => {
 			omit: false,
 		},
 	];
+
+	useEffect(() => {
+		const find = findPermission(
+			userLoggedInfo?.role,
+			userLoggedInfo?.permissionGroup?.permissions || [],
+			PermissionType.VIEW_ADMINS
+		);
+
+		if (!find && !emptyObject(userLoggedInfo)) {
+			void navigate({ to: `/manage-users/investors` });
+		}
+		void adminQuery.refetch();
+	}, [userLoggedInfo]);
 
 	return (
 		<>
