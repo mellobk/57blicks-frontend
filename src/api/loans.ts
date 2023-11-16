@@ -1,5 +1,5 @@
-import { Loan } from "@/types/api/loan";
-import { Loan as LoanField } from "@/types/fields/loan";
+import type { Loan } from "@/types/api/loan";
+import type { Loan as LoanField } from "@/types/fields/loan";
 import { authApiClient } from "@/utils/api-client";
 
 const createLoan = async (body: LoanField): Promise<Loan> => {

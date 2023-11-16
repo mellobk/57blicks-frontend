@@ -14,6 +14,7 @@ export type Loan = {
 	ltv?: string;
 	maturityDate?: string;
 	originationDate?: string;
+	taxesPaid?: boolean;
 	participationBreakdown?: Array<FundingBreakdown>;
 	prepaymentPenalty?: string;
 	totalLoanAmount?: string;

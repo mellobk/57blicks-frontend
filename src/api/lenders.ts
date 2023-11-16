@@ -3,17 +3,19 @@ import type { Pagination } from "@/types/api/pagination";
 import { authApiClient } from "@/utils/api-client";
 
 const getLenders = async (): Promise<Array<Lender>> => {
-	const response = await authApiClient.get<Pagination<Array<Lender>>>("/lenders");
+	const response =
+		await authApiClient.get<Pagination<Array<Lender>>>("/lenders");
 
 	return response.data.data;
 };
 
 const getLenderById = async (
 	id: string,
-	searchValue: string
+	searchValue: string,
+	archived?: boolean
 ): Promise<Lender> => {
 	const response = await authApiClient.get<Lender>(
-		`/lenders/${id}?searchData=${searchValue && `&searchData=${searchValue}`}`
+		`/lenders/${id}?searchData=${searchValue}&archived=${archived}`
 	);
 
 	return response.data;
