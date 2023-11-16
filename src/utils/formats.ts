@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import moment from "moment";
 
@@ -48,7 +50,7 @@ export const moneyFormat = (value: number, decimals = true) => {
 };
 
 export const nameFormat = (name: string) => {
-	return name.replaceAll(/\b[a-z]/g, function (match) {
+	return name.replace(/\b[a-z]/g, function (match) {
 		return match.toUpperCase();
 	});
 };

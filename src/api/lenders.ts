@@ -12,7 +12,7 @@ const getLenders = async (): Promise<Array<Lender>> => {
 const getLenderById = async (
 	id: string,
 	searchValue: string,
-	archived: boolean
+	archived?: boolean
 ): Promise<Lender> => {
 	const response = await authApiClient.get<Lender>(
 		`/lenders/${id}?searchData=${searchValue}&archived=${archived}`
