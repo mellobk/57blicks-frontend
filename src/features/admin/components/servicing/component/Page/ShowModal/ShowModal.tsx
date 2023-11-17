@@ -13,6 +13,7 @@ import userStore from "@/stores/user-store";
 import { PermissionType } from "@/types/api/permissions-type";
 import { findPermission } from "@/utils/common-funtions";
 import BorrowerNotifications from "../../BorrowerNotifications";
+import Payable from "../../Payable";
 
 interface Props {
 	openModal?: boolean;
@@ -143,7 +144,7 @@ export const ShowModal: FC<Props> = ({
 				<LedgerList loan={data.loan} />
 			)}
 			{actualTabData?.label === "Payable" && data && (
-				<LedgerList loan={data.loan} />
+				<Payable loan={data.loan} />
 			)}
 			{actualTabData?.label === "Funding" && data && (
 				<FundingBreakdown data={loanQuery.data} />

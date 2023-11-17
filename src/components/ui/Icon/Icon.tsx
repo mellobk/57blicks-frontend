@@ -1,5 +1,7 @@
 import ArrowDown from "@/assets/icons/arrow-down";
 import ArrowLeft from "@/assets/icons/arrow-left";
+import ArrowOrder from "@/assets/icons/arrow-order";
+import ArrowPlay from "@/assets/icons/arrow-play";
 import ArrowRight from "@/assets/icons/arrow-right";
 import Bank from "@/assets/icons/bank";
 import Cellphone from "@/assets/icons/cellphone";
@@ -54,6 +56,8 @@ export const ICONS = {
 	arrowDown: ArrowDown,
 	arrowLeft: ArrowLeft,
 	arrowRight: ArrowRight,
+	arrowPlay: ArrowPlay,
+	arrowOrder: ArrowOrder,
 	bank: Bank,
 	cellphone: Cellphone,
 	chart: Chart,
