@@ -60,3 +60,11 @@ export const borrowerNotificationsApi = (parameter: ApiParameters): string => {
 export const borrowersApi = (parameter: ApiParameters): string => {
 	return createApiUrl("borrowers", parameter);
 };
+
+export const payablesApi = (parameter: ApiParameters): string => {
+	return createApiUrl("payables", parameter);
+};
+
+export const payablesDetailApi = (parameter: ApiParameters): string => {
+	return createApiUrl("payable-details", parameter);
+};

@@ -26,7 +26,15 @@ const BorrowerNotifications: FC<SendCommunicationsProps> = ({
 	return (
 		<div>
 			<div
-				className={`${className} w-8 h-8  bg-green-800 rounded-full mr-4  align-middle  pt-[8px] pl-[12px] cursor-pointer z-10`}
+				className={`${className}
+            w-8 h-8
+            ${single ? "bg-green-800" : "bg-green-1000"}
+            rounded-full mr-4  align-middle
+            pt-[8.5px] pl-[12px] cursor-pointer
+            z-10
+            ${single ? "hover:bg-green-600" : "hover:bg-green-950"}
+            hover:shadow-lg
+            `}
 				style={{
 					right,
 					top,
