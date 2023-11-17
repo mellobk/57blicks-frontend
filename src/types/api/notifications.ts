@@ -7,7 +7,7 @@ export interface Notification {
 	content: string;
 	timestamp: Date;
 	redirectPath: string;
-  additionalData?: string;
+	additionalData?: string;
 	priority: string;
 	type: string;
 	userFullName: string;
@@ -48,6 +48,7 @@ export enum LoanStatusType {
 	APPROVED = "APPROVED",
 	REJECTED = "REJECTED",
 	PAID = "PAID",
+	DEFAULT = "DEFAULT",
 }
 
 export enum ApprovalLedgerStateType {

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import moment from "moment";
 
@@ -64,10 +66,19 @@ export const dateFormatFormat = (inputString: string | Date): string => {
 		const month = inputString.slice(0, 2);
 		const day = inputString.slice(2, 4);
 		const year = inputString.slice(4, 8);
+		console.log(month);
 		return `${month}-${day}-${year}`;
 	} catch {
 		return "Invalid date format";
 	}
+};
+
+export const formatDate = (dateString: string) => {
+	const date = new Date(dateString);
+	const day = date.getDate().toString().padStart(2, "0");
+	const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed
+	const year = date.getFullYear();
+	return `${month}-${day}-${year}`;
 };
 
 export const dateFormatOptions = (date: Date, dateFormat: string): string => {

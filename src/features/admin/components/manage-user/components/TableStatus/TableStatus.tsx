@@ -18,7 +18,7 @@ export const TableStatus: FC<TableStatusProps> = ({ status }) => {
 			className: "bg-green-800 text-green-700",
 		},
 		inactive: {
-			className: "bg-red-700 text-red-800",
+			className: "bg-red-700 text-red-500",
 		},
 	};
 

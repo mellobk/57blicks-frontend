@@ -108,6 +108,7 @@ export default {
 				},
 				orange: {
 					500: "#F48218",
+					600: "#f7ece0",
 					DEFAULT: "#F48218",
 				},
 				yellow: {

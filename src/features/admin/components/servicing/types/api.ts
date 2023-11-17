@@ -81,11 +81,13 @@ export interface Loan {
 	amountDrawn: string;
 	prepaymentPenalty: string;
 	status: string;
+	taxesPaid: boolean;
 	loanConsultant: string;
 	leadSource: string;
 	borrower?: Borrower;
 	collaterals: Array<Collateral>;
 	ltv: string;
+	defaultType: string;
 }
 
 export interface FundingBreakdown {
