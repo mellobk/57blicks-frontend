@@ -40,20 +40,10 @@ const PayableDetailsRows: FC<PayableDetailsRowsProps> = ({
 				</div>
 				<div className="w-[5%] cursor-pointer"></div>
 				<div className="w-[10%] cursor-pointer">
-					<Chip variant={"gray"} content={status} />
-				</div>
-				<div className="pb-1 w-[10%]   relative">
-					<div className="absolute top-0 right-0 ">
-						{status === PayableStatus.PENDING && (
-							<Chip
-								content={"Approve"}
-								variant={"success"}
-								icon="ok"
-								iconPosition="right"
-								className="cursor-pointer hover:shadow-md right-0 top-0"
-							/>
-						)}
-					</div>
+					<Chip
+						variant={payable.status === PayableStatus.PAID ? "success" : "gray"}
+						content={payable.status}
+					/>
 				</div>
 			</div>
 		</>

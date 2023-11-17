@@ -1,15 +1,24 @@
 import { authApiClient } from "../../../../../utils/api-client";
+import type {
+	Payable,
+	PayableDetail,
+	PayableStatus,
+} from "../component/Payable/types";
 import {
 	type ApiParameters,
 	payablesApi,
 	payablesDetailApi,
 } from "./backend-end-points";
 
-import type { Payable, PayableDetail } from "../component/Payable/types";
-import type { AxiosResponse } from "axios";
-
 export interface PayableApiProps {
 	url: string;
+}
+
+export interface UpdatePayableApiProps {
+	payables: Array<{
+		id: string;
+		status: PayableStatus;
+	}>;
 }
 
 const getPayables = async (
@@ -47,9 +56,27 @@ const getPayablesDetails = async (
 	}
 };
 
+const updatePayables = async (
+	parameterData: UpdatePayableApiProps
+): Promise<boolean> => {
+	try {
+		await authApiClient.post(
+			payablesApi({
+				link: "approve",
+			}),
+			parameterData
+		);
+		return true;
+	} catch {
+		/* empty */
+	}
+	return false;
+};
+
 const ManagePayablesService = {
 	getPayables,
 	getPayablesDetails,
+	updatePayables,
 };
 
 export default ManagePayablesService;
