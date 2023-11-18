@@ -15,7 +15,7 @@ interface PayableProps {
 const Payable: FC<PayableProps> = ({ loan }) => {
 	const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
 
-	const { data, isLoading, refetch } = useQuery(
+	const { data, isLoading } = useQuery(
 		["payables-list-query"],
 		() =>
 			ManagePayablesService.getPayables({
