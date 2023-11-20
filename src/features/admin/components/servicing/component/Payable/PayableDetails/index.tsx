@@ -5,7 +5,6 @@ import type { Payable } from "../types";
 import PayableDetailsFooter from "./PayableDetailsFooter";
 import PayableDetailsHeader from "./PayableDetailsHeader";
 import PayableDetailsRows from "./PayableDetailsRows";
-import { payableDetails } from "../mock/data-investor";
 import { useQuery } from "@tanstack/react-query";
 
 interface PayableDetailsProps {
