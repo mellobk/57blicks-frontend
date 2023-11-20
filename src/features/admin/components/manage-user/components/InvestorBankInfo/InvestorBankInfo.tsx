@@ -26,7 +26,6 @@ export const InvestorBankInfo: FC<InvestorBankInfoProps> = ({
 	handleSuccess,
 	loading,
 }) => {
-	console.log(data?.accountType, "bank data");
 	const { register, handleSubmit, watch, setValue } = useForm<FieldValues>();
 	const [accountData, setAccountData] = useState<string>(
 		data?.accountType || ""

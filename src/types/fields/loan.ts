@@ -1,8 +1,10 @@
-import { Borrower } from "@/types/fields/borrower";
-import { Collateral } from "@/types/fields/collateral";
-import { FundingBreakdown } from "@/types/fields/funding-breakdown";
+import type { Borrower } from "@/types/fields/borrower";
+import type { Collateral } from "@/types/fields/collateral";
+import type { FundingBreakdown } from "@/types/fields/funding-breakdown";
 
 export type Loan = {
+	id?: string;
+	name?: string;
 	amountDrawn?: string;
 	borrower?: Borrower;
 	collaterals?: Array<Collateral>;

@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import type { FieldValues } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,12 +9,13 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/forms/Input";
 import { AddAdminSchema } from "@/features/admin/components/manage-user/schemas/AddAdminSchemas";
 import { addAdminFields } from "../../utils/input-fields";
-import { type FC, useEffect } from "react";
+import { type FC, useEffect, useState } from "react";
 import { MaskInput } from "@/components/forms/MaskInput";
-import { useMutation } from "@tanstack/react-query";
-import type { User } from "../../types/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import type { PermissionGroup, User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
 import { unFormatPhone } from "@/utils/common-funtions";
+import { Select } from "@/components/forms/Select";
 
 interface AddAdminProps {
 	handleSuccess?: () => void;
@@ -25,15 +30,50 @@ export const AddAdmin: FC<AddAdminProps> = ({ handleSuccess }) => {
 		resolver: zodResolver(AddAdminSchema),
 	});
 
+	const [arrayRolesData, setArrayRolesData] = useState<
+		Array<{ name: string; code: string }>
+	>([]);
+
+	const [groupPermission, setGroupPermission] = useState<string>("");
+	const [permissionGroupData, setPermissionGroupData] =
+		useState<Array<PermissionGroup>>();
+
+	const permissionGroup = useQuery(
+		["all-permission-group-query"],
+		() => {
+			return ManageUsersService.getAllPermissionGroup();
+		},
+		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
+	);
+
+	useEffect(() => {
+		if (arrayRolesData?.length === 0) {
+			const permissionGroupData: PermissionGroup | any =
+				permissionGroup?.data || [];
+
+			setPermissionGroupData(permissionGroupData);
+			const permissionsOption = permissionGroupData.map(
+				(value: PermissionGroup) => {
+					return { name: value.name || "", code: value.name || "" };
+				}
+			);
+			setArrayRolesData(permissionsOption);
+		}
+	}, [permissionGroup.isFetching]);
 	const createAdminMutation = useMutation((data: User) => {
 		return ManageUsersService.createNewAdmin(data);
 	});
 
 	const onSubmit: any = (data: User): void => {
+		const permissionData = permissionGroupData?.find(
+			(data) => data.name === groupPermission
+		);
+
 		const phoneNumber = unFormatPhone(data?.phoneNumber || "");
 
 		const formatData = {
 			...data,
+			permissionGroup: permissionData?.id,
 			[addAdminFields?.phoneNumber]: `+1${phoneNumber}`,
 			[addAdminFields?.entityName || ""]: ``,
 			[addAdminFields?.companyName || ""]: ``,
@@ -89,6 +129,18 @@ export const AddAdmin: FC<AddAdminProps> = ({ handleSuccess }) => {
 										/>
 									</div>
 								</div>
+
+								<Select
+									key={"selectPermission"}
+									options={arrayRolesData}
+									label="Permission"
+									placeholder="select a permission"
+									value={groupPermission}
+									register={register("permissionAdminSelect")}
+									onChange={(data) => {
+										setGroupPermission(data.value);
+									}}
+								/>
 
 								<Input
 									label="Mailing Address"

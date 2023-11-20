@@ -27,20 +27,27 @@ export const LoanCollateralCard: FC<LoginTitleProps> = ({
 				text={data?.insuranceExpirationDate.toString()}
 				background
 			/>
+			<div>
+				<a href={data?.taxUrl} target="_blank" rel="noopener noreferrer">
+					<LoanLinkCard
+						title="Tax URL"
+						text={data?.taxUrl}
+						background="#f4f2ec"
+						colorIcon="#cda874"
+					/>
+				</a>
+			</div>
 
-			<LoanLinkCard
-				title="Tax URL"
-				text={data?.taxUrl}
-				background="#f4f2ec"
-				colorIcon="#cda874"
-			/>
-
-			<LoanLinkCard
-				title="Collateral Link (Google Drive)"
-				text={data?.link}
-				background="#dcefff"
-				colorIcon="#0085ff"
-			/>
+			<div>
+				<a href={data?.taxUrl} target="_blank" rel="noopener noreferrer">
+					<LoanLinkCard
+						title="Collateral Link (Google Drive)"
+						text={data?.link}
+						background="#dcefff"
+						colorIcon="#0085ff"
+					/>
+				</a>
+			</div>
 
 			<LoanCard title="Asset Class" text={data?.assetType} />
 		</div>

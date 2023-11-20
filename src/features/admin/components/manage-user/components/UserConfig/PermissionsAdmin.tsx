@@ -184,16 +184,20 @@ export const PermissionsAdmin: FC<PermissionsAdmin> = ({
 							>
 								<div className="flex w-[100%] gap-5">
 									<div className="w-[20%]">
-										<Select
-											key={"selectPermission"}
-											options={arrayRolesData}
-											label=""
-											value={groupPermission}
-											register={register("permissionAdminSelect")}
-											onChange={(data) => {
-												getPermissionData(data.value);
-											}}
-										/>
+										{permissionGroup.isLoading ? (
+											<Icon name="loading" width="30" />
+										) : (
+											<Select
+												key={"selectPermission"}
+												options={arrayRolesData}
+												label=""
+												value={groupPermission}
+												register={register("permissionAdminSelect")}
+												onChange={(data) => {
+													getPermissionData(data.value);
+												}}
+											/>
+										)}
 									</div>
 								</div>
 								<Button
