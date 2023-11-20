@@ -15,7 +15,7 @@ const PayableDetailsRows: FC<PayableDetailsRowsProps> = ({
 	payableDetail,
 	payable,
 }) => {
-	const { type, typeOfPayment, debit, credit, status } = payableDetail;
+	const { type, typeOfPayment, debit, credit } = payableDetail;
 	return (
 		<>
 			<div

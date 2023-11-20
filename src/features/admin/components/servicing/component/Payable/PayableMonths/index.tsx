@@ -24,7 +24,7 @@ const PayableMonths: FC<PayableMonthsProps> = ({ payable }) => {
 			return ManagePayablesService.updatePayables(data);
 		},
 		{
-			onSuccess: (data) => {
+			onSuccess: () => {
 				void refetch();
 			},
 		}
