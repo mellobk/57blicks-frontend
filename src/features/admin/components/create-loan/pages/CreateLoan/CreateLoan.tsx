@@ -177,7 +177,7 @@ export const CreateLoan: FC = () => {
 					remove={removeParticipant}
 					setOpenLenderModal={setOpenLenderModal}
 					setOpenParticipantModal={setOpenParticipantModal}
-          setValue={setValue}
+					setValue={setValue}
 				/>
 			</form>
 

@@ -3,13 +3,13 @@ import { Opportunities } from "@/features/investor/components/opportunities/page
 import { Portfolio } from "@/features/investor/components/portfolio/pages/Portfolio/Portfolio";
 import { InvestorRoute } from "@/routes/routes";
 import { Support } from "@/features/admin/pages/Support/Support";
-import { Reporting } from "@/features/admin/pages/Reporting/Reporting";
 import { Profile } from "@/features/admin/components/profile/pages/Profile/Profile";
+import { Reports } from "@/features/admin/components/reports/pages/Reports";
 
 export const InvestorRoutes = [
 	{
 		path: "/investors/reporting",
-		page: Reporting,
+		page: Reports,
 		layout: InvestorLayout,
 		name: "Reporting",
 	},
@@ -37,8 +37,9 @@ const profileRoutes = [
 	{
 		path: "/investors/Profile",
 		page: Profile,
+		routeComponent: null,
 		layout: InvestorLayout,
-		name: "Profile",
+		name: "Manage Users",
 	},
 ];
 
