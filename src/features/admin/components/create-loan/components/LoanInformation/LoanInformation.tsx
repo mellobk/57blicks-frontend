@@ -17,6 +17,8 @@ import {
 	LEAD_SOURCES,
 	LOAN_TYPES,
 } from "@/features/admin/components/create-loan/utils/selects";
+import moment from "moment";
+import { inputClassName } from "@/utils/class-names";
 
 interface Props {
 	control: Control<Loan>;
@@ -91,7 +93,7 @@ export const LoanInformation: FC<Props> = ({
 			</div>
 			<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 				<MaskInput
-          data-testid="loan-information-origin-date"
+					data-testid="loan-information-origin-date"
 					error={errors?.originationDate?.message}
 					label="Origination Date"
 					mask="99-99-9999"
@@ -99,18 +101,48 @@ export const LoanInformation: FC<Props> = ({
 					register={register("originationDate")}
 					wrapperClassName="mt-6"
 					required
+					datePickerProps={{
+						placeholder: "MM-DD-YYYY",
+						// maxDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+						// minDate: new Date(),
+						name: "originationDate",
+						className:"[&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
+						invalid: !!errors?.originationDate,
+						wrapperClassName: "mt-6" + inputClassName(errors?.originationDate?.message),
+						onChange: (date: Date): void => {
+						setValue("originationDate", moment(date).format("MMDDYYYY"), {
+							shouldValidate: true,
+							shouldDirty: true,
+						});
+						},
+					}}
 				/>
-				<MaskInput
-          data-testid="loan-information-maturity-date"
-					error={errors?.maturityDate?.message}
-					label="Maturity Date"
-					mask="99-99-9999"
-					placeholder="MM-DD-YYYY"
-					register={register("maturityDate")}
-					wrapperClassName="mt-6"
-					required
-				/>
-			</div>
+                <MaskInput
+                    data-testid="loan-information-maturity-date"
+                    error={errors?.maturityDate?.message}
+                    label="Maturity Date"
+                    mask="99-99-9999"
+                    placeholder="MM-DD-YYYY"
+                    register={register("maturityDate")}
+                    wrapperClassName="mt-6"
+                    required
+					datePickerProps={{
+						placeholder: "MM-DD-YYYY",
+						// maxDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+						// minDate: new Date(),
+						name: "originationDate",
+						className:"[&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
+						invalid: !!errors?.originationDate,
+						wrapperClassName: "mt-6" + inputClassName(errors?.originationDate?.message),
+						onChange: (date: Date): void => {
+						setValue("originationDate", moment(date).format("MMDDYYYY"), {
+							shouldValidate: true,
+							shouldDirty: true,
+						});
+						},
+					}}
+                />
+            </div>
 			<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 				<FormatInput
           data-testid="loan-information-construction-holdback"
@@ -144,6 +176,21 @@ export const LoanInformation: FC<Props> = ({
 					register={register("collaterals.0.insuranceExpirationDate")}
 					wrapperClassName="mt-6"
 					required
+					datePickerProps={{
+						placeholder: "MM-DD-YYYY",
+						// maxDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
+						// minDate: new Date(),
+						name: "originationDate",
+						className:"[&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
+						invalid: !!errors?.originationDate,
+						wrapperClassName: "mt-6" + inputClassName(errors?.originationDate?.message),
+						onChange: (date: Date): void => {
+						setValue("originationDate", moment(date).format("MMDDYYYY"), {
+							shouldValidate: true,
+							shouldDirty: true,
+						});
+						},
+					}}
 				/>
 				<Input
           data-testid="loan-information-prepayment-penalty"

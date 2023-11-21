@@ -40,8 +40,7 @@ export const DatePicker = ({
 			maxDate={maxDate}
 			minDate={minDate}
 			view={view}
-			className={`${className}
-        h-12 rounded-none [&>*]:rounded-none [&>*]:border-gold-500  [&>*]:border-2
+			className={`${className} [&>*]:shadow-none
         ${invalid ? "[&>*]:border-red-ERROR " : ""}
       `}
 			onChange={(event): void => {

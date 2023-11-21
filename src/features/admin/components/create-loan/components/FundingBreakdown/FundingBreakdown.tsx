@@ -4,7 +4,7 @@ import {
 	type Control,
 	type FieldErrors,
 	type UseFieldArrayRemove,
-	UseFormSetValue,
+	type UseFormSetValue,
 	useWatch,
 } from "react-hook-form";
 import type { TableColumn } from "react-data-table-component";
@@ -146,7 +146,7 @@ export const FundingBreakdown: FC<Props> = ({
 							error={
 								row.rate > interestRate || 0
 									? "ok"
-									: rowIndex > 1
+									: rowIndex > 0
 									? errors?.participationBreakdown?.[rowIndex - 2]?.rate
 											?.message
 									: errors?.fundingBreakdown?.[rowIndex]?.rate?.message
