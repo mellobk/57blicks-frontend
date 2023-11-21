@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import DkcLendersService from "../../api/servicing";
 import type { updateGeneralUserInformation } from "@/features/admin/components/manage-user/types/fields";
 import ManageUsersService from "@/features/admin/components/manage-user/api/investors";
-import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
+import { removeCountryCode, unFormatPhone } from "@/utils/common-functions";
 import useStore from "@/stores/app-store";
 
 interface InvestorBankInfoProps {

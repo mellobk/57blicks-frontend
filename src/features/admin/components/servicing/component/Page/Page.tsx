@@ -11,7 +11,7 @@ import { Table } from "./Table/Table";
 import { Toggle } from "@/components/ui/Toggle";
 import { ShowModal } from "@/features/admin/components/servicing/component/Page/ShowModal/ShowModal";
 import { formatDate, moneyFormat } from "@/utils/formats";
-import { validateDate } from "@/utils/common-funtions";
+import { validateDate } from "@/utils/common-functions";
 import LendersService from "@/api/lenders.ts";
 import type { Lender } from "@/types/api/lender";
 import LoansService from "@/api/loans";

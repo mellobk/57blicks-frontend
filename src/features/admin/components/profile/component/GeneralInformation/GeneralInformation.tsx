@@ -14,7 +14,7 @@ import ManageUsersService from "@/features/admin/components/manage-user/api/inve
 import type { updateGeneralUserInformation } from "@/features/admin/components/manage-user/types/fields";
 import { useMutation } from "@tanstack/react-query";
 import useStore from "@/stores/app-store";
-import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
+import { removeCountryCode, unFormatPhone } from "@/utils/common-functions";
 import userStore from "@/stores/user-store.ts";
 
 export const GeneralInformation: FC = () => {

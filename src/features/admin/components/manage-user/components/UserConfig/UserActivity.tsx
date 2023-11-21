@@ -12,7 +12,7 @@ import type { User } from "../../types/api";
 import { useQuery } from "@tanstack/react-query";
 import { PermissionType } from "@/types/api/permissions-type";
 import userStore from "@/stores/user-store";
-import { findPermission } from "@/utils/common-funtions";
+import { findPermission } from "@/utils/common-functions";
 
 interface UserActivityProps {
 	user: User;

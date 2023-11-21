@@ -15,7 +15,7 @@ import { userTabsData } from "@/features/admin/components/servicing/utils/tabs";
 import { PermissionsAdmin } from "./PermissionsAdmin";
 import userStore from "@/stores/user-store.ts";
 import { PermissionType, RoleType } from "@/types/api/permissions-type";
-import { findPermission } from "@/utils/common-funtions";
+import { findPermission } from "@/utils/common-functions";
 
 interface UserConfigProps {
 	user?: User;

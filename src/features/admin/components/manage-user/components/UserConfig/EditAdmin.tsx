@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { userAdminEditSchema } from "./general-schemas";
 import type { AddAdminFields } from "../../types/fields";
 import useStore from "@/stores/app-store";
-import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
+import { removeCountryCode, unFormatPhone } from "@/utils/common-functions";
 import { Icon } from "@/components/ui/Icon";
 
 interface EditAdminProps {

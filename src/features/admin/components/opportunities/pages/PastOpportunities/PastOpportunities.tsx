@@ -12,10 +12,9 @@ import { Details } from "@/features/admin/components/opportunities/components/Pa
 import { DocumentPreview } from "@/features/admin/components/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview";
 import type { OpportunityMin } from "@/types/api/opportunity-min";
 import userStore from "@/stores/user-store";
-import { findPermission } from "@/utils/common-funtions";
+import { findPermission } from "@/utils/common-functions";
 import { PermissionType } from "@/types/api/permissions-type";
 import { tabsOpportunity } from "../../utils/tabs";
-
 
 const getFilename = (referenceId: number): string => {
 	return `DKC_Opportunity_${referenceId}.pdf`;

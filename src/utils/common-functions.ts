@@ -1,9 +1,10 @@
-import type { Permissions } from "./../features/admin/components/manage-user/types/api";
 import type {
 	Investor,
 	Role,
 	User,
 } from "@/features/admin/components/manage-user/types/api";
+
+import type { Permissions } from "../features/admin/components/manage-user/types/api";
 import { RoleType } from "@/types/api/permissions-type";
 import moment from "moment";
 
@@ -57,12 +58,14 @@ export const calculateProrated = (
 	amount: string,
 	rate: string,
 	originationDate: string
-) => {
+): string => {
 	let date = originationDate ? moment(originationDate, "MM-DD-YYYY") : moment();
 	date = date.isValid() ? date : moment();
 
 	const lastDayOfMonth = date.clone().endOf("month");
+
 	const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days") + 1;
+
 	const dailyRate = Number(rate) / 100 / 365;
 
 	return (Number(amount) * dailyRate * daysUntilEndOfMonth).toFixed(2);

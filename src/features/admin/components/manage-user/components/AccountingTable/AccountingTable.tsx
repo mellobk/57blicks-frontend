@@ -17,7 +17,7 @@ import {
 	emptyObject,
 	findIndex,
 	findPermission,
-} from "@/utils/common-funtions";
+} from "@/utils/common-functions";
 import userStore from "@/stores/user-store.ts";
 import { PermissionType } from "@/types/api/permissions-type";
 import { TabData } from "../../utils/tabs";

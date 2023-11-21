@@ -6,7 +6,7 @@ import {
 	findIndex,
 	findPermission,
 	statusSort,
-} from "@/utils/common-funtions";
+} from "@/utils/common-functions";
 import { type FC, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 

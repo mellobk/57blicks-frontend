@@ -20,7 +20,7 @@ import {
 import { Success } from "../Success";
 import { SuccessDecline } from "../SuccessDecline/Success";
 import type { Loan } from "../../types/types";
-import { findPermission } from "@/utils/common-funtions";
+import { findPermission } from "@/utils/common-functions";
 import userStore from "@/stores/user-store";
 import { PermissionType } from "@/types/api/permissions-type";
 

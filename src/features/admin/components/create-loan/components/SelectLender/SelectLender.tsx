@@ -5,10 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
-import {
-	calculateProrated,
-	calculateRegular,
-} from "@/utils/common-funtions.ts";
+import { calculateProrated, calculateRegular } from "@/utils/common-functions";
 
 interface Props {
 	control: Control<Loan>;
