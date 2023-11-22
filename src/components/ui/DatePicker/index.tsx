@@ -27,7 +27,7 @@ export const DatePicker = ({
 	maxDate,
 	minDate,
 	view = "date",
-	dateFormat = dateFormatShortCalendar,
+	dateFormat,
 	onChange,
 }: DatePickerProps): JSX.Element => {
 	return (
@@ -47,7 +47,7 @@ export const DatePicker = ({
 				const date = event.target.value as Date;
 				onChange && onChange(date);
 			}}
-			dateFormat={dateFormat}
+			dateFormat={dateFormat ?? dateFormatShortCalendar}
 			locale="en"
 		/>
 	);
