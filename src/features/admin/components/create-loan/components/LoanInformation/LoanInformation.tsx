@@ -107,7 +107,6 @@ export const LoanInformation: FC<Props> = ({
 						// minDate: new Date(),
 						name: "originationDate",
 						className:"[&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
-						invalid: !!errors?.originationDate,
 						wrapperClassName: "mt-6" + inputClassName(errors?.originationDate?.message),
 						onChange: (date: Date): void => {
 						setValue("originationDate", moment(date).format("MMDDYYYY"), {
@@ -132,7 +131,6 @@ export const LoanInformation: FC<Props> = ({
 						// minDate: new Date(),
 						name: "originationDate",
 						className:"[&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
-						invalid: !!errors?.originationDate,
 						wrapperClassName: "mt-6" + inputClassName(errors?.originationDate?.message),
 						onChange: (date: Date): void => {
 						setValue("originationDate", moment(date).format("MMDDYYYY"), {
@@ -182,7 +180,6 @@ export const LoanInformation: FC<Props> = ({
 						// minDate: new Date(),
 						name: "originationDate",
 						className:"[&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
-						invalid: !!errors?.originationDate,
 						wrapperClassName: "mt-6" + inputClassName(errors?.originationDate?.message),
 						onChange: (date: Date): void => {
 						setValue("originationDate", moment(date).format("MMDDYYYY"), {

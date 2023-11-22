@@ -51,9 +51,6 @@ export const MaskInput: ForwardRefRenderFunction<
     datePickerProps,
     ...props
 }) => {
-    console.log(className + "++++++++++++MaskInput-className");
-    console.log(iconName + "++++++++++++MaskInput-iconName");
-    console.log(mask + "++++++++++++MaskInput-mask");
     return (
         <div className={`flex flex-col gap-2 ${wrapperClassName}`}>
             <Label label={label} required={required} />
