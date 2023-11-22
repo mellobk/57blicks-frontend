@@ -34,11 +34,7 @@ export const LoanSchema = z.object({
 		.nonempty(errorMessages.required)
 		.min(10, errorMessages.minLength)
 		.max(10, errorMessages.maxLength),
-	originationDate: z
-		.string()
-		.nonempty(errorMessages.required)
-		.min(10, errorMessages.minLength)
-		.max(10, errorMessages.maxLength),
+	originationDate: z.string().nonempty(errorMessages.required),
 	participationBreakdown: z.array(FundingBreakdownSchema),
 	prepaymentPenalty: z
 		.string()
