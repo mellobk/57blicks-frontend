@@ -1,16 +1,19 @@
-import { type ComponentType } from "react";
 import { Cell } from "@/components/table/Cell";
+import type { ComponentType } from "react";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
-import { ParticipationBreakdown } from "@/types/api/participation-breakdown";
+import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 
 interface Props {
-	data: (FundingBreakdown | ParticipationBreakdown)[];
+	data: Array<FundingBreakdown | ParticipationBreakdown>;
 }
 
 export const Footer: ComponentType<Props> = ({ data }) => {
 	const totals = data.reduce(
-		(accumulator, { amount, prorated, rate, regular }) => {
-			accumulator.amount += Number(amount);
+		(accumulator, { amount, prorated, rate, regular, type }) => {
+			if (type === "Investor" || type === "Lender") {
+				accumulator.amount += Number(amount);
+			}
+
 			accumulator.prorated += Number(prorated);
 			accumulator.rate += Number(rate);
 			accumulator.regular += Number(regular);
@@ -30,7 +33,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 			<div className="grid grid-cols-5 w-full items-center">
 				<Cell format="text" value="Total" bold />
 				<Cell format="money" value={totals.amount} bold />
-				<Cell format="percentage" value={totals.rate} bold />
+				<Cell format="text" value={"-"} bold />
 				<Cell format="money" value={totals.prorated} bold />
 				<Cell format="money" value={totals.regular} bold />
 			</div>

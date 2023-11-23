@@ -21,11 +21,16 @@ export const FundingBreakdown: FC<Props> = ({ data }) => {
 	> = [
 		{
 			cell: (row): React.ReactNode => {
-				console.log("🚀 ~ file: FundingBreakdown.tsx:24 ~ row:", row);
+				console.log("🚀 ~ file: FundingBreakdown.tsx:24 ~ row:", row.type);
 				if ("lender" in row) {
 					return row.lender?.name;
 				} else if ("investor" in row) {
-					return `${row.investor?.user?.firstName} ${row.investor?.user?.lastName}`;
+					let name = "";
+					name =
+						row.type === "YieldSpread"
+							? "Y/S"
+							: `${row.investor?.user?.firstName} ${row.investor?.user?.lastName}`;
+					return name;
 				}
 
 				return "";
