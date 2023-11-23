@@ -1,4 +1,4 @@
-import { type FC, ReactElement, useEffect, useState } from "react";
+import { type FC, type ReactElement, useEffect, useState } from "react";
 
 import type { AxisChart } from "../../types/chart-types";
 import { Icon } from "@/components/ui/Icon";

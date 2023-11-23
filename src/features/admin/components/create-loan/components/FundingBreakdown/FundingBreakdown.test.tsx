@@ -1,14 +1,15 @@
 import "@testing-library/jest-dom";
 
+import { fireEvent, render, screen } from "@testing-library/react";
+
+import { FundingBreakdown } from "./FundingBreakdown";
+import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
+import { LoanSchema } from "@/features/admin/components/create-loan/schemas/LoanSchema";
 import type React from "react";
+import { defaultValues } from "@/features/admin/components/create-loan/utils/values";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fireEvent, render, screen } from "@testing-library/react";
-import { LoanSchema } from "@/features/admin/components/create-loan/schemas/LoanSchema";
-import type { Loan } from "@/features/admin/components/create-loan/types/fields";
-import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
-import { defaultValues } from "@/features/admin/components/create-loan/utils/values";
-import { FundingBreakdown } from "./FundingBreakdown";
 
 interface Props {
 	values?: Loan;
@@ -22,7 +23,7 @@ const WrappedFundingBreakdown: React.FC<Props> = ({ values }) => {
 	const {
 		control,
 		formState: { errors },
-    setValue
+		setValue,
 	} = useForm<Loan>({
 		defaultValues: values || defaultValues,
 		resolver: zodResolver(LoanSchema),
@@ -35,7 +36,7 @@ const WrappedFundingBreakdown: React.FC<Props> = ({ values }) => {
 			remove={mockRemoveParticipant}
 			setOpenLenderModal={mockSetOpenLenderModal}
 			setOpenParticipantModal={mockSetOpenParticipantModal}
-      setValue={setValue}
+			setValue={setValue}
 		/>
 	);
 };
@@ -67,12 +68,13 @@ describe("FundingBreakdown", () => {
 					fundingBreakdown: [
 						{
 							amount: "",
-              constructionHoldback: "0",
+							constructionHoldback: "0",
 							investorId: LENDERS[1]?.code,
 							lenderName: LENDERS[1]?.name || "Other Lender",
 							prorated: "0",
 							rate: "",
 							regular: "0",
+							type: "Investor",
 						},
 					],
 				}}
@@ -103,19 +105,23 @@ describe("FundingBreakdown", () => {
 					fundingBreakdown: [
 						{
 							lenderName: "Lender 1",
+							investorId: "1",
 							amount: "100",
 							rate: "1",
 							prorated: "0",
 							regular: "0",
 							constructionHoldback: "0",
+							type: "Investor",
 						},
 						{
 							lenderName: "Lender 2",
+							investorId: "1",
 							amount: "200",
 							rate: "1",
 							prorated: "0",
 							regular: "0",
-              constructionHoldback: "0",
+							constructionHoldback: "0",
+							type: "Servicing",
 						},
 					],
 					originationDate: "2022-01-01",

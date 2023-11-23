@@ -398,6 +398,9 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 													};
 													setLoanId(data.id);
 													setLedgerId(data.ledgerId);
+												} else {
+													setLoanId("");
+													setLedgerId("");
 												}
 
 												setOpenModalLoan(true);

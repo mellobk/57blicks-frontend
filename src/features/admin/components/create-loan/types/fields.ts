@@ -24,7 +24,6 @@ export type FundingBreakdown = {
 	prorated: string;
 	rate: string;
 	regular: string;
-	servicing: boolean;
 	type: "Investor" | "YieldSpread" | "Lender" | "Servicing";
 };
 
@@ -37,6 +36,7 @@ export type Loan = {
 	interestRate: string;
 	leadSource: string;
 	loanConsultant: string;
+	name?: string;
 	ltv: string;
 	maturityDate: string;
 	originationDate: string;

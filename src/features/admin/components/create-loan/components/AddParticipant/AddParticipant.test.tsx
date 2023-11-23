@@ -1,11 +1,12 @@
 import "@testing-library/jest-dom";
 
-import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {render, screen, waitFor} from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import InvestorsService from "@/api/investors";
+import { render, screen, waitFor } from "@testing-library/react";
+
 import { AddParticipant } from "./AddParticipant";
+import InvestorsService from "@/api/investors";
+import type React from "react";
+import userEvent from "@testing-library/user-event";
 
 interface Props {
 	openModal?: boolean;
@@ -30,6 +31,7 @@ const WrappedAddParticipant: React.FC<Props> = ({ openModal = true }) => {
 				append={mockAppend}
 				openModal={openModal}
 				setOpenModal={mockSetOpenModal}
+				constructionHoldbackValue={"0"}
 			/>
 		</QueryClientProvider>
 	);
@@ -50,18 +52,18 @@ describe("AddParticipant", () => {
 	});
 
 	it("does not render when openModal is false", () => {
-    render(<WrappedAddParticipant openModal={false} />);
+		render(<WrappedAddParticipant openModal={false} />);
 		expect(screen.queryByText("Participant")).not.toBeInTheDocument();
 	});
 
 	it("renders the select and button", () => {
-    render(<WrappedAddParticipant />);
+		render(<WrappedAddParticipant />);
 		expect(screen.getByTestId("add-participant-select")).toBeInTheDocument();
 		expect(screen.getByTestId("add-participant-button")).toBeInTheDocument();
 	});
 
 	it("updates selected participant on select change", async () => {
-    render(<WrappedAddParticipant />);
+		render(<WrappedAddParticipant />);
 
 		const dropdown = await screen.findByTestId("add-participant-select");
 		void userEvent.click(dropdown);
@@ -73,7 +75,7 @@ describe("AddParticipant", () => {
 	});
 
 	it("calls append and setOpenModal when a participant is added", async () => {
-    render(<WrappedAddParticipant />);
+		render(<WrappedAddParticipant />);
 
 		const dropdown = await screen.findByTestId("add-participant-select");
 		void userEvent.click(dropdown);
@@ -91,13 +93,14 @@ describe("AddParticipant", () => {
 				prorated: "0",
 				rate: "",
 				regular: "0",
+				type: "Servicing",
 			});
 		});
 		expect(mockSetOpenModal).toHaveBeenCalledWith(false);
 	});
 
-	it("does not call append and setOpenModal when selected participant is undefined", async () => {
-    render(<WrappedAddParticipant />);
+	it("does not call append and setOpenModal when selected participant is undefined", () => {
+		render(<WrappedAddParticipant />);
 
 		void userEvent.click(screen.getByText("Add"));
 

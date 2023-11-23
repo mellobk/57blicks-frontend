@@ -34,7 +34,6 @@ export const defaultValues: Loan = {
 			rate: "",
 			regular: "0",
 			type: "Lender",
-			servicing: false,
 		},
 		{
 			amount: "0",
@@ -45,7 +44,6 @@ export const defaultValues: Loan = {
 			rate: "0",
 			regular: "0",
 			type: "Servicing",
-			servicing: true,
 		},
 	],
 	interestRate: "",

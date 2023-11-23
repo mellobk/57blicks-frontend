@@ -1,17 +1,18 @@
-import { type FC } from "react";
-import type { UseFieldArrayAppend } from "react-hook-form";
-import { useForm, useWatch } from "react-hook-form";
-import { useQuery } from "@tanstack/react-query";
-import InvestorsService from "@/api/investors";
-import { Button } from "@/components/ui/Button";
-import { Modal } from "@/components/ui/Modal";
 import type {
 	FundingBreakdown,
 	Loan,
 } from "@/features/admin/components/create-loan/types/fields";
-import { nameFormat } from "@/utils/formats";
-import { FormatInput } from "@/components/forms/FormatInput";
+import { useForm, useWatch } from "react-hook-form";
+
+import { Button } from "@/components/ui/Button";
 import { Dropdown } from "@/components/forms/Dropdown";
+import type { FC } from "react";
+import { FormatInput } from "@/components/forms/FormatInput";
+import InvestorsService from "@/api/investors";
+import { Modal } from "@/components/ui/Modal";
+import type { UseFieldArrayAppend } from "react-hook-form";
+import { nameFormat } from "@/utils/formats";
+import { useQuery } from "@tanstack/react-query";
 
 interface Props {
 	append: UseFieldArrayAppend<Loan, "participationBreakdown">;
@@ -39,10 +40,11 @@ export const AddParticipant: FC<Props> = ({
 	);
 	const { control, handleSubmit, reset } = useForm<Participant>();
 
-	const [constructionHoldback, participant, amount] = useWatch({
+	const [participant] = useWatch({
 		control,
-		name: ["constructionHoldback", "participant", "amount"],
+		name: ["participant"],
 	});
+	console.log("🚀 ~ file: AddParticipant.tsx:47 ~ participant:", participant);
 
 	const onSubmit = (data: Participant): void => {
 		const participant = investorsQuery?.data?.find(
@@ -61,7 +63,6 @@ export const AddParticipant: FC<Props> = ({
 				rate: "",
 				regular: "0",
 				type: "Investor",
-				servicing: false,
 			};
 			const yieldSpread: FundingBreakdown = {
 				constructionHoldback: "0",
@@ -72,7 +73,6 @@ export const AddParticipant: FC<Props> = ({
 				rate: "",
 				regular: "0",
 				type: "YieldSpread",
-				servicing: false,
 			};
 
 			append(newFundingBreakdown);

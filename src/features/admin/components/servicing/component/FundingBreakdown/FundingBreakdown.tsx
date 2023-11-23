@@ -1,12 +1,11 @@
-import { type FC } from "react";
-import type { TableColumn } from "react-data-table-component";
-
 import { Cell } from "@/components/table/Cell";
-import { Table } from "@/components/ui/Table";
+import type { FC } from "react";
 import { Footer } from "@/features/admin/components/servicing/component/FundingBreakdown/Footer/Footer";
 import type { FundingBreakdown as FundingBreakdownType } from "@/types/api/funding-breakdown";
-import { Loan } from "@/types/api/loan";
-import { ParticipationBreakdown } from "@/types/api/paticipation-breakdown";
+import type { Loan } from "@/types/api/loan";
+import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
+import { Table } from "@/components/ui/Table";
+import type { TableColumn } from "react-data-table-component";
 
 interface Props {
 	data?: Loan;

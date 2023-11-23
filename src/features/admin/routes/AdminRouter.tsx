@@ -4,7 +4,6 @@ import { CreateOpportunity } from "@/features/admin/components/opportunities/pag
 import { LLC as ServicingLLC } from "@/features/admin/components/servicing/pages/LLC/LLC";
 import { LLC as InvestorPortalsLLC } from "@/features/admin/components/investor-portals/pages/LLC/LLC";
 import { LoanOverview } from "@/features/admin/components/loan-overview/pages/LoanOverview/LoanOverview";
-import { Reporting } from "@/features/admin/pages/Reporting/Reporting";
 import { Support } from "@/features/admin/pages/Support/Support";
 import { AuthenticatedRoute } from "@/routes/routes";
 import { InvestorPortalsRoutes } from "@/features/admin/components/investor-portals/routes/InvestorPortalsRoutes";
@@ -13,11 +12,12 @@ import { OpportunitiesRoutes } from "@/features/admin/components/opportunities/r
 import { ServicingRoutes } from "@/features/admin/components/servicing/routes/ServicingRoutes";
 import { ProfileRoutes } from "@/features/admin/components/profile/routes/ProfileRoutes";
 import { Admin } from "@/features/admin/components/manage-user/pages/Admin/Admin";
+import { Reports } from "@/features/admin/components/reports/pages/Reports";
 
 export const NavbarRoutes = [
 	{
 		path: "/reporting",
-		page: Reporting,
+		page: Reports,
 		layout: DashboardLayout,
 		name: "Reporting",
 	},
@@ -81,7 +81,7 @@ const AdminRouter = AuthenticatedRoute([
 export const NavbarData = {
 	report: {
 		path: "/reporting",
-		page: Reporting,
+		page: Reports,
 		layout: DashboardLayout,
 		name: "Reporting",
 	},

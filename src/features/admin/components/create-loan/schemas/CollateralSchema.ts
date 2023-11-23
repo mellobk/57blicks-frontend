@@ -7,11 +7,7 @@ export const CollateralSchema = z.object({
 		.nonempty(errorMessages.required)
 		.max(100, errorMessages.maxLength),
 	assetType: z.string().nonempty(errorMessages.required),
-	insuranceExpirationDate: z
-		.string()
-		.nonempty(errorMessages.required)
-		.min(10, errorMessages.minLength)
-		.max(10, errorMessages.maxLength),
+	insuranceExpirationDate: z.string().nonempty(errorMessages.required),
 	link: z
 		.string()
 		.nonempty(errorMessages.required)

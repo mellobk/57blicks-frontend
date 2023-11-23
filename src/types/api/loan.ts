@@ -1,8 +1,8 @@
 import type { Borrower } from "@/types/api/borrower";
 import type { Collateral } from "@/types/api/collateral";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
+import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 import type { User } from "@/types/api/user";
-import type { ParticipationBreakdown } from "@/types/api/paticipation-breakdown.ts";
 
 export interface Loan {
 	id?: string;

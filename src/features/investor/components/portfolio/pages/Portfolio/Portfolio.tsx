@@ -7,7 +7,7 @@ import { Input } from "@/components/forms/Input";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Table } from "@/components/ui/Table";
 import { Footer } from "@/features/investor/components/portfolio/components/Footer/Footer";
-import type { ParticipationBreakdown } from "@/types/api/paticipation-breakdown";
+import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 import type { Loan } from "@/types/api/loan";
 import { moneyFormat, percentageFormat } from "@/utils/formats";
 import { getLoanColumns } from "@/utils/investors";
@@ -19,8 +19,8 @@ export const Portfolio: FC = () => {
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const currentMonthName = moment().format("MMMM");
 
-  const userInfo = userStore((state) => state.loggedUserInfo);
-  console.log(userInfo);
+	const userInfo = userStore((state) => state.loggedUserInfo);
+	console.log(userInfo);
 
 	const investorsQuery = useQuery(["investors-query"], () =>
 		InvestorsService.getInvestorsWithLoans(searchValue)
@@ -45,32 +45,38 @@ export const Portfolio: FC = () => {
 		},
 		{
 			name: "Investor Equity",
-			selector: (row: ParticipationBreakdown) => moneyFormat(Number(row.amount)),
+			selector: (row: ParticipationBreakdown) =>
+				moneyFormat(Number(row.amount)),
 			sortable: true,
 		},
 		{
 			name: "Rate",
-			selector: (row: ParticipationBreakdown) => percentageFormat(Number(row.rate)),
+			selector: (row: ParticipationBreakdown) =>
+				percentageFormat(Number(row.rate)),
 			sortable: true,
 		},
 		{
 			name: "Regular Payment",
-			selector: (row: ParticipationBreakdown) => moneyFormat(Number(row.regular)),
+			selector: (row: ParticipationBreakdown) =>
+				moneyFormat(Number(row.regular)),
 			sortable: true,
 		},
 		{
 			name: "Origin Date",
-			selector: (row: ParticipationBreakdown) => row.loan?.originationDate?.toString() || "",
+			selector: (row: ParticipationBreakdown) =>
+				row.loan?.originationDate?.toString() || "",
 			sortable: true,
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: ParticipationBreakdown) => row.loan?.maturityDate?.toString() || "",
+			selector: (row: ParticipationBreakdown) =>
+				row.loan?.maturityDate?.toString() || "",
 			sortable: true,
 		},
 		{
 			name: `${currentMonthName} (Current)`,
-			selector: (row: ParticipationBreakdown) => moneyFormat(Number(row.regular)),
+			selector: (row: ParticipationBreakdown) =>
+				moneyFormat(Number(row.regular)),
 			sortable: true,
 			conditionalCellStyles: [
 				{

@@ -51,7 +51,6 @@ export const SelectLender: FC<Props> = ({
 					prorated: "0",
 					rate: "",
 					regular: "0",
-					servicing: false,
 					type: "Lender",
 				},
 				{
@@ -66,7 +65,6 @@ export const SelectLender: FC<Props> = ({
 					),
 					rate: interestRate,
 					regular: calculateRegular(totalLoanAmount, interestRate),
-					servicing: true,
 					type: "Servicing",
 				},
 			];

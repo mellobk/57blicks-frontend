@@ -1,7 +1,7 @@
 import { type ComponentType } from "react";
 import { Cell } from "@/components/table/Cell";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
-import { ParticipationBreakdown } from "@/types/api/paticipation-breakdown";
+import { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 
 interface Props {
 	data: (FundingBreakdown | ParticipationBreakdown)[];

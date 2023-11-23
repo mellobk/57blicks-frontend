@@ -20,9 +20,11 @@ import {
 import { Success } from "../Success";
 import { SuccessDecline } from "../SuccessDecline/Success";
 import type { Loan } from "../../types/types";
-import { findPermission } from "@/utils/common-functions";
 import userStore from "@/stores/user-store";
-import { PermissionType } from "@/types/api/permissions-type";
+import { RoleType } from "@/types/api/permissions-type";
+import { ModalActionsAdmin } from "../ModalActions/ModalActionsAdmin";
+import { getLocalStorage } from "@/utils/local-storage";
+import { userName } from "@/utils/constant";
 
 interface ServicingModalProps {
 	openModal?: boolean;
@@ -45,15 +47,21 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 	type,
 	status,
 }) => {
+	console.log(id);
+	const localUserName = getLocalStorage(userName);
+	const createLedgerQuery = useMutation(async (body: any) => {
+		return ManageNotificationService.createNotifications(body);
+	});
+
+	const editLoan = userStore((state) => state.editLoan);
+	const [handleEdit, setHandleEdit] = useState<boolean>();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const approvalQuery = useMutation(async (id: string) => {
 		return LoansService.getLoan(id || "");
 	});
 
 	const updateLoanQuery = useMutation(async (body: Loan) => {
-		return LoansService.updateLoan(body.id || "", {
-			status: body.status,
-		});
+		return LoansService.updateLoan(body.id || "", body as any);
 	});
 
 	const updateLedgerQuery = useMutation(async (body: Loan) => {
@@ -81,9 +89,34 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 			if (typeProcess === "approve") {
 				setOpenApproved(true);
 				setOpenApprovedModal(false);
+				approvalQuery.mutate(id || "");
+				if (userLoggedInfo?.role?.name === "admin") {
+					const dataNotification = { id: editLoan.id, ledgerId: "" };
+					createLedgerQuery.mutate({
+						title: "Approve Loan",
+						timestamp: new Date(),
+						content: `admin ${localUserName} modify  ${editLoan.name} ! needs action.`,
+						additionalData: JSON.stringify(dataNotification),
+						userFullName: localUserName,
+						priority: "HIGH",
+						type: "LOAN",
+						roles: ["super-admin"],
+					});
+				}
 			} else {
 				setOpenDecline(true);
 				setOpenDeclineModal(false);
+				const dataNotification = { id: editLoan.id, ledgerId: "" };
+				createLedgerQuery.mutate({
+					title: "Rejected Loan",
+					timestamp: new Date(),
+					content: `Super admin ${localUserName} Reject ${editLoan.name}! needs action.`,
+					additionalData: JSON.stringify(dataNotification),
+					userFullName: localUserName,
+					priority: "HIGH",
+					type: "LOAN",
+					roles: ["admin"],
+				});
 			}
 			updateLoanQuery.reset();
 		}
@@ -134,103 +167,109 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 
 	const typeData = type === NotificationType.LOAN ? " Loan" : "Ledger";
 
-	const approvePermissions = (): boolean => {
-		return ledgerId
-			? findPermission(
-					userLoggedInfo?.role,
-					userLoggedInfo?.permissionGroup?.permissions || [],
-					PermissionType.INPUT_TRANSACTIONS_LEDGER
-			  ) || false
-			: findPermission(
-					userLoggedInfo?.role,
-					userLoggedInfo?.permissionGroup?.permissions || [],
-					PermissionType.APPROVE_NEW_LOANS
-			  ) || false;
-	};
-
 	return (
 		<div className="relative w-[98%]">
-			<Modal
-				visible={openModal}
-				title={title}
-				width="98%"
-				minHeight="95vh"
-				onHide={handleOnCLose}
-			>
-				<div
-					className=" flex absolute  items-center justify-end"
-					style={{ right: "65px", top: "24px", zIndex: 1 }}
+			{id && (
+				<Modal
+					visible={openModal}
+					title={title}
+					width="98%"
+					minHeight="95vh"
+					onHide={handleOnCLose}
 				>
-					<ModalActions
-						status={status}
-						openApproved={openApprovedModal}
-						openDecline={openDeclineModal}
-						onOpenApproved={() => {
-							setOpenApprovedModal(!openApprovedModal);
-						}}
-						onOpenDecline={() => {
-							setOpenDeclineModal(!openDeclineModal);
-						}}
-						type={type}
-						onSuccess={() => {
-							if (ledgerId) {
-								updateLedgerQuery.mutate({
-									id: ledgerId,
-									approvalState: ApprovalLedgerStateType.APPROVED,
-								});
-							} else {
-								updateLoanQuery.mutate({
-									id: id,
-									status: LoanStatusType.APPROVED,
-								});
-							}
+					<div
+						className=" flex absolute  items-center justify-end"
+						style={{ right: "65px", top: "24px", zIndex: 1 }}
+					>
+						{userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN ? (
+							<ModalActions
+								status={status}
+								openApproved={openApprovedModal}
+								openDecline={openDeclineModal}
+								handleViewOnly={(): void => {
+									setHandleEdit(!handleEdit);
+								}}
+								onOpenApproved={(): void => {
+									setOpenApprovedModal(!openApprovedModal);
+								}}
+								onOpenDecline={(): void => {
+									setOpenDeclineModal(!openDeclineModal);
+								}}
+								type={type}
+								onSuccess={(): void => {
+									if (ledgerId) {
+										updateLedgerQuery.mutate({
+											id: ledgerId,
+											approvalState: ApprovalLedgerStateType.APPROVED,
+										});
+									} else {
+										const editData = {
+											...editLoan,
+											status: LoanStatusType.APPROVED,
+										};
+										updateLoanQuery.mutate(editData as any);
+									}
 
-							setTypeProcess("approve");
-						}}
-						viewOnly={approvePermissions()}
-						onDecline={() => {
-							if (ledgerId) {
-								updateLedgerQuery.mutate({
-									id: ledgerId,
-									approvalState: ApprovalLedgerStateType.REJECTED,
-								});
-							} else {
-								updateLoanQuery.mutate({
-									id: id,
-									status: LoanStatusType.REJECTED,
-								});
-							}
+									setTypeProcess("approve");
+								}}
+								onDecline={(): void => {
+									if (ledgerId) {
+										updateLedgerQuery.mutate({
+											id: ledgerId,
+											approvalState: ApprovalLedgerStateType.REJECTED,
+										});
+									} else {
+										updateLoanQuery.mutate({
+											id: id,
+											status: LoanStatusType.REJECTED,
+										});
+									}
 
-							setTypeProcess("decline");
-						}}
-					/>
-				</div>
-				<div
-					className=" flex absolute w-full items-center justify-center"
-					style={{ left: "0", top: "27px", zIndex: 0 }}
-				>
-					<div className="w-auto">
-						<Tabs
-							tabs={approveModalTabs}
-							actualTab={actualTabData}
-							onClick={tabHandlerData}
-						/>
+									setTypeProcess("decline");
+								}}
+							/>
+						) : (
+							<ModalActionsAdmin
+								handleViewOnly={(): void => {
+									setHandleEdit(!handleEdit);
+								}}
+								onOpenApproved={(): void => {
+									const editData = {
+										...editLoan,
+										status: LoanStatusType.PENDING,
+									};
+									updateLoanQuery.mutate(editData as any);
+									setTypeProcess("approve");
+								}}
+							/>
+						)}
 					</div>
-				</div>
-				{tabTitle === "Loan Information" && (
-					<LoanInformation data={approvalQuery?.data} />
-				)}
-				{tabTitle === "Borrower Information" && (
-					<BorrowerInformation
-						data={approvalQuery?.data}
-						handleRefreshData={handleRefreshData}
-					/>
-				)}
-				{tabTitle === "Ledger" && approvalQuery.data && (
-					<LedgerList loan={approvalQuery.data.id} />
-				)}
-			</Modal>
-
+					<div
+						className=" flex absolute w-full items-center justify-center"
+						style={{ left: "0", top: "27px", zIndex: 0 }}
+					>
+						<div className="w-auto">
+							<Tabs
+								tabs={approveModalTabs}
+								actualTab={actualTabData}
+								onClick={tabHandlerData}
+							/>
+						</div>
+					</div>
+					{tabTitle === "Loan Information" && approvalQuery?.data && (
+						<LoanInformation data={approvalQuery?.data} edit={handleEdit} />
+					)}
+					{tabTitle === "Borrower Information" && (
+						<BorrowerInformation
+							data={approvalQuery?.data}
+							handleRefreshData={handleRefreshData}
+						/>
+					)}
+					{tabTitle === "Ledger" && approvalQuery.data && (
+						<LedgerList loan={approvalQuery.data.id} />
+					)}
+				</Modal>
+			)}
 			<Modal
 				visible={openApproved}
 				onHide={() => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -16,6 +17,8 @@ import LendersService from "@/api/lenders.ts";
 import type { Lender } from "@/types/api/lender";
 import LoansService from "@/api/loans";
 import { LoanStatusType } from "@/types/api/notifications";
+import moment from "moment";
+import { ParticipationBreakdown } from "@/types/api/paticipation-breakdown";
 
 interface Props {
 	actualTab: string;
@@ -28,6 +31,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const [archived, setArchived] = useState<boolean>(false);
 	const [lenders, setLenders] = useState<Array<Lender>>([]);
 	const [tableData, setTableData] = useState<Array<DkcLenders>>([]);
+	const currentMonthName = moment().format("MMMM");
 
 	const findDkcLender = () => {
 		const findLender = lenders?.find(
@@ -290,6 +294,21 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				<div key={row.loan.id}>{row.loan.defaultType}</div>
 			),
 			omit: false,
+		},
+		{
+			name: `${currentMonthName} (Current)`,
+			selector: (row: ParticipationBreakdown) =>
+				moneyFormat(Number(row.regular)),
+			sortable: true,
+			conditionalCellStyles: [
+				{
+					when: (row: ParticipationBreakdown) => !!row,
+					style: {
+						background: "#C79E631F",
+						color: "#C79E63",
+					},
+				},
+			],
 		},
 	];
 
