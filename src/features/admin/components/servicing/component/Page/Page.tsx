@@ -18,7 +18,7 @@ import type { Lender } from "@/types/api/lender";
 import LoansService from "@/api/loans";
 import { LoanStatusType } from "@/types/api/notifications";
 import moment from "moment";
-import { ParticipationBreakdown } from "@/types/api/paticipation-breakdown";
+import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 
 interface Props {
 	actualTab: string;

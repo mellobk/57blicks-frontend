@@ -13,4 +13,5 @@ export interface FundingBreakdown {
 	regular: string;
 	lender: Lender;
 	loan: Loan;
+	type: "Investor" | "YieldSpread" | "Lender" | "Servicing";
 }

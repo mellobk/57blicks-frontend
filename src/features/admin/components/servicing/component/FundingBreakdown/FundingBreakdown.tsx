@@ -20,7 +20,8 @@ export const FundingBreakdown: FC<Props> = ({ data }) => {
 		TableColumn<FundingBreakdownType | ParticipationBreakdown>
 	> = [
 		{
-			cell: (row) => {
+			cell: (row): React.ReactNode => {
+				console.log("🚀 ~ file: FundingBreakdown.tsx:24 ~ row:", row);
 				if ("lender" in row) {
 					return row.lender?.name;
 				} else if ("investor" in row) {
