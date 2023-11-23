@@ -20,10 +20,6 @@ const PayableDetailsFooter: FC<PayableDetailsFooterProps> = ({
 		let credit = 0;
 
 		payableDetail.forEach((item) => {
-			console.log(
-				"🚀 ~ file: PayableDetailsFooter.tsx:23 ~ payableDetail.forEach ~ item:",
-				item
-			);
 			debit += Number.parseFloat(`${item.debit}`);
 			credit += Number.parseFloat(`${item.credit}`);
 		});

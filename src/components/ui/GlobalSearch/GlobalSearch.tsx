@@ -1,19 +1,18 @@
+import { useEffect, useState } from "react";
+
+import type { FC } from "react";
+import { Icon } from "@/components/ui/Icon";
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable unicorn/consistent-function-scoping */
 import { Input } from "@/components/forms/Input";
-import { Icon } from "@/components/ui/Icon";
-import { useQuery } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
-import type { FC } from "react";
-
-import { getLabel } from "@/utils/common-funtions";
-import { useDebounce } from "@/hooks/debounce";
-
-import { useNavigate } from "@tanstack/router";
 import ManagePermissionGroupService from "@/features/admin/components/profile/api/permission";
-import type { User } from "@/features/admin/components/manage-user/types/api";
 import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
+import type { User } from "@/features/admin/components/manage-user/types/api";
+import { getLabel } from "@/utils/common-functions";
+import { useDebounce } from "@/hooks/debounce";
+import { useNavigate } from "@tanstack/router";
+import { useQuery } from "@tanstack/react-query";
 
 interface GlobalSearchProps {
 	handleOpenGlobalSearch?: () => void;

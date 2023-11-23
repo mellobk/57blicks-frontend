@@ -51,7 +51,14 @@ export const validateDate = (date: string): boolean => {
 };
 
 export const calculateRegular = (amount: string, rate: string) => {
-	return ((Number(amount) * (Number(rate) / 100)) / 12).toFixed(2);
+	return ((Number(amount) * (Number(rate) / 100)) / 12).toFixed(4);
+};
+
+export const round = (Number: number, precision: number): number => {
+	const factor = Math.pow(10, precision);
+	const temporaryNumber = Number * factor;
+	const roundedTemporaryNumber = Math.round(temporaryNumber);
+	return roundedTemporaryNumber / factor;
 };
 
 export const calculateProrated = (
@@ -68,7 +75,7 @@ export const calculateProrated = (
 
 	const dailyRate = Number(rate) / 100 / 365;
 
-	return (Number(amount) * dailyRate * daysUntilEndOfMonth).toFixed(2);
+	return (Number(amount) * dailyRate * daysUntilEndOfMonth).toFixed(4);
 };
 
 export const getLabel = (name: string): string => {

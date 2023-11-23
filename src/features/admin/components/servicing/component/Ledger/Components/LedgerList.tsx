@@ -17,8 +17,6 @@ interface LedgerListProps {
 }
 
 const LedgerList: FC<LedgerListProps> = ({ loan }) => {
-	console.log(loan, "data");
-
 	const [ledgers, setLedgers] = useState<Array<Ledgers>>([]);
 
 	const { refetch, isLoading } = useQuery(

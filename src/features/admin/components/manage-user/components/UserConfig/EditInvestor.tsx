@@ -31,7 +31,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 	deleteUser,
 	enableUser,
 }) => {
-	console.log("🚀 ~ file: EditInvestor.tsx:34 ~ investor:", investor);
 	const {
 		register,
 		handleSubmit,
