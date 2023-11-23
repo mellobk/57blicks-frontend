@@ -38,6 +38,8 @@ const IconNames: Array<string> = [
 	"arrowRight",
 	"send",
 	"refresh",
+	"csv",
+	"xlsx",
 ];
 
 export default IconNames;

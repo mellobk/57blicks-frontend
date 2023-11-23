@@ -75,10 +75,10 @@ export const dateFormatFormat = (inputString: string | Date): string => {
 
 export const formatDate = (dateString: string) => {
 	const date = new Date(dateString);
-	const day = date.getDate().toString().padStart(2, "0");
+	const day = (date.getDate() + 1).toString().padStart(2, "0");
 	const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed
 	const year = date.getFullYear();
-	return `${month}-${day}-${year}`;
+	return `${day}-${month}-${year}`;
 };
 
 export const dateFormatOptions = (date: Date, dateFormat: string): string => {

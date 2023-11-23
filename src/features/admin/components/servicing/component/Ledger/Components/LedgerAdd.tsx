@@ -92,6 +92,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							maxDate={new Date()}
 							minDate={moment(loan.originationDate).toDate()}
 							name={`ledgers.${index}.ledgerDate`}
+							className="h-12 rounded-none [&>*]:rounded-none [&>*]:border-gold-500  [&>*]:border-2"
 							value={
 								dataLedgers.ledgerDate
 									? moment(dataLedgers.ledgerDate, "MMDDYYYY").toDate()
@@ -165,6 +166,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							minDate={moment(loan.originationDate).toDate()}
 							name={`ledgers.${index}.month`}
 							view="month"
+							className="h-12 rounded-none [&>*]:rounded-none [&>*]:border-gold-500  [&>*]:border-2"
 							dateFormat="M, yy"
 							value={
 								dataLedgers.month
