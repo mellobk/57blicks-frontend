@@ -1,7 +1,6 @@
-import type { ComponentType } from "react";
-
 import { Cell } from "@/components/table/Cell";
-import type { ParticipationBreakdown } from "@/types/api/paticipation-breakdown";
+import type { ComponentType } from "react";
+import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 import { getFooterData } from "@/utils/investors";
 
 interface Props {

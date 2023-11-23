@@ -1,9 +1,9 @@
 import { type FC, useEffect, useState } from "react";
 import type {
-  Control,
-  FieldArrayWithId,
-  FieldErrors,
-  UseFormRegister,
+	Control,
+	FieldArrayWithId,
+	FieldErrors,
+	UseFormRegister,
 } from "react-hook-form";
 
 import {
@@ -77,6 +77,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							onChange={(date: Date): void => {
 								handleSetDate(`ledgerDate`, date, index);
 							}}
+							className="[&>input]:bg-black-200"
 						/>
 					</>
 				) : (

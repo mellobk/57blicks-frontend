@@ -14,7 +14,7 @@ import { MaskInput } from "@/components/forms/MaskInput";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { PermissionGroup, User } from "../../types/api";
 import ManageUsersService from "../../api/investors";
-import { unFormatPhone } from "@/utils/common-funtions";
+import { unFormatPhone } from "@/utils/common-functions";
 import { Select } from "@/components/forms/Select";
 
 interface AddAdminProps {

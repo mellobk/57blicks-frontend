@@ -76,6 +76,7 @@ export interface FundingBreakdown {
 	prorated: string;
 	regular: string;
 	loan: Loan;
+	type: "Investor" | "YieldSpread" | "Lender" | "Servicing";
 }
 
 export interface Notification {
@@ -83,7 +84,7 @@ export interface Notification {
 	content?: string;
 	timestamp?: Date;
 	redirectPath?: string;
-  additionalData?: string;
+	additionalData?: string;
 	userFullName?: string;
 	priority?: string;
 	type?: string;

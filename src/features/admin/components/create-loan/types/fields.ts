@@ -24,6 +24,7 @@ export type FundingBreakdown = {
 	prorated: string;
 	rate: string;
 	regular: string;
+	type: "Investor" | "YieldSpread" | "Lender" | "Servicing";
 };
 
 export type Loan = {

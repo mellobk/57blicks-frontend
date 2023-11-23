@@ -20,12 +20,13 @@ import {
 	calculateProrated,
 	calculateRegular,
 	unFormatPhone,
-} from "@/utils/common-funtions";
+} from "@/utils/common-functions";
 import { userName } from "@/utils/constant";
 import { getLocalStorage } from "@/utils/local-storage";
+import type { Notification } from "@/features/admin/components/notifications/types/types";
 
 export const CreateLoan: FC = () => {
-	const createLedgerQuery = useMutation(async (body: any) => {
+	const createLedgerQuery = useMutation(async (body: Notification) => {
 		return ManageNotificationService.createNotifications(body);
 	});
 	const localUserName = getLocalStorage(userName);
@@ -36,6 +37,7 @@ export const CreateLoan: FC = () => {
 	const {
 		control,
 		formState: { errors },
+		watch,
 		handleSubmit,
 		register,
 		reset,
@@ -81,6 +83,7 @@ export const CreateLoan: FC = () => {
 			),
 			regular: calculateRegular(breakdown.amount, breakdown.rate),
 		}));
+
 		const participationBreakdown = data.participationBreakdown.map(
 			(breakdown) => ({
 				...breakdown,
@@ -109,6 +112,22 @@ export const CreateLoan: FC = () => {
 		mutate(formatData);
 	};
 
+	const handleRemove = (index: number): void => {
+		const participants = watch("participationBreakdown");
+		const investor = participants[index];
+		const indexToRemove: Array<number> = [];
+		participants.forEach((participant, index_) => {
+			if (participant.investorId === (investor?.investorId ?? "")) {
+				indexToRemove.push(index_);
+			}
+		});
+
+		//loop the array inversely to avoid index change when removing an item
+		for (let index_ = indexToRemove.length - 1; index_ >= 0; index_--) {
+			removeParticipant(indexToRemove[index_]);
+		}
+	};
+
 	useEffect(() => {
 		if (isSuccess) {
 			reset();
@@ -133,6 +152,8 @@ export const CreateLoan: FC = () => {
 			resetMutation();
 		}
 	}, [isError]);
+
+	useEffect(() => {}, [errors]);
 
 	return (
 		<>
@@ -174,7 +195,7 @@ export const CreateLoan: FC = () => {
 				<FundingBreakdown
 					control={control}
 					errors={errors}
-					remove={removeParticipant}
+					remove={handleRemove}
 					setOpenLenderModal={setOpenLenderModal}
 					setOpenParticipantModal={setOpenParticipantModal}
 					setValue={setValue}
@@ -185,6 +206,7 @@ export const CreateLoan: FC = () => {
 				append={appendParticipant}
 				openModal={openParticipantModal}
 				setOpenModal={setOpenParticipantModal}
+				constructionHoldbackValue={watch("constructionHoldback")}
 			/>
 
 			<SelectLender

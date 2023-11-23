@@ -99,6 +99,7 @@ export interface FundingBreakdown {
 	prorated: string;
 	regular: string;
 	loan: Loan;
+	type: "Investor" | "YieldSpread" | "Lender" | "Servicing";
 }
 
 export interface DkcLenders {

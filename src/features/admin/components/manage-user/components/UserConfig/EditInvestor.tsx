@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { userInvestorEditSchema } from "./general-schemas";
 import type { InvestorFields } from "../../types/fields";
 import useStore from "@/stores/app-store";
-import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
+import { removeCountryCode, unFormatPhone } from "@/utils/common-functions";
 import { ACCOUNT_OPTIONS } from "../../utils/constant";
 import { Icon } from "@/components/ui/Icon";
 
@@ -31,7 +31,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 	deleteUser,
 	enableUser,
 }) => {
-	console.log("🚀 ~ file: EditInvestor.tsx:34 ~ investor:", investor);
 	const {
 		register,
 		handleSubmit,

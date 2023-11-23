@@ -13,4 +13,5 @@ export interface ParticipationBreakdown {
 	regular: string;
 	investor: Investor;
 	loan: Loan;
+	type: "Investor" | "YieldSpread" | "Lender" | "Servicing";
 }

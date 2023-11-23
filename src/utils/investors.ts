@@ -1,6 +1,6 @@
-import moment from "moment/moment";
 import { FundingBreakdown } from "@/types/api/funding-breakdown";
-import { ParticipationBreakdown } from "@/types/api/paticipation-breakdown";
+import { ParticipationBreakdown } from "@/types/api/participation-breakdown";
+import moment from "moment/moment";
 import { moneyFormat } from "@/utils/formats";
 
 export const getLoanColumns = () => {

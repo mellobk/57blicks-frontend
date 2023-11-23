@@ -11,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoansService from "@/api/loans";
 import userStore from "@/stores/user-store";
 import { PermissionType } from "@/types/api/permissions-type";
-import { findPermission } from "@/utils/common-funtions";
+import { findPermission } from "@/utils/common-functions";
 import BorrowerNotifications from "../../BorrowerNotifications";
 import Payable from "../../Payable";
 

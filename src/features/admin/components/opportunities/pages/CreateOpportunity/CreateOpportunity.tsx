@@ -21,7 +21,7 @@ import { OpportunitySchema } from "@/features/admin/components/opportunities/sch
 import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
 import { tabsOpportunity } from "@/features/admin/components/opportunities/utils/tabs";
 import { defaultValues } from "@/features/admin/components/opportunities/utils/values";
-import { findPermission } from "@/utils/common-funtions";
+import { findPermission } from "@/utils/common-functions";
 import userStore from "@/stores/user-store";
 import { PermissionType } from "@/types/api/permissions-type";
 import { useNavigate } from "@tanstack/router";

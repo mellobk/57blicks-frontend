@@ -12,13 +12,13 @@ import { Table } from "./Table/Table";
 import { Toggle } from "@/components/ui/Toggle";
 import { ShowModal } from "@/features/admin/components/servicing/component/Page/ShowModal/ShowModal";
 import { formatDate, moneyFormat } from "@/utils/formats";
-import { validateDate } from "@/utils/common-funtions";
+import { validateDate } from "@/utils/common-functions";
 import LendersService from "@/api/lenders.ts";
 import type { Lender } from "@/types/api/lender";
 import LoansService from "@/api/loans";
 import { LoanStatusType } from "@/types/api/notifications";
 import moment from "moment";
-import { ParticipationBreakdown } from "@/types/api/paticipation-breakdown";
+import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 
 interface Props {
 	actualTab: string;

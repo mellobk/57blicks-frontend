@@ -3,12 +3,12 @@ import { type Control, type UseFormSetValue, useWatch } from "react-hook-form";
 import { type Option, Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
-import type { Loan } from "@/features/admin/components/create-loan/types/fields";
+import type {
+	FundingBreakdown,
+	Loan,
+} from "@/features/admin/components/create-loan/types/fields";
 import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
-import {
-	calculateProrated,
-	calculateRegular,
-} from "@/utils/common-funtions.ts";
+import { calculateProrated, calculateRegular } from "@/utils/common-functions";
 
 interface Props {
 	control: Control<Loan>;
@@ -36,26 +36,27 @@ export const SelectLender: FC<Props> = ({
 			],
 		});
 
-	const selectLender = () => {
+	const selectLender = (): void => {
 		const lender = LENDERS.find(
 			(lender: Option) => lender.code === selectedLender
 		);
 
 		if (lender) {
-			const newFundingBreakdown = [
+			const newFundingBreakdown: Array<FundingBreakdown> = [
 				{
 					amount: "",
-          constructionHoldback: "0",
+					constructionHoldback: "0",
 					investorId: lender.code,
 					lenderName: lender.name,
 					prorated: "0",
 					rate: "",
 					regular: "0",
+					type: "Lender",
 				},
 				{
 					amount: totalLoanAmount,
-          constructionHoldback: "0",
-          investorId: "servicing",
+					constructionHoldback: "0",
+					investorId: "servicing",
 					lenderName: "DKC Servicing Fee Income",
 					prorated: calculateProrated(
 						totalLoanAmount,
@@ -64,6 +65,7 @@ export const SelectLender: FC<Props> = ({
 					),
 					rate: interestRate,
 					regular: calculateRegular(totalLoanAmount, interestRate),
+					type: "Servicing",
 				},
 			];
 
@@ -79,7 +81,7 @@ export const SelectLender: FC<Props> = ({
 
 	return (
 		<Modal
-			onHide={() => {
+			onHide={(): void => {
 				setOpenModal(false);
 			}}
 			title="Select Lender"
@@ -89,7 +91,9 @@ export const SelectLender: FC<Props> = ({
 				data-testid="select-lender-select"
 				className="mt-6"
 				label="Lender"
-				onChange={(e) => setSelectedLender(e.target.value)}
+				onChange={(event): void => {
+					setSelectedLender(event.target.value as string);
+				}}
 				options={LENDERS}
 				placeholder="Select Lender"
 				value={selectedLender}

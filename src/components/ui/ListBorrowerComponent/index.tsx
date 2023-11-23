@@ -36,14 +36,6 @@ const ListBorrowerComponent: FC<ListBorrowerComponentProps> = ({
 			}
 
 			const newSelectedItemsArray: Array<ItemCheckboxBorrowerType> = [];
-			console.log(
-				"🚀 ~ file: index.tsx:43 ~ items.map ~ event.notes :",
-				event.notes
-			);
-			console.log(
-				"🚀 ~ file: index.tsx:54 ~ selectedItemsArray.map ~ selectedItemsArray:",
-				selectedItemsArray
-			);
 			items.map((item) => {
 				if (newSelectedItems.has(item.id)) {
 					newSelectedItemsArray.push({

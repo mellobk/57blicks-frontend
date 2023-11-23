@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { userAccountingEditSchema } from "./general-schemas";
 import type { AddAccountingFields } from "../../types/fields";
 import useStore from "@/stores/app-store";
-import { removeCountryCode, unFormatPhone } from "@/utils/common-funtions";
+import { removeCountryCode, unFormatPhone } from "@/utils/common-functions";
 import { Icon } from "@/components/ui/Icon";
 
 interface EditAccountingProps {

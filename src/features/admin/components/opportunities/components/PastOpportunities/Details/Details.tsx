@@ -16,7 +16,7 @@ import { Subtitle } from "@/features/admin/components/opportunities/components/P
 import type { Investment } from "@/types/api/investment";
 import type { Opportunity } from "@/types/api/opportunity";
 import { dateFormat } from "@/utils/formats";
-import { findPermission } from "@/utils/common-funtions";
+import { findPermission } from "@/utils/common-functions";
 import userStore from "@/stores/user-store";
 import { PermissionType } from "@/types/api/permissions-type";
 

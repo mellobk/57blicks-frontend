@@ -60,11 +60,6 @@ export const LoginForm: FC<LoginFormProps> = () => {
 
 			createLoginLog.mutate();
 
-			console.log(
-				sessionData?.accessToken?.payload["cognito:groups"][0] === "investor",
-				"------------>"
-			);
-
 			window.location.href =
 				groupAws === "investor"
 					? "/investors/portfolio"

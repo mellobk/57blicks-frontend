@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/Button";
 import { GlobalSearch } from "@/components/ui/GlobalSearch/GlobalSearch";
 import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
 import UserService from "../../../api/user.ts";
-import { findPermission } from "@/utils/common-funtions";
+import { findPermission } from "@/utils/common-functions.ts";
 import { PermissionType } from "@/types/api/permissions-type";
 
 type Props = {

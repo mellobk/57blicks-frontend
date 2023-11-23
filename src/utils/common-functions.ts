@@ -1,9 +1,10 @@
-import type { Permissions } from "./../features/admin/components/manage-user/types/api";
 import type {
 	Investor,
 	Role,
 	User,
 } from "@/features/admin/components/manage-user/types/api";
+
+import type { Permissions } from "../features/admin/components/manage-user/types/api";
 import { RoleType } from "@/types/api/permissions-type";
 import moment from "moment";
 
@@ -50,22 +51,31 @@ export const validateDate = (date: string): boolean => {
 };
 
 export const calculateRegular = (amount: string, rate: string) => {
-	return ((Number(amount) * (Number(rate) / 100)) / 12).toFixed(2);
+	return ((Number(amount) * (Number(rate) / 100)) / 12).toFixed(4);
+};
+
+export const round = (Number: number, precision: number): number => {
+	const factor = Math.pow(10, precision);
+	const temporaryNumber = Number * factor;
+	const roundedTemporaryNumber = Math.round(temporaryNumber);
+	return roundedTemporaryNumber / factor;
 };
 
 export const calculateProrated = (
 	amount: string,
 	rate: string,
 	originationDate: string
-) => {
+): string => {
 	let date = originationDate ? moment(originationDate, "MM-DD-YYYY") : moment();
 	date = date.isValid() ? date : moment();
 
 	const lastDayOfMonth = date.clone().endOf("month");
+
 	const daysUntilEndOfMonth = lastDayOfMonth.diff(date, "days") + 1;
+
 	const dailyRate = Number(rate) / 100 / 365;
 
-	return (Number(amount) * dailyRate * daysUntilEndOfMonth).toFixed(2);
+	return (Number(amount) * dailyRate * daysUntilEndOfMonth).toFixed(4);
 };
 
 export const getLabel = (name: string): string => {
