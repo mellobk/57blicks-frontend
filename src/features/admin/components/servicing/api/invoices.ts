@@ -26,7 +26,7 @@ const getInvoiceByLoanId = async (
 };
 
 const getInvoiceDetails = async (
-	id: number
+	id: string
 ): Promise<Array<Ledgers> | null> => {
 	try {
 		const response = await authApiClient.get<Array<Ledgers>>(
@@ -49,7 +49,7 @@ const sendInvoice = async (data: InvoiceSend): Promise<void> => {
 	}
 };
 
-const downloadInvoice = async (invoiceId: number): Promise<string> => {
+const downloadInvoice = async (invoiceId: string): Promise<string> => {
 	try {
 		const data = await authApiClient.post(downloadInvoiceApi(invoiceId), {});
 		return data.data;

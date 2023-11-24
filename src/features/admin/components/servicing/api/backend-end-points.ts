@@ -49,7 +49,7 @@ export const sendInvoices = (): string => {
 	return `/invoices/send`;
 };
 
-export const downloadInvoiceApi = (invoiceId: number): string => {
+export const downloadInvoiceApi = (invoiceId: string): string => {
 	return `/invoices/download/${invoiceId}`;
 };
 

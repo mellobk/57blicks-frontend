@@ -21,7 +21,7 @@ const InvoiceScreen: FC<InvoiceScreenProps> = ({ loan }) => {
 	const queryInvoiceDetails = useQuery(
 		["get-invoices-details"],
 		() => {
-			return ManageInvoiceService.getInvoiceDetails(invoice?.id || 0);
+			return ManageInvoiceService.getInvoiceDetails(invoice?.id || "");
 		},
 		{
 			onSuccess: (data: Array<Ledgers>) => {
