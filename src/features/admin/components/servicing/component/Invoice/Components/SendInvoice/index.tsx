@@ -25,7 +25,7 @@ const SendInvoice: FC<SendInvoiceProps> = ({ invoice }) => {
 		note: string
 	): void => {
 		const data: InvoiceSend = {
-			invoiceId: invoice.id || 0,
+			invoiceId: invoice.id || "",
 			notification: {
 				sms,
 				email,

@@ -13,6 +13,7 @@ import {
 	dateFormatOptions,
 	moneyFormat,
 } from "@/utils/formats";
+import { round } from "@/utils/common-functions";
 
 interface IInvoicePdfPreviewProps {
 	invoice: Invoice;
@@ -70,7 +71,7 @@ const IInvoicePdfPreview: FC<IInvoicePdfPreviewProps> = ({
 	const generatePDFData = (): void => {
 		setInvoiceDataPdf({
 			loanAmount: moneyFormat(Number.parseInt(loan.totalLoanAmount) || 0),
-			loanPercent: `${loan.interestRate} %`,
+			loanPercent: `${round(Number(loan.interestRate), 1)} %`,
 			originationDate: dateFormatFormat(invoice.date ?? ""),
 			maturityDate: dateFormatFormat(loan.maturityDate ?? ""),
 			interestPayment: calculateInterestPayment(ledgers),

@@ -24,6 +24,7 @@ import {
 import { userName } from "@/utils/constant";
 import { getLocalStorage } from "@/utils/local-storage";
 import type { Notification } from "@/features/admin/components/notifications/types/types";
+import Loading from "@/assets/icons/loading";
 
 export const CreateLoan: FC = () => {
 	const createLedgerQuery = useMutation(async (body: Notification) => {
@@ -65,6 +66,7 @@ export const CreateLoan: FC = () => {
 	const {
 		isError,
 		isSuccess,
+		isLoading,
 		mutate,
 		reset: resetMutation,
 		data,
@@ -154,6 +156,17 @@ export const CreateLoan: FC = () => {
 	}, [isError]);
 
 	useEffect(() => {}, [errors]);
+
+	if (isLoading) {
+		return (
+			<div className="flex flex-col w-full  items-center justify-items-center justify-center">
+				<div>
+					<Loading />
+				</div>
+				<div className="pt-6">Saving please wait...</div>
+			</div>
+		);
+	}
 
 	return (
 		<>

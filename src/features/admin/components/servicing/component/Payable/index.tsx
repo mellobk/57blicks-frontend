@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
+
 import type { FC } from "react";
 import { Icon } from "@/components/ui/Icon";
 import Loading from "@/assets/icons/loading";
@@ -6,7 +9,6 @@ import ManagePayablesService from "../../api/payable";
 import PayableMonths from "./PayableMonths";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 
 interface PayableProps {
 	loan: Loan;
@@ -15,7 +17,7 @@ interface PayableProps {
 const Payable: FC<PayableProps> = ({ loan }) => {
 	const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
 
-	const { data, isLoading } = useQuery(
+	const { data, isLoading, refetch } = useQuery(
 		["payables-list-query"],
 		() =>
 			ManagePayablesService.getPayables({
@@ -34,6 +36,11 @@ const Payable: FC<PayableProps> = ({ loan }) => {
 			setCurrentMonth(new Date(2100, 0, 1));
 		}
 	};
+
+	useEffect(() => {
+		console.log("🚀 ~ file: index.tsx:41 ~ useEffect ~ loan.id:", loan.id);
+		void refetch();
+	}, [loan.id]);
 
 	if (isLoading) {
 		return (

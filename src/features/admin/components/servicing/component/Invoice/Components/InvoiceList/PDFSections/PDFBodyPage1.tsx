@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "@react-pdf/renderer";
 
 import type { FC } from "react";
 import { InvoiceDataPdf } from "../../../types";
+import { round } from "@/utils/common-functions";
 
 const styles = StyleSheet.create({
 	loanSection: {
@@ -110,7 +111,10 @@ export const BodyPage1PDF: FC<BodyPage1PDFProps> = ({
 			</View>
 			<View style={[styles.block]}>
 				<Text style={styles.textLeftPercent}></Text>
-				<Text style={styles.textLeft}>{invoiceDataPdf.loanPercent}</Text>
+				<Text style={styles.textLeft}>
+					{invoiceDataPdf.loanPercent}
+					{round(Number(invoiceDataPdf.loanPercent), 1)}
+				</Text>
 			</View>
 		</View>
 		<View style={styles.content}>

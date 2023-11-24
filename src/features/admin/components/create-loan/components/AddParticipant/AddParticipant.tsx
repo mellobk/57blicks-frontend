@@ -44,8 +44,6 @@ export const AddParticipant: FC<Props> = ({
 		control,
 		name: ["participant"],
 	});
-	console.log("🚀 ~ file: AddParticipant.tsx:47 ~ participant:", participant);
-
 	const onSubmit = (data: Participant): void => {
 		const participant = investorsQuery?.data?.find(
 			(participant) => participant.id === data.participant
