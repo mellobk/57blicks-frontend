@@ -1,5 +1,6 @@
 export interface Invoice {
-	id?: number;
+	id?: string;
+	invoiceNumber: number;
 	startDate: Date;
 	endDate: Date;
 	date: Date;
@@ -37,6 +38,6 @@ export interface notification {
 }
 
 export interface InvoiceSend {
-	invoiceId: number;
+	invoiceId: string;
 	notification: notification;
 }

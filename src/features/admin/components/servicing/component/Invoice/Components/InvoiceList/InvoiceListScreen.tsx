@@ -23,7 +23,10 @@ const InvoiceListScreen: FC<InvoiceListScreenProps> = ({
 			const currentYear = new Date(invoice.startDate).getFullYear();
 
 			const auxData: InvoiceTypeArray = {
-				name: formatInvoiceName(new Date(invoice.startDate), invoice.id || 0),
+				name: formatInvoiceName(
+					new Date(invoice.startDate),
+					invoice.invoiceNumber || 0
+				),
 				...invoice,
 				type: "list",
 				active: false,

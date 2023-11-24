@@ -39,7 +39,10 @@ const InvoiceDetail: FC<InvoiceDetailProps> = ({ invoice }) => {
 			<div className="mb-2 flex justify-between pr-8 pl-2 ">
 				<div className="text-gold-400 capitalize">
 					{invoice ? (
-						formatInvoiceName(new Date(invoice.startDate), invoice.id || 0)
+						formatInvoiceName(
+							new Date(invoice.startDate),
+							invoice.invoiceNumber || 0
+						)
 					) : (
 						<></>
 					)}
@@ -59,7 +62,7 @@ const InvoiceDetail: FC<InvoiceDetailProps> = ({ invoice }) => {
 			</div>
 			<div className="mb-2 flex justify-between pr-8 pl-2 ">
 				<div className="text-gray-400">Invoice Number</div>
-				{invoice && <>#{invoice.id}</>}
+				{invoice && <>#{invoice.invoiceNumber}</>}
 			</div>
 			<div className="mb-2 flex justify-between pr-8 pl-2 capitalize ">
 				<div className="text-gray-400">Invoice Month</div>{" "}
@@ -73,7 +76,7 @@ const InvoiceDetail: FC<InvoiceDetailProps> = ({ invoice }) => {
 			</div>
 			<div className="mb-2 flex justify-between pr-8 pl-2 ">
 				<div className="text-gray-400">Last Invoice</div>{" "}
-				{invoice && <>{invoice.lastSent}</>}
+				{invoice && <>{new Date(invoice.lastSent).toDateString()}</>}
 			</div>
 		</div>
 	);
