@@ -6,6 +6,7 @@ export enum LedgerTypeOfPayment {
 	PRINCIPAL = "Principal",
 	LATE_FEE = "Late fee",
 	CUSTOM = "Custom",
+	DUE_TO_DRAW = "Due to draw",
 }
 
 export enum LedgerType {

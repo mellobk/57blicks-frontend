@@ -10,12 +10,12 @@ interface DownloadInvoiceProps {
 }
 
 const DownloadInvoice: FC<DownloadInvoiceProps> = ({ invoice }) => {
-	const invoiceMutation = useMutation((invoiceId: number) => {
+	const invoiceMutation = useMutation((invoiceId: string) => {
 		return ManageInvoiceService.downloadInvoice(invoiceId);
 	});
 
 	const handleDownload = (): void => {
-		invoiceMutation.mutate(invoice.id || 0, {
+		invoiceMutation.mutate(invoice.id || "", {
 			onSuccess: (data) => {
 				if (data) {
 					downloadFileFromUrl(data, `invoice-${invoice.id}.pdf`);
