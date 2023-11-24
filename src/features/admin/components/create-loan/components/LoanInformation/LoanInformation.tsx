@@ -106,12 +106,11 @@ export const LoanInformation: FC<Props> = ({
 						// maxDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
 						// minDate: new Date(),
 						name: "originationDate",
-						className:"[&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
+						className:"[&>*]:flex [&>*]:w-50 [&>*]:h-10 [&>*]:py-3 [&>*]:px-4 [&>*]:self-stretch [&>*]:rounded-md [&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
 						wrapperClassName: "mt-6" + inputClassName(errors?.originationDate?.message),
 						onChange: (date: Date): void => {
 						setValue("originationDate", moment(date).format("MM-DD-YYYY"));
 						},
-						dateFormat: "mm-dd-yyyy",
 					}}
 				/>
                 <MaskInput
@@ -128,8 +127,8 @@ export const LoanInformation: FC<Props> = ({
 						// maxDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
 						// minDate: new Date(),
 						name: "maturityDate",
-						className:"[&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
-						wrapperClassName: "mt-6" + inputClassName(errors?.originationDate?.message),
+						className:"[&>*]:flex [&>*]:w-50 [&>*]:h-10 [&>*]:py-3 [&>*]:px-4 [&>*]:self-stretch [&>*]:rounded-md [&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
+						wrapperClassName: "mt-6" + inputClassName(errors?.maturityDate?.message),
 						onChange: (date: Date): void => {
 						setValue("maturityDate", moment(date).format("MM-DD-YYYY"), {
 							shouldValidate: true,
@@ -177,8 +176,8 @@ export const LoanInformation: FC<Props> = ({
 						// maxDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
 						// minDate: new Date(),
 						name: "collaterals.0.insuranceExpirationDate",
-						className:"[&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
-						wrapperClassName: "mt-6" + inputClassName(errors?.originationDate?.message),
+						className:"[&>*]:flex [&>*]:w-50 [&>*]:h-10 [&>*]:py-3 [&>*]:px-4 [&>*]:self-stretch [&>*]:rounded-md [&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
+						wrapperClassName: "mt-6" + inputClassName(errors?.collaterals?.message),
 						onChange: (date: Date): void => {
 						setValue("collaterals.0.insuranceExpirationDate", moment(date).format("MM-DD-YYYY"), {
 							shouldValidate: true,
