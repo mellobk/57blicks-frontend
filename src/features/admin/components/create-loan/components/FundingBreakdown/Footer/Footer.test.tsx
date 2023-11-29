@@ -1,14 +1,25 @@
 import "@testing-library/jest-dom";
 
-import React from "react";
 import { render, screen } from "@testing-library/react";
+
 import { Footer } from "./Footer";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
+import { LoanSchema } from "@/features/admin/components/create-loan/schemas/LoanSchema";
+import type React from "react";
+import { defaultValues } from "@/features/admin/components/create-loan/utils/values";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface Props {
-  disabled?: boolean;
+	disabled?: boolean;
 }
 
 const WrappedFooter: React.FC<Props> = ({ disabled = false }) => {
+	const { control, setValue } = useForm<Loan>({
+		defaultValues: defaultValues,
+		resolver: zodResolver(LoanSchema),
+	});
+
 	const totals = {
 		amount: 500,
 		constructionHoldback: 300,
@@ -17,7 +28,14 @@ const WrappedFooter: React.FC<Props> = ({ disabled = false }) => {
 		regular: 1.99,
 	};
 
-	return <Footer disabled={disabled} totals={totals} />;
+	return (
+		<Footer
+			disabled={disabled}
+			totals={totals}
+			setValue={setValue}
+			control={control}
+		/>
+	);
 };
 
 describe("Footer", () => {
@@ -32,7 +50,7 @@ describe("Footer", () => {
 		expect(screen.getByText("--")).toBeInTheDocument();
 		expect(screen.getByText("$1.32")).toBeInTheDocument();
 		expect(screen.getByText("$1.99")).toBeInTheDocument();
-    expect(screen.getByText("$300.00")).toBeInTheDocument();
+		expect(screen.getByText("$300.00")).toBeInTheDocument();
 	});
 
 	it("applies correct class based on totals and totalLoanAmount", () => {

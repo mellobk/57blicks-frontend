@@ -159,11 +159,13 @@ export const CreateLoan: FC = () => {
 
 	if (isLoading) {
 		return (
-			<div className="flex flex-col w-full  items-center justify-items-center justify-center">
-				<div>
-					<Loading />
+			<div className="flex flex-col rounded-3xl bg-white gap-6 divide-y divide-gray-200 w-screen p-6 h-full overflow-y-auto">
+				<div className="flex flex-col w-full  items-center justify-items-center justify-center">
+					<div>
+						<Loading />
+					</div>
+					<div className="pt-6">Saving please wait...</div>
 				</div>
-				<div className="pt-6">Saving please wait...</div>
 			</div>
 		);
 	}

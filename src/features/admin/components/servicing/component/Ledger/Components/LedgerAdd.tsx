@@ -89,7 +89,6 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					<>
 						<DatePicker
 							placeholder="MM-DD-YYYY"
-							maxDate={new Date()}
 							minDate={moment(loan.originationDate).toDate()}
 							name={`ledgers.${index}.ledgerDate`}
 							className="h-12 rounded-none [&>*]:rounded-none [&>*]:border-gold-500  [&>*]:border-2"
@@ -162,7 +161,6 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					<>
 						<DatePicker
 							placeholder="M, YYYY"
-							maxDate={new Date()}
 							minDate={moment(loan.originationDate).toDate()}
 							name={`ledgers.${index}.month`}
 							view="month"
@@ -198,7 +196,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					dataLedgers && dataLedgers.memo
 				)}
 			</td>
-			<td style={{ paddingLeft: "20px", width: "220px" }}>
+			<td style={{ paddingLeft: "20px", width: "220px", textAlign: "right" }}>
 				{dataLedgers?.editable ? (
 					<InputNumber
 						{...register(`ledger.${index}.debit` as never)}
@@ -220,7 +218,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					moneyFormat(dataLedgers.debit || 0)
 				)}
 			</td>
-			<td style={{ paddingLeft: "20px", width: "220px" }}>
+			<td style={{ paddingLeft: "20px", width: "220px", textAlign: "right" }}>
 				{dataLedgers?.editable ? (
 					<InputNumber
 						{...register(`ledger.${index}.credit` as never)}
@@ -247,6 +245,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					paddingLeft: "20px",
 					width: "150px",
 					color: `${errors?.ledgers?.[index]?.balance ? "red" : ""}`,
+					textAlign: "right",
 				}}
 			>
 				<div
