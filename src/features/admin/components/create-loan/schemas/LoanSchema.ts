@@ -45,6 +45,14 @@ export const LoanSchema = z.object({
 		.string()
 		.nonempty(errorMessages.required)
 		.max(15, errorMessages.maxLength),
+	principal: z
+		.string()
+		.nonempty(errorMessages.required)
+		.max(15, errorMessages.maxLength),
+	balance: z
+		.string()
+		.nonempty(errorMessages.required)
+		.max(15, errorMessages.maxLength),
 	regular: z
 		.string()
 		.nonempty(errorMessages.required)

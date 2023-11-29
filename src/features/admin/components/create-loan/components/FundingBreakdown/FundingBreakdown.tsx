@@ -290,6 +290,7 @@ export const FundingBreakdown: FC<Props> = ({
 		setValue("fundingBreakdown.1.amount", totalLoanAmount);
 		setValue("principal", totalLoanAmount);
 		setValue("balance", totalLoanAmount);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [totalLoanAmount]);
 
 	return (
