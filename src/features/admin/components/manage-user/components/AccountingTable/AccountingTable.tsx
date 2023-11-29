@@ -21,8 +21,10 @@ import {
 import userStore from "@/stores/user-store.ts";
 import { PermissionType } from "@/types/api/permissions-type";
 import { TabData } from "../../utils/tabs";
+import { useNavigate } from "@tanstack/router";
 
 export const AccountingTable: FC = () => {
+	const navigate = useNavigate();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
@@ -30,6 +32,24 @@ export const AccountingTable: FC = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 	const [detailModal, setDetailModal] = useState<boolean>(true);
+
+	useEffect(() => {
+		const find = findPermission(
+			userLoggedInfo?.role,
+			userLoggedInfo?.permissionGroup?.permissions || [],
+			PermissionType.VIEW_ACCOUNTS
+		);
+
+		const findEdit = findPermission(
+			userLoggedInfo?.role,
+			userLoggedInfo?.permissionGroup?.permissions || [],
+			PermissionType.EDIT_ACCOUNTING
+		);
+
+		if ((!find || !findEdit) && !emptyObject(userLoggedInfo)) {
+			void navigate({ to: `/reporting` });
+		}
+	}, [userLoggedInfo]);
 
 	const accountQuery = useQuery(
 		["account-query"],

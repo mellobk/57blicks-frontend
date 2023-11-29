@@ -13,12 +13,12 @@ import DataTable from "react-data-table-component";
 import { downloadCSV } from "@/utils/create-cvs";
 import { downloadXLSX } from "@/utils/create-xlsx";
 
-const PropertyInsurance = () => {
+const PropertyTax = () => {
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const propertyInsuranceQuery = useQuery(
-		["property-insurance"],
+		["property-tax"],
 		() => {
-			return ManageReportsService.getDefaultInsuranceLoan();
+			return ManageReportsService.getDefaultTaxLoan();
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -49,7 +49,7 @@ const PropertyInsurance = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadCSV(data, "insurancesLoans.csv");
+		downloadCSV(data, "taxLoans.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -78,7 +78,7 @@ const PropertyInsurance = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadXLSX(data, "insurancesLoans.xlsx");
+		downloadXLSX(data, "taxLoans.xlsx");
 	};
 
 	const columns = [
@@ -113,7 +113,7 @@ const PropertyInsurance = () => {
 							setOpenInsurance(true);
 						}}
 					>
-						Property Insurance
+						Property tax
 					</div>
 					<div className="flex gap-2 ml-2" onClick={downloadReport}>
 						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
@@ -154,7 +154,7 @@ const PropertyInsurance = () => {
 				onHide={() => {
 					setOpenInsurance(false);
 				}}
-				title="Default Insurance Loans"
+				title="Default Tax Loans"
 			>
 				<DataTable
 					columns={columns}
@@ -166,4 +166,4 @@ const PropertyInsurance = () => {
 	);
 };
 
-export default PropertyInsurance as any;
+export default PropertyTax as any;

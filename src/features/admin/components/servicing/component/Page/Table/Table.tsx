@@ -103,7 +103,7 @@ export const Table: FC<Props> = ({
 	const createFooter = (data: Array<FundingBreakdown>) => {
 		const totalRow = data?.length || 0;
 		const totalLoanAmount = data?.map((data: FundingBreakdown) => {
-			return Number.parseFloat(data.loan.totalLoanAmount);
+			return Number.parseFloat(data.loan.totalLoanAmount || "");
 		});
 		const totalRegularAmount = data?.map((data: FundingBreakdown) => {
 			return Number.parseFloat(data.regular);

@@ -216,6 +216,21 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 			userLoggedQuery?.data?.role,
 			userLoggedQuery?.data?.permissionGroup?.permissions || [],
 			PermissionType.VIEW_ACCOUNTS
+		) ||
+		findPermission(
+			userLoggedQuery?.data?.role,
+			userLoggedQuery?.data?.permissionGroup?.permissions || [],
+			PermissionType.EDIT_ACCOUNTING
+		) ||
+		findPermission(
+			userLoggedQuery?.data?.role,
+			userLoggedQuery?.data?.permissionGroup?.permissions || [],
+			PermissionType.EDIT_ADMINS
+		) ||
+		findPermission(
+			userLoggedQuery?.data?.role,
+			userLoggedQuery?.data?.permissionGroup?.permissions || [],
+			PermissionType.EDIT_INVESTORS
 		)
 			? NavbarData.users
 			: NavbarData.empty,
