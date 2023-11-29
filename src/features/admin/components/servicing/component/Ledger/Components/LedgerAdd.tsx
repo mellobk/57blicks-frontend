@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState, MutableRefObject } from "react";
 
 import {
 	ApprovalStateType,
@@ -20,6 +20,7 @@ import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 import LedgerApprove from "./LedgerApprove";
 import type { Loan } from "@/features/admin/components/servicing/types/api";
 import moment from "moment";
+import { columnWidth } from "./header/column-width";
 interface LedgerAddProps {
 	field: FieldArrayWithId<Ledger>;
 	index: number;
@@ -44,6 +45,7 @@ interface LedgerAddProps {
 	register: UseFormRegister<LedgerFormValues>;
 	handleRemove: (index: number, id: string) => void;
 	handleOpenModal: (value: boolean, index: number) => void;
+	lastScrollAdd: MutableRefObject<HTMLElement | null> | null;
 }
 
 export const LedgerAdd: FC<LedgerAddProps> = ({
@@ -51,6 +53,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	errors,
 	data,
 	loan,
+	lastScrollAdd,
 	handleSetValue,
 	handleSetDate,
 	handleSetMonth,
@@ -78,20 +81,21 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	};
 
 	return (
-		<tr
+		<li
 			key={`ledger-${index}`}
-			className={`relative border-b border-gray-200 h-12 ${
-				dataLedgers && dataLedgers.editable ? "bg-gray-50" : ""
-			} `}
+			className={`w-full flex flex-row   pb-1  pl-4   gap-4   relative border-b border-gray-200 ${
+				dataLedgers?.editable ? "" : "pt-[12px]"
+			} h-12 ${dataLedgers && dataLedgers.editable ? "bg-gray-50" : ""} pb-10 `}
+			ref={lastScrollAdd as MutableRefObject<HTMLLIElement>}
 		>
-			<td style={{ paddingLeft: "20px", width: "150px" }}>
+			<div className={`${columnWidth.date} text-primary-200  pl-4`}>
 				{dataLedgers?.editable ? (
 					<>
 						<DatePicker
 							placeholder="MM-DD-YYYY"
 							minDate={moment(loan.originationDate).toDate()}
 							name={`ledgers.${index}.ledgerDate`}
-							className="h-12 rounded-none [&>*]:rounded-none [&>*]:border-gold-500  [&>*]:border-2"
+							className="h-10 rounded-none [&>*]:rounded-none [&>*]:border-gold-500  [&>*]:border-2"
 							value={
 								dataLedgers.ledgerDate
 									? moment(dataLedgers.ledgerDate, "MMDDYYYY").toDate()
@@ -108,8 +112,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					dataLedgers.ledgerDate &&
 					dateWithFormatUS(dataLedgers.ledgerDate ?? "", "MM-DD-YYYY")
 				)}
-			</td>
-			<td style={{ paddingLeft: "20px", width: "160px" }}>
+			</div>
+			<div className={`${columnWidth.class} text-primary-200  pl-4`}>
 				<div
 					className={`flex justify-between items-center ${
 						errors?.ledgers?.[index]?.typeOfPayment
@@ -132,7 +136,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 								<div className="text-gray-400">Type of Payment</div>
 							)}
 							<div
-								className="cursor-pointer pl-4"
+								className="cursor-pointer pl-4 pt-[14px]"
 								onClick={(): void => {
 									handleOpenModal(true, index);
 								}}
@@ -144,8 +148,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						<>{dataLedgers && dataLedgers.typeOfPaymentDescription}</>
 					)}
 				</div>
-			</td>
-			<td style={{ paddingLeft: "20px", width: "100px" }}>
+			</div>
+			<div className={`${columnWidth.debitCredit} text-primary-200  pl-4`}>
 				<div>
 					{dataLedgers && dataLedgers.debit && dataLedgers.debit > 0 ? (
 						<Tag variant="success" text="Debit" />
@@ -155,8 +159,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						dataLedgers.credit > 0 && <Tag variant="danger" text="Credit" />
 					)}
 				</div>
-			</td>
-			<td style={{ paddingLeft: "20px", width: "150px" }}>
+			</div>
+			<div className={`${columnWidth.month} text-primary-200  pl-4`}>
 				{dataLedgers?.editable ? (
 					<>
 						<DatePicker
@@ -164,7 +168,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							minDate={moment(loan.originationDate).toDate()}
 							name={`ledgers.${index}.month`}
 							view="month"
-							className="h-12 rounded-none [&>*]:rounded-none [&>*]:border-gold-500  [&>*]:border-2"
+							className="h-10 rounded-none [&>*]:rounded-none [&>*]:border-gold-500  [&>*]:border-2"
 							dateFormat="M, yy"
 							value={
 								dataLedgers.month
@@ -181,8 +185,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				) : (
 					<>{dataLedgers && moment(dataLedgers.month).format("MMM, YYYY")}</>
 				)}
-			</td>
-			<td style={{ paddingLeft: "20px", width: "220px" }}>
+			</div>
+			<div className={`${columnWidth.memo} text-primary-200  pl-4`}>
 				{dataLedgers?.editable ? (
 					<input
 						{...register(`ledgers.${index}.memo` as const)}
@@ -195,8 +199,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				) : (
 					dataLedgers && dataLedgers.memo
 				)}
-			</td>
-			<td style={{ paddingLeft: "20px", width: "220px", textAlign: "right" }}>
+			</div>
+			<div className={`${columnWidth.debit} text-primary-200  pl-4 text-right`}>
 				{dataLedgers?.editable ? (
 					<InputNumber
 						{...register(`ledger.${index}.debit` as never)}
@@ -217,8 +221,10 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					dataLedgers.debit &&
 					moneyFormat(dataLedgers.debit || 0)
 				)}
-			</td>
-			<td style={{ paddingLeft: "20px", width: "220px", textAlign: "right" }}>
+			</div>
+			<div
+				className={`${columnWidth.credit} text-primary-200  pl-4 text-right `}
+			>
 				{dataLedgers?.editable ? (
 					<InputNumber
 						{...register(`ledger.${index}.credit` as never)}
@@ -239,17 +245,14 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					dataLedgers.credit &&
 					moneyFormat(dataLedgers.credit || 0)
 				)}
-			</td>
-			<td
-				style={{
-					paddingLeft: "20px",
-					width: "150px",
-					color: `${errors?.ledgers?.[index]?.balance ? "red" : ""}`,
-					textAlign: "right",
-				}}
+			</div>
+			<div
+				className={`${columnWidth.balance}  ${
+					dataLedgers?.editable ? "pt-[12px]" : ""
+				} text-primary-200  pl-4  text-right`}
 			>
 				<div
-					className={`flex justify-between items-center ${
+					className={` text-right pr-6 ${
 						errors?.ledgers?.[index]?.balance
 							? "   border-2 border-red-ERROR h-[43px]   "
 							: ""
@@ -259,8 +262,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						? moneyFormat(dataLedgers?.balance)
 						: "0.00"}
 				</div>
-			</td>
-			<td style={{ paddingRight: "30px", width: "80px" }}>
+			</div>
+			<div className={`${columnWidth.action} text-primary-200  pl-4`}>
 				<div className="flex justify-between items-center gap-6">
 					<div
 						key={`edit-${index}`}
@@ -313,7 +316,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					title="Delete Ledger"
 					visible={openConfirmation}
 				/>
-			</td>
-		</tr>
+			</div>
+		</li>
 	);
 };

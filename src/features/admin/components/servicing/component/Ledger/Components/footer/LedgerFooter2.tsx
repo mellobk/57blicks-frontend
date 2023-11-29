@@ -40,7 +40,19 @@ const LedgerFooter2: FC<LedgerFooter1Props> = ({ ledgers }) => {
 
 	return (
 		<>
-			<div className="w-[98%] absolute bottom-[25px] rounded-xl">
+			<div className="w-[97%] absolute bottom-[25px] rounded-xl text-[14px] text-black">
+				<ul className="">
+					<li
+						className={`w-full flex flex-row   pb-1 pt-[6px] pl-4   gap-4 bg-gray-200 font-semibold rounded-b-xl h-10 rounded-b-xl `}
+					>
+						<div className="w-[100%] text-center ">
+							Total Active Loan Amount: {moneyFormat(totals.balance) || "$ 0"}
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			{/* <div className="w-[98%] absolute bottom-[25px] rounded-xl">
 				<table className="w-full  rounded-xl bg-white flex flex-col justify-between  ">
 					<tfoot className="bg-gray-200 h-10 ">
 						<tr>
@@ -56,8 +68,6 @@ const LedgerFooter2: FC<LedgerFooter1Props> = ({ ledgers }) => {
 							>
 								Total Active Loan Amount:
 							</td>
-							<td style={{ width: "100px", paddingLeft: "20px" }}></td>
-							<td style={{ width: "230px", paddingLeft: "20px" }}></td>
 							<td
 								style={{
 									width: "260px",
@@ -72,7 +82,7 @@ const LedgerFooter2: FC<LedgerFooter1Props> = ({ ledgers }) => {
 						</tr>
 					</tfoot>
 				</table>
-			</div>
+			</div> */}
 		</>
 	);
 };
