@@ -21,7 +21,6 @@ import { TypeOfPayment } from "../../TypeOfPayment/TypeOfPayment";
 import { useMutation } from "@tanstack/react-query";
 import ManageLedgerService from "@/features/admin/components/servicing/api/ledger";
 import { v4 as uuidv4 } from "uuid";
-import { Icon } from "@/components/ui/Icon";
 import { dateWithFormat } from "@/utils/formats";
 import { calculateBalance } from "../utils/calculate-balance";
 import type { Loan } from "@/features/admin/components/servicing/types/api";
