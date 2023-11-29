@@ -4,13 +4,13 @@ import { Modal } from "@/components/ui/Modal";
 import { Table } from "@/components/ui/Table";
 import type {
 	DueToDrawDetails,
-	LoanOverviewFields,
+	ILoanOverview,
 } from "@/features/admin/components/loan-overview/types/fields";
 import { Title } from "@/components/ui/Title";
 import { moneyFormat } from "@/utils/formats";
 
 type Props = {
-	data: LoanOverviewFields;
+	data: ILoanOverview;
 	openModal: boolean;
 	setOpenModal: (openModal: boolean) => void;
 };
@@ -42,7 +42,10 @@ export const DueToDraws: FC<Props> = ({ data, openModal, setOpenModal }) => {
 	const ModalTitle = () => (
 		<div className="flex flex-row gap-2.5">
 			<Title text="Due to Draws" />
-			<Title color="text-green-500" text={moneyFormat(data.dueToDraws)} />
+			<Title
+				color="text-green-500"
+				text={moneyFormat(data.principleOverview.dueToDraws)}
+			/>
 		</div>
 	);
 
@@ -56,11 +59,7 @@ export const DueToDraws: FC<Props> = ({ data, openModal, setOpenModal }) => {
 			visible={openModal}
 			width="94%"
 		>
-			<Table
-				className="rounded-t-lg"
-				columns={columns}
-				data={data.dueToDrawDetails}
-			/>
+			<Table className="rounded-t-lg" columns={columns} data={[]} />
 		</Modal>
 	);
 };

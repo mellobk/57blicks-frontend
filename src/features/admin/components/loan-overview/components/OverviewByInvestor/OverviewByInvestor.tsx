@@ -1,7 +1,7 @@
 import { type FC, useState } from "react";
 import { createTheme, type TableColumn } from "react-data-table-component";
 import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { Cell } from "@/components/table/Cell";
 import { CellInput } from "@/components/table/CellInput";
@@ -11,30 +11,23 @@ import { Table } from "@/components/ui/Table";
 import { Title } from "@/components/ui/Title";
 import { ExpandedComponent } from "@/features/admin/components/loan-overview/components/ExpandedComponent/ExpandedComponent";
 import { Footer } from "@/features/admin/components/loan-overview/components/Footer/Footer";
-import type {
-	FundingBreakdown,
-	LoanOverviewFields,
-} from "@/features/admin/components/loan-overview/types/fields";
+import type { IInvestorOverview, ILoanOverview } from "../../types/fields";
 
 type Props = {
-	data: LoanOverviewFields;
+	data: ILoanOverview;
 };
 
 export const OverviewByInvestor: FC<Props> = ({ data }) => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
-	const { control } = useForm<LoanOverviewFields>({
+	const { control } = useForm<ILoanOverview>({
 		defaultValues: data,
 	});
-	const fundingBreakdown = useWatch({
-		control,
-		name: "fundingBreakdown",
-	});
-	const columns: Array<TableColumn<FundingBreakdown>> = [
+	const columns: Array<TableColumn<IInvestorOverview>> = [
 		{
-			cell: (row) => <Cell format="text" value={row.lender} />,
+			cell: (row) => <Cell format="text" value={row.name} />,
 			name: "Lenders and Participants",
-			selector: (row) => row.lender,
+			selector: (row) => row.name,
 			sortable: true,
 			style: { padding: 0 },
 		},
@@ -46,9 +39,9 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 			style: { padding: 0 },
 		},
 		{
-			cell: (row) => <Cell format="money" value={row.totalDrawn} />,
+			cell: (row) => <Cell format="money" value={row.totalDrawnToDate} />,
 			name: "Total Drawn to Date",
-			selector: (row) => row.totalDrawn,
+			selector: (row) => row.totalDrawnToDate,
 			sortable: true,
 			style: { padding: 0 },
 		},
@@ -136,9 +129,6 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 							}
 							iconWidth={searchValue ? "10" : "18"}
 							iconName={searchValue ? "wrong" : "search"}
-							onChange={(data) => {
-								setSearchValue(data.target.value);
-							}}
 							clickIcon={() => {
 								setSearchValue("");
 							}}
@@ -154,18 +144,18 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 				<Table
 					className="p-0 m-0"
 					columns={columns}
-					data={data.fundingBreakdown}
+					data={data.overviewByInvestors}
 					expandableRows
 					expandableRowDisabled={(row) => !row.participants?.length}
 					expandableRowsComponent={({
 						...props
-					}: ExpanderComponentProps<FundingBreakdown>) => (
+					}: ExpanderComponentProps<IInvestorOverview>) => (
 						<ExpandedComponent control={control} {...props} />
 					)}
 					theme="overview"
 				/>
 
-				<Footer data={fundingBreakdown} />
+				<Footer data={[]} />
 			</div>
 		</div>
 	);
