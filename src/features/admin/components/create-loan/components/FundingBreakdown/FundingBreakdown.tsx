@@ -158,7 +158,15 @@ export const FundingBreakdown: FC<Props> = ({
 		},
 		{
 			cell: (row, rowIndex): React.ReactNode => {
-				if (row.investorId !== "servicing" && row.type !== "YieldSpread") {
+				if (row.type === "YieldSpread") {
+					let hasError: string | undefined = undefined;
+					setError(null);
+					if (Number(row.rate) < 0) {
+						hasError = "Negative not allowed";
+						setError(hasError);
+					}
+					return <Cell format="percentage" value={row.rate} error={hasError} />;
+				} else {
 					let hasError: string | undefined = undefined;
 					setError(null);
 					if (Number(row.rate) < 0) {
@@ -190,7 +198,6 @@ export const FundingBreakdown: FC<Props> = ({
 						/>
 					);
 				}
-				return <Cell format="percentage" value={row.rate} />;
 			},
 			name: "Rate",
 			style: {
@@ -281,14 +288,9 @@ export const FundingBreakdown: FC<Props> = ({
 
 	useEffect(() => {
 		setValue("fundingBreakdown.1.amount", totalLoanAmount);
+		setValue("principal", totalLoanAmount);
+		setValue("balance", totalLoanAmount);
 	}, [totalLoanAmount]);
-
-	useEffect(() => {
-		setValue(
-			"fundingBreakdown.1.rate",
-			String(Number(interestRate) - Number(fundingBreakdown?.[0]?.rate || 0))
-		);
-	}, [fundingBreakdown?.[0]?.rate, interestRate]);
 
 	return (
 		<>
@@ -316,7 +318,12 @@ export const FundingBreakdown: FC<Props> = ({
 					columns={columns}
 					data={[...fundingBreakdown, ...participationBreakdown]}
 				/>
-				<Footer disabled={disabled} totals={totals} />
+				<Footer
+					disabled={disabled}
+					totals={totals}
+					control={control}
+					setValue={setValue}
+				/>
 			</div>
 			<div>
 				<Button

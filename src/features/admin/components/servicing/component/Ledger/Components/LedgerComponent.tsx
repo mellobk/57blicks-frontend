@@ -7,6 +7,7 @@ import { type FC, useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import {
 	ApprovalStateType,
+	type LedgersTotals,
 	type LedgerFormValues,
 	type Ledgers,
 } from "../types";
@@ -20,7 +21,7 @@ import { useMutation } from "@tanstack/react-query";
 import ManageLedgerService from "@/features/admin/components/servicing/api/ledger";
 import { v4 as uuidv4 } from "uuid";
 import { Icon } from "@/components/ui/Icon";
-import { dateWithFormat, moneyFormat } from "@/utils/formats";
+import { dateWithFormat } from "@/utils/formats";
 import { calculateBalance } from "../utils/calculate-balance";
 import type { Loan } from "@/features/admin/components/servicing/types/api";
 import { toast } from "react-toastify";
@@ -29,6 +30,8 @@ import ManageNotificationService from "@/features/admin/components/notifications
 import { getLocalStorage } from "@/utils/local-storage";
 import { userName } from "@/utils/constant";
 import moment from "moment";
+import LedgerFooter1 from "./footer/LedgerFooter1";
+import LedgerFooter2 from "./footer/LedgerFooter2";
 interface LedgerComponentProps {
 	loan: Loan;
 	ledgersData?: Array<Ledgers>;
@@ -86,7 +89,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		}
 	);
 
-	const [totals, setTotals] = useState({
+	const [, setTotals] = useState<LedgersTotals>({
 		debits: 0,
 		credits: 0,
 		balance: 0,
@@ -286,8 +289,8 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				})}
 			>
 				<div
-					className="h-full w-full rounded-xl bg-white flex flex-col justify-between "
-					style={{ overflow: "overlay" }}
+					className="w-full rounded-xl bg-white flex flex-col justify-between "
+					style={{ overflow: "overlay", height: "calc(100vh - 250px)" }}
 				>
 					<table>
 						<thead className="bg-gray-200 h-10">
@@ -360,43 +363,12 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 							</tr>
 						</tbody>
 					</table>
-					<div className="w-[98%] absolute bottom-6 rounded-xl">
-						<table className="w-full  rounded-xl bg-white flex flex-col justify-between  ">
-							<tfoot className="bg-gray-200 h-10 ">
-								<tr>
-									<td
-										style={{
-											width: "180px",
-											paddingLeft: "20px",
-										}}
-									></td>
-									<td
-										style={{
-											width: "160px",
-											paddingLeft: "20px",
-											verticalAlign: "middle",
-											textAlign: "center",
-											paddingTop: "5px",
-										}}
-									>
-										Totals: {allFields.ledgers.length}
-									</td>
-									<td style={{ width: "100px", paddingLeft: "20px" }}></td>
-									<td style={{ width: "230px", paddingLeft: "20px" }}></td>
-									<td style={{ width: "260px", paddingLeft: "20px" }}>
-										{moneyFormat(totals.debits) || "$ 0"}
-									</td>
-									<td style={{ width: "220px", paddingLeft: "20px" }}>
-										{moneyFormat(totals.credits) || "$ 0"}
-									</td>
-									<td style={{ width: "150px", paddingLeft: "20px" }}>
-										{moneyFormat(totals.balance) || "$ 0"}
-									</td>
-									<td style={{ width: "10px" }}></td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
+					{ledgersData && (
+						<>
+							<LedgerFooter1 ledgers={ledgersData} />
+							<LedgerFooter2 ledgers={ledgersData} />
+						</>
+					)}
 				</div>
 
 				<Button

@@ -1,4 +1,5 @@
 import * as z from "zod";
+
 import { BorrowerSchema } from "@/features/admin/components/create-loan/schemas/BorrowerSchema";
 import { CollateralSchema } from "@/features/admin/components/create-loan/schemas/CollateralSchema";
 import { FundingBreakdownSchema } from "@/features/admin/components/create-loan/schemas/FundingBreakdownSchema";
@@ -37,6 +38,18 @@ export const LoanSchema = z.object({
 		.nonempty(errorMessages.required)
 		.max(15, errorMessages.maxLength),
 	totalLoanAmount: z
+		.string()
+		.nonempty(errorMessages.required)
+		.max(15, errorMessages.maxLength),
+	prorated: z
+		.string()
+		.nonempty(errorMessages.required)
+		.max(15, errorMessages.maxLength),
+	regular: z
+		.string()
+		.nonempty(errorMessages.required)
+		.max(15, errorMessages.maxLength),
+	current: z
 		.string()
 		.nonempty(errorMessages.required)
 		.max(15, errorMessages.maxLength),

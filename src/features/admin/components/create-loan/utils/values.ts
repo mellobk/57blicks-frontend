@@ -56,4 +56,9 @@ export const defaultValues: Loan = {
 	prepaymentPenalty: "",
 	totalLoanAmount: "",
 	type: "",
+	current: "",
+	prorated: "",
+	regular: "",
+	principal: "",
+	balance: "",
 };

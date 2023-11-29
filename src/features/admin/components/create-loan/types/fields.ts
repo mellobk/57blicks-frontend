@@ -1,3 +1,11 @@
+export type User = {
+	email: string;
+	firstName: string;
+	lastName: string;
+	mailingAddress: string;
+	phoneNumber: string;
+};
+
 export type Borrower = {
 	accountNumber?: string;
 	accountType?: string;
@@ -43,13 +51,10 @@ export type Loan = {
 	participationBreakdown: Array<FundingBreakdown>;
 	prepaymentPenalty: string;
 	totalLoanAmount: string;
+	prorated: string;
+	regular: string;
+	current: string;
+	principal: string;
+	balance: string;
 	type: string;
-};
-
-export type User = {
-	email: string;
-	firstName: string;
-	lastName: string;
-	mailingAddress: string;
-	phoneNumber: string;
 };
