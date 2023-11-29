@@ -56,8 +56,13 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 			userLoggedInfo?.permissionGroup?.permissions || [],
 			PermissionType.VIEW_INVESTORS
 		);
+		const findEdit = findPermission(
+			userLoggedInfo?.role,
+			userLoggedInfo?.permissionGroup?.permissions || [],
+			PermissionType.EDIT_INVESTORS
+		);
 
-		if (!find && !emptyObject(userLoggedInfo)) {
+		if ((!find || !findEdit) && !emptyObject(userLoggedInfo)) {
 			void navigate({ to: `/manage-users/accounting` });
 		}
 	}, [userLoggedInfo]);
