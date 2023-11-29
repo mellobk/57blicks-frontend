@@ -8,6 +8,7 @@ import { ResetPasswordMfa } from "../pages/ResetPasswordMfa";
 import { SuccessFirstLogin } from "../pages/SuccessFirstLogin";
 import { SuccessResetPassword } from "../pages/SuccessResetPassword";
 import UnauthenticatedRoute from "@/routes/routes";
+import { Home } from "../pages/Home/Home";
 
 export const AuthRoutesNames = {
 	firstLogin: "first-login",
@@ -20,6 +21,11 @@ export const AuthRoutesNames = {
 };
 
 const AuthRoutes = [
+	{
+		path: `/`,
+		page: Home,
+		layout: LoginLayout,
+	},
 	{
 		path: `/${AuthRoutesNames.firstLogin}`,
 		page: FirstLogin,

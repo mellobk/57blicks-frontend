@@ -179,8 +179,13 @@ export const AdminTable: FC<SuccessProps> = () => {
 			userLoggedInfo?.permissionGroup?.permissions || [],
 			PermissionType.VIEW_ADMINS
 		);
+		const findEdit = findPermission(
+			userLoggedInfo?.role,
+			userLoggedInfo?.permissionGroup?.permissions || [],
+			PermissionType.EDIT_ADMINS
+		);
 
-		if (!find && !emptyObject(userLoggedInfo)) {
+		if ((!find || !findEdit) && !emptyObject(userLoggedInfo)) {
 			void navigate({ to: `/manage-users/investors` });
 		}
 		void adminQuery.refetch();

@@ -56,6 +56,7 @@ export default {
 					800: "#DCF5E6",
 					900: "#d3f3de",
 					1000: "#0C3330",
+					1100: "#c7ead6",
 					DEFAULT: "#00BA35",
 				},
 				blue: {

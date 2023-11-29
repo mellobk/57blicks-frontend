@@ -70,6 +70,7 @@ export interface Collateral {
 
 export interface Loan {
 	id?: string;
+	name?: string;
 	createdAt?: Date;
 	updatedAt: Date;
 	type: string;
