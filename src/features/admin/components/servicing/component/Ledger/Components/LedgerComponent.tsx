@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { type FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState, useRef } from "react";
 import { Modal } from "@/components/ui/Modal";
 import {
 	ApprovalStateType,
@@ -32,6 +33,7 @@ import { userName } from "@/utils/constant";
 import moment from "moment";
 import LedgerFooter1 from "./footer/LedgerFooter1";
 import LedgerFooter2 from "./footer/LedgerFooter2";
+import Header from "./header";
 interface LedgerComponentProps {
 	loan: Loan;
 	ledgersData?: Array<Ledgers>;
@@ -43,10 +45,10 @@ interface LedgerComponentProps {
 export const LedgerComponent: FC<LedgerComponentProps> = ({
 	loan,
 	ledgersData,
-	orderLedgers,
 	refetchLedgers,
 	handleDeleteLedger,
 }) => {
+	const scrollAdd = useRef<null | HTMLElement>(null);
 	const localUserName = getLocalStorage(userName);
 	const createLedgerQuery = useMutation(async (body: any) => {
 		return ManageNotificationService.createNotifications(body);
@@ -288,89 +290,60 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					setLedgerData({ ...sanedData, loanId: loan.id });
 				})}
 			>
-				<div
-					className="w-full rounded-xl bg-white flex flex-col justify-between "
-					style={{ overflow: "overlay", height: "calc(100vh - 250px)" }}
+				<ul
+					style={{
+						fontSize: "13px",
+						overflow: "auto",
+						height: "calc(100vh - 300px)",
+						marginTop: "50px",
+					}}
 				>
-					<table>
-						<thead className="bg-gray-200 h-10">
-							<tr className="bg-gray-200 text-[12px] border-2 items-start 	 ">
-								<td className="font-semibold text-gray-600 pl-4">
-									<div
-										onClick={(): void => {
-											orderLedgers && orderLedgers("date");
-										}}
-										className=""
-									>
-										Date
-									</div>
-								</td>
-								<td className="font-semibold text-gray-600 pl-4">Class</td>
-								<td className="font-semibold text-gray-600 pl-4">
-									Debit/Credit
-								</td>
-								<td className="font-semibold text-gray-600 pl-4">Month</td>
-								<td className="font-semibold text-gray-600 pl-4">Memo</td>
-								<td className="font-semibold text-gray-600 pl-4">
-									<div className="flex flex-row gap-2  align-middle">
-										Debit
-										<div className="pt-1">
-											<Icon name="debit" width="10" color="grey" />
-										</div>
-									</div>
-								</td>
-								<td className="font-semibold text-gray-600 pl-4">
-									<div className="flex flex-row gap-2  align-middle">
-										Credit
-										<div className="pt-1">
-											<Icon name="credit" width="10" color="grey" />
-										</div>
-									</div>
-								</td>
-								<td className="font-semibold text-gray-600 pl-4">Balance</td>
-								<td className="font-semibold text-gray-600 pl-4">Delete</td>
-							</tr>
-						</thead>
-						<tbody>
-							{fields.map((field, index) => {
-								return (
-									<>
-										<LedgerAdd
-											field={field}
-											index={index}
-											handleRemove={handleRemove}
-											data={allFields as unknown as LedgerFormValues}
-											loan={loan}
-											handleOpenModal={handleOpenModal}
-											handleSetValue={handleSetValue}
-											handleSetDate={handleSetDate}
-											handleSetMonth={handleSetMonth}
-											handleEdit={handleEdit}
-											handleDeleteLedger={handleDeleteLedger}
-											refetchLedgers={refetchLedgers}
-											control={control as never}
-											errors={errors}
-											register={register as never}
-										/>
-									</>
-								);
-							})}
-							<tr>
-								<td colSpan={9}>&nbsp;</td>
-							</tr>
-							<tr>
-								<td colSpan={9}>&nbsp;</td>
-							</tr>
-						</tbody>
-					</table>
-					{ledgersData && (
-						<>
-							<LedgerFooter1 ledgers={ledgersData} />
-							<LedgerFooter2 ledgers={ledgersData} />
-						</>
-					)}
-				</div>
+					<Header />
 
+					{fields.map((field, index) => {
+						//if last row then send scroll to bottom
+						let lastScrollAdd = null;
+						if (index === fields.length - 1) {
+							lastScrollAdd = scrollAdd;
+							if (lastScrollAdd && lastScrollAdd.current) {
+								lastScrollAdd.current.scrollIntoView({
+									behavior: "smooth",
+									block: "start",
+								});
+							}
+						}
+
+						return (
+							<>
+								<LedgerAdd
+									field={field}
+									index={index}
+									handleRemove={handleRemove}
+									data={allFields as unknown as LedgerFormValues}
+									loan={loan}
+									handleOpenModal={handleOpenModal}
+									handleSetValue={handleSetValue}
+									handleSetDate={handleSetDate}
+									handleSetMonth={handleSetMonth}
+									handleEdit={handleEdit}
+									handleDeleteLedger={handleDeleteLedger}
+									refetchLedgers={refetchLedgers}
+									control={control as never}
+									errors={errors}
+									register={register as never}
+									lastScrollAdd={lastScrollAdd}
+								/>
+							</>
+						);
+					})}
+				</ul>
+
+				{ledgersData && (
+					<>
+						<LedgerFooter1 ledgers={ledgersData} />
+						<LedgerFooter2 ledgers={ledgersData} />
+					</>
+				)}
 				<Button
 					variant={"gray"}
 					className="absolute top-[25px] right-[102px]"
