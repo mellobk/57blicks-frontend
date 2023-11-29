@@ -1,9 +1,9 @@
-import { ComponentType } from "react";
+import type { ComponentType } from "react";
 import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
 
 import { Cell } from "@/components/table/Cell";
-import { FundingBreakdown } from "@/types/api/funding-breakdown";
-import { Investor } from "@/types/api/investor";
+import type { FundingBreakdown } from "@/types/api/funding-breakdown";
+import type { Investor } from "@/types/api/investor";
 import { getFooterData } from "@/utils/investors.ts";
 
 interface Props extends ExpanderComponentProps<Investor> {
