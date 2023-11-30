@@ -24,7 +24,7 @@ export const ExpandedComponent: ComponentType<Props> = ({ control, data }) => {
 							format="money"
 							name="trustUnallocated"
 						/>
-						<CellInput control={control} format="money" name="trustAllocated" />
+						<Cell format="money" value={investor.trustAllocated} />
 						<Cell format="money" value={investor.dueToDraws} />
 						<Cell format="money" value={investor.totalFunds} />
 					</div>

@@ -4,7 +4,6 @@ import type { ExpanderComponentProps } from "react-data-table-component/dist/src
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { Cell } from "@/components/table/Cell";
-import { CellInput } from "@/components/table/CellInput";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Table } from "@/components/ui/Table";
@@ -46,26 +45,14 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 			style: { padding: 0 },
 		},
 		{
-			cell: (_, rowIndex) => (
-				<CellInput
-					control={control}
-					format="money"
-					name={`fundingBreakdown.${rowIndex}.trustUnallocated`}
-				/>
-			),
+			cell: (row) => <Cell format="money" value={row.trustUnallocated} />,
 			name: "Trust-Unallocated",
 			selector: (row) => row.trustUnallocated,
 			sortable: true,
 			style: { padding: 0 },
 		},
 		{
-			cell: (_, rowIndex) => (
-				<CellInput
-					control={control}
-					format="money"
-					name={`fundingBreakdown.${rowIndex}.trustAllocated`}
-				/>
-			),
+			cell: (row) => <Cell format="money" value={row.trustAllocated} />,
 			name: "Trust-Allocated",
 			selector: (row) => row.trustAllocated,
 			sortable: true,
@@ -146,7 +133,9 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 					columns={columns}
 					data={data.overviewByInvestors}
 					expandableRows
-					expandableRowDisabled={(row) => !row.participants?.length}
+					expandableRowDisabled={(row: IInvestorOverview) =>
+						row.participants!.length === 0
+					}
 					expandableRowsComponent={({
 						...props
 					}: ExpanderComponentProps<IInvestorOverview>) => (
