@@ -263,8 +263,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						: "0.00"}
 				</div>
 			</div>
-			<div className={`${columnWidth.action} text-primary-200  pl-4`}>
-				<div className="flex justify-between items-center gap-6">
+			<div className={`${columnWidth.action} text-primary-200  pl-0`}>
+				<div className="flex justify-between items-center gap-1">
 					<div
 						key={`edit-${index}`}
 						onClick={(): void => {
@@ -293,7 +293,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					>
 						<Icon name="trashBin" color="red" width="20" />
 					</div>
-					<div className="flex justify-between items-center w-10 gap-2">
+					<div className="flex justify-between items-center gap-4 ">
 						{dataLedgers && dataLedgers?.action === "show" && (
 							<LedgerApprove
 								ledger={dataLedgers}

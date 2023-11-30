@@ -21,7 +21,7 @@ const LedgerFooter1: FC<LedgerFooter1Props> = ({ ledgers }) => {
 		let balance = 0;
 		let lengthLedger = 0;
 		ledgers.forEach((ledger) => {
-			if (ledger.typeOfPayment === LedgerTypeOfPayment.PRINCIPAL) {
+			if (ledger.typeOfPayment !== LedgerTypeOfPayment.CONSTRUCTION_HOLD_BACK) {
 				debits += Number(ledger.debit);
 				credits += Number(ledger.credit);
 				lengthLedger += 1;
