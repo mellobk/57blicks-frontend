@@ -1,10 +1,9 @@
 import type { ComponentType } from "react";
-import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
 import { Cell } from "@/components/table/Cell";
-import type { FundingBreakdown } from "@/features/admin/components/loan-overview/types/fields";
+import type { IInvestorOverview } from "../../types/fields";
 
-interface Props extends ExpanderComponentProps<any> {
-	data: Array<FundingBreakdown>;
+interface Props {
+	data: Array<IInvestorOverview>;
 }
 
 export const Footer: ComponentType<Props> = ({ data }) => {
@@ -21,7 +20,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 		data?.reduce((accumulator, fundingBreakdown) => {
 			accumulator.dueToDraws += Number(fundingBreakdown.dueToDraws);
 			accumulator.total++;
-			accumulator.totalDrawn += Number(fundingBreakdown.totalDrawn);
+			accumulator.totalDrawn += Number(fundingBreakdown.totalDrawnToDate);
 			accumulator.totalFunds += Number(fundingBreakdown.totalFunds);
 			accumulator.totalLoan += Number(fundingBreakdown.totalLoan);
 			accumulator.trustAllocated += Number(fundingBreakdown.trustAllocated);
