@@ -1,5 +1,5 @@
 export const columnWidth = {
-	date: "w-[7%]",
+	date: "w-[11%]",
 	class: "w-[7%]",
 	debitCredit: "w-[7%]",
 	month: "w-[10%]",
