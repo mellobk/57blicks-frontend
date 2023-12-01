@@ -1,17 +1,25 @@
 import { useState, type FC } from "react";
 import { Title } from "@/components/ui/Title";
 import { Footer } from "@/features/admin/components/loan-overview/components/Footer/Footer";
-import type { ILoanOverview } from "../../types/fields";
+import type { ILenderOverview } from "../../types/fields";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ParticipantTable } from "../ParticipantTable/ParticipantTable";
+import { moneyFormat } from "@/utils/formats";
 
 type Props = {
-	data: ILoanOverview;
+	data: Array<ILenderOverview>;
 };
 
 export const OverviewByInvestor: FC<Props> = ({ data }) => {
-	const [expandedRows, setExpandedRows] = useState<Array<ILoanOverview>>([]);
+	const [expandedRows, setExpandedRows] = useState<Array<ILenderOverview>>([]);
+
+	const monetaryBodyTemplate = (
+		rowData: ILenderOverview,
+		field: keyof ILenderOverview
+	) => {
+		return moneyFormat(rowData[field] as number);
+	};
 
 	return (
 		<div className="flex flex-col h-full">
@@ -21,10 +29,10 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 
 			<div className="flex flex-col h-full justify-between">
 				<DataTable
-					value={data.overviewByInvestors}
+					value={data}
 					expandedRows={expandedRows}
 					onRowToggle={(event) => {
-						setExpandedRows(event.data as Array<ILoanOverview>);
+						setExpandedRows(event.data as Array<ILenderOverview>);
 					}}
 					rowExpansionTemplate={(data) => {
 						return data.participants && data.participants.length > 0 ? (
@@ -34,15 +42,54 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 				>
 					<Column expander style={{ width: "3em" }} />
 					<Column field="name" header="Lender"></Column>
-					<Column field="totalLoan" header="Total Loan"></Column>
+					<Column
+						field="totalLoan"
+						header="Total Loan"
+						body={(rowData) =>
+							monetaryBodyTemplate(rowData as ILenderOverview, "totalLoan")
+						}
+					/>
 					<Column
 						field="totalDrawnToDate"
 						header="Total Drawn to Date"
-					></Column>
-					<Column field="trustUnallocated" header="Trust Unallocated"></Column>
-					<Column field="trustAllocated" header="Trust Allocated"></Column>
-					<Column field="dueToDraws" header="Construction holdback"></Column>
-					<Column field="totalFunds" header="Total Funds"></Column>
+						body={(rowData) =>
+							monetaryBodyTemplate(
+								rowData as ILenderOverview,
+								"totalDrawnToDate"
+							)
+						}
+					/>
+					<Column
+						field="trustUnallocated"
+						header="Trust Unallocated"
+						body={(rowData) =>
+							monetaryBodyTemplate(
+								rowData as ILenderOverview,
+								"trustUnallocated"
+							)
+						}
+					/>
+					<Column
+						field="trustAllocated"
+						header="Trust Allocated"
+						body={(rowData) =>
+							monetaryBodyTemplate(rowData as ILenderOverview, "trustAllocated")
+						}
+					/>
+					<Column
+						field="dueToDraws"
+						header="Construction Holdback"
+						body={(rowData) =>
+							monetaryBodyTemplate(rowData as ILenderOverview, "dueToDraws")
+						}
+					/>
+					<Column
+						field="totalFunds"
+						header="Total Funds"
+						body={(rowData) =>
+							monetaryBodyTemplate(rowData as ILenderOverview, "totalFunds")
+						}
+					/>
 				</DataTable>
 				<Footer data={[]} />
 			</div>

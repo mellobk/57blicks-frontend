@@ -27,7 +27,7 @@ export const LoanOverview: FC = () => {
 					{data && <Overviews data={data} />}
 				</div>
 				<div className="col-span-1 md:col-span-9 xl:col-span-8 2xl:col-span-6 rounded-2xl bg-white">
-					{data && <OverviewByInvestor data={data} />}
+					{data && <OverviewByInvestor data={data.overviewByInvestors} />}
 				</div>
 			</div>
 		</>
