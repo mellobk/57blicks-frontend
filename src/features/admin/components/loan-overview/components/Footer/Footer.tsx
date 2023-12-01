@@ -1,9 +1,9 @@
 import type { ComponentType } from "react";
 import { Cell } from "@/components/table/Cell";
-import type { IInvestorOverview } from "../../types/fields";
+import type { ILenderOverview } from "../../types/fields";
 
 interface Props {
-	data: Array<IInvestorOverview>;
+	data: Array<ILenderOverview>;
 }
 
 export const Footer: ComponentType<Props> = ({ data }) => {
