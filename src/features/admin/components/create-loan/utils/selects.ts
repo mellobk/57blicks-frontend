@@ -31,7 +31,7 @@ export const LENDERS = [
 	{ code: "dkc_lending_fl", name: "DKC Lending FL" },
 	{ code: "dkc_lending_iv", name: "DKC Lending IV" },
 	{ code: "dkc_lending_cl", name: "DKC Lending CL" },
-	{ code: "first_capital_trust", name: "First Capital Trust" },
+	{ code: "dkc_lending_v", name: "DKC Lending V" },
 ];
 
 export const LOAN_TYPES = [
