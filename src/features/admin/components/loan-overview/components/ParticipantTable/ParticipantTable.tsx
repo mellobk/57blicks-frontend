@@ -9,8 +9,13 @@ import {
 import { InputNumber } from "primereact/inputnumber";
 import { moneyFormat } from "@/utils/formats";
 import { DataTable } from "primereact/datatable";
-import type { IParticipantOverview } from "../../types/fields";
+import type {
+	IParticipantOverview,
+	UpdateParticipationBreakdownDto,
+} from "../../types/fields";
 import { isPositiveInteger } from "@/utils/number";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateTrustUnallocated } from "../../api/loan-overview";
 
 type Props = {
 	participants: Array<IParticipantOverview>;
@@ -23,15 +28,19 @@ const monetaryBodyTemplate = (
 	return moneyFormat(rowData[field] as number);
 };
 
-const onCellEditComplete = (event: ColumnEvent) => {
-	const { rowData, newValue, field } = event;
-
-	if (isPositiveInteger(newValue)) {
-		rowData[field] = newValue;
-	}
-};
-
 export const ParticipantTable: FC<Props> = ({ participants }) => {
+	const queryClient = useQueryClient();
+
+	const updateMutation = useMutation(
+		({ id, body }: { id: string; body: UpdateParticipationBreakdownDto }) =>
+			updateTrustUnallocated(id, body),
+		{
+			onSuccess: async () => {
+				await queryClient.invalidateQueries({ queryKey: ["loanOverview"] });
+			},
+		}
+	);
+
 	const priceEditor = (options: ColumnEditorOptions) => {
 		return (
 			<InputNumber
@@ -45,6 +54,19 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				locale="en-US"
 			/>
 		);
+	};
+
+	const onCellEditComplete = (event: ColumnEvent) => {
+		const { rowData, newValue, field } = event;
+
+		if (isPositiveInteger(newValue)) {
+			rowData[field] = newValue;
+
+			const updatePayload: UpdateParticipationBreakdownDto = {
+				trustUnallocated: newValue,
+			};
+			updateMutation.mutate({ id: rowData.id, body: updatePayload });
+		}
 	};
 
 	return (
@@ -72,7 +94,6 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 						"trustUnallocated"
 					)
 				}
-				style={{ width: "200px" }}
 			/>
 			<Column
 				field="trustAllocated"
