@@ -13,7 +13,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => (
 		<Column field="totalDrawnToDate" header="Total Drawn to Date"></Column>
 		<Column field="trustUnallocated" header="Trust Unallocated"></Column>
 		<Column field="trustAllocated" header="Trust Allocated"></Column>
-		<Column field="dueToDraws" header="Due to Draws"></Column>
+		<Column field="dueToDraws" header="Construction holdback"></Column>
 		<Column field="totalFunds" header="Total Funds"></Column>
 	</DataTable>
 );
