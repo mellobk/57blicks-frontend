@@ -16,6 +16,7 @@ import type {
 import { isPositiveInteger } from "@/utils/number";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateTrustUnallocated } from "../../api/loan-overview";
+import useToast from "@/hooks/use-toast";
 
 type Props = {
 	participants: Array<IParticipantOverview>;
@@ -30,6 +31,7 @@ const monetaryBodyTemplate = (
 
 export const ParticipantTable: FC<Props> = ({ participants }) => {
 	const queryClient = useQueryClient();
+	const notify = useToast();
 
 	const updateMutation = useMutation(
 		({ id, body }: { id: string; body: UpdateParticipationBreakdownDto }) =>
@@ -37,6 +39,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 		{
 			onSuccess: async () => {
 				await queryClient.invalidateQueries({ queryKey: ["loanOverview"] });
+				notify("Trust unallocated updated successfully", "success");
 			},
 		}
 	);
