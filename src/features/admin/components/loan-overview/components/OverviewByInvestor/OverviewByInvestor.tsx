@@ -1,160 +1,96 @@
-import { type FC, useState } from "react";
-import { createTheme, type TableColumn } from "react-data-table-component";
-import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/forms/Input";
-import { Cell } from "@/components/table/Cell";
-import { CellInput } from "@/components/table/CellInput";
-import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
-import { Table } from "@/components/ui/Table";
+import { useState, type FC } from "react";
 import { Title } from "@/components/ui/Title";
-import { ExpandedComponent } from "@/features/admin/components/loan-overview/components/ExpandedComponent/ExpandedComponent";
 import { Footer } from "@/features/admin/components/loan-overview/components/Footer/Footer";
-import type { IInvestorOverview, ILoanOverview } from "../../types/fields";
+import type { ILenderOverview } from "../../types/fields";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { ParticipantTable } from "../ParticipantTable/ParticipantTable";
+import { moneyFormat } from "@/utils/formats";
 
 type Props = {
-	data: ILoanOverview;
+	data: Array<ILenderOverview>;
 };
 
 export const OverviewByInvestor: FC<Props> = ({ data }) => {
-	const [searchValue, setSearchValue] = useState<string>("");
-	const [searchVisible, setSearchVisible] = useState<boolean>(false);
-	const { control } = useForm<ILoanOverview>({
-		defaultValues: data,
-	});
-	const columns: Array<TableColumn<IInvestorOverview>> = [
-		{
-			cell: (row) => <Cell format="text" value={row.name} />,
-			name: "Lenders and Participants",
-			selector: (row) => row.name,
-			sortable: true,
-			style: { padding: 0 },
-		},
-		{
-			cell: (row) => <Cell format="money" value={row.totalLoan} />,
-			name: "Total Loan",
-			selector: (row) => row.totalLoan,
-			sortable: true,
-			style: { padding: 0 },
-		},
-		{
-			cell: (row) => <Cell format="money" value={row.totalDrawnToDate} />,
-			name: "Total Drawn to Date",
-			selector: (row) => row.totalDrawnToDate,
-			sortable: true,
-			style: { padding: 0 },
-		},
-		{
-			cell: (_, rowIndex) => (
-				<CellInput
-					control={control}
-					format="money"
-					name={`fundingBreakdown.${rowIndex}.trustUnallocated`}
-				/>
-			),
-			name: "Trust-Unallocated",
-			selector: (row) => row.trustUnallocated,
-			sortable: true,
-			style: { padding: 0 },
-		},
-		{
-			cell: (_, rowIndex) => (
-				<CellInput
-					control={control}
-					format="money"
-					name={`fundingBreakdown.${rowIndex}.trustAllocated`}
-				/>
-			),
-			name: "Trust-Allocated",
-			selector: (row) => row.trustAllocated,
-			sortable: true,
-			style: { padding: 0 },
-		},
-		{
-			cell: (row) => <Cell format="money" value={row.dueToDraws} />,
-			name: "Due to Draws",
-			selector: (row) => row.dueToDraws,
-			sortable: true,
-			style: { padding: 0 },
-		},
-		{
-			cell: (row) => <Cell format="money" value={row.totalFunds} />,
-			name: "Total Funds",
-			selector: (row) => row.totalFunds,
-			sortable: true,
-			style: { padding: 0 },
-		},
-	];
+	const [expandedRows, setExpandedRows] = useState<Array<ILenderOverview>>([]);
 
-	createTheme("overview", {
-		background: {
-			default: "rgba(237, 243, 245, 0.35)",
-		},
-	});
+	const monetaryBodyTemplate = (
+		rowData: ILenderOverview,
+		field: keyof ILenderOverview
+	) => {
+		return moneyFormat(rowData[field] as number);
+	};
 
 	return (
 		<div className="flex flex-col h-full">
 			<div className="flex flex-row px-8 py-6 justify-between">
 				<Title text="Overview by Investors" />
-				<div className="flex flex-row gap-4">
-					<Button
-						buttonText="Total Trust Account: $406,500.00"
-						className="px-4 py-2 bg-gold-500/[.12] rounded-2xl"
-						variant={"info"}
-						deepClassName="font-inter text-sm text-gold-500 font-semibold leading-[17px] tracking-[-0.7px]"
-						icon={<Icon color="#C79E63" name="moneyBag" width="16" />}
-					/>
-					<div
-						className={`${
-							searchVisible || searchValue
-								? "w-[200px] bg-transparent"
-								: "bg-transparent w-[30px]"
-						} transition duration-500`}
-						onMouseEnter={() => {
-							setSearchVisible(true);
-						}}
-						onMouseLeave={() => {
-							setSearchVisible(false);
-						}}
-					>
-						<Input
-							type="text"
-							value={searchValue}
-							placeholder="Search"
-							iconColor={
-								searchVisible || searchValue
-									? "#0E2130"
-									: "rgba(14, 33, 48, 0.5)"
-							}
-							iconWidth={searchValue ? "10" : "18"}
-							iconName={searchValue ? "wrong" : "search"}
-							clickIcon={() => {
-								setSearchValue("");
-							}}
-							className={`${
-								searchVisible || searchValue ? "bg-gray-200" : "bg-transparent"
-							} rounded-2xl w-full px-4 py-2 placeholder-primary-500/[.5] text-primary-500 text-[13px] leading-[18px] tracking-[-0.65px] caret-blue-200 items-center outline-none`}
-						/>
-					</div>
-				</div>
 			</div>
 
 			<div className="flex flex-col h-full justify-between">
-				<Table
-					className="p-0 m-0"
-					columns={columns}
-					data={data.overviewByInvestors}
-					expandableRows
-					expandableRowDisabled={(row) => !row.participants?.length}
-					expandableRowsComponent={({
-						...props
-					}: ExpanderComponentProps<IInvestorOverview>) => (
-						<ExpandedComponent control={control} {...props} />
-					)}
-					theme="overview"
-				/>
-
+				<DataTable
+					value={data}
+					expandedRows={expandedRows}
+					onRowToggle={(event) => {
+						setExpandedRows(event.data as Array<ILenderOverview>);
+					}}
+					rowExpansionTemplate={(data) => {
+						return data.participants && data.participants.length > 0 ? (
+							<ParticipantTable participants={data.participants} />
+						) : null;
+					}}
+				>
+					<Column expander style={{ width: "3em" }} />
+					<Column field="name" header="Lender"></Column>
+					<Column
+						field="totalLoan"
+						header="Total Loan"
+						body={(rowData) =>
+							monetaryBodyTemplate(rowData as ILenderOverview, "totalLoan")
+						}
+					/>
+					<Column
+						field="totalDrawnToDate"
+						header="Total Drawn to Date"
+						body={(rowData) =>
+							monetaryBodyTemplate(
+								rowData as ILenderOverview,
+								"totalDrawnToDate"
+							)
+						}
+					/>
+					<Column
+						field="trustUnallocated"
+						header="Trust Unallocated"
+						body={(rowData) =>
+							monetaryBodyTemplate(
+								rowData as ILenderOverview,
+								"trustUnallocated"
+							)
+						}
+					/>
+					<Column
+						field="trustAllocated"
+						header="Trust Allocated"
+						body={(rowData) =>
+							monetaryBodyTemplate(rowData as ILenderOverview, "trustAllocated")
+						}
+					/>
+					<Column
+						field="dueToDraws"
+						header="Construction Holdback"
+						body={(rowData) =>
+							monetaryBodyTemplate(rowData as ILenderOverview, "dueToDraws")
+						}
+					/>
+					<Column
+						field="totalFunds"
+						header="Total Funds"
+						body={(rowData) =>
+							monetaryBodyTemplate(rowData as ILenderOverview, "totalFunds")
+						}
+					/>
+				</DataTable>
 				<Footer data={[]} />
 			</div>
 		</div>
