@@ -1,8 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FC } from "react";
-import { Column } from "primereact/column";
+import {
+	Column,
+	type ColumnEvent,
+	type ColumnEditorOptions,
+} from "primereact/column";
+import { InputNumber } from "primereact/inputnumber";
+import { moneyFormat } from "@/utils/formats";
 import { DataTable } from "primereact/datatable";
 import type { IParticipantOverview } from "../../types/fields";
-import { moneyFormat } from "@/utils/formats";
+import { isPositiveInteger } from "@/utils/number";
 
 type Props = {
 	participants: Array<IParticipantOverview>;
@@ -15,9 +23,32 @@ const monetaryBodyTemplate = (
 	return moneyFormat(rowData[field] as number);
 };
 
+const onCellEditComplete = (event: ColumnEvent) => {
+	const { rowData, newValue, field } = event;
+
+	if (isPositiveInteger(newValue)) {
+		rowData[field] = newValue;
+	}
+};
+
 export const ParticipantTable: FC<Props> = ({ participants }) => {
+	const priceEditor = (options: ColumnEditorOptions) => {
+		return (
+			<InputNumber
+				inputClassName="w-full h-full outline-none rounded-none border-gold	shadow-none w-full border-2	br-0 focus:bg-gray-200 h-[42px]"
+				value={options.value}
+				onValueChange={(event) => {
+					options.editorCallback?.(event.value);
+				}}
+				mode="currency"
+				currency="USD"
+				locale="en-US"
+			/>
+		);
+	};
+
 	return (
-		<DataTable value={participants}>
+		<DataTable value={participants} editMode="cell">
 			<Column field="name" header="Participant"></Column>
 			<Column
 				field="totalDrawnToDate"
@@ -32,12 +63,15 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 			<Column
 				field="trustUnallocated"
 				header="Trust Unallocated"
+				editor={priceEditor}
+				onCellEditComplete={onCellEditComplete}
 				body={(rowData) =>
 					monetaryBodyTemplate(
 						rowData as IParticipantOverview,
 						"trustUnallocated"
 					)
 				}
+				style={{ width: "200px" }}
 			/>
 			<Column
 				field="trustAllocated"
