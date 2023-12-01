@@ -63,6 +63,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 			<Column
 				field="trustUnallocated"
 				header="Trust Unallocated"
+				bodyClassName="hover:bg-gray-200 cursor-pointer"
 				editor={priceEditor}
 				onCellEditComplete={onCellEditComplete}
 				body={(rowData) =>
