@@ -1,34 +1,37 @@
-import { dateFormat, moneyFormat } from "@/utils/formats";
-
-import Chip from "@/components/ui/Chip";
 import { useState, type FC } from "react";
-import { PayableStatus, type Payable } from "../types";
+import {
+	PayableStatus,
+	type Payable,
+} from "@/features/admin/components/servicing/component/Payable/types";
 import { Icon } from "@/components/ui/Icon";
-import PayableDetails from "../PayableDetails";
+import { dateFormat, moneyFormat } from "@/utils/formats";
 import moment from "moment";
 import ManagePayablesService, {
 	type UpdatePayableApiProps,
-} from "../../../api/payable";
-import { useMutation, useQuery } from "@tanstack/react-query";
+} from "@/features/admin/components/servicing/api/payable";
+import { useMutation } from "@tanstack/react-query";
+import Chip from "@/components/ui/Chip";
+import PayableInvestors from "../PayableInvestors";
 
-interface PayableMonthsProps {
+interface PayableMonthProps {
 	payable: Payable;
 }
-const PayableMonths: FC<PayableMonthsProps> = ({ payable }) => {
+const PayableMonth: FC<PayableMonthProps> = ({ payable }) => {
 	const [showDetails, setShowDetails] = useState(false);
-	const { id, month, amount, amountPaid, status } = payable;
-	const { refetch } = useQuery(["payables-list-query"]);
+	const { id, month, amount, status, payableDetails } = payable;
 
 	const approvePayable = useMutation(
 		(data: UpdatePayableApiProps) => {
 			return ManagePayablesService.updatePayables(data);
 		},
 		{
-			onSuccess: () => {
-				void refetch();
-			},
+			onSuccess: () => {},
 		}
 	);
+
+	const handleShowDetails = (): void => {
+		setShowDetails(!showDetails);
+	};
 
 	const handleApprove = (approved: boolean): void => {
 		const status: PayableStatus = approved
@@ -44,10 +47,6 @@ const PayableMonths: FC<PayableMonthsProps> = ({ payable }) => {
 		};
 
 		approvePayable.mutate(data);
-	};
-
-	const handleShowDetails = (): void => {
-		setShowDetails(!showDetails);
 	};
 	return (
 		<>
@@ -83,14 +82,7 @@ const PayableMonths: FC<PayableMonthsProps> = ({ payable }) => {
 				>
 					{moneyFormat(amount)}
 				</div>
-				<div
-					className="w-[20%] text-right cursor-pointer"
-					onClick={(): void => {
-						handleShowDetails();
-					}}
-				>
-					{moneyFormat(amountPaid)}
-				</div>
+
 				<div className="flex pb-1 w-[15%] text-right relative">
 					<div
 						className="absolute top-0 right-0 cursor-pointer "
@@ -130,7 +122,9 @@ const PayableMonths: FC<PayableMonthsProps> = ({ payable }) => {
 			>
 				{showDetails && (
 					<>
-						<PayableDetails payable={payable} />
+						{payableDetails && (
+							<PayableInvestors payableDetails={payableDetails} />
+						)}
 					</>
 				)}
 			</div>
@@ -138,4 +132,4 @@ const PayableMonths: FC<PayableMonthsProps> = ({ payable }) => {
 	);
 };
 
-export default PayableMonths;
+export default PayableMonth;

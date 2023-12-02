@@ -1,9 +1,6 @@
 import { authApiClient } from "../../../../../utils/api-client";
-import type {
-	Payable,
-	PayableDetail,
-	PayableStatus,
-} from "../component/Payable/types";
+import type { Payable, PayableStatus } from "../component/Payable/types";
+import type { PayableDetail } from "../component/Payable/types/payable-details";
 import {
 	type ApiParameters,
 	payablesApi,

@@ -1,10 +1,11 @@
-import { PayableStatus, type Payable, type PayableDetail } from "../types";
+import { PayableStatus, type Payable } from "../types";
 
 import type { FC } from "react";
 import { dateFormat, moneyFormat } from "@/utils/formats";
 import moment from "moment";
 import Chip from "@/components/ui/Chip";
 import Participant from "./Participant";
+import type { PayableDetail } from "../types/payable-details";
 
 interface PayableDetailsRowsProps {
 	payableDetail: PayableDetail;

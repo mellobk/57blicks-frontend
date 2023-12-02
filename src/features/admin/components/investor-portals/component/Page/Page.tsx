@@ -83,12 +83,14 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Origin Date",
-			selector: (row: FundingBreakdown) => row.loan?.originationDate?.toString() || "",
+			selector: (row: FundingBreakdown) =>
+				row.loan?.originationDate?.toString() || "",
 			sortable: true,
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: FundingBreakdown) => row.loan?.maturityDate?.toString() || "",
+			selector: (row: FundingBreakdown) =>
+				row.loan?.maturityDate?.toString() || "",
 			sortable: true,
 		},
 		{

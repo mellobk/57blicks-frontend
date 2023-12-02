@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/filename-case */
+// eslint-disable-next-line unicorn/filename-case
 import { type FC, useState } from "react";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
@@ -10,9 +12,10 @@ import { Tabs } from "@/components/ui/Tabs";
 import { ExpandedComponent } from "@/features/admin/components/investor-portals/component/LLC/ExpandedComponent/ExpandedComponent";
 import { Footer } from "@/features/admin/components/investor-portals/component/LLC/Footer/Footer";
 import { investorPortalsTabs } from "@/features/admin/components/investor-portals/utils/tabs";
-import { FundingBreakdown } from "@/types/api/funding-breakdown";
-import { Loan } from "@/types/api/loan";
+import type { FundingBreakdown } from "@/types/api/funding-breakdown";
+import type { Loan } from "@/types/api/loan";
 import { getLoanColumns } from "@/utils/investors";
+import BulkApproval from "../../BulkApproval";
 
 export const LLC: FC = () => {
 	const [selectedLoan, setSelectedLoan] = useState<Loan>();
@@ -92,11 +95,11 @@ export const LLC: FC = () => {
 
 	const selectInvestor = (loan: Loan) => {
 		setSelectedLoan(loan);
-		setSelectedParticipation(undefined);
+		setSelectedParticipation();
 	};
 
 	const selectParticipation = (participation: FundingBreakdown) => {
-		setSelectedLoan(undefined);
+		setSelectedLoan();
 		setSelectedParticipation(participation);
 	};
 
@@ -119,6 +122,7 @@ export const LLC: FC = () => {
 						className="flex justify-end gap-1 items-center"
 						style={{ position: "absolute" }}
 					>
+						<BulkApproval />
 						<div
 							className="flex gap-2 justify-end"
 							style={{
@@ -134,8 +138,12 @@ export const LLC: FC = () => {
 										? "w-[200px] bg-transparent transition duration-500"
 										: "bg-transparent  w-[30px] transition duration-500 "
 								} `}
-								onMouseEnter={() => setSearchVisible(true)}
-								onMouseLeave={() => setSearchVisible(false)}
+								onMouseEnter={() => {
+									setSearchVisible(true);
+								}}
+								onMouseLeave={() => {
+									setSearchVisible(false);
+								}}
 							>
 								<Input
 									type="text"
@@ -144,8 +152,12 @@ export const LLC: FC = () => {
 									iconColor="white"
 									iconWidth={`${searchValue ? "12" : "20"}`}
 									iconName={`${searchValue ? "wrong" : "search"}`}
-									onChange={(data) => setSearchValue(data.target.value)}
-									clickIcon={() => setSearchValue("")}
+									onChange={(data) => {
+										setSearchValue(data.target.value);
+									}}
+									clickIcon={() => {
+										setSearchValue("");
+									}}
 									className={`placeholder-gray-400 text-white text-[13px] font-normal font-weight-400 leading-normal w-full ${
 										searchVisible || searchValue
 											? "bg-black-200  "
