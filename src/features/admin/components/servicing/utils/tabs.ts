@@ -9,7 +9,7 @@ export const servicingTabs = [
 	{ label: "DKC Lending FL", routeTo: "servicing/dkc-fl" },
 	{ label: "DKC Lending IV", routeTo: "servicing/dkc-iv" },
 	{ label: "DKC Lending CL", routeTo: "servicing/dkc-cl" },
-	{ label: "First Capital Trusts LLC", routeTo: "servicing/first-capital" },
+	{ label: "DKC Lending V", routeTo: "servicing/dkc-v" },
 ];
 
 export const approveModalTabs = [
@@ -43,5 +43,5 @@ export const servicingModalTabs = [
 	{ label: "Receivable", routeTo: "servicing/dkc-iv" },
 	{ label: "Payable", routeTo: "servicing/dkc-iv" },
 	{ label: "Funding", routeTo: "servicing/dkc-cl" },
-	{ label: "Invoices", routeTo: "servicing/first-capital" },
+	{ label: "Invoices", routeTo: "servicing/dkc-v" },
 ];
