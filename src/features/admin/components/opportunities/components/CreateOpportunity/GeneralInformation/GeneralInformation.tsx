@@ -15,36 +15,36 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
 	<>
 		<Title text="General Information" />
 		<Input
-      data-testid="general-information-post-title"
+			data-testid="general-information-post-title"
 			error={errors?.postTitle?.message}
 			label="Post Title"
-      maxLength={50}
+			maxLength={50}
 			placeholder="Enter Post Title"
 			register={register("postTitle")}
 			wrapperClassName="mt-6"
 		/>
 		<Input
-      data-testid="general-information-investment-collateral"
+			data-testid="general-information-investment-collateral"
 			error={errors?.investmentCollateral?.message}
 			label="Investment Collateral"
-      maxLength={75}
+			maxLength={75}
 			placeholder="Enter Investment Collateral"
 			register={register("investmentCollateral")}
 			wrapperClassName="mt-6"
 			required
 		/>
 		<Input
-      data-testid="general-information-google-drive-link"
+			data-testid="general-information-google-drive-link"
 			error={errors?.googleDriveLink?.message}
 			label="Google Drive Link"
-      maxLength={255}
+			maxLength={255}
 			placeholder="Enter Google Drive Link"
 			register={register("googleDriveLink")}
 			wrapperClassName="mt-6"
 			required
 		/>
 		<FileUpload
-      data-testid="general-information-image"
+			data-testid="general-information-image"
 			accept="image/*"
 			error={errors?.image?.message}
 			label="Choose File"
@@ -54,7 +54,7 @@ export const GeneralInformation: FC<Props> = ({ errors, register }) => (
 			required
 		/>
 		<TextArea
-      data-testid="general-information-investment-summary"
+			data-testid="general-information-investment-summary"
 			error={errors?.investmentSummary?.message}
 			label="Investment Summary"
 			maxLength={1000}
