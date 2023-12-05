@@ -14,3 +14,7 @@
 .p-dialog-header-close {
   z-index: 1;
 }
+
+button[aria-label="Apply"] {
+  background-color: #6366F1;
+}
