@@ -20,11 +20,16 @@ import {
 import { Success } from "../Success";
 import { SuccessDecline } from "../SuccessDecline/Success";
 import type { Loan } from "../../types/types";
+// import type {
+// 	Loan,
+// } from "@/features/admin/components/servicing/types/api";
+// import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import userStore from "@/stores/user-store";
 import { RoleType } from "@/types/api/permissions-type";
 import { ModalActionsAdmin } from "../ModalActions/ModalActionsAdmin";
 import { getLocalStorage } from "@/utils/local-storage";
 import { userName } from "@/utils/constant";
+import FundingBreakdownEdit from "../Ledger/FundingBreakdownEdit"
 
 interface ServicingModalProps {
 	openModal?: boolean;
@@ -57,6 +62,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 	const [handleEdit, setHandleEdit] = useState<boolean>();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const approvalQuery = useMutation(async (id: string) => {
+		console.log('++++++++++++++++++++++++++++++',LoansService.getLoan(id || ""));
 		return LoansService.getLoan(id || "");
 	});
 
@@ -157,6 +163,10 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 			}
 			case "ledger": {
 				setTabTitle("Ledger");
+				break;
+			}
+			case "founding": {
+				setTabTitle("Founding");
 				break;
 			}
 			default: {
@@ -267,6 +277,9 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 					)}
 					{tabTitle === "Ledger" && approvalQuery.data && (
 						<LedgerList loan={approvalQuery.data.id} />
+					)}
+					{tabTitle === "Founding" && approvalQuery.data && (
+						<FundingBreakdownEdit loan={approvalQuery?.data} />
 					)}
 				</Modal>
 			)}

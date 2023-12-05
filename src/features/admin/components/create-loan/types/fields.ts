@@ -36,6 +36,7 @@ export type FundingBreakdown = {
 };
 
 export type Loan = {
+	id?: string;
 	amountDrawn: string;
 	borrower: Borrower;
 	collaterals: Array<Collateral>;
