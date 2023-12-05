@@ -5,3 +5,4 @@ export const investorPortalsTabs = [
 	{ label: "DKC Lending CL", routeTo: "investor-portals/dkc-cl" },
 	{ label: "DKC Lending V", routeTo: "investor-portals/dkc-v" },
 ];
+

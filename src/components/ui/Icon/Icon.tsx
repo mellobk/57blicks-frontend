@@ -53,6 +53,11 @@ import UserProfile from "@/assets/icons/user-profile";
 import Wrong from "@/assets/icons/wrong";
 import Csv from "@/assets/icons/csv";
 import Xlsx from "@/assets/icons/xlsx";
+import New from "@/assets/icons/new";
+import UploadFile from "@/assets/icons/upload-file"
+import List from "@/assets/icons/list";
+import Attach from "@/assets/icons/Attach";
+import Notes from "@/assets/icons/notes";
 
 export const ICONS = {
 	arrowDown: ArrowDown,
@@ -109,6 +114,11 @@ export const ICONS = {
 	checkBoxTrue: CheckBoxTrue,
 	csv: Csv,
 	xlsx: Xlsx,
+	new: New,
+	uploadFile: UploadFile,
+	list: List,
+	attach: Attach,
+	notes: Notes
 };
 
 export interface IconProps {
