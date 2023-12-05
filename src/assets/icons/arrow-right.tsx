@@ -9,7 +9,7 @@ type Props = {
 const ArrowRight: FC<Props> = ({
 	color = "#BBBBBB",
 	width = "7",
-	height = "13",
+	height = "16",
 }) => {
 	return (
 		<svg

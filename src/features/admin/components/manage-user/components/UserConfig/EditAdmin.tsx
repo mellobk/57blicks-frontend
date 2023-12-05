@@ -94,7 +94,7 @@ export const EditAdmin: FC<EditAdminProps> = ({
 			>
 				<div className="flex justify-between items-center">
 					<div className="flex items-center gap-3">
-						<div className="text-[28px]">General Information</div>
+						<div className="text-[28px]">General Information1111</div>
 
 						<div
 							onClick={(): void => {

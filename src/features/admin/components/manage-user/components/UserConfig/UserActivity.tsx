@@ -65,7 +65,7 @@ const UserActivity: FC<UserActivityProps> = ({
 				className={`absolute top-10 ${
 					user.isActive ? "right-[50px]" : "right-[160px]"
 				}
-        ${
+				${
 					!findPermission(
 						userLoggedInfo?.role,
 						userLoggedInfo?.permissionGroup?.permissions || [],
@@ -73,7 +73,7 @@ const UserActivity: FC<UserActivityProps> = ({
 					) && "right-[15px]"
 				}
 
-        cursor-pointer	 transform -translate-x-1/2 -translate-y-1/2 bg-gold-100 pt-1 pb-1.5 pl-4 pr-4 text-gold-500 text-sm font-semibold rounded-3xl hover:bg-gold-350`}
+       			 cursor-pointer	 transform -translate-x-1/2 -translate-y-1/2 bg-gold-100 pt-1 pb-1.5 pl-4 pr-4 text-gold-500 text-sm font-semibold rounded-3xl hover:bg-gold-350`}
 				onClick={() => {
 					setShowModal(true);
 				}}

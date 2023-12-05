@@ -9,7 +9,6 @@ interface Props {
 
 export const DocumentPreview: FC<Props> = ({ isLoading, url }) => {
 	const [showPreview, setShowPreview] = useState(false);
-
 	useEffect(() => {
 		setShowPreview(false);
 	}, [url]);
