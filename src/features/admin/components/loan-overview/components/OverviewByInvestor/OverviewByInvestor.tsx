@@ -45,10 +45,10 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 					<Column expander={allowExpansion} style={{ width: "3em" }} />
 					<Column field="name" header="Lender"></Column>
 					<Column
-						field="totalLoan"
-						header="Total Loan"
+						field="totalEquity"
+						header="Total Equity"
 						body={(rowData) =>
-							monetaryBodyTemplate(rowData as ILenderOverview, "totalLoan")
+							monetaryBodyTemplate(rowData as ILenderOverview, "totalEquity")
 						}
 					/>
 					<Column
