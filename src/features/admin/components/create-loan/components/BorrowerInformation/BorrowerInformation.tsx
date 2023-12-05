@@ -21,7 +21,7 @@ export const BorrowerInformation: FC<Props> = ({
 }) => (
 	<div>
 		<Title text="Borrower Information" />
-		<Dropdown
+		{/* <Dropdown
       data-testid="borrower-information-llc"
 			control={control}
 			error={errors?.borrower?.llc?.message}
@@ -30,8 +30,8 @@ export const BorrowerInformation: FC<Props> = ({
 			name="borrower.llc"
 			options={LENDERS}
 			required
-		/>
-		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
+		/> */}
+		{/* <div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 			<Input
         data-testid="borrower-information-first-name"
 				error={errors?.borrower?.user?.firstName?.message}
@@ -88,6 +88,6 @@ export const BorrowerInformation: FC<Props> = ({
 			register={register("borrower.user.mailingAddress")}
 			wrapperClassName="mt-6"
 			required
-		/>
+		/> */}
 	</div>
 );

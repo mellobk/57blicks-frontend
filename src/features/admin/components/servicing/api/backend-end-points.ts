@@ -68,3 +68,7 @@ export const payablesApi = (parameter: ApiParameters): string => {
 export const payablesDetailApi = (parameter: ApiParameters): string => {
 	return createApiUrl("payable-details", parameter);
 };
+
+export const ticketsApi = (): string => {
+	return `/tickets/admin`;
+};
