@@ -12,7 +12,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 		total: 0,
 		totalDrawn: 0,
 		totalFunds: 0,
-		totalLoan: 0,
+		totalEquity: 0,
 		trustAllocated: 0,
 		trustUnallocated: 0,
 	};
@@ -22,7 +22,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 			accumulator.total++;
 			accumulator.totalDrawn += Number(fundingBreakdown.totalDrawnToDate);
 			accumulator.totalFunds += Number(fundingBreakdown.totalFunds);
-			accumulator.totalLoan += Number(fundingBreakdown.totalLoan);
+			accumulator.totalEquity += Number(fundingBreakdown.totalEquity);
 			accumulator.trustAllocated += Number(fundingBreakdown.trustAllocated);
 			accumulator.trustUnallocated += Number(fundingBreakdown.trustUnallocated);
 			return accumulator;
@@ -33,7 +33,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 			<div className="w-12" />
 			<div className="grid grid-cols-7 w-full items-center">
 				<Cell format="text" value={`Total: ${totals.total}`} bold />
-				<Cell format="money" value={totals.totalLoan} bold />
+				<Cell format="money" value={totals.totalEquity} bold />
 				<Cell format="money" value={totals.totalDrawn} bold />
 				<Cell format="money" value={totals.trustUnallocated} bold />
 				<Cell format="money" value={totals.trustAllocated} bold />
