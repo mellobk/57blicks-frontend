@@ -24,6 +24,7 @@ export interface IInterestOverview {
 export interface IParticipantOverview {
 	id: string;
 	name: string;
+	totalLoan: number;
 	totalDrawnToDate: number;
 	trustUnallocated: number;
 	trustAllocated: number;
