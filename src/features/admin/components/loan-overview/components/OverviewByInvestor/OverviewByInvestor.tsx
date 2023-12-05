@@ -21,6 +21,10 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 		return moneyFormat(rowData[field] as number);
 	};
 
+	const allowExpansion = (rowData: ILenderOverview) => {
+		return rowData.participants.length > 0;
+	};
+
 	return (
 		<div className="flex flex-col h-full">
 			<div className="flex flex-row px-8 py-6 justify-between">
@@ -35,12 +39,10 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 						setExpandedRows(event.data as Array<ILenderOverview>);
 					}}
 					rowExpansionTemplate={(data) => {
-						return data.participants && data.participants.length > 0 ? (
-							<ParticipantTable participants={data.participants} />
-						) : null;
+						return <ParticipantTable participants={data.participants} />;
 					}}
 				>
-					<Column expander style={{ width: "3em" }} />
+					<Column expander={allowExpansion} style={{ width: "3em" }} />
 					<Column field="name" header="Lender"></Column>
 					<Column
 						field="totalLoan"

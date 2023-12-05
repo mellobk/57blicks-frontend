@@ -41,7 +41,7 @@ export interface ILenderOverview {
 	trustAllocated: number;
 	dueToDraws: number;
 	totalFunds: number;
-	participants?: Array<IParticipantOverview>;
+	participants: Array<IParticipantOverview>;
 }
 
 export interface ILoanOverview {
