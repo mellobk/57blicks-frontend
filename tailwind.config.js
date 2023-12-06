@@ -33,6 +33,7 @@ export default {
 					DEFAULT: "#C79E63",
 				},
 				red: {
+					50: "#fbdfe6",
 					100: "#F2D7DE",
 					200: "#FCD5DE",
 					300: "#F04A4A",
@@ -69,6 +70,7 @@ export default {
 					DEFAULT: "#29ACE5",
 				},
 				gray: {
+					40: "#dadde1",
 					50: "#F8F9FD",
 					100: "#FBF4F7",
 					150: "#F4F8FA",

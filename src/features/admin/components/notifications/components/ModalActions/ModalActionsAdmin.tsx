@@ -33,7 +33,7 @@ export const ModalActionsAdmin: FC<ModalActionsProps> = ({
 
 			<div className="cursor-pointer">
 				<Button
-					buttonText="ReApprove"
+					buttonText="Reapproved"
 					className=" rounded-3xl bg-green-900 text-green-500"
 					onClick={onOpenApproved}
 				/>

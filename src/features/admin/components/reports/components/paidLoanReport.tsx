@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
@@ -18,6 +20,8 @@ import Csv from "@/assets/images/png/Csv.png";
 import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
+import { Tabs } from "../../servicing/component/Tabs";
+import { paidLoansTabs } from "../../servicing/utils/tabs";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -25,13 +29,14 @@ import { Modal } from "@/components/ui/Modal";
 // website examples showcase many properties,
 // you'll often use just a few of them.
 
-export const AllDefaultReport: FC = () => {
+export const PaidLoanReport: FC = () => {
+	const [actualTabData, setActualTabData] = useState<string>("30");
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const [chartData, setChartData] = useState([]);
 	const propertyInsuranceQuery = useQuery(
-		["all-default-loans"],
+		["all-paid-loans"],
 		() => {
-			return ManageReportsService.getAllDefaultLoan();
+			return ManageReportsService.getPaidOffLoans(actualTabData);
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -41,22 +46,16 @@ export const AllDefaultReport: FC = () => {
 			const getData = propertyInsuranceQuery.data;
 			const data = [
 				{
-					id: `Insurance - ${getData.insurance.percentage}%`,
-					label: `Insurance - ${getData.insurance.percentage}%`,
-					value: getData.insurance.quantity,
+					id: `Paid - ${getData.paid.percentage}%`,
+					label: `Paid - ${getData.paid.percentage}%`,
+					value: getData.paid.quantity,
 					color: "hsl(110, 70%, 50%)",
 				},
 				{
-					id: `Interest - ${getData.interest.percentage}%`,
-					label: `Interest -${getData.interest.percentage}%`,
-					value: getData.interest.quantity,
+					id: `Unpaid - ${getData.unPaid.percentage}%`,
+					label: `Unpaid -${getData.unPaid.percentage}%`,
+					value: getData.unPaid.quantity,
 					color: "hsl(187, 70%, 50%)",
-				},
-				{
-					id: `Tax - ${getData.tax.percentage}%`,
-					label: `Tax - ${getData.tax.percentage}%`,
-					value: getData.tax.quantity,
-					color: "hsl(303, 70%, 50%)",
 				},
 			];
 			setChartData(data as any);
@@ -89,7 +88,7 @@ export const AllDefaultReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadCSV(data, "allDefaultLoans.csv");
+		downloadCSV(data, "paidLoans.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -118,8 +117,12 @@ export const AllDefaultReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadXLSX(data, "allDefaultLoans.xlsx");
+		downloadXLSX(data, "paidLoans.xlsx");
 	};
+
+	useEffect(() => {
+		void propertyInsuranceQuery.refetch();
+	}, [actualTabData]);
 
 	const columns = [
 		{
@@ -144,7 +147,7 @@ export const AllDefaultReport: FC = () => {
 	];
 
 	return (
-		<div className="h-[50%] w-full">
+		<div className="h-[60%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 				<div
 					className="font-bold text-[13px]"
@@ -152,8 +155,15 @@ export const AllDefaultReport: FC = () => {
 						setOpenInsurance(true);
 					}}
 				>
-					Default Loans
+					Paid Loans
 				</div>
+				<Tabs
+					tabs={paidLoansTabs}
+					actualTab={actualTabData}
+					onClick={(value): void => {
+						setActualTabData(value);
+					}}
+				/>
 				<div className="flex gap-2 ml-2" onClick={downloadReport}>
 					<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 						<img src={Csv} alt="DKC Csv" />
@@ -221,7 +231,7 @@ export const AllDefaultReport: FC = () => {
 				onHide={() => {
 					setOpenInsurance(false);
 				}}
-				title="Default Loans"
+				title="Paid Loans"
 			>
 				<DataTable
 					columns={columns}

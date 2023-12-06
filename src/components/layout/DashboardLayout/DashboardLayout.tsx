@@ -305,7 +305,7 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 				</div>
 			</div>
 
-			<div className="flex m-2 h-screen overflow-y-auto">{children}</div>
+			<div className="flex m-2 h-screen overflow-y-auto bg-w">{children}</div>
 			{openModalUser && (
 				<>
 					<div

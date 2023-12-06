@@ -56,6 +56,13 @@ export const Permission: FC = () => {
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
+	useEffect(() => {
+		return () => {
+			permissionsGroup.remove();
+			permissions.remove();
+		};
+	}, []);
+
 	const createPermissionGroups = (data: { name: string }) => {
 		createNewPermissionGroup.mutate({
 			...data,

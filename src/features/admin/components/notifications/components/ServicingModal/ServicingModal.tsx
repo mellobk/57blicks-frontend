@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable unicorn/prevent-abbreviations */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, useEffect, useState } from "react";
@@ -25,6 +27,7 @@ import { RoleType } from "@/types/api/permissions-type";
 import { ModalActionsAdmin } from "../ModalActions/ModalActionsAdmin";
 import { getLocalStorage } from "@/utils/local-storage";
 import { userName } from "@/utils/constant";
+import { TextArea } from "@/components/forms/TextArea";
 
 interface ServicingModalProps {
 	openModal?: boolean;
@@ -47,7 +50,6 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 	type,
 	status,
 }) => {
-	console.log(id);
 	const localUserName = getLocalStorage(userName);
 	const createLedgerQuery = useMutation(async (body: any) => {
 		return ManageNotificationService.createNotifications(body);
@@ -55,6 +57,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 
 	const editLoan = userStore((state) => state.editLoan);
 	const [handleEdit, setHandleEdit] = useState<boolean>();
+	const [comment, setComment] = useState<string>();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const approvalQuery = useMutation(async (id: string) => {
 		return LoansService.getLoan(id || "");
@@ -75,6 +78,12 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 			approvalQuery.mutate(id);
 		}
 	}, [id]);
+
+	useEffect(() => {
+		return () => {
+			setComment("");
+		};
+	}, []);
 
 	const [actualTabData, setActualTabData] = useState<string>("loan");
 	const [tabTitle, setTabTitle] = useState<string>("Loan Information");
@@ -183,6 +192,18 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 					>
 						{userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN ? (
 							<ModalActions
+								comment={
+									ledgerId ? null : (
+										<TextArea
+											value={comment}
+											onChange={(e): void => {
+												setComment(e.target.value);
+											}}
+											label="Comment"
+											className="w-full border-[1px] border-black rounded-md"
+										></TextArea>
+									)
+								}
 								status={status}
 								openApproved={openApprovedModal}
 								openDecline={openDeclineModal}
@@ -221,6 +242,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 									} else {
 										updateLoanQuery.mutate({
 											id: id,
+											comment: comment,
 											status: LoanStatusType.REJECTED,
 										});
 									}

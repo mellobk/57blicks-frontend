@@ -46,7 +46,7 @@ export const AccountingTable: FC = () => {
 			PermissionType.EDIT_ACCOUNTING
 		);
 
-		if ((!find || !findEdit) && !emptyObject(userLoggedInfo)) {
+		if (!find && !findEdit && !emptyObject(userLoggedInfo)) {
 			void navigate({ to: `/reporting` });
 		}
 	}, [userLoggedInfo]);
@@ -217,6 +217,11 @@ export const AccountingTable: FC = () => {
 										userLoggedInfo?.role,
 										userLoggedInfo?.permissionGroup?.permissions || [],
 										PermissionType.VIEW_ADMINS
+									) ||
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_ACCOUNTING
 									)
 										? TabData.admins
 										: TabData.empty,
@@ -224,6 +229,11 @@ export const AccountingTable: FC = () => {
 										userLoggedInfo?.role,
 										userLoggedInfo?.permissionGroup?.permissions || [],
 										PermissionType.VIEW_INVESTORS
+									) ||
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_INVESTORS
 									)
 										? TabData.investors
 										: TabData.empty,
@@ -231,6 +241,11 @@ export const AccountingTable: FC = () => {
 										userLoggedInfo?.role,
 										userLoggedInfo?.permissionGroup?.permissions || [],
 										PermissionType.VIEW_ACCOUNTS
+									) ||
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_ACCOUNTING
 									)
 										? TabData.accounting
 										: TabData.empty,

@@ -18,6 +18,7 @@ interface ModalActionsProps {
 	status?: string;
 	handleViewOnly?: () => void;
 	viewOnly?: boolean;
+	comment?: JSX.Element | null;
 }
 
 export const ModalActions: FC<ModalActionsProps> = ({
@@ -29,6 +30,7 @@ export const ModalActions: FC<ModalActionsProps> = ({
 	openDecline,
 	openApproved,
 	handleViewOnly,
+	comment,
 }) => {
 	const typeData = type === NotificationType.LOAN ? " Loan" : "Ledger";
 	return (
@@ -74,7 +76,10 @@ export const ModalActions: FC<ModalActionsProps> = ({
 				title={`Decline ${typeData}`}
 				width="30vw"
 			>
-				<Decline text={`this ${typeData}`} handleDeleteUser={onDecline} />
+				<div className="flex flex-col gap-7">
+					<Decline text={`this ${typeData}`} handleDeleteUser={onDecline} />
+					{comment}
+				</div>
 			</Modal>
 		</div>
 	);

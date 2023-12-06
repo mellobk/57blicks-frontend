@@ -65,6 +65,7 @@ export interface Loan {
 	borrower?: Borrower;
 	collaterals?: Array<Collateral>;
 	ltv?: string;
+	comment?: string;
 }
 
 export interface FundingBreakdown {
