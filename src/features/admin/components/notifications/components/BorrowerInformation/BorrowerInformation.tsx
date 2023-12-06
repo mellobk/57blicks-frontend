@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { Loan } from "@/types/api/loan";
+import type { Loan } from "@/types/api/loan";
 import { LoanCard } from "../LoanCard";
 import { formatPhoneNumber } from "@/utils/common-functions";
 

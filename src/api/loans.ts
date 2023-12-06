@@ -1,5 +1,4 @@
-// import type { Loan } from "@/types/api/loan";
-import type { Loan } from "@/features/admin/components/create-loan/types/fields";
+import type { Loan } from "@/types/api/loan";
 import type { Loan as LoanField } from "@/types/fields/loan";
 import { authApiClient } from "@/utils/api-client";
 
