@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -5,7 +6,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { type FC, useState } from "react";
-import type { support } from "@/types/api/support";
 import { RightView } from "./components/RightView";
 import { Inbox } from "./components/Inbox";
 import { Sender } from "./components/Sender";
@@ -17,20 +17,28 @@ export const Support: FC = () => {
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [selectedSupport, setSelectedSupport] = useState<Ticket>();
-	const [openModal, setOpenModal] = useState<boolean>(false);
+	const [openModalCreateTicket, setOpenModalCreateTicket] = useState<boolean>(false);
+	const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
+	const [openModalCloseTicket, setOpenModalCloseTicket] = useState<boolean>(false);
 	const [rightView, setRightView] = useState<string>("");
+	const [refreshTicketList, setRefreshTicketList] = useState<boolean>(false);
 
-	// const [selectedOpportunity, setSelectedOpportunity] =
-	// useState<OpportunityMin>();
+	const closeModalCreateTicket = (): void => {
+		setOpenModalCreateTicket(false);
+	};
 
-	// const getOpportunitiesQuery = useQuery(
-	// 	["opportunities-query"],
-	// 	() => OpportunitiesService.getOpportunities(),
-	// 	{ enabled: !selectedOpportunity }
-	// );
+	const closeModalDelete = (): void => {
+		setOpenModalDelete(false);
+	};
 
-	const closeModal = (): void => {
-		setOpenModal(false);
+	const closeModalCloseTicket = (): void => {
+		setOpenModalCloseTicket(false);
+	};
+
+	const handleSearch = (data: string) => {
+		console.log('searchValue', searchValue)
+		setSearchValue(data);
+		return data;
 	};
 
 	const rightMenuEvent = (event: any): void => {
@@ -55,7 +63,6 @@ export const Support: FC = () => {
 	};
 
 	const rightMenuCloseEvent = (): void => {
-		console.log("enter here?");
 		setRightView("");
 	};
 	return (
@@ -69,14 +76,30 @@ export const Support: FC = () => {
 							} gap-6 divide-x divide-gray-200 bg-white rounded-3xl w-full h-full p-4 overflow-y-auto`}
 						>
 							<Inbox
-								searchValue={searchValue}
 								searchVisible={searchVisible}
 								selectedSupport={selectedSupport}
-								setSearchValue={setSearchValue}
+								handleSearchValue={handleSearch}
 								setSearchVisible={setSearchVisible}
 								setSelectedSupport={setSelectedSupport}
+								setOpenModal={setOpenModalCreateTicket}
+								openModal={openModalCreateTicket}
+								closeModal={closeModalCreateTicket}
+								refreshTicketList= {refreshTicketList}
+								setRefreshTicketList={setRefreshTicketList}
 							/>
-							<Sender rightView={rightView} rightMenuEvent={rightMenuEvent} />
+							<Sender
+								rightView={rightView}
+								rightMenuEvent={rightMenuEvent}
+								setOpenModalDelete={setOpenModalDelete}
+								openModalDelete={openModalDelete}
+								closeModalDelete={closeModalDelete}
+								setOpenModalCloseTicket={setOpenModalCloseTicket}
+								openModalCloseTicket={openModalCloseTicket}
+								closeModalCloseTicket={closeModalCloseTicket}
+								selectedSupport={selectedSupport}
+								refreshTicketList= {refreshTicketList}
+								setRefreshTicketList={setRefreshTicketList}
+							/>
 							{rightView !== "" && (
 								<div className=" ">
 									<RightView type={rightView} onClose={rightMenuCloseEvent} />
@@ -86,9 +109,9 @@ export const Support: FC = () => {
 					)}
 					{mock && (
 						<EmptyTickets
-							setOpenModal={setOpenModal}
-							openModal={openModal}
-							closeModal={closeModal}
+							setOpenModal={setOpenModalCreateTicket}
+							openModal={openModalCreateTicket}
+							closeModal={closeModalCreateTicket}
 						/>
 					)}
 				</div>

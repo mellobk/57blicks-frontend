@@ -7,7 +7,7 @@
 import type { FC } from "react";
 import { IconButton } from "@/components/ui/IconButton";
 import { AttachmentsList } from "./AttachmentsList";
-import {Chat} from "./chat";
+import {Chat} from "./Chat";
 
 interface Props {
 	type?: string;

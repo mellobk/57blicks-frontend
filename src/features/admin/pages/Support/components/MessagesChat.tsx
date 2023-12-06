@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const MessagesChat: FC<Props> = ({ data }) =>
-	data?.map((message, key) => (
+	data?.map((message) => (
 		<div
 			className="flex"
 			style={{

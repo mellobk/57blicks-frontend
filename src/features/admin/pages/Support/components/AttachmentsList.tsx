@@ -6,7 +6,7 @@
 
 import type { FC } from "react";
 import { DocumentPreview } from "@/features/admin/components/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview";
-import { PDFListItems } from "@/features/admin/pages/Support/components/pdf-list-items";
+import { PDFListItems } from "@/features/admin/pages/Support/components/Pdf-list-items";
 import { IconButton } from "@/components/ui/IconButton";
 
 interface Props {

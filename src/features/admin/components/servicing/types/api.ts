@@ -133,16 +133,16 @@ export interface IBorrowerInformation {
 }
 
 export enum TicketStatusType {
-	NEW = "New",
-	OPEN = "Open",
-	PENDING = "Pending",
-	CLOSED = "Closed",
+	NEW = 'NEW',
+	OPEN = 'OPEN',
+	PENDING = 'PENDING',
+	CLOSED = 'CLOSED',
 }
 
 export enum TicketPriorityType {
-	LOW = "Low",
-	MEDIUM = "Medium",
-	HIGH = "High",
+	LOW = 'LOW',
+	MEDIUM = 'MEDIUM',
+	HIGH = 'HIGH',
 }
 
 export enum TicketCategoryType {
@@ -153,15 +153,17 @@ export enum TicketCategoryType {
 	OTHER = "Other",
 }
 
+
 export interface Ticket {
 	id: string;
 	title: string;
 	description: string;
 	priority?: Array<TicketPriorityType>;
-	status?: Array<TicketStatusType>;
+	status?: TicketStatusType;
 	category?: Array<TicketCategoryType>;
 	createdAt?: Date;
 	updatedAt?: Date;
 	deleteAt?: Date;
 	userId?: string;
+	data?: Array<Ticket>;
 }
