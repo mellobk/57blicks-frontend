@@ -7,8 +7,8 @@ import { BorrowerInformation } from "../../BorrowerInformation";
 import { LedgerList } from "../../Ledger";
 import { InvoiceScreen } from "../../Invoice";
 import { FundingBreakdown } from "@/features/admin/components/servicing/component/FundingBreakdown/FundingBreakdown.tsx";
-import { useQuery } from "@tanstack/react-query";
-import LoansService from "@/api/loans";
+// import { useQuery } from "@tanstack/react-query";
+// import LoansService from "@/api/loans";
 import userStore from "@/stores/user-store";
 import { PermissionType } from "@/types/api/permissions-type";
 import { findPermission } from "@/utils/common-functions";
@@ -79,11 +79,11 @@ export const ShowModal: FC<Props> = ({
 		TABS.find((tab) => tab.label === "Loan")
 	);
 
-	const loanQuery = useQuery(
-		["loan-query", data?.loan.id],
-		() => LoansService.getLoan(data?.loan.id),
-		{ enabled: !!data?.loan.id }
-	);
+	// const loanQuery = useQuery(
+	// 	["loan-query", data?.loan.id],
+	// 	() => LoansService.getLoan(data?.loan.id),
+	// 	{ enabled: !!data?.loan.id }
+	// );
 
 	return (
 		<Modal
@@ -147,7 +147,7 @@ export const ShowModal: FC<Props> = ({
 				<Payable loan={data.loan} />
 			)}
 			{actualTabData?.label === "Funding" && data && (
-				<FundingBreakdown data={loanQuery.data} />
+				<FundingBreakdown />
 			)}
 			{actualTabData?.label === "Invoices" && data && (
 				<InvoiceScreen loan={data.loan} />
