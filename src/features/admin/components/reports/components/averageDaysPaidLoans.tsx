@@ -210,7 +210,7 @@ export const AverageDaysPaidLoans: FC = () => {
 			<div className="h-[82%] w-[30%]">
 				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 					<div className="font-bold text-[13px]">
-						Average Roll Rate for all Loans
+						Average Roll Rate by Loan Product
 					</div>
 					<div className="flex gap-2 ml-2" onClick={downloadReport}>
 						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
@@ -230,7 +230,7 @@ export const AverageDaysPaidLoans: FC = () => {
 			<div className="h-[82%] w-[30%]">
 				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 					<div className="font-bold text-[13px]">
-						Average Roll Rate for all Loans
+						Average Roll Rate by Assets Type
 					</div>
 					<div className="flex gap-2 ml-2" onClick={downloadReport}>
 						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
