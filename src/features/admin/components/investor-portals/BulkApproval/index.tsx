@@ -5,7 +5,7 @@ import { ModalBlackAndWhite } from "@/components/ui/ModalBlackAndWhite";
 import { useState } from "react";
 
 const BulkApproval: FC = () => {
-	const [openModal, setOpenModal] = useState<boolean>(true);
+	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [showBlack, setShowBlack] = useState<boolean>(false);
 	const [width] = useState<string>(showBlack ? "1200px" : "900px");
 	return (
@@ -30,7 +30,7 @@ const BulkApproval: FC = () => {
 				minHeight="600px"
 				setIsOpen={setOpenModal}
 			>
-				<ListPayables />
+				<ListPayables setOpenModal={setOpenModal} />
 			</ModalBlackAndWhite>
 		</>
 	);

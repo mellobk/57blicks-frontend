@@ -1,3 +1,4 @@
+import type { Loan } from "@/types/api/loan";
 import type { PayableDetail } from "./payable-details";
 
 export enum PayableStatus {
@@ -20,4 +21,5 @@ export interface Payable {
 	amountPaid: number;
 	status: PayableStatus;
 	payableDetails?: Array<PayableDetail>;
+	loan?: Loan;
 }

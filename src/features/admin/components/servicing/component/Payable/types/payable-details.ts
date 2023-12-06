@@ -21,3 +21,10 @@ export interface PayableDetail {
 	yieldSpreadRate?: number;
 	datePaid?: Date;
 }
+
+export interface PayableDetailPending {
+	id: string;
+	name: string;
+	type: PayableType;
+	selected?: boolean;
+}

@@ -18,9 +18,9 @@ import { getLoanColumns } from "@/utils/investors";
 import BulkApproval from "../../BulkApproval";
 
 export const LLC: FC = () => {
-	const [selectedLoan, setSelectedLoan] = useState<Loan>();
+	const [selectedLoan, setSelectedLoan] = useState<Loan | null>();
 	const [selectedParticipation, setSelectedParticipation] =
-		useState<FundingBreakdown>();
+		useState<FundingBreakdown | null>();
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const currentMonthName = moment().format("MMMM");
@@ -95,11 +95,11 @@ export const LLC: FC = () => {
 
 	const selectInvestor = (loan: Loan) => {
 		setSelectedLoan(loan);
-		setSelectedParticipation();
+		setSelectedParticipation(null);
 	};
 
 	const selectParticipation = (participation: FundingBreakdown) => {
-		setSelectedLoan();
+		setSelectedLoan(null);
 		setSelectedParticipation(participation);
 	};
 

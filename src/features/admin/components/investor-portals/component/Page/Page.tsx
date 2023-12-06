@@ -13,6 +13,7 @@ import { investorPortalsTabs } from "@/features/admin/components/investor-portal
 import { FundingBreakdown } from "@/types/api/funding-breakdown";
 import { moneyFormat, percentageFormat } from "@/utils/formats";
 import { getLoanColumns } from "@/utils/investors";
+import BulkApproval from "../../BulkApproval";
 
 interface Props {
 	actualTab: string;
