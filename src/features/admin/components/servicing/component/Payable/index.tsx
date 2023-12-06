@@ -15,7 +15,7 @@ interface PayableProps {
 }
 
 const Payable: FC<PayableProps> = ({ loan }) => {
-	const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+	const [currentMonth, setCurrentMonth] = useState<Date>(new Date(2100, 0, 1));
 
 	const { data, isLoading, refetch } = useQuery(
 		["payables-list-query"],
@@ -29,17 +29,17 @@ const Payable: FC<PayableProps> = ({ loan }) => {
 	const handleCurrentMonth = (): void => {
 		//get current month and year if  year is 2100 then set to current year if not set to 2100  +1
 
-		const currentMonthYear = currentMonth.getFullYear();
-		if (currentMonthYear === 2100) {
-			setCurrentMonth(new Date());
-		} else {
-			setCurrentMonth(new Date(2100, 0, 1));
-		}
+		// const currentMonthYear = currentMonth.getFullYear();
+		// if (currentMonthYear === 2100) {
+		// 	setCurrentMonth(new Date());
+		// } else {
+		setCurrentMonth(new Date(2100, 0, 1));
+		// }
 	};
 
 	useEffect(() => {
-		console.log("🚀 ~ file: index.tsx:41 ~ useEffect ~ loan.id:", loan.id);
 		void refetch();
+		handleCurrentMonth();
 	}, [loan.id]);
 
 	if (isLoading) {

@@ -7,7 +7,7 @@ import { Icon } from "@/components/ui/Icon";
 import PayableDetails from "../PayableDetails";
 import moment from "moment";
 import ManagePayablesService, {
-	UpdatePayableApiProps,
+	type UpdatePayableApiProps,
 } from "../../../api/payable";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -31,10 +31,6 @@ const PayableMonths: FC<PayableMonthsProps> = ({ payable }) => {
 	);
 
 	const handleApprove = (approved: boolean): void => {
-		console.log(
-			"🚀 ~ file: index.tsx:33 ~ handleApprove ~ approved:",
-			approved
-		);
 		const status: PayableStatus = approved
 			? PayableStatus.PAID
 			: PayableStatus.PENDING;

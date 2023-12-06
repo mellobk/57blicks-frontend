@@ -1,10 +1,6 @@
 import { LedgerTypeOfPayment } from "../../Ledger/types";
-import {
-	PayableType,
-	type PayableDetail,
-	PayableStatus,
-	type Payable,
-} from "../types";
+import { PayableType, PayableStatus, type Payable } from "../types";
+import type { PayableDetail } from "../types/payable-details";
 
 export const payableDetails: Array<PayableDetail> = [
 	{

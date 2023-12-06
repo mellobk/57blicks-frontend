@@ -218,11 +218,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	};
 
 	const handleSetMonth = (name: string, value: Date, index: number): void => {
-		console.log(
-			"🚀 ~ file: LedgerComponent.tsx:217 ~ handleSetMonth ~ value:",
-			moment(value).format("YYYY-MM-DD"),
-			name
-		);
 		setValue(
 			`ledgers.${index}.${name}` as never,
 			moment(value).format("YYYY-MM-DD") as never

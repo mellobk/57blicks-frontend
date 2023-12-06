@@ -1,6 +1,5 @@
-import type { Investor } from "@/types/api/investor";
-import type { LedgerTypeOfPayment } from "../../Ledger/types";
-import type { Lender } from "@/types/api/lender";
+import type { Loan } from "@/types/api/loan";
+import type { PayableDetail } from "./payable-details";
 
 export enum PayableStatus {
 	PENDING = "Pending",
@@ -21,22 +20,6 @@ export interface Payable {
 	amount: number;
 	amountPaid: number;
 	status: PayableStatus;
-}
-
-export interface PayableDetail {
-	id: string;
-	payable: Payable;
-	investor?: Investor;
-	lender?: Lender;
-	type: PayableType;
-	memo: string;
-	amount: number;
-	debit: number;
-	credit: number;
-	typeOfPayment: LedgerTypeOfPayment;
-	status: PayableStatus;
-	order: number;
-	yieldSpread?: number;
-	yieldSpreadRate?: number;
-	datePaid?: Date;
+	payableDetails?: Array<PayableDetail>;
+	loan?: Loan;
 }

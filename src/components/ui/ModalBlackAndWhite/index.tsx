@@ -35,7 +35,7 @@ export const ModalBlackAndWhite: FC<ModalBlackAndWhiteProps> = ({
 				}}
 				breakpoints={{ "960px": "75vw", "641px": "100vw" }}
 			>
-				<div className="bg-black w-full h-full absolute top-0 left-0 ">
+				<div className="bg-black w-full h-full absolute top-0 left-0  ">
 					{/* {showBlack && (
 						<div
 							className="absolute w-[33px] h-[33px] right-[80px] bg-gray-1300 rounded-full top-[25px] pt-[9px] pl-[8px] cursor-pointer hover:bg-gray-1350 z-10"

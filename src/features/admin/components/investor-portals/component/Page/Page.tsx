@@ -13,6 +13,7 @@ import { investorPortalsTabs } from "@/features/admin/components/investor-portal
 import { FundingBreakdown } from "@/types/api/funding-breakdown";
 import { moneyFormat, percentageFormat } from "@/utils/formats";
 import { getLoanColumns } from "@/utils/investors";
+import BulkApproval from "../../BulkApproval";
 
 interface Props {
 	actualTab: string;
@@ -83,12 +84,14 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Origin Date",
-			selector: (row: FundingBreakdown) => row.loan?.originationDate?.toString() || "",
+			selector: (row: FundingBreakdown) =>
+				row.loan?.originationDate?.toString() || "",
 			sortable: true,
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: FundingBreakdown) => row.loan?.maturityDate?.toString() || "",
+			selector: (row: FundingBreakdown) =>
+				row.loan?.maturityDate?.toString() || "",
 			sortable: true,
 		},
 		{

@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import type { PayableDetail } from "../types";
+import type { PayableDetail } from "../types/payable-details";
 import { PayableType } from "../types";
 
 interface ParticipantProps {
