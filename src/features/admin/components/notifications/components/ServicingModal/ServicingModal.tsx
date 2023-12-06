@@ -20,6 +20,10 @@ import {
 import { Success } from "../Success";
 import { SuccessDecline } from "../SuccessDecline/Success";
 import type { Loan } from "../../types/types";
+// import type {
+// 	Loan,
+// } from "@/features/admin/components/servicing/types/api";
+// import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import userStore from "@/stores/user-store";
 import { RoleType } from "@/types/api/permissions-type";
 import { ModalActionsAdmin } from "../ModalActions/ModalActionsAdmin";
@@ -157,6 +161,10 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 			}
 			case "ledger": {
 				setTabTitle("Ledger");
+				break;
+			}
+			case "founding": {
+				setTabTitle("Founding");
 				break;
 			}
 			default: {

@@ -73,8 +73,15 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 	};
 
 	return (
-		<DataTable value={participants} editMode="cell">
-			<Column field="name" header="Participant"></Column>
+		<DataTable value={participants} editMode="cell" className="p-3">
+			<Column field="name" header="Participant" filter></Column>
+			<Column
+				field="totalEquity"
+				header="Total Equity"
+				body={(rowData) =>
+					monetaryBodyTemplate(rowData as IParticipantOverview, "totalEquity")
+				}
+			/>
 			<Column
 				field="totalDrawnToDate"
 				header="Total Drawn to Date"

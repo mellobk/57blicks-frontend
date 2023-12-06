@@ -15,7 +15,7 @@ interface Props {
 
 export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 	<div>
-		<Title text="Loan Details" />
+		<Title text="Loan Details11111" />
 		<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 			<FormatInput
         data-testid="loan-details-asset-value"

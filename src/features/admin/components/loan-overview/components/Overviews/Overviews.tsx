@@ -22,7 +22,7 @@ export const Overviews: FC<Props> = ({ data }) => {
 					value={data.principleOverview.loansDrawnDown}
 				/>
 				<Value
-					label="Due to Draws"
+					label="Construction Holdback"
 					action={() => {
 						setOpenDueToDrawsModal(true);
 					}}

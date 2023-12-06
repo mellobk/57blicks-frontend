@@ -131,3 +131,39 @@ export interface IBorrowerInformation {
 	entityName?: string;
 	companyName?: string;
 }
+
+export enum TicketStatusType {
+	NEW = 'NEW',
+	OPEN = 'OPEN',
+	PENDING = 'PENDING',
+	CLOSED = 'CLOSED',
+}
+
+export enum TicketPriorityType {
+	LOW = 'LOW',
+	MEDIUM = 'MEDIUM',
+	HIGH = 'HIGH',
+}
+
+export enum TicketCategoryType {
+	INVESTMENT = "Investment",
+	GENERAL = "Generak",
+	PORTAL = "Portal",
+	OPPORTUNITY = "Opportunity",
+	OTHER = "Other",
+}
+
+
+export interface Ticket {
+	id: string;
+	title: string;
+	description: string;
+	priority?: Array<TicketPriorityType>;
+	status?: TicketStatusType;
+	category?: Array<TicketCategoryType>;
+	createdAt?: Date;
+	updatedAt?: Date;
+	deleteAt?: Date;
+	userId?: string;
+	data?: Array<Ticket>;
+}
