@@ -8,7 +8,7 @@ import {
 } from "../../api/backend-end-points";
 
 import { authApiClient } from "@/utils/api-client";
-import { TicketStatusType } from "@/features/admin/pages/Support/types";
+import { TicketStatusType, type CreateTicketForm } from "@/features/admin/pages/Support/types";
 
 const getListTickets = async (): Promise<Array<Ticket> | null> => {
 	try {
@@ -32,12 +32,12 @@ const deleteTicket = async (id: string): Promise<void> => {
 	await authApiClient.delete<Array<Ticket>>(deleteTicketsApi(id));
 };
 
-const updateTicket = async (body: Ticket): Promise<void> => {
+const updateTicket = async (body: CreateTicketForm): Promise<void> => {
 
 	body.status = TicketStatusType.CLOSED;
 
 	await authApiClient.put<Ticket>(
-		updateTicketsApi(body?.id),
+		updateTicketsApi(body.id),
 		body
 	);
 };

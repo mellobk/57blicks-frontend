@@ -56,7 +56,7 @@ import Xlsx from "@/assets/icons/xlsx";
 import New from "@/assets/icons/new";
 import UploadFile from "@/assets/icons/upload-file"
 import List from "@/assets/icons/list";
-import Attach from "@/assets/icons/Attach";
+import Attach from "@/assets/icons/attach";
 import Notes from "@/assets/icons/notes";
 
 export const ICONS = {

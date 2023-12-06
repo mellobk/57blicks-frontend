@@ -4,18 +4,53 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import type { FC } from "react";
 import { Input } from "@/components/forms/Input";
 import { Modal } from "@/components/ui/Modal/Modal";
-import { Select } from "@/components/forms/Select";
 import { TextArea } from "@/components/forms/TextArea";
+import { useForm } from "react-hook-form";
+import type { Ticket } from "@/features/admin/components/servicing/types/api";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AddTicketSchema } from "../schemas/AddTicketSchemas";
+import { TICKET_CATEGORIES } from "../utils/selects";
+import { Dropdown } from "@/components/forms/Dropdown";
+import type { CreateTicketForm } from "../types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postTicket } from "../api/support";
+import useToast from "@/hooks/use-toast";
 
-import type { FC } from "react";
 interface Props {
 	openModal: boolean;
 	closeModal: () => void;
+	data?: Ticket;
 }
 
-export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
+export const CreateNewTicket: FC<Props> = ({
+	openModal,
+	closeModal,
+}) => {
+	const {
+		control,
+		register,
+		handleSubmit
+	} = useForm<CreateTicketForm>({
+		resolver: zodResolver(AddTicketSchema),
+	});
+	const notify = useToast();
+	const queryClient = useQueryClient();
+
+	const mutation = useMutation(postTicket, {
+    onSuccess: async () => {
+			notify("Ticket created successfully", "success");
+			await queryClient.invalidateQueries({ queryKey: ["get-ticket-details"] });
+      closeModal();
+    }
+  });
+
+  const onSubmit = (data: CreateTicketForm): void => {
+    mutation.mutate(data);
+  };
+
 	return (
 		<div>
 			<Modal
@@ -48,24 +83,6 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 					</>
 				}
 			>
-				<div className={`flex items-center justify-between`}>
-					<div
-						className={`absolute top-10  right-[20px] cursor-pointer	 transform -translate-x-1/2 -translate-y-1/2 bg-blue-50 pt-1 pb-1.5 pl-4 pr-4 text-blue-200 text-sm font-semibold rounded-3xl hover:bg-blue-70`}
-						onClick={(): any => {
-							console.log("Send Ticket");
-						}}
-					>
-						Send Ticket
-					</div>
-					<div
-						className={`absolute top-10  right-[140px] cursor-pointer	 transform -translate-x-1/2 -translate-y-1/2 bg-gold-100 pt-1 pb-1.5 pl-4 pr-4 text-gold-500 text-sm font-semibold rounded-3xl hover:bg-gold-350`}
-						onClick={(): any => {
-							console.log("save as draft");
-						}}
-					>
-						Save as Draft
-					</div>
-				</div>
 				<div
 					style={{
 						padding: "0",
@@ -82,7 +99,7 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 						}}
 					>
 						<form
-							// onSubmit={handleSubmit(onSubmit)}
+							onSubmit={handleSubmit(onSubmit)}
 							className="flex flex-col justify-end p-2 gap-4"
 						>
 							<div className="flex justify-between items-center">
@@ -92,36 +109,33 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 										label="Title"
 										placeholder="Enter Title"
 										required
-										// register={register("firstName")}
-										// error={errors["firstName"] && errors["firstName"]?.message}
+										register={register("title")}
 									/>
-									{/* </div> */}
-									{/* <div className="w-full"> */}
-									<Select
-										// register={register(
-										// 	borrowerInformationFields?.accountType || ""
-										// )}
-										className="flex flex-col gap-2"
-										label="Dropdown"
-										placeholder="Select Dropdown"
-										// value={data?.loan?.borrower?.accountType || ""}
-										// options={ACCOUNT_OPTIONS}
+									<Dropdown
+										control={control}
+										className="mt-6"
+										label="category"
+										name="category"
+										options={TICKET_CATEGORIES}
+										required
 									/>
-									{/* </div> */}
-									{/* <div className="w-full"> */}
-
 									<TextArea
 										data-testid="general-information-investment-summary"
-										// error={errors?.investmentSummary?.message}
 										label="Message"
 										maxLength={1000}
 										placeholder="Enter Message"
-										// register={register("investmentSummary")}
 										wrapperClassName="mt-6"
 										required
+										register={register("description")}
 									/>
 								</div>
 							</div>
+							<button 
+								type="submit" 
+								className="bg-blue-50 pt-1 pb-1.5 pl-4 pr-4 text-blue-200 text-sm font-semibold rounded-3xl hover:bg-blue-70"
+							>
+								Send Ticket
+							</button>
 						</form>
 					</div>
 				</div>

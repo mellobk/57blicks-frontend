@@ -72,3 +72,23 @@ export const payablesDetailApi = (parameter: ApiParameters): string => {
 export const ticketsApi = (): string => {
 	return `/tickets/admin`;
 };
+
+export const deleteTicketsApi = (id: string): string => {
+	return `/tickets/${id}`;
+};
+
+export const updateTicketsApi = (id: string): string => {
+	return `/tickets/${id}`;
+};
+
+export const commentApi = (id: string): string => {
+	return `/comments/${id}`;
+};
+
+export const filterTicketData = (search: string, status: string): string => {
+	return `/tickets/admin?${`&q=${search}&status=${status}`}`;
+};
+
+export const getAttachmentsData = (): string => {
+	return `/attachments`;
+};

@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
 import { ErrorText } from "@/components/forms/ErrorText";
-import { Label } from "@/components/forms/Label";
 import { Icon } from "@/components/ui/Icon";
 import { inputClassName } from "@/utils/class-names";
 import "./styles.css";

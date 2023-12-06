@@ -4,37 +4,70 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type { FC } from "react";
+import { type FC, useState, useEffect } from "react";
 import { IconButton } from "@/components/ui/IconButton";
 import { Tabs } from "@/components/ui/Tabs";
 import { Input } from "@/components/forms/Input";
-import { SupportTicketList } from "@/components/ui/SupportTicketList";
 import { supportInboxStatus } from "@/features/admin/pages/Support/utils/selects";
-import type { support } from "@/types/api/support";
 import { TicketsList } from "@/features/admin/components/servicing/component/Tickets/TicketsList";
 import type { Ticket } from "@/features/admin/components/servicing/types/api";
+import { useDebounce } from "@/hooks/debounce";
+import { CreateNewTicket } from "./CreateNewTicket";
 
 interface Props {
-	searchValue: string;
 	searchVisible: boolean;
 	selectedSupport: Ticket | undefined;
-	setSearchValue: (data: any) => void;
+	handleSearchValue: (data: any) => void;
 	setSearchVisible: (searchVisible: boolean) => void;
 	setSelectedSupport: (selectedSupport?: Ticket) => void;
+	setOpenModal: (event_: boolean) => void;
+	closeModal: () => void;
+	openModal: boolean;
+	refreshTicketList: boolean;
+	setRefreshTicketList: (searchVisible: boolean) => void;
 }
 
-
 export const Inbox: FC<Props> = ({
-	searchValue,
 	searchVisible,
 	selectedSupport,
-	setSearchValue,
+	handleSearchValue,
 	setSearchVisible,
 	setSelectedSupport,
+	setOpenModal,
+	openModal,
+	closeModal,
+	refreshTicketList,
+	setRefreshTicketList,
 }) => {
+	const [filter, setFilter] = useState<string>("open");
+	const [value, setValue] = useState<string>("");
+	const debouncedSearchTerm = useDebounce(value, 1000);
+	const [searchValue, setSearchValue] = useState<string>("");
+
+	useEffect(() => {
+		if (handleSearchValue) {
+			handleSearchValue(debouncedSearchTerm);
+			if (value === "") {
+				setSearchValue(debouncedSearchTerm);
+			} else {
+				setSearchValue("");
+			}
+		}
+	}, [debouncedSearchTerm, handleSearchValue]);
+
+	useEffect(() => {
+		if (searchValue === "") {
+			setValue("");
+		}
+	}, [searchValue]);
+
+	const handleSearch = (value: string): void => {
+		setValue(value);
+	};
+
 	return (
 		<div>
-			<div className="lg:col-span-1 col-span-1">
+			<div className="h-auto lg:col-span-1 col-span-1">
 				<div className="flex justify-between">
 					<h3
 						style={{
@@ -59,7 +92,7 @@ export const Inbox: FC<Props> = ({
 								bgColor="bg-white"
 								name="new"
 								onClick={(): any => {
-									// setOpenConfirmationModal(true);
+									setOpenModal(true);
 								}}
 								width="60"
 							/>
@@ -67,7 +100,13 @@ export const Inbox: FC<Props> = ({
 					</div>
 				</div>
 				<div>
-					<Tabs tabs={supportInboxStatus} actualTab="open" colorLight={true} />
+					<Tabs
+						tabs={supportInboxStatus}
+						actualTab={filter}
+						colorLight={true}
+						isListTab={true}
+						setFilter={setFilter}
+					/>
 				</div>
 				<div
 					style={{
@@ -84,18 +123,10 @@ export const Inbox: FC<Props> = ({
 						style={{ position: "relative", width: "100%" }}
 					>
 						<div className="flex gap-1 items-center">
-							<div
-								className="flex gap-2 justify-end"
-								// style={{
-								// 	position: "relative",
-								// 	right: "158px",
-								// 	width: "350px",
-								// 	zIndex: "0",
-								// }}
-							>
+							<div className="flex gap-2 justify-end">
 								<div
 									className={`${
-										searchVisible || searchValue
+										searchVisible || value
 											? "w-full bg-transparent transition duration-500"
 											: "bg-transparent  w-[30px] transition duration-500 "
 									} `}
@@ -108,19 +139,23 @@ export const Inbox: FC<Props> = ({
 								>
 									<Input
 										type="text"
-										value={searchValue}
+										value={value}
 										placeholder="Search"
 										iconColor="#0E2130"
-										iconWidth={`${searchValue ? "12" : "20"}`}
-										iconName={`${searchValue ? "wrong" : "search"}`}
-										onChange={(data): any => {
-											setSearchValue(data.target.value);
+										iconWidth={`${value ? "12" : "20"}`}
+										iconName={`${value ? "wrong" : "search"}`}
+										onChange={(data): void => {
+											handleSearch(data.target.value);
 										}}
-										clickIcon={(): any => {
-											setSearchValue("");
+										clickIcon={(): void => {
+											if (handleSearchValue) {
+												setSearchValue("");
+												setValue("");
+												handleSearchValue("");
+											}
 										}}
 										className={`placeholder-gray-400 text-black-200 text-[13px] font-normal font-weight-400 leading-normal w-full ${
-											searchVisible || searchValue
+											searchVisible || value
 												? "bg-gray-200 "
 												: "bg-transparent "
 										}  tracking-wide flex  items-center self-stretch rounded-md border-none outline-none `}
@@ -130,18 +165,22 @@ export const Inbox: FC<Props> = ({
 						</div>
 					</div>
 				</div>
-				<div style={{ marginTop: "20px" }}>
-					{/* <SupportTicketList
-						data={getTicketsQuery}
-						selectedOpportunity={selectedSupport}
-						setSelectedOpportunity={setSelectedSupport}
-					/> */}
+				<div
+					className="overflow-y-auto"
+					style={{ height: "550px", marginTop: "20px" }}
+				>
 					<TicketsList
-						selectedOpportunity={selectedSupport}
-						setSelectedOpportunity={setSelectedSupport}
+						searchInput={value}
+						selectedTicket={selectedSupport}
+						setSelectedTicket={setSelectedSupport}
+						filter={filter}
+						refreshTicketList={refreshTicketList}
+						setRefreshTicketList={setRefreshTicketList}
 					/>
 				</div>
+				<CreateNewTicket openModal={openModal} closeModal={closeModal} />
 			</div>
 		</div>
 	);
 };
+

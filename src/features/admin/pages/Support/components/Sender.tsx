@@ -8,14 +8,79 @@ import type { FC } from "react";
 import { IconButton } from "@/components/ui/IconButton";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
-import { Chat } from "./chat";
+import { Chat } from "./Chat";
+import { Modal } from "@/components/ui/Modal";
+import { DeleteTicket } from "./DeleteTicket/DeleteTicket";
+import type { Ticket } from "@/features/admin/components/servicing/types/api";
+import { useMutation } from "@tanstack/react-query";
+import ManageTicketService from "@/features/admin/components/servicing/component/Tickets/tickets";
+import { CloseTicket } from "./CloseTicket/CloseTicket";
+import { IconFileUpload } from "@/components/forms/FileUpload/IconFileUpload";
 
 interface Props {
 	rightView: string;
 	rightMenuEvent: (event_: string) => void;
+	setOpenModalDelete: (event_: boolean) => void;
+	closeModalDelete: () => void;
+	openModalDelete: boolean;
+	setOpenModalCloseTicket: (event_: boolean) => void;
+	closeModalCloseTicket: () => void;
+	openModalCloseTicket: boolean;
+	selectedSupport: Ticket | undefined;
+	refreshTicketList: boolean;
+	setRefreshTicketList: (refreshTicketList: boolean) => void;
 }
 
-export const Sender: FC<Props> = ({ rightView, rightMenuEvent }) => {
+export const Sender: FC<Props> = ({
+	rightView,
+	rightMenuEvent,
+	setOpenModalDelete,
+	openModalDelete,
+	closeModalDelete,
+	setOpenModalCloseTicket,
+	openModalCloseTicket,
+	closeModalCloseTicket,
+	selectedSupport,
+	setRefreshTicketList,
+}) => {
+	const deleteTicketSender = useMutation(
+		(id: string) => {
+			return ManageTicketService.deleteTicket(id);
+		},
+		{
+			onSuccess: () => {
+				closeModalDelete();
+				setRefreshTicketList(true);
+			},
+			onError: () => {
+				closeModalDelete;
+			},
+		}
+	);
+
+	const updateTicketMutation = useMutation(
+		(ticketData: Ticket) => {
+			return ManageTicketService.updateTicket(ticketData);
+		},
+		{
+			onSuccess: () => {
+				closeModalCloseTicket();
+				setRefreshTicketList(true);
+			},
+			onError: () => {
+				closeModalCloseTicket;
+			},
+		}
+	);
+
+	const handleDeleteTicket = (id: string) => {
+		deleteTicketSender.mutate(id);
+	};
+
+	const handleCloseTicket = (ticket: Ticket) => {
+		updateTicketMutation.mutate(ticket);
+	};
+
 	return (
 		<div className="lg:col-span-3 col-span-1 flex flex-col gap-6 lg:pl-6 h-full overflow-y-auto">
 			<div className="flex flex-col h-full justify-between">
@@ -34,50 +99,15 @@ export const Sender: FC<Props> = ({ rightView, rightMenuEvent }) => {
 						>
 							Sender
 						</h3>
-						<div
-							className=" w-30 h-7  bg-green-800 pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-green-500 font-bold align-middle "
-							style={{
-								visibility: rightView === "" ? "visible" : "hidden",
-								marginLeft: "10px",
-							}}
-						>
-							<div className="pr-2 align-middle pt-0.5  ">
-								<Icon name="list" width="20" color="#00BA35" />
-							</div>
-							<span
-								style={{
-									color: "var(--colors-green, #00BA35)",
-									fontFeatureSettings: "'clig' off, 'liga' off",
-									fontFamily: "Inter",
-									fontSize: "10.182px",
-									fontStyle: "normal",
-									fontWeight: "600",
-									lineHeight: "normal",
-									letterSpacing: "-0.509px",
-									alignItems: "center",
-									alignSelf: "center",
-								}}
-							>
-								Number of Logins
-							</span>
-						</div>
 					</div>
 					<div className="flex justify-between gap-3">
-						<div
-							style={{
-								visibility: rightView === "" ? "visible" : "hidden",
-							}}
-						>
-							<IconButton
-								bgColor="bg-gray-200"
-								color="#0E2130"
-								name="uploadFile"
-								onClick={(): any => {
-									// setOpenConfirmationModal(true);
-								}}
-								width="16"
-							/>
-						</div>
+						<IconFileUpload
+							data-testid="general-information-image"
+							accept="image/*"
+							placeholder="Choose File"
+							wrapperClassName="mt-6"
+							required
+						/>
 						<Button
 							className={` w-40 h-7  bg-gray-200 pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-black-200 font-bold align-middle `}
 							style={{
@@ -133,29 +163,36 @@ export const Sender: FC<Props> = ({ rightView, rightMenuEvent }) => {
 								Internal Notes
 							</span>
 						</Button>
-						<div
-							className="  h-7   bg-green-800 pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-green-500 font-bold align-middle "
-							style={{
-								color: "var(--colors-green, #00BA35)",
-								fontFeatureSettings: "'clig' off, 'liga' off",
-								fontFamily: "Inter",
-								fontSize: "10.182px",
-								fontStyle: "normal",
-								fontWeight: "600",
-								lineHeight: "normal",
-								letterSpacing: "-0.509px",
-								alignItems: "center",
+						<Button
+							className=" h-7  bg-white pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-black-200 font-bold align-middle "
+							onClick={(): any => {
+								setOpenModalCloseTicket(true);
 							}}
 						>
-							Resolve Ticket
-						</div>
+							<div
+								className="  h-7   bg-green-800 pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-green-500 font-bold align-middle "
+								style={{
+									color: "var(--colors-green, #00BA35)",
+									fontFeatureSettings: "'clig' off, 'liga' off",
+									fontFamily: "Inter",
+									fontSize: "10.182px",
+									fontStyle: "normal",
+									fontWeight: "600",
+									lineHeight: "normal",
+									letterSpacing: "-0.509px",
+									alignItems: "center",
+								}}
+							>
+								Resolve Ticket
+							</div>
+						</Button>
 						<div>
 							<IconButton
 								bgColor="bg-red-500/[.12]"
 								color="#FF0033"
 								name="trashBin"
 								onClick={(): any => {
-									// setOpenConfirmationModal(true);
+									setOpenModalDelete(true);
 								}}
 								width="16"
 							/>
@@ -164,6 +201,28 @@ export const Sender: FC<Props> = ({ rightView, rightMenuEvent }) => {
 				</div>
 				<Chat />
 			</div>
+			<Modal
+				visible={openModalDelete}
+				onHide={closeModalDelete}
+				title="Delete Ticket"
+				width="450px"
+			>
+				<DeleteTicket
+					id={selectedSupport?.id}
+					handleDeleteTicket={handleDeleteTicket}
+				/>
+			</Modal>
+			<Modal
+				visible={openModalCloseTicket}
+				onHide={closeModalCloseTicket}
+				title="Close Ticket"
+				width="450px"
+			>
+				<CloseTicket
+					body={selectedSupport}
+					handleCloseTicket={handleCloseTicket}
+				/>
+			</Modal>
 		</div>
 	);
 };
