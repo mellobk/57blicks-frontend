@@ -52,7 +52,12 @@ export const AdminTable: FC<SuccessProps> = () => {
 				userLoggedInfo?.role,
 				userLoggedInfo?.permissionGroup?.permissions || [],
 				PermissionType.VIEW_ADMINS
-			)
+			) ||
+				findPermission(
+					userLoggedInfo?.role,
+					userLoggedInfo?.permissionGroup?.permissions || [],
+					PermissionType.EDIT_ADMINS
+				)
 				? ManageUsersService.filterAllAdmins(searchValue)
 				: [];
 		},
@@ -185,7 +190,7 @@ export const AdminTable: FC<SuccessProps> = () => {
 			PermissionType.EDIT_ADMINS
 		);
 
-		if ((!find || !findEdit) && !emptyObject(userLoggedInfo)) {
+		if (!find && !findEdit && !emptyObject(userLoggedInfo)) {
 			void navigate({ to: `/manage-users/investors` });
 		}
 		void adminQuery.refetch();
@@ -229,6 +234,11 @@ export const AdminTable: FC<SuccessProps> = () => {
 										userLoggedInfo?.role,
 										userLoggedInfo?.permissionGroup?.permissions || [],
 										PermissionType.VIEW_ADMINS
+									) ||
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_ACCOUNTING
 									)
 										? TabData.admins
 										: TabData.empty,
@@ -236,6 +246,11 @@ export const AdminTable: FC<SuccessProps> = () => {
 										userLoggedInfo?.role,
 										userLoggedInfo?.permissionGroup?.permissions || [],
 										PermissionType.VIEW_INVESTORS
+									) ||
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_INVESTORS
 									)
 										? TabData.investors
 										: TabData.empty,
@@ -243,6 +258,11 @@ export const AdminTable: FC<SuccessProps> = () => {
 										userLoggedInfo?.role,
 										userLoggedInfo?.permissionGroup?.permissions || [],
 										PermissionType.VIEW_ACCOUNTS
+									) ||
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_ACCOUNTING
 									)
 										? TabData.accounting
 										: TabData.empty,

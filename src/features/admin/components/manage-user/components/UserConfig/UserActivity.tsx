@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { PermissionType } from "@/types/api/permissions-type";
 import userStore from "@/stores/user-store";
 import { findPermission } from "@/utils/common-functions";
+import UserOpportunities from "./userOpportunities";
 
 interface UserActivityProps {
 	user: User;
@@ -29,6 +30,14 @@ const UserActivity: FC<UserActivityProps> = ({
 	const [showModal, setShowModal] = useState(false);
 	const [date, setDate] = useState<Date>(new Date());
 
+	const userMetrics = useQuery(
+		["logs-user-metrics"],
+		() => {
+			return ManageLogService.getUserOpportunitiesMetrics(user.id || "");
+		},
+		{ enabled: true, staleTime: 1000 * 60 }
+	);
+
 	const userActivity = useQuery(
 		["logs-user-activity"],
 		() => {
@@ -41,6 +50,13 @@ const UserActivity: FC<UserActivityProps> = ({
 		void getUserActivity();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
+
+	useEffect(() => {
+		return () => {
+			userMetrics.remove();
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		void getUserActivity();
@@ -120,13 +136,33 @@ const UserActivity: FC<UserActivityProps> = ({
 				</div>
 			)}
 
-			<div className="flex mb-4 gap-10">
-				<div className="lg:w-1/2 md:w-full p-5 shadow-lg rounded-lg h-1/2 bg-white ">
+			<div className="flex mb-4 gap-10 w-full flex-wrap justify-center">
+				<div className=" w-[45%] p-5 shadow-lg rounded-lg h-1/2 bg-white ">
 					{userActivity.data && <LastLogin data={userActivity.data} />}
 				</div>
-				<div className="lg:w-1/2 md:w-full p-5 shadow-lg rounded-lg h-1/2 bg-white">
+				<div className=" w-[45%] p-5 shadow-lg rounded-lg h-1/2 bg-white">
 					{userActivity.data && <NumberOfLogin data={userActivity.data} />}
 				</div>
+				{user?.role?.name === "investor" && (
+					<>
+						<div className="w-[45%] p-5 shadow-lg rounded-lg h-1/2 bg-white">
+							<UserOpportunities
+								data={userMetrics.data?.approveInvestment || 0}
+								isApproved={true}
+								opportunities={userMetrics.data?.getAllOpportunities || 0}
+								loading={userMetrics.isLoading}
+							/>
+						</div>
+						<div className="w-[45%] p-5 shadow-lg rounded-lg h-1/2 bg-white">
+							<UserOpportunities
+								data={userMetrics.data?.rejectInvestment || 0}
+								isApproved={false}
+								opportunities={userMetrics.data?.getAllOpportunities || 0}
+								loading={userMetrics.isLoading}
+							/>
+						</div>
+					</>
+				)}
 			</div>
 			<div className="flex mb-4">
 				<div className="w-full p-5 shadow-lg rounded-lg h-1/2 bg-white">

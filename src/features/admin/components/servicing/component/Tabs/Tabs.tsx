@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
 interface LoginTitleProps {
-	tabs?: Array<{ label: string; routeTo: string }>;
+	tabs?: Array<{ label: string; routeTo?: string; value?: string }>;
 	actualTab?: string;
 	onClick?: (value: string) => void;
 }

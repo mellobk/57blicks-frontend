@@ -6,6 +6,30 @@ export const defaultInsuranceLoan = (): string => {
 	return `/loans/default/insurances`;
 };
 
+export const paidOffLoan = (days: string): string => {
+	return `/loans/default/paid-off?days=${days}`;
+};
+
+export const loanConsult = (): string => {
+	return `/loans/default/consultant`;
+};
+
+export const loanProduct = (): string => {
+	return `/loans/default/product`;
+};
+
+export const loanAssets = (): string => {
+	return `/loans/default/assets`;
+};
+
+export const loanAverage = (): string => {
+	return `/loans/default/average`;
+};
+
+export const loanPaidAverageDays = (): string => {
+	return `/loans/default/days/average`;
+};
+
 export const defaultTaxLoan = (): string => {
 	return `/loans/default/tax`;
 };

@@ -22,6 +22,27 @@ const getUserActivity = async (
 	return null;
 };
 
+const getUserOpportunitiesMetrics = async (
+	id: string
+): Promise<{
+	rejectInvestment: number;
+	approveInvestment: number;
+	getAllOpportunities: number;
+} | null> => {
+	try {
+		const response = await authApiClient.get<{
+			rejectInvestment: number;
+			approveInvestment: number;
+			getAllOpportunities: number;
+		}>(`/opportunities/investor-metrics/${id}`);
+
+		return response.data;
+	} catch (error) {
+		console.log("🚀 ~ file: logs.ts:15 ~ getUserActivity ~ err:", error);
+	}
+	return null;
+};
+
 const createLoginLog = async () => {
 	try {
 		const data = {
@@ -29,7 +50,7 @@ const createLoginLog = async () => {
 			entity: LogTable.USER,
 		};
 
-    return await authApiClient.post(createLog(), data);
+		return await authApiClient.post(createLog(), data);
 	} catch (error) {
 		return error;
 	}
@@ -37,6 +58,7 @@ const createLoginLog = async () => {
 const ManageLogService = {
 	getUserActivity,
 	createLoginLog,
+	getUserOpportunitiesMetrics,
 };
 
 export default ManageLogService;

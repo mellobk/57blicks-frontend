@@ -1,3 +1,7 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
@@ -7,17 +11,14 @@ import { useState, type FC, useEffect } from "react";
 
 // install (please try to align the version of installed @nivo packages)
 // yarn add @nivo/pie
-import { ResponsivePieCanvas } from "@nivo/pie";
 import { formatDate, moneyFormat } from "@/utils/formats";
 import { downloadCSV } from "@/utils/create-cvs";
 import { downloadXLSX } from "@/utils/create-xlsx";
-import type { Loan } from "../../servicing/types/api";
 import ManageReportsService from "../api/reports";
-import DataTable from "react-data-table-component";
 import Csv from "@/assets/images/png/Csv.png";
 import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
-import { Modal } from "@/components/ui/Modal";
+import { ResponsivePieCanvas } from "@nivo/pie";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -25,46 +26,57 @@ import { Modal } from "@/components/ui/Modal";
 // website examples showcase many properties,
 // you'll often use just a few of them.
 
-export const AllDefaultReport: FC = () => {
-	const [openInsurance, setOpenInsurance] = useState(false);
+export const LoanProductReport: FC = () => {
 	const [chartData, setChartData] = useState([]);
-	const propertyInsuranceQuery = useQuery(
-		["all-default-loans"],
+	const [_, setKey] = useState<Array<string>>([]);
+	const consultantQuery = useQuery(
+		["all-products-loans"],
 		() => {
-			return ManageReportsService.getAllDefaultLoan();
+			return ManageReportsService.getLoanProduct();
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
 	useEffect(() => {
-		if (propertyInsuranceQuery.data) {
-			const getData = propertyInsuranceQuery.data;
-			const data = [
+		if (consultantQuery.data) {
+			const getData = consultantQuery?.data as unknown as Array<any>;
+
+			const keys = Object.keys(getData);
+			/* 	const valuesArray = keys.map((key) => getData[key]); */
+
+			setKey(keys);
+
+			const data = keys.map((value) => {
+				return {
+					id: `${value} `,
+					label: `${value} `,
+					value: getData[value as any].length,
+					color: "hsl(110, 70%, 50%)",
+				};
+			});
+
+			console.log(data);
+
+			/* 			const data = [
 				{
-					id: `Insurance - ${getData.insurance.percentage}%`,
-					label: `Insurance - ${getData.insurance.percentage}%`,
-					value: getData.insurance.quantity,
+					id: `Paid - ${getData.paid.percentage}%`,
+					label: `Paid - ${getData.paid.percentage}%`,
+					value: getData.paid.quantity,
 					color: "hsl(110, 70%, 50%)",
 				},
 				{
-					id: `Interest - ${getData.interest.percentage}%`,
-					label: `Interest -${getData.interest.percentage}%`,
-					value: getData.interest.quantity,
+					id: `Unpaid - ${getData.unPaid.percentage}%`,
+					label: `Unpaid -${getData.unPaid.percentage}%`,
+					value: getData.unPaid.quantity,
 					color: "hsl(187, 70%, 50%)",
 				},
-				{
-					id: `Tax - ${getData.tax.percentage}%`,
-					label: `Tax - ${getData.tax.percentage}%`,
-					value: getData.tax.quantity,
-					color: "hsl(303, 70%, 50%)",
-				},
-			];
+			]; */
 			setChartData(data as any);
 		}
-	}, [propertyInsuranceQuery.data]);
+	}, [consultantQuery.data]);
 
 	const downloadReport = (): void => {
-		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
+		const insuranceCsv = consultantQuery.data?.defaultLoans;
 
 		const headerCsv = [
 			"Borrower",
@@ -89,11 +101,11 @@ export const AllDefaultReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadCSV(data, "allDefaultLoans.csv");
+		downloadCSV(data, "paidLoans.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
-		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
+		const insuranceCsv = consultantQuery.data?.defaultLoans;
 
 		const headerCsv = [
 			"Borrower",
@@ -118,42 +130,13 @@ export const AllDefaultReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadXLSX(data, "allDefaultLoans.xlsx");
+		downloadXLSX(data, "paidLoans.xlsx");
 	};
 
-	const columns = [
-		{
-			name: "Name",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.name || "",
-			omit: false,
-		},
-		{
-			name: "address",
-			selector: (row: Loan): string => row.collaterals[0]?.address || "",
-			omit: false,
-		},
-		{
-			name: "Insurance Expiration Date",
-			selector: (row: Loan) =>
-				formatDate(
-					row?.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
-			omit: false,
-		},
-	];
-
 	return (
-		<div className="h-[50%] w-full">
+		<div className="h-[70%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
-				<div
-					className="font-bold text-[13px]"
-					onClick={() => {
-						setOpenInsurance(true);
-					}}
-				>
-					Default Loans
-				</div>
+				<div className="font-bold text-[13px]">Products Loans</div>
 				<div className="flex gap-2 ml-2" onClick={downloadReport}>
 					<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 						<img src={Csv} alt="DKC Csv" />
@@ -203,32 +186,6 @@ export const AllDefaultReport: FC = () => {
 					},
 				]}
 			/>
-
-			<div
-				onClick={() => {
-					setOpenInsurance(true);
-				}}
-			>
-				<DataTable
-					columns={columns}
-					data={propertyInsuranceQuery.data?.defaultLoans.slice(0, 3) || []}
-					progressPending={propertyInsuranceQuery.isLoading}
-				/>
-			</div>
-
-			<Modal
-				visible={openInsurance}
-				onHide={() => {
-					setOpenInsurance(false);
-				}}
-				title="Default Loans"
-			>
-				<DataTable
-					columns={columns}
-					data={propertyInsuranceQuery.data?.defaultLoans || []}
-					progressPending={propertyInsuranceQuery.isLoading}
-				/>
-			</Modal>
 		</div>
 	);
 };

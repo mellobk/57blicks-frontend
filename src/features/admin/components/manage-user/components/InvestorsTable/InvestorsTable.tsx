@@ -50,6 +50,25 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 
 	const userInfo = userStore((state) => state.userInfo);
 
+	const investorQuery = useQuery(
+		["investor-query"],
+		() => {
+			return findPermission(
+				userLoggedInfo?.role,
+				userLoggedInfo?.permissionGroup?.permissions || [],
+				PermissionType.VIEW_INVESTORS
+			) ||
+				findPermission(
+					userLoggedInfo?.role,
+					userLoggedInfo?.permissionGroup?.permissions || [],
+					PermissionType.EDIT_INVESTORS
+				)
+				? ManageUsersService.filterAllInvestors(searchValue, checkState)
+				: [];
+		},
+		{ enabled: true, staleTime: 1000 * 60 }
+	);
+
 	useEffect(() => {
 		const find = findPermission(
 			userLoggedInfo?.role,
@@ -62,9 +81,11 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 			PermissionType.EDIT_INVESTORS
 		);
 
-		if ((!find || !findEdit) && !emptyObject(userLoggedInfo)) {
+		if (!find && !findEdit && !emptyObject(userLoggedInfo)) {
 			void navigate({ to: `/manage-users/accounting` });
 		}
+
+		void investorQuery.refetch();
 	}, [userLoggedInfo]);
 
 	useEffect(() => {
@@ -77,20 +98,6 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 			setSelectedUser(investorUser || null);
 		}
 	}, [userInfo]);
-
-	const investorQuery = useQuery(
-		["investor-query"],
-		() => {
-			return findPermission(
-				userLoggedInfo?.role,
-				userLoggedInfo?.permissionGroup?.permissions || [],
-				PermissionType.VIEW_INVESTORS
-			)
-				? ManageUsersService.filterAllInvestors(searchValue, checkState)
-				: [];
-		},
-		{ enabled: true, staleTime: 1000 * 60 }
-	);
 
 	const deleteAdminMutation = useMutation((id: string) => {
 		return ManageUsersService.deleteUser(id);
@@ -341,6 +348,11 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 										userLoggedInfo?.role,
 										userLoggedInfo?.permissionGroup?.permissions || [],
 										PermissionType.VIEW_ADMINS
+									) ||
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_ACCOUNTING
 									)
 										? TabData.admins
 										: TabData.empty,
@@ -348,6 +360,11 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 										userLoggedInfo?.role,
 										userLoggedInfo?.permissionGroup?.permissions || [],
 										PermissionType.VIEW_INVESTORS
+									) ||
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_INVESTORS
 									)
 										? TabData.investors
 										: TabData.empty,
@@ -355,6 +372,11 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 										userLoggedInfo?.role,
 										userLoggedInfo?.permissionGroup?.permissions || [],
 										PermissionType.VIEW_ACCOUNTS
+									) ||
+									findPermission(
+										userLoggedInfo?.role,
+										userLoggedInfo?.permissionGroup?.permissions || [],
+										PermissionType.EDIT_ACCOUNTING
 									)
 										? TabData.accounting
 										: TabData.empty,

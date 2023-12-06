@@ -27,6 +27,7 @@ interface LoanInformationProps {
 }
 
 export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [type, setType] = useState<string>(data?.type || "");
 	const [loanData, setLoanData] = useState<Loan>(data || []);
 
@@ -185,7 +186,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
 				</div>
 
 				<div className="flex gap-2 flex-col">
-					{edit ? (
+					{/* 		{edit ? (
 						<Input
 							type="number"
 							error={
@@ -204,9 +205,14 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
 								Number.parseInt(loanData?.totalLoanAmount || "")
 							)}
 						/>
-					)}
+					)} */}
 
-					{edit ? (
+					<LoanCard
+						title="Total Loan Amount"
+						text={moneyFormat(Number.parseInt(loanData?.totalLoanAmount || ""))}
+					/>
+
+					{/* {edit ? (
 						<Input
 							type="number"
 							error={
@@ -224,7 +230,13 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
 							text={`${loanData?.interestRate}%`}
 							background
 						/>
-					)}
+					)} */}
+
+					<LoanCard
+						title="Interest Rate"
+						text={`${loanData?.interestRate}%`}
+						background
+					/>
 
 					{edit ? (
 						<Input
@@ -257,7 +269,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
 			<div
 				className={`w-[33.33%] flex gap-2 flex-col ${!edit && "opacity-40"}`}
 			>
-				{edit ? (
+				{/* 	{edit ? (
 					<Input
 						type="date"
 						error={
@@ -273,8 +285,11 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
 						title="Origination Date"
 						text={formatDate(loanData?.originationDate.toString() || "")}
 					/>
-				)}
-
+				)} */}
+				<LoanCard
+					title="Origination Date"
+					text={formatDate(loanData?.originationDate.toString() || "")}
+				/>
 				{edit ? (
 					<Input
 						type="date"
@@ -293,7 +308,6 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
 						background
 					/>
 				)}
-
 				{edit ? (
 					<Input
 						type="number"
@@ -313,7 +327,6 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
 						)}
 					/>
 				)}
-
 				{edit ? (
 					<Input
 						type="number"
@@ -332,12 +345,10 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
 						background
 					/>
 				)}
-
 				<LoanCard
 					title="Asset Class"
 					text={loanData?.collaterals[0]?.assetType}
 				/>
-
 				{edit ? (
 					<Input
 						type="number"
@@ -349,6 +360,12 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
 				) : (
 					<LoanCard title="LTV" text={`${loanData?.ltv}%`} background />
 				)}
+
+				<div>
+					{userLoggedInfo?.role?.name === "admin" && (
+						<LoanCard title="Comment" text={loanData?.comment} background />
+					)}
+				</div>
 			</div>
 
 			<div

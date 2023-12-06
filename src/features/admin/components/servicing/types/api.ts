@@ -71,6 +71,7 @@ export interface Collateral {
 export interface Loan {
 	id?: string;
 	name?: string;
+	comment?: string;
 	createdAt?: Date;
 	updatedAt: Date;
 	type: string;
