@@ -1,23 +1,22 @@
-
 export enum TicketStatusType {
-  NEW = 'NEW',
-  OPEN = 'OPEN',
-  PENDING = 'PENDING',
-  CLOSED = 'CLOSED',
+	NEW = "NEW",
+	OPEN = "OPEN",
+	PENDING = "PENDING",
+	CLOSED = "CLOSED",
 }
 
 export enum TicketPriorityType {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
+	LOW = "LOW",
+	MEDIUM = "MEDIUM",
+	HIGH = "HIGH",
 }
 
 export enum TicketCategoryType {
-  INVESTMENT = 'INVESTMENT',
-  GENERAL = 'GENERAL',
-  PORTAL = 'PORTAL',
-  OPPORTUNITY = 'OPPORTUNITY',
-  OTHER = 'OTHER',
+	INVESTMENT = "INVESTMENT",
+	GENERAL = "GENERAL",
+	PORTAL = "PORTAL",
+	OPPORTUNITY = "OPPORTUNITY",
+	OTHER = "OTHER",
 }
 
 export interface Ticket {
@@ -39,4 +38,28 @@ export interface CreateTicketForm {
 	description: string;
 	category: TicketCategoryType;
 	status: TicketStatusType;
+}
+
+export interface Attachment {
+	id: string;
+	createdAt?: Date;
+	updatedAt?: Date;
+	deletedAt?: Date;
+	originalName?: string;
+	mimeType?: string;
+	size?: string;
+	s3Url?: string;
+	ticketId: string;
+	data?: Array<Attachment>;
+}
+export interface Chat {
+	id: string;
+	createdAt?: Date;
+	updatedAt?: Date;
+	deletedAt?: Date;
+	content?: string;
+	isInternal: boolean,
+	ticketId: string
+	data?: Array<Chat>;
+
 }

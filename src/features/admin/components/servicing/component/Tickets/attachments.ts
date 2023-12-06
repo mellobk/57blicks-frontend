@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import type { Ticket } from "../../types/api";
+import type { Attachment } from "src/features/admin/pages/Support/types/index.ts";
 import {
-	ticketsApi,
-	filterTicketData,
-	deleteTicketsApi,
-	updateTicketsApi,
+	getAttachmentsData,
+	updateAttachmentApi,
 } from "../../api/backend-end-points";
 
 import { authApiClient } from "@/utils/api-client";
-import { TicketStatusType, type CreateTicketForm } from "@/features/admin/pages/Support/types";
 
-const getListTickets = async (): Promise<Array<Ticket> | null> => {
+const getListAttachment = async (): Promise<Array<Attachment> | null> => {
 	try {
-		const response = await authApiClient.get<Array<Ticket>>(`${ticketsApi()}`);
+		const response = await authApiClient.get<Array<Attachment>>(
+			`${getAttachmentsData()}`
+		);
+		console.log("ENTER HERE???", response);
 		return response.data;
 	} catch {
 		/* empty */
@@ -20,33 +20,30 @@ const getListTickets = async (): Promise<Array<Ticket> | null> => {
 
 	return null;
 };
-
-const filterAllTickets = async (searchData: string, status: string) => {
-	const response = await authApiClient.get<Array<Ticket>>(
-		filterTicketData(searchData, status)
+const updateAttachment = async (
+	body: File,
+	ticketID: string
+): Promise<void> => {
+	console.log(
+		"updateAttachment -----> ",
+		body,
+		" the ticket id ---> ",
+		ticketID
 	);
-	return response.data;
+	try {
+		const response = await authApiClient.post<Attachment>(
+			`/attachments/upload/${ticketID}`,
+			body
+		);
+		console.log("Update successful. Response:", response.data);
+	} catch (error) {
+		console.error("Error updating attachment:", error);
+	}
 };
 
-const deleteTicket = async (id: string): Promise<void> => {
-	await authApiClient.delete<Array<Ticket>>(deleteTicketsApi(id));
+const ManageAttachmentService = {
+	getListAttachment,
+	updateAttachment,
 };
 
-const updateTicket = async (body: CreateTicketForm): Promise<void> => {
-
-	body.status = TicketStatusType.CLOSED;
-
-	await authApiClient.put<Ticket>(
-		updateTicketsApi(body.id),
-		body
-	);
-};
-
-const ManageTicketService = {
-	getListTickets,
-	filterAllTickets,
-	deleteTicket,
-	updateTicket,
-};
-
-export default ManageTicketService;
+export default ManageAttachmentService;

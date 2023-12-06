@@ -48,16 +48,6 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 
 	const onSubmit = (data: CreateTicketForm): void => {
 		mutation.mutate(data);
-		/* 		createLedgerQuery.mutate({
-			title: "Support Ticket",
-			timestamp: new Date(),
-			content: `New ticket support was created`,
-			additionalData: "",
-			userFullName: `${userLoggedInfo.firstName} ${userLoggedInfo.lastName}`,
-			priority: "HIGH",
-			type: "ALERT",
-			roles: ["super-admin"],
-		}); */
 	};
 
 	return (

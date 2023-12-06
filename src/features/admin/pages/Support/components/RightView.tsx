@@ -7,45 +7,16 @@
 import type { FC } from "react";
 import { IconButton } from "@/components/ui/IconButton";
 import { AttachmentsList } from "./AttachmentsList";
-import {Chat} from "./Chat";
+import { ChatBox } from "./Chat";
+import type { Ticket } from "@/features/admin/components/servicing/types/api";
 
 interface Props {
 	type?: string;
 	onClose?: () => void;
+	selectedSupport: Ticket;
 }
 
-const pdfList = [
-	{
-		name: "LegalTerms.pdf",
-		size: "125 MB",
-		upload: "Feb 12, 2023",
-		time: "10:40 AM",
-		id: "1",
-	},
-	{
-		name: "LegalTerms.pdf",
-		size: "125 MB",
-		upload: "Feb 12, 2023",
-		time: "10:40 AM",
-		id: "2",
-	},
-	{
-		name: "LegalTerms.pdf",
-		size: "125 MB",
-		upload: "Feb 12, 2023",
-		time: "10:40 AM",
-		id: "3",
-	},
-	{
-		name: "LegalTerms.pdf",
-		size: "125 MB",
-		upload: "Feb 12, 2023",
-		time: "10:40 AM",
-		id: "4",
-	},
-];
-
-export const RightView: FC<Props> = ({ type, onClose }) => {
+export const RightView: FC<Props> = ({ type, onClose, selectedSupport }) => {
 	return (
 		<div>
 			<div className="flex justify-between" style={{ margin: "15px" }}>
@@ -90,12 +61,11 @@ export const RightView: FC<Props> = ({ type, onClose }) => {
 					paddingLeft: "15px",
 				}}
 			>
-				{ type === "Attachments" ?
-
-				<AttachmentsList pdfList={pdfList} /> :
-				<Chat/>
-				}
-				
+				{type === "Attachments" ? (
+					<AttachmentsList idTicket={selectedSupport?.id} />
+				) : (
+					<ChatBox idTicket={selectedSupport.id} />
+				)}
 			</div>
 		</div>
 	);

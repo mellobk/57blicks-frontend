@@ -4,22 +4,40 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import type { FC } from "react";
+import { type FC, useEffect, useState } from "react";
 import { DocumentPreview } from "@/features/admin/components/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview";
 import { PDFListItems } from "@/features/admin/pages/Support/components/Pdf-list-items";
 import { IconButton } from "@/components/ui/IconButton";
+import type { Attachment } from "src/features/admin/pages/Support/types/index.ts";
+import { useQuery } from "@tanstack/react-query";
+import ManageAttachmentService from "@/features/admin/components/servicing/component/Tickets/attachments";
 
 interface Props {
-	pdfList: Array<{
-		name: string;
-		size: string;
-		upload: string;
-		time: string;
-		id: string;
-	}>;
+	idTicket?: string;
 }
 
-export const AttachmentsList: FC<Props> = ({ pdfList }) => {
+export const AttachmentsList: FC<Props> = ({ idTicket }) => {
+	const [attachmentList, setAttachmentList] = useState<Array<Attachment>>([]);
+
+	const queryAttachmentDetails = useQuery(
+		["get-attachment-list"],
+		() => {
+			return ManageAttachmentService.getListAttachment();
+		},
+		{
+			onSuccess: (data: Attachment) => {
+				console.log("data -->", data);
+				if (data?.data) {
+					setAttachmentList(data?.data);
+				}
+			},
+		}
+	);
+
+	useEffect(() => {
+		void queryAttachmentDetails.refetch();
+	}, [attachmentList]);
+
 	return (
 		<div>
 			<div className="h-80 lg:col-span-3 col-span-1 bg-gray-400">
@@ -58,7 +76,7 @@ export const AttachmentsList: FC<Props> = ({ pdfList }) => {
 				</div>
 			</div>
 			<div className="" style={{ paddingTop: "40px" }}>
-				<PDFListItems data={pdfList} />
+				<PDFListItems data={attachmentList} />
 			</div>
 		</div>
 	);

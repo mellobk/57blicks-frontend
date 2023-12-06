@@ -55,7 +55,6 @@ export const TicketsList: FC<Props> = ({
 		} else {
 			void queryInvoiceDetails.refetch();
 		}
-		console.log("tickets --> ", tickets);
 	}, [tickets, filter, searchInput, refreshTicketList]);
 
 	return (

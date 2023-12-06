@@ -13,6 +13,19 @@ export const dateFormat = (inputDate: string) => {
 	return formattedDate;
 };
 
+export const formatTime = (dateString: string) => {
+	const options = { hour: "numeric", minute: "numeric", hour12: true };
+	const date = new Date(dateString);
+
+	if (!(date instanceof Date) || isNaN(date.getTime())) {
+		throw new Error("Invalid date string");
+	}
+
+	const timeString = date.toLocaleTimeString(undefined, options);
+
+	return timeString;
+};
+
 export const dateWithFormat = (
 	inputDate: string | Date,
 	format: string

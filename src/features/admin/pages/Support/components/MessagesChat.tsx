@@ -1,8 +1,8 @@
 import type { FC } from "react";
-import type { message } from "@/types/api/message";
+import type { Chat } from "src/features/admin/pages/Support/types/index.ts";
 
 interface Props {
-	data?: Array<message>;
+	data?: Array<Chat>;
 }
 
 export const MessagesChat: FC<Props> = ({ data }) =>
@@ -11,7 +11,8 @@ export const MessagesChat: FC<Props> = ({ data }) =>
 			className="flex"
 			style={{
 				flexDirection: "column",
-				alignItems: message.type === "investor" ? "" : "flex-end",
+				// alignItems: message.type === "investor" ? "" : "flex-end",
+				alignItems: message.content === "investor" ? "" : "flex-end",
 			}}
 		>
 			<div
@@ -27,8 +28,10 @@ export const MessagesChat: FC<Props> = ({ data }) =>
 						color: "#B0B4BA",
 					}}
 				>
-					<span className="">{message.name}</span>
-					<span className="">{message.time}</span>
+					{/* <span className="">{message.name}</span>
+					<span className="">{message.time}</span> */}
+					<span className="">Name</span>
+					<span className="">Time</span>
 				</div>
 				<div
 					className=" rounded-2xl"
@@ -36,11 +39,13 @@ export const MessagesChat: FC<Props> = ({ data }) =>
 						height: "58px",
 						paddingTop: "10px",
 						paddingLeft: "10px",
-						color: message.type === "investor" ? "#656A74" : "#C79E63",
-                        backgroundColor : message.type === "investor" ?  "#F4F7F9" : "rgba(199, 158, 99, 0.12)",
+						// color: message.type === "investor" ? "#656A74" : "#C79E63",
+                        // backgroundColor : message.type === "investor" ?  "#F4F7F9" : "rgba(199, 158, 99, 0.12)",
+						color: message.content === "investor" ? "#656A74" : "#C79E63",
+                        backgroundColor : message.content === "investor" ?  "#F4F7F9" : "rgba(199, 158, 99, 0.12)",
 					}}
 				>
-					{message.message}
+					{message.content}
 				</div>
 			</div>
 		</div>

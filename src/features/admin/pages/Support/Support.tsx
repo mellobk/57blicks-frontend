@@ -17,9 +17,11 @@ export const Support: FC = () => {
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [selectedSupport, setSelectedSupport] = useState<Ticket>();
-	const [openModalCreateTicket, setOpenModalCreateTicket] = useState<boolean>(false);
+	const [openModalCreateTicket, setOpenModalCreateTicket] =
+		useState<boolean>(false);
 	const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
-	const [openModalCloseTicket, setOpenModalCloseTicket] = useState<boolean>(false);
+	const [openModalCloseTicket, setOpenModalCloseTicket] =
+		useState<boolean>(false);
 	const [rightView, setRightView] = useState<string>("");
 	const [refreshTicketList, setRefreshTicketList] = useState<boolean>(false);
 
@@ -36,7 +38,7 @@ export const Support: FC = () => {
 	};
 
 	const handleSearch = (data: string) => {
-		console.log('searchValue', searchValue)
+		console.log("searchValue", searchValue);
 		setSearchValue(data);
 		return data;
 	};
@@ -84,7 +86,7 @@ export const Support: FC = () => {
 								setOpenModal={setOpenModalCreateTicket}
 								openModal={openModalCreateTicket}
 								closeModal={closeModalCreateTicket}
-								refreshTicketList= {refreshTicketList}
+								refreshTicketList={refreshTicketList}
 								setRefreshTicketList={setRefreshTicketList}
 							/>
 							<Sender
@@ -97,12 +99,16 @@ export const Support: FC = () => {
 								openModalCloseTicket={openModalCloseTicket}
 								closeModalCloseTicket={closeModalCloseTicket}
 								selectedSupport={selectedSupport}
-								refreshTicketList= {refreshTicketList}
+								refreshTicketList={refreshTicketList}
 								setRefreshTicketList={setRefreshTicketList}
 							/>
-							{rightView !== "" && (
+							{rightView !== "" && selectedSupport && (
 								<div className=" ">
-									<RightView type={rightView} onClose={rightMenuCloseEvent} />
+									<RightView
+										type={rightView}
+										onClose={rightMenuCloseEvent}
+										selectedSupport={selectedSupport}
+									/>
 								</div>
 							)}
 						</div>
