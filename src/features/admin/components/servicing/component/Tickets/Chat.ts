@@ -4,9 +4,9 @@ import { getChatsData, setChatsData } from "../../api/backend-end-points";
 
 import { authApiClient } from "@/utils/api-client";
 
-const getChat = async (id: string): Promise<Array<Chat> | null> => {
+const getChat = async (): Promise<Array<Chat> | null> => {
 	try {
-		const response = await authApiClient.get<Array<Chat>>(`${getChatsData(id)}`);
+		const response = await authApiClient.get<Array<Chat>>(`${getChatsData()}`);
 		console.log("ENTER HERE???", response);
 		return response.data;
 	} catch {

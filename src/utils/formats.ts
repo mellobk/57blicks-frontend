@@ -14,7 +14,7 @@ export const dateFormat = (inputDate: string) => {
 };
 
 export const formatTime = (dateString: string) => {
-	const options = { hour: "numeric", minute: "numeric", hour12: true };
+	const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
 	const date = new Date(dateString);
 
 	if (!(date instanceof Date) || isNaN(date.getTime())) {

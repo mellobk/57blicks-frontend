@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import type { Attachment } from "src/features/admin/pages/Support/types/index.ts";
-import {
-	getAttachmentsData,
-	updateAttachmentApi,
-} from "../../api/backend-end-points";
+import { getAttachmentsData } from "../../api/backend-end-points";
 
 import { authApiClient } from "@/utils/api-client";
 
@@ -24,12 +21,7 @@ const updateAttachment = async (
 	body: File,
 	ticketID: string
 ): Promise<void> => {
-	console.log(
-		"updateAttachment -----> ",
-		body,
-		" the ticket id ---> ",
-		ticketID
-	);
+
 	try {
 		const response = await authApiClient.post<Attachment>(
 			`/attachments/upload/${ticketID}`,
@@ -43,7 +35,7 @@ const updateAttachment = async (
 
 const ManageAttachmentService = {
 	getListAttachment,
-	updateAttachment,
+	uploadAttachment: updateAttachment,
 };
 
 export default ManageAttachmentService;

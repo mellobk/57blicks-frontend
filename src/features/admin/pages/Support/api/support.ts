@@ -42,3 +42,13 @@ export const sentTicket = async ({
 	console.log("WHAT IS MESSAGE ----> ", newMessage)
 	await authApiClient.post(`/comments/${id}`, { content: newMessage, isInternal:false });
 };
+
+export const uploadAttachment = async (file: Blob, ticketId: string): Promise<void> => {
+	const formData = new FormData();
+	formData.append("file", file);
+
+	await authApiClient.post(
+		`/attachments/upload/${ticketId}`,
+		formData
+	);
+};

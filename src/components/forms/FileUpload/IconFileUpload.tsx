@@ -1,81 +1,46 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { useRef, useState, useEffect } from "react";
-import type { ForwardRefRenderFunction, InputHTMLAttributes } from "react";
-import { inputClassName } from "@/utils/class-names";
-import "./styles.css";
+import { useRef, useCallback } from "react";
 import { IconButton } from "@/components/ui/IconButton";
-import type { Attachment } from "src/features/admin/pages/Support/types/index.ts";
+import useToast from "@/hooks/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { uploadAttachment } from "@/features/admin/pages/Support/api/support";
+import type { Ticket } from "@/features/admin/components/servicing/types/api";
 
-interface IconFileUploadProps extends InputHTMLAttributes<HTMLInputElement> {
-  wrapperClassName?: string;
-  setAttachmentt: (data: Attachment) => void;
-  setSelectedFile: (data: File | null) => void;
+interface IconFileUploadProps {
+  selectedSupport: Ticket | undefined;
 }
 
-export const IconFileUpload: ForwardRefRenderFunction<
-  HTMLInputElement,
-  IconFileUploadProps
-> = ({
-  className = inputClassName(),
-  wrapperClassName,
-  setAttachmentt,
-  setSelectedFile,
-  ...props
-}) => {
+export const IconFileUpload: React.FC<IconFileUploadProps> = ({ selectedSupport }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const notify = useToast();
 
-  const handleIconClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+  const mutation = useMutation((file: File) => {
+    return uploadAttachment(file, selectedSupport?.id ?? '');
+  }, {
+    onSuccess: () => {
+      notify("Attachment uploaded successfully", "success")
     }
-  };
+  });
 
-  // Function to handle file input change
-  const handleFileInputChange = () => {
-    const fileInput = fileInputRef.current;
-    if (fileInput && fileInput.files && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
+  const handleIconClick = () => fileInputRef.current?.click();
 
-      console.log('WHat is file -----> ', file)
-
-      // Build the Attachment object from the file information
-      const newAttachment: Attachment = {
-        originalName: file.name,
-        mimeType: file.type,
-        size: file.size.toString(),
-      };
-
-      // Update the state with the new attachment
-      setAttachmentt(newAttachment);
-      setSelectedFile(file);
+  const handleFileInputChange = useCallback(() => {
+    const file = fileInputRef.current?.files?.[0];
+    if (file) {
+      mutation.mutate(file);
     }
-  };
-
-  // Effect to log the selected file when it changes
-  // useEffect(() => {
-  //   console.log("Selected File:", selectedFile);
-  // }, [selectedFile]);
+  }, [mutation]);
 
   return (
     <div>
-      <div className="" data-testid="icon" onClick={handleIconClick}>
-        <IconButton
-          bgColor="bg-gray-200"
-          color="#0E2130"
-          name="uploadFile"
-          width="16"
-        />
+      <div data-testid="icon" onClick={handleIconClick}>
+        <IconButton bgColor="bg-gray-200" color="#0E2130" name="uploadFile" width="16" />
       </div>
 
       <input
         ref={fileInputRef}
-        className={`${className} pr-[30px] hidden`}
         type="file"
-        placeholder="Upload Image"
+        className="hidden"
         onChange={handleFileInputChange}
-        {...props}
       />
     </div>
   );

@@ -50,8 +50,12 @@ export const PDFListItems: FC<Props> = ({ data }) =>
 						paddingRight: "10px",
 					}}
 				>
-					<span>{dateFormat(pdf?.updatedAt)}</span>
-					<span>{formatTime(pdf?.updatedAt)}</span>
+					{pdf?.updatedAt && (
+						<>
+							<span>{dateFormat(pdf?.updatedAt?.toString())}</span>
+							<span>{formatTime(pdf?.updatedAt?.toString())}</span>
+						</>
+					)}
 				</div>
 			</div>
 		</div>

@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { type FC, useState } from "react";
+import type { FC } from "react";
 import { IconButton } from "@/components/ui/IconButton";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
@@ -12,13 +12,10 @@ import { ChatBox } from "./Chat";
 import { Modal } from "@/components/ui/Modal";
 import { DeleteTicket } from "./DeleteTicket/DeleteTicket";
 import type { Ticket } from "@/features/admin/components/servicing/types/api";
-import type { Attachment } from "src/features/admin/pages/Support/types/index.ts";
 import { useMutation } from "@tanstack/react-query";
 import ManageTicketService from "@/features/admin/components/servicing/component/Tickets/tickets";
 import { CloseTicket } from "./CloseTicket/CloseTicket";
 import { IconFileUpload } from "@/components/forms/FileUpload/IconFileUpload";
-import ManageAttachmentService from "@/features/admin/components/servicing/component/Tickets/attachments";
-import { UploadFile } from "./UploadFile/UploadFile";
 
 interface Props {
 	rightView: string;
@@ -46,10 +43,7 @@ export const Sender: FC<Props> = ({
 	selectedSupport,
 	setRefreshTicketList,
 }) => {
-	const [openModalAttachment, setOppenModalAttachment] =
-		useState<boolean>(false);
-	const [attachmentt, setAttachmentt] = useState<Attachment>();
-	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+	
 
 	const deleteTicketSender = useMutation(
 		(id: string) => {
@@ -82,29 +76,7 @@ export const Sender: FC<Props> = ({
 	);
 	
 
-	const updateAttachmentMutation = useMutation(
-		(selectedFile: File) => {
-			if(selectedSupport){
-				return ManageAttachmentService.updateAttachment(
-					selectedFile,
-					selectedSupport.id
-				);
-			}
-		},
-		{
-			onSuccess: () => {
-				notify("Ticket created successfully", "success");
-				closeModalUploadFile(true);
-			},
-			onError: () => {
-				closeModalUploadFile;
-			},
-		}
-	);
 
-	const closeModalAttachment = (): void => {
-		setOppenModalAttachment(false);
-	};
 
 	const handleDeleteTicket = (id: string) => {
 		deleteTicketSender.mutate(id);
@@ -112,10 +84,6 @@ export const Sender: FC<Props> = ({
 
 	const handleCloseTicket = (ticket: Ticket) => {
 		updateTicketMutation.mutate(ticket);
-	};
-
-	const handleCloseAttachment = (attachment: Attachment) => {
-		updateAttachmentMutation.mutate(attachment);
 	};
 
 	return (
@@ -140,14 +108,7 @@ export const Sender: FC<Props> = ({
 					<div className="flex justify-between gap-3">
 						<IconFileUpload
 							data-testid="general-information-image"
-							accept="image/*"
-							placeholder="Choose File"
-							wrapperClassName="mt-6"
-							setAttachmentt={setAttachmentt}
-							setSelectedFile={setSelectedFile}
-							onClick={(): any => {
-								setOppenModalAttachment(true);
-							}}
+							selectedSupport={selectedSupport}
 						/>
 						<Button
 							className={` w-40 h-7  bg-gray-200 pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-black-200 font-bold align-middle `}
@@ -262,17 +223,6 @@ export const Sender: FC<Props> = ({
 				<CloseTicket
 					body={selectedSupport}
 					handleCloseTicket={handleCloseTicket}
-				/>
-			</Modal>
-			<Modal
-				visible={openModalAttachment}
-				onHide={closeModalAttachment}
-				title="Agregar archivo"
-				width="450px"
-			>
-				<UploadFile
-					body={attachmentt}
-					handleCloseTicket={handleCloseAttachment}
 				/>
 			</Modal>
 		</div>

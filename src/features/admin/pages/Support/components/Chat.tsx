@@ -20,7 +20,7 @@ export const ChatBox: FC<Props> = ({ idTicket }) => {
 	const queryChatDetails = useQuery(
 		["get-Chat-list"],
 		() => {
-			return ManageChatService.getChat(idTicket);
+			return ManageChatService.getChat();
 		},
 		{
 			onSuccess: (data: Chat) => {
@@ -40,13 +40,12 @@ export const ChatBox: FC<Props> = ({ idTicket }) => {
 
 	useEffect(() => {
 		void queryChatDetails.refetch();
-		console.log("WHAT IS chatList ---> ", chatList);
 	}, [chatList]);
 
 	const handleMessagesent = () => {
 		console.log("Message:", message);
 		mutation.mutate({ id: idTicket, newMessage: message });
-	  };
+	};
 
 	return (
 		<>
@@ -56,7 +55,9 @@ export const ChatBox: FC<Props> = ({ idTicket }) => {
 					height: "450px",
 				}}
 			>
-				<MessagesChat data={chatList} />
+				<MessagesChat
+					data={chatList.filter((chat) => chat.ticketId === idTicket)}
+				/>
 			</div>
 			<div
 				className="flex flex-row h-30 justify-between"
@@ -68,6 +69,7 @@ export const ChatBox: FC<Props> = ({ idTicket }) => {
 						value={message} // Bind the value of the TextArea to the state
 						onChange={(e) => setMessage(e.target.value)} // Update the state on change
 						maxLength={1000}
+						label={""}
 						placeholder="Enter Message"
 						wrapperClassName="mt-0"
 						required
