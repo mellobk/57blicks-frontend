@@ -9,6 +9,7 @@ import "unfonts.css";
 import "./styles/tailwind.css";
 import "./styles/main.css";
 import "./styles/table.css";
+import "./styles/theme.css";
 
 const rootElement = document.querySelector("#root") as Element;
 if (!rootElement.innerHTML) {
