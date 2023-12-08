@@ -17,6 +17,7 @@ import { AssetLoanReport } from "../components/loanAssetstReport";
 import { LoanProductReport } from "../components/loanProductReport";
 import AverageLoan from "../components/AverageLoan";
 import { AverageDaysPaidLoans } from "../components/averageDaysPaidLoans";
+import PropertyUnauthorized from "../components/PropertyUnauthorized";
 export const Reports: FC = () => {
 	const navigate = useNavigate();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
@@ -50,10 +51,13 @@ export const Reports: FC = () => {
 				<div className="flex  w-[30%] p-2">
 					<PropertyTax />
 				</div>
+				<div className="flex  w-[30%] p-2">
+					<PropertyUnauthorized />
+				</div>
+
 				<div className="flex  w-[100%] p-2">
 					<AverageLoan />
 				</div>
-
 				<div className="flex flex-col items-center  w-[30%]   bg-white p-2 ">
 					<ConsultantLoanReport />
 				</div>

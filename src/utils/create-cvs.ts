@@ -7,9 +7,7 @@
 import { saveAs } from "file-saver";
 
 export const downloadCSV = (data: Array<any>, fileName: string) => {
-	const csvContent =
-		"data:text/csv;charset=utf-8," +
-		data.map((e: Array<any>) => e.join(",")).join("\n");
+	const csvContent = data.map((e: Array<any>) => e.join(",")).join("\n");
 
 	const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
 	saveAs(blob, fileName);

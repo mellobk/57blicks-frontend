@@ -135,9 +135,9 @@ export const AssetLoanReport: FC = () => {
 	};
 
 	return (
-		<div className="h-[70%] w-full">
+		<div className="h-[80%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
-				<div className="font-bold text-[13px]">Assets Type Loans</div>
+				<div className="font-bold text-[13px]">Loans by Asset Type</div>
 				<div className="flex gap-2 ml-2" onClick={downloadReport}>
 					<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 						<img src={Csv} alt="DKC Csv" />

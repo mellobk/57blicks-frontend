@@ -58,6 +58,13 @@ export const AllDefaultReport: FC = () => {
 					value: getData.tax.quantity,
 					color: "hsl(303, 70%, 50%)",
 				},
+
+				{
+					id: `Unauthorized - ${getData.unauthorized.percentage}%`,
+					label: `Unauthorized - ${getData.unauthorized.percentage}%`,
+					value: getData.unauthorized.quantity,
+					color: "hsl(303, 70%, 50%)",
+				},
 			];
 			setChartData(data as any);
 		}
@@ -68,6 +75,9 @@ export const AllDefaultReport: FC = () => {
 
 		const headerCsv = [
 			"Borrower",
+			"Address",
+			"phone",
+			"email",
 			"Collateral Address",
 			"Total Loan",
 			"Origin Date",
@@ -77,6 +87,9 @@ export const AllDefaultReport: FC = () => {
 		const csvData = insuranceCsv?.map((data) => {
 			return [
 				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data?.borrower?.user.mailingAddress,
+				data?.borrower?.user.phoneNumber,
+				data?.borrower?.user.email,
 				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate.toString()),
@@ -97,6 +110,9 @@ export const AllDefaultReport: FC = () => {
 
 		const headerCsv = [
 			"Borrower",
+			"Address",
+			"phone",
+			"email",
 			"Collateral Address",
 			"Total Loan",
 			"Origin Date",
@@ -106,6 +122,9 @@ export const AllDefaultReport: FC = () => {
 		const csvData = insuranceCsv?.map((data) => {
 			return [
 				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data?.borrower?.user.mailingAddress,
+				data?.borrower?.user.phoneNumber,
+				data?.borrower?.user.email,
 				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate.toString()),
@@ -125,7 +144,8 @@ export const AllDefaultReport: FC = () => {
 		{
 			name: "Name",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.name || "",
+			selector: (row: Loan): string =>
+				`${row?.borrower?.user.firstName} ${row?.borrower?.user.lastName}`,
 			omit: false,
 		},
 		{
@@ -143,8 +163,44 @@ export const AllDefaultReport: FC = () => {
 		},
 	];
 
+	const columnsModal = [
+		{
+			name: "Name",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string =>
+				`${row?.borrower?.user.firstName} ${row?.borrower?.user.lastName}`,
+			omit: false,
+		},
+		{
+			name: "Phone",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.borrower?.user.phoneNumber || "",
+			omit: false,
+		},
+
+		{
+			name: "Address",
+			selector: (row: Loan): string => row.collaterals[0]?.address || "",
+			omit: false,
+		},
+		{
+			name: "Email",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.borrower?.user.email || "",
+			omit: false,
+		},
+		{
+			name: "Insurance Expiration Date",
+			selector: (row: Loan) =>
+				formatDate(
+					row?.collaterals[0]?.insuranceExpirationDate.toString() || ""
+				),
+			omit: false,
+		},
+	];
+
 	return (
-		<div className="h-[50%] w-full">
+		<div className="h-[60%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 				<div
 					className="font-bold text-[13px]"
@@ -224,7 +280,7 @@ export const AllDefaultReport: FC = () => {
 				title="Default Loans"
 			>
 				<DataTable
-					columns={columns}
+					columns={columnsModal}
 					data={propertyInsuranceQuery.data?.defaultLoans || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>

@@ -13,12 +13,12 @@ import DataTable from "react-data-table-component";
 import { downloadCSV } from "@/utils/create-cvs";
 import { downloadXLSX } from "@/utils/create-xlsx";
 
-const PropertyInterest = () => {
+const PropertyUnauthorized = () => {
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const propertyInsuranceQuery = useQuery(
-		["property-interest"],
+		["property-unauthorized"],
 		() => {
-			return ManageReportsService.getDefaultInterestLoan();
+			return ManageReportsService.getDefaultUnauthorizedLoan();
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -55,7 +55,7 @@ const PropertyInterest = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadCSV(data, "interestLoans.csv");
+		downloadCSV(data, "taxLoans.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -90,7 +90,7 @@ const PropertyInterest = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadXLSX(data, "interestLoans.xlsx");
+		downloadXLSX(data, "taxLoans.xlsx");
 	};
 
 	const columns = [
@@ -114,6 +114,7 @@ const PropertyInterest = () => {
 			omit: false,
 		},
 	];
+
 	const columnsModal = [
 		{
 			name: "Name",
@@ -160,7 +161,7 @@ const PropertyInterest = () => {
 							setOpenInsurance(true);
 						}}
 					>
-						Average Loan Interest
+						Default - Unauthorized
 					</div>
 					<div className="flex gap-2 ml-2" onClick={downloadReport}>
 						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
@@ -201,7 +202,7 @@ const PropertyInterest = () => {
 				onHide={() => {
 					setOpenInsurance(false);
 				}}
-				title="Default Loans - Interest"
+				title="Default - Unauthorized "
 			>
 				<DataTable
 					columns={columnsModal}
@@ -213,4 +214,4 @@ const PropertyInterest = () => {
 	);
 };
 
-export default PropertyInterest as any;
+export default PropertyUnauthorized as any;

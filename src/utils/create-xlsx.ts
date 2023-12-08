@@ -10,7 +10,7 @@ import { saveAs } from "file-saver";
 export const downloadXLSX = (data: Array<any>, fileName: string) => {
 	const worksheet = XLSX.utils.json_to_sheet(data);
 	const workbook = XLSX.utils.book_new();
-	XLSX.utils.book_append_sheet(workbook, worksheet, "Hoja1");
+	XLSX.utils.book_append_sheet(workbook, worksheet, "sheet1");
 
 	const about = XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
 	const buf = new ArrayBuffer(about.length);
