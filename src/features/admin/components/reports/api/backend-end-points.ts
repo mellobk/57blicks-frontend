@@ -34,6 +34,10 @@ export const defaultTaxLoan = (): string => {
 	return `/loans/default/tax`;
 };
 
+export const defaultUnauthorizedLoan = (): string => {
+	return `/loans/default/unauthorized`;
+};
+
 export const defaultInterestLoan = (): string => {
 	return `/loans/default/interest`;
 };

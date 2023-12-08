@@ -28,6 +28,9 @@ const PropertyTax = () => {
 
 		const headerCsv = [
 			"Borrower",
+			"Address",
+			"phone",
+			"email",
 			"Collateral Address",
 			"Total Loan",
 			"Origin Date",
@@ -37,6 +40,9 @@ const PropertyTax = () => {
 		const csvData = insuranceCsv?.map((data) => {
 			return [
 				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data?.borrower?.user.mailingAddress,
+				data?.borrower?.user.phoneNumber,
+				data?.borrower?.user.email,
 				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate.toString()),
@@ -57,6 +63,9 @@ const PropertyTax = () => {
 
 		const headerCsv = [
 			"Borrower",
+			"Address",
+			"phone",
+			"email",
 			"Collateral Address",
 			"Total Loan",
 			"Origin Date",
@@ -66,6 +75,9 @@ const PropertyTax = () => {
 		const csvData = insuranceCsv?.map((data) => {
 			return [
 				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data?.borrower?.user.mailingAddress,
+				data?.borrower?.user.phoneNumber,
+				data?.borrower?.user.email,
 				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate.toString()),
@@ -103,6 +115,42 @@ const PropertyTax = () => {
 		},
 	];
 
+	const columnsModal = [
+		{
+			name: "Name",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string =>
+				`${row?.borrower?.user.firstName} ${row?.borrower?.user.lastName}`,
+			omit: false,
+		},
+		{
+			name: "Phone",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.borrower?.user.phoneNumber || "",
+			omit: false,
+		},
+
+		{
+			name: "address",
+			selector: (row: Loan): string => row.collaterals[0]?.address || "",
+			omit: false,
+		},
+		{
+			name: "Email",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.borrower?.user.email || "",
+			omit: false,
+		},
+		{
+			name: "Insurance Expiration Date",
+			selector: (row: Loan) =>
+				formatDate(
+					row?.collaterals[0]?.insuranceExpirationDate.toString() || ""
+				),
+			omit: false,
+		},
+	];
+
 	return (
 		<>
 			<div className="cursor-pointer w-full">
@@ -113,7 +161,7 @@ const PropertyTax = () => {
 							setOpenInsurance(true);
 						}}
 					>
-						Property tax
+						Default Loans - Tax
 					</div>
 					<div className="flex gap-2 ml-2" onClick={downloadReport}>
 						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
@@ -154,10 +202,10 @@ const PropertyTax = () => {
 				onHide={() => {
 					setOpenInsurance(false);
 				}}
-				title="Default Tax Loans"
+				title="Default Loans - Tax"
 			>
 				<DataTable
-					columns={columns}
+					columns={columnsModal}
 					data={propertyInsuranceQuery.data?.defaultLoans || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>
