@@ -1,13 +1,13 @@
 import type { FC } from "react";
-import type { TableColumn } from "react-data-table-component";
 import { Modal } from "@/components/ui/Modal";
-import { Table } from "@/components/ui/Table";
-import type {
-	DueToDrawDetails,
-	ILoanOverview,
-} from "@/features/admin/components/loan-overview/types/fields";
 import { Title } from "@/components/ui/Title";
 import { moneyFormat } from "@/utils/formats";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import type {
+	ILoanOverview,
+	DueToDrawDetails,
+} from "@/features/admin/components/loan-overview/types/fields";
 
 type Props = {
 	data: ILoanOverview;
@@ -15,30 +15,14 @@ type Props = {
 	setOpenModal: (openModal: boolean) => void;
 };
 
-export const DueToDraws: FC<Props> = ({ data, openModal, setOpenModal }) => {
-	const columns: Array<TableColumn<DueToDrawDetails>> = [
-		{
-			name: "Loan Name",
-			selector: (row) => row.loanName,
-			sortable: true,
-		},
-		{
-			name: "Loan Address",
-			selector: (row) => row.loanAddress,
-			sortable: true,
-		},
-		{
-			name: "Amount Owed",
-			selector: (row) => row.amountOwed,
-			sortable: true,
-		},
-		{
-			name: "Lender",
-			selector: (row) => row.lender,
-			sortable: true,
-		},
-	];
+const monetaryBodyTemplate = (
+	rowData: DueToDrawDetails,
+	field: keyof DueToDrawDetails
+) => {
+	return moneyFormat(rowData[field] as number);
+};
 
+export const DueToDraws: FC<Props> = ({ data, openModal, setOpenModal }) => {
 	const ModalTitle = () => (
 		<div className="flex flex-row gap-2.5">
 			<Title text="Construction Holdback" />
@@ -59,7 +43,22 @@ export const DueToDraws: FC<Props> = ({ data, openModal, setOpenModal }) => {
 			visible={openModal}
 			width="94%"
 		>
-			<Table className="rounded-t-lg" columns={columns} data={[]} />
+			<DataTable
+				value={data.constructionHoldbackOverview}
+				className="rounded-t-lg"
+			>
+				<Column field="loanName" header="Loan Name" sortable />
+				<Column field="loanAddress" header="Loan Address" sortable />
+				<Column
+					field="amountOwed"
+					header="Amount Owed"
+					body={(rowData: DueToDrawDetails) =>
+						monetaryBodyTemplate(rowData, "amountOwed")
+					}
+					sortable
+				/>
+				<Column field="lender" header="Lender" sortable />
+			</DataTable>
 		</Modal>
 	);
 };

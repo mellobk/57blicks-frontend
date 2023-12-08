@@ -33,11 +33,19 @@ export interface IParticipantOverview {
 	children: Array<IParticipantOverview>;
 }
 
+export interface IConstructionHoldbackOverview {
+	amountOwed: number;
+	lender: string;
+	loanName: string;
+	loanAddress: string;
+}
+
 export interface ILoanOverview {
 	principleOverview: IPrincipleOverview;
 	trustAccountBalance: number;
 	interestOverview: IInterestOverview;
 	overviewByInvestors: Array<IParticipantOverview>;
+	constructionHoldbackOverview: Array<IConstructionHoldbackOverview>;
 }
 
 export interface UpdateParticipationBreakdownDto {
