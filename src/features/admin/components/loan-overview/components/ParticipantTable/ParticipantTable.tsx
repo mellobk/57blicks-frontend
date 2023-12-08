@@ -73,16 +73,18 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 	};
 
 	return (
-		<DataTable value={participants} editMode="cell" className="p-3">
+		<DataTable value={participants} editMode="cell" className="p-3" stripedRows>
 			<Column field="name" header="Participant" filter></Column>
 			<Column
-				field="totalEquity"
-				header="Total Equity"
+				sortable
+				field="totalLoans"
+				header="Total Loans"
 				body={(rowData) =>
-					monetaryBodyTemplate(rowData as IParticipantOverview, "totalEquity")
+					monetaryBodyTemplate(rowData as IParticipantOverview, "totalLoans")
 				}
 			/>
 			<Column
+				sortable
 				field="totalDrawnToDate"
 				header="Total Drawn to Date"
 				body={(rowData) =>
@@ -93,6 +95,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				}
 			/>
 			<Column
+				sortable
 				field="trustUnallocated"
 				header="Trust Unallocated"
 				bodyClassName="hover:bg-gray-200 cursor-pointer"
@@ -106,6 +109,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				}
 			/>
 			<Column
+				sortable
 				field="trustAllocated"
 				header="Trust Allocated"
 				body={(rowData) =>
@@ -116,6 +120,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				}
 			/>
 			<Column
+				sortable
 				field="dueToDraws"
 				header="Construction Holdback"
 				body={(rowData) =>
@@ -123,6 +128,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				}
 			/>
 			<Column
+				sortable
 				field="totalFunds"
 				header="Total Funds"
 				body={(rowData) =>

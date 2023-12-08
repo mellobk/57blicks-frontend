@@ -24,31 +24,28 @@ export interface IInterestOverview {
 export interface IParticipantOverview {
 	id: string;
 	name: string;
-	totalEquity: number;
+	totalLoans: number;
 	totalDrawnToDate: number;
 	trustUnallocated: number;
 	trustAllocated: number;
 	dueToDraws: number;
 	totalFunds: number;
+	children: Array<IParticipantOverview>;
 }
 
-export interface ILenderOverview {
-	id: string;
-	name: string;
-	totalEquity: number;
-	totalDrawnToDate: number;
-	trustUnallocated: number;
-	trustAllocated: number;
-	dueToDraws: number;
-	totalFunds: number;
-	participants: Array<IParticipantOverview>;
+export interface IConstructionHoldbackOverview {
+	amountOwed: number;
+	lender: string;
+	loanName: string;
+	loanAddress: string;
 }
 
 export interface ILoanOverview {
 	principleOverview: IPrincipleOverview;
 	trustAccountBalance: number;
 	interestOverview: IInterestOverview;
-	overviewByInvestors: Array<ILenderOverview>;
+	overviewByInvestors: Array<IParticipantOverview>;
+	constructionHoldbackOverview: Array<IConstructionHoldbackOverview>;
 }
 
 export interface UpdateParticipationBreakdownDto {
