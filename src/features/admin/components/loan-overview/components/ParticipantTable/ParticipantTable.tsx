@@ -76,6 +76,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 		<DataTable value={participants} editMode="cell" className="p-3">
 			<Column field="name" header="Participant" filter></Column>
 			<Column
+				sortable
 				field="totalLoans"
 				header="Total Loans"
 				body={(rowData) =>
@@ -83,6 +84,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				}
 			/>
 			<Column
+				sortable
 				field="totalDrawnToDate"
 				header="Total Drawn to Date"
 				body={(rowData) =>
@@ -93,6 +95,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				}
 			/>
 			<Column
+				sortable
 				field="trustUnallocated"
 				header="Trust Unallocated"
 				bodyClassName="hover:bg-gray-200 cursor-pointer"
@@ -106,6 +109,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				}
 			/>
 			<Column
+				sortable
 				field="trustAllocated"
 				header="Trust Allocated"
 				body={(rowData) =>
@@ -116,6 +120,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				}
 			/>
 			<Column
+				sortable
 				field="dueToDraws"
 				header="Construction Holdback"
 				body={(rowData) =>
@@ -123,6 +128,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				}
 			/>
 			<Column
+				sortable
 				field="totalFunds"
 				header="Total Funds"
 				body={(rowData) =>
