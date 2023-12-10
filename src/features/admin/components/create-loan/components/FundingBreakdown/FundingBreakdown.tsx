@@ -21,23 +21,30 @@ import type {
 import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
 import { calculateProrated, calculateRegular } from "@/utils/common-functions";
 import { validateChangeParticipant } from "./utils/validate-change-participant";
+import { moneyFormat } from "@/utils/formats";
 
 interface Props {
 	control: Control<Loan>;
 	errors: FieldErrors<Loan>;
+	editPrincipal?: boolean;
+	newLoanAmount?: number;
 	remove: (index: number) => void;
 	setOpenLenderModal: (openLenderModal: boolean) => void;
 	setOpenParticipantModal: (openParticipantModal: boolean) => void;
 	setValue: UseFormSetValue<Loan>;
+	setValidApprove?: (validApprove: boolean) => void;
 }
 
 export const FundingBreakdown: FC<Props> = ({
 	control,
 	errors,
+	editPrincipal = false,
+	newLoanAmount = 0,
 	remove,
 	setOpenLenderModal,
 	setOpenParticipantModal,
 	setValue,
+	setValidApprove,
 }) => {
 	const [error, setError] = useState<string | null>(null);
 
@@ -115,6 +122,7 @@ export const FundingBreakdown: FC<Props> = ({
 						>
 							<div className="flex flex-row justify-between items-center">
 								{row.lenderName}
+
 								<Icon name="arrowDown" width="6" color="#656A74" />
 							</div>
 						</button>
@@ -297,23 +305,32 @@ export const FundingBreakdown: FC<Props> = ({
 		<>
 			<div className="pt-6">
 				<div className="flex flex-row justify-between">
-					<Title text="Funding Breakdown" />
-					<Button
-						data-testid="funding-breakdown-add-participant"
-						buttonText={
-							<div className="ml-2 font-inter font-semibold text-sm text-primary leading-[17px] tracking-[-0.7px]">
-								Add Participant
-							</div>
-						}
-						className="rounded-2xl px-4 h-[34px] bg-gray-200"
-						icon={<Icon name="plus" color="#0E2130" width="12" />}
-						onClick={(): void => {
-							setOpenParticipantModal(true);
-						}}
-						type="button"
-						disabled={!canAddParticipant()}
+					<Title
+						text={`Funding Breakdown  ${
+							editPrincipal
+								? `: New Total Loan Amount ${moneyFormat(newLoanAmount)} `
+								: ""
+						} `}
 					/>
+					{!editPrincipal && (
+						<Button
+							data-testid="funding-breakdown-add-participant"
+							buttonText={
+								<div className="ml-2 font-inter font-semibold text-sm text-primary leading-[17px] tracking-[-0.7px]">
+									Add Participant
+								</div>
+							}
+							className="rounded-2xl px-4 h-[34px] bg-gray-200"
+							icon={<Icon name="plus" color="#0E2130" width="12" />}
+							onClick={(): void => {
+								setOpenParticipantModal(true);
+							}}
+							type="button"
+							disabled={!canAddParticipant()}
+						/>
+					)}
 				</div>
+
 				<Table
 					className="mt-6 rounded-3xl"
 					columns={columns}
@@ -324,17 +341,22 @@ export const FundingBreakdown: FC<Props> = ({
 					totals={totals}
 					control={control}
 					setValue={setValue}
+					setValidApprove={setValidApprove}
 				/>
 			</div>
-			<div>
-				<Button
-					buttonText="Save Loan"
-					variant={"gold"}
-					className="w-full "
-					type="submit"
-					disabled={disabled || error !== null || disabledConstructionHoldback}
-				/>
-			</div>
+			{!editPrincipal && (
+				<div>
+					<Button
+						buttonText="Save Loan"
+						variant={"gold"}
+						className="w-full "
+						type="submit"
+						disabled={
+							disabled || error !== null || disabledConstructionHoldback
+						}
+					/>
+				</div>
+			)}
 		</>
 	);
 };

@@ -2,13 +2,21 @@ import type { FC } from "react";
 import type { Loan } from "@/types/api/loan";
 import { LoanCard } from "../LoanCard";
 import { formatPhoneNumber } from "@/utils/common-functions";
-
+import { useEffect } from "react";
 interface InvestorBankInfoProps {
 	data?: Loan;
 	handleRefreshData?: () => void;
+	setValidApprove?: (validApprove: boolean) => void;
 }
 
-export const BorrowerInformation: FC<InvestorBankInfoProps> = ({ data }) => {
+export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
+	data,
+	setValidApprove,
+}) => {
+	useEffect(() => {
+		setValidApprove && setValidApprove(true);
+	}, []);
+
 	return (
 		<div
 			className={` flex  w-full   gap-5 text-gray-1000  justify-center p-[5px] rounded-[16px]  overflow-hidden`}

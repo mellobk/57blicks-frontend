@@ -294,12 +294,12 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						<Icon name="trashBin" color="red" width="20" />
 					</div>
 					<div className="flex justify-between items-center gap-4 ">
-						{dataLedgers && dataLedgers?.action === "show" && (
+						{/* {dataLedgers && dataLedgers?.action === "show" && (
 							<LedgerApprove
 								ledger={dataLedgers}
 								refetchLedgers={refetchLedgers}
 							/>
-						)}
+						)} */}
 					</div>
 				</div>
 				<ConfirmationModal

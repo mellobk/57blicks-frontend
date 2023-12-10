@@ -1,3 +1,8 @@
+import type {
+	Collateral,
+	Loan,
+} from "@/features/admin/components/servicing/types/api";
+import { formatDate, moneyFormat } from "@/utils/formats";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -6,27 +11,27 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { useEffect, useState } from "react";
-import type { FC } from "react";
-import { useForm } from "react-hook-form";
-import { LoanCard } from "../LoanCard";
-import type {
-	Collateral,
-	Loan,
-} from "@/features/admin/components/servicing/types/api";
-import { formatDate, moneyFormat } from "@/utils/formats";
 
-import { LOAN_TYPES } from "../../../create-loan/utils/selects";
-import { Select } from "@/components/forms/Select";
+import type { FC } from "react";
 import { Input } from "@/components/forms/Input";
+import { LOAN_TYPES } from "../../../create-loan/utils/selects";
+import { LoanCard } from "../LoanCard";
 import { LoanLinkCard } from "../LoanLinkCard";
+import { Select } from "@/components/forms/Select";
+import { useForm } from "react-hook-form";
 import userStore from "@/stores/user-store";
 
 interface LoanInformationProps {
 	data?: Loan | any;
 	edit?: boolean;
+	setValidApprove?: (validApprove: boolean) => void;
 }
 
-export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
+export const LoanInformation: FC<LoanInformationProps> = ({
+	data,
+	edit,
+	setValidApprove,
+}) => {
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [type, setType] = useState<string>(data?.type || "");
 	const [loanData, setLoanData] = useState<Loan>(data || []);
@@ -56,6 +61,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data, edit }) => {
 			setValue("amountDrawn", data?.amountDrawn);
 			setValue("ltv", data?.ltv);
 		}
+		setValidApprove && setValidApprove(true);
 	}, [data]);
 
 	useEffect(() => {

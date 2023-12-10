@@ -1,5 +1,5 @@
 import { Cell } from "@/components/table/Cell";
-import type { ComponentType } from "react";
+import { useState, type ComponentType, useEffect } from "react";
 import { type Control, useWatch, type UseFormSetValue } from "react-hook-form";
 import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import {
@@ -18,6 +18,7 @@ interface Props {
 	};
 	control: Control<Loan>;
 	setValue: UseFormSetValue<Loan>;
+	setValidApprove?: (validApprove: boolean) => void;
 }
 
 export const Footer: ComponentType<Props> = ({
@@ -25,6 +26,7 @@ export const Footer: ComponentType<Props> = ({
 	totals,
 	control,
 	setValue,
+	setValidApprove,
 }) => {
 	const [constructionHoldback, interestRate, originationDate, totalLoanAmount] =
 		useWatch({
@@ -37,40 +39,62 @@ export const Footer: ComponentType<Props> = ({
 			],
 		});
 
-	const getErrorProrated = (): string => {
+	const getErrors = (): {
+		amount: string;
+		prorated: string;
+		regular: string;
+		constructionHoldback: string;
+	} => {
+		const error = {
+			amount: "",
+			prorated: "",
+			regular: "",
+			constructionHoldback: "",
+		};
+
 		const prorated = calculateProrated(
 			String(totalLoanAmount),
 			String(interestRate),
 			String(originationDate)
 		);
+
 		setValue("prorated", String(totals.prorated));
 		setValue("current", String(totals.prorated));
 		setValue("principal", String(totalLoanAmount));
 		setValue("balance", String(totalLoanAmount));
 		if (round(totals.prorated, 2) !== round(Number(prorated), 2)) {
-			return "ERROR";
+			error.prorated = "ERROR";
 		}
-		return "";
-	};
 
-	const getRegular = (): string => {
 		const regular = calculateRegular(
 			String(totalLoanAmount),
 			String(interestRate)
 		);
 		setValue("regular", String(round(totals.regular, 4)));
 		if (round(Number(totals.regular), 2) !== round(Number(regular), 2)) {
-			return "ERROR";
+			error.regular = "ERROR";
 		}
 
-		return "";
-	};
+		if (totals.amount !== Number(totalLoanAmount)) {
+			error.amount = "ERROR";
+		}
 
-	const getConstructionHoldback = (): string => {
 		if (totals.constructionHoldback !== Number(constructionHoldback)) {
-			return "ERROR";
+			error.constructionHoldback = "ERROR";
 		}
-		return "";
+
+		if (
+			error.amount ||
+			error.prorated ||
+			error.regular ||
+			error.constructionHoldback
+		) {
+			setValidApprove && setValidApprove(false);
+		} else {
+			setValidApprove && setValidApprove(true);
+		}
+
+		return error;
 	};
 
 	return (
@@ -78,24 +102,30 @@ export const Footer: ComponentType<Props> = ({
 			<div className="grid grid-cols-6 w-full items-center">
 				<Cell format="text" value="Total" bold />
 				<Cell
-					className={disabled ? "text-red-ERROR" : "text-primary-300"}
+					className={"text-primary-300"}
 					format="money"
 					value={totals.amount}
 					bold
+					error={getErrors().amount}
 				/>
 				<Cell format="text" value="--" bold />
 				<Cell
 					format="money"
 					value={totals.prorated}
 					bold
-					error={getErrorProrated()}
+					error={getErrors().prorated}
 				/>
-				<Cell format="money" value={totals.regular} bold error={getRegular()} />
+				<Cell
+					format="money"
+					value={totals.regular}
+					bold
+					error={getErrors().regular}
+				/>
 				<Cell
 					format="money"
 					value={totals.constructionHoldback}
 					bold
-					error={getConstructionHoldback()}
+					error={getErrors().constructionHoldback}
 				/>
 			</div>
 			<div className="w-12" />

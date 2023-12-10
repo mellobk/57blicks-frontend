@@ -1,17 +1,25 @@
-import type { UserNotification } from "@/types/api/notifications.ts";
 import type { Loan, Notification } from "../types/types";
 import {
 	createNotificationData,
 	readAllNotification,
+	updateFundingBreakDown,
 	updateLedger,
 	updateUserNotificationData,
 	userNotification,
 } from "./backend-end-points";
 
+import type { Ledgers } from "../components/Ledger/types";
+import type { Loan as LoanLedger } from "@/features/admin/components/create-loan/types/fields";
+import type { UserNotification } from "@/types/api/notifications.ts";
 import { authApiClient } from "@/utils/api-client";
 
-const putLedger = async (id: string, body: Loan) => {
-	const response = await authApiClient.put<Loan>(updateLedger(id), body);
+export interface UpdateLedgerProps extends Ledgers {}
+
+const putLedger = async (updateLedgerProps: UpdateLedgerProps) => {
+	const response = await authApiClient.put<Loan>(
+		updateLedger(updateLedgerProps.id as string),
+		updateLedgerProps
+	);
 	return response.data;
 };
 const putUserNotification = async (id: string, body: Notification) => {
@@ -24,8 +32,7 @@ const putUserNotification = async (id: string, body: Notification) => {
 
 const putReadUserNotification = async () => {
 	const response = await authApiClient.post<Notification>(
-		readAllNotification(),
-
+		readAllNotification()
 	);
 	return response.data;
 };
@@ -45,12 +52,21 @@ const getUserNotification = async () => {
 	return response.data;
 };
 
+const updateFundingBreakdown = async (loan: LoanLedger) => {
+	const response = await authApiClient.put<LoanLedger>(
+		updateFundingBreakDown(loan.id as string),
+		loan
+	);
+	return response.data;
+};
+
 const ManageNotificationService = {
 	putLedger,
 	createNotifications,
 	putUserNotification,
 	getUserNotification,
-  putReadUserNotification
+	putReadUserNotification,
+	updateFundingBreakdown,
 };
 
 export default ManageNotificationService;

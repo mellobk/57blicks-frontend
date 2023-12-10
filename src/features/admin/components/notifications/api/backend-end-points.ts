@@ -1,5 +1,5 @@
 export const updateLedger = (id: string): string => {
-	return `/ledgers/${id}`;
+	return `/ledgers/change-status/${id}`;
 };
 
 export const createNotificationData = (): string => {
@@ -16,4 +16,8 @@ export const userNotification = (): string => {
 
 export const readAllNotification = (): string => {
 	return `/user-notifications/read-all-notifications`;
+};
+
+export const updateFundingBreakDown = (id: string): string => {
+	return `/loans/update-funding-breakdown/${id}`;
 };

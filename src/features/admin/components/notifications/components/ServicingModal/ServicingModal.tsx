@@ -9,7 +9,9 @@ import LoansService from "@/api/loans.ts";
 import { Modal } from "@/components/ui/Modal";
 import { approveModalTabs } from "@/features/admin/components/servicing/utils/tabs";
 import { Tabs } from "@/features/admin/components/servicing/component/Tabs";
-import ManageNotificationService from "../../api/notification";
+import ManageNotificationService, {
+	UpdateLedgerProps,
+} from "../../api/notification";
 import { LoanInformation } from "../LoanInformation";
 import { BorrowerInformation } from "../BorrowerInformation";
 import { LedgerList } from "../Ledger";
@@ -22,6 +24,7 @@ import {
 import { Success } from "../Success";
 import { SuccessDecline } from "../SuccessDecline/Success";
 import type { Loan } from "../../types/types";
+import type { Loan as LoanLedger } from "@/features/admin/components/create-loan/types/fields";
 // import type {
 // 	Loan,
 // } from "@/features/admin/components/servicing/types/api";
@@ -32,6 +35,7 @@ import { ModalActionsAdmin } from "../ModalActions/ModalActionsAdmin";
 import { getLocalStorage } from "@/utils/local-storage";
 import { userName } from "@/utils/constant";
 import { TextArea } from "@/components/forms/TextArea";
+import { LedgerTypeOfPayment } from "../../../servicing/component/Ledger/types";
 
 interface ServicingModalProps {
 	openModal?: boolean;
@@ -63,6 +67,8 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 	const [handleEdit, setHandleEdit] = useState<boolean>();
 	const [comment, setComment] = useState<string>();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
+
+	const [loanUpdated, setLoanUpdated] = useState<LoanLedger>();
 	const approvalQuery = useMutation(async (id: string) => {
 		return LoansService.getLoan(id || "");
 	});
@@ -71,12 +77,13 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 		return LoansService.updateLoan(body.id || "", body as any);
 	});
 
-	const updateLedgerQuery = useMutation(async (body: Loan) => {
-		return ManageNotificationService.putLedger(body.id || "", {
-			id: body.id,
-			approvalState: body.approvalState,
-		});
+	const updateLedgerQuery = useMutation(async (body: UpdateLedgerProps) => {
+		return ManageNotificationService.putLedger(body);
 	});
+	const updateFundingBreakDownQuery = useMutation(async (body: LoanLedger) => {
+		return ManageNotificationService.updateFundingBreakdown(body);
+	});
+
 	useEffect(() => {
 		if (id) {
 			approvalQuery.mutate(id);
@@ -96,6 +103,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 	const [openApprovedModal, setOpenApprovedModal] = useState<boolean>();
 	const [openDeclineModal, setOpenDeclineModal] = useState<boolean>();
 	const [typeProcess, setTypeProcess] = useState<string>();
+	const [validApprove, setValidApprove] = useState<boolean>(true);
 
 	useEffect(() => {
 		if (updateLoanQuery.isSuccess) {
@@ -172,10 +180,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 				setTabTitle("Ledger");
 				break;
 			}
-			case "founding": {
-				setTabTitle("Founding");
-				break;
-			}
+
 			default: {
 				setTabTitle("Loan Information");
 			}
@@ -213,6 +218,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 									)
 								}
 								status={status}
+								validApprove={validApprove}
 								openApproved={openApprovedModal}
 								openDecline={openDeclineModal}
 								handleViewOnly={(): void => {
@@ -227,10 +233,16 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 								type={type}
 								onSuccess={(): void => {
 									if (ledgerId) {
+										updateFundingBreakDownQuery.mutate(
+											loanUpdated as unknown as LoanLedger
+										);
+
 										updateLedgerQuery.mutate({
 											id: ledgerId,
 											approvalState: ApprovalLedgerStateType.APPROVED,
-										});
+											typeOfPayment: LedgerTypeOfPayment.PRINCIPAL,
+											loan: loanUpdated,
+										} as unknown as UpdateLedgerProps);
 									} else {
 										const editData = {
 											...editLoan,
@@ -246,7 +258,7 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 										updateLedgerQuery.mutate({
 											id: ledgerId,
 											approvalState: ApprovalLedgerStateType.REJECTED,
-										});
+										} as unknown as UpdateLedgerProps);
 									} else {
 										updateLoanQuery.mutate({
 											id: id,
@@ -287,16 +299,25 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 						</div>
 					</div>
 					{tabTitle === "Loan Information" && approvalQuery?.data && (
-						<LoanInformation data={approvalQuery?.data} edit={handleEdit} />
+						<LoanInformation
+							data={approvalQuery?.data}
+							edit={handleEdit}
+							setValidApprove={setValidApprove}
+						/>
 					)}
 					{tabTitle === "Borrower Information" && (
 						<BorrowerInformation
 							data={approvalQuery?.data}
 							handleRefreshData={handleRefreshData}
+							setValidApprove={setValidApprove}
 						/>
 					)}
 					{tabTitle === "Ledger" && approvalQuery.data && (
-						<LedgerList loan={approvalQuery.data.id} />
+						<LedgerList
+							loan={approvalQuery.data as unknown as LoanLedger}
+							setValidApprove={setValidApprove}
+							setLoanUpdated={setLoanUpdated}
+						/>
 					)}
 				</Modal>
 			)}
