@@ -1,6 +1,12 @@
 import { type FC, useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
-import type { LedgerFormValues, Ledgers } from "../types";
+import {
+	ApprovalStateType,
+	LedgerType,
+	type LedgerFormValues,
+	type Ledgers,
+	LedgerTypeOfPayment,
+} from "../types";
 import { useFieldArray } from "react-hook-form";
 import { useZodForm } from "../UseZodForm";
 import { validationSchema } from "../schema";
@@ -10,16 +16,21 @@ import { useMutation } from "@tanstack/react-query";
 import ManageLedgerService from "@/features/admin/components/servicing/api/ledger";
 
 import { Icon } from "@/components/ui/Icon";
-import { dateWithFormat, moneyFormat } from "@/utils/formats";
+import { dateWithFormat } from "@/utils/formats";
 import { calculateBalance } from "../utils/calculate-balance";
 import { TypeOfPayment } from "@/features/admin/components/servicing/component/TypeOfPayment/TypeOfPayment";
+import { FundingBreakdownEdit } from "../../FundingBreakdownEdit";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
+import type { Loan as LoanLedger } from "@/features/admin/components/create-loan/types/fields";
 
 interface LedgerComponentProps {
-	loan?: string;
+	loan: Loan;
 	ledgersData?: Array<Ledgers>;
 	refetchLedgers?: () => void;
 	orderLedgers?: (orderBy: string) => void;
 	handleDeleteLedger?: (id: string) => void;
+	setValidApprove: (validApprove: boolean) => void;
+	setLoanUpdated: (loanUpdated: LoanLedger) => void;
 }
 
 export const LedgerComponent: FC<LedgerComponentProps> = ({
@@ -28,6 +39,8 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	orderLedgers,
 	refetchLedgers,
 	handleDeleteLedger,
+	setValidApprove,
+	setLoanUpdated,
 }) => {
 	const [openClassModal, setOpenClassModal] = useState<boolean>();
 	const [currentIndex, setCurrentIndex] = useState<number>();
@@ -50,6 +63,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		debits: 0,
 		credits: 0,
 		balance: 0,
+		newLoanAmount: 0,
 	});
 
 	const {
@@ -84,11 +98,16 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 
 	useEffect(() => {
 		remove();
+		const totalLoanAmount = Number(loan.totalLoanAmount);
 		if (ledgersData && ledgersData.length > 0) {
 			let debits = 0;
 			let credits = 0;
 			let balance = 0;
+			let principals = 0;
 			ledgersData.forEach((ledger) => {
+				if (ledger && ledger.typeOfPayment === LedgerTypeOfPayment.PRINCIPAL) {
+					principals += Number(ledger.credit) - Number(ledger.debit);
+				}
 				append(ledger as never);
 				if (ledger.debit) {
 					debits += Number(ledger.debit);
@@ -104,6 +123,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				debits,
 				credits,
 				balance,
+				newLoanAmount: principals,
 			};
 
 			setTotals(totals);
@@ -171,14 +191,14 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	useEffect(() => {}, [allFields]);
 
 	return (
-		<div className="h-full w-full opacity-40">
+		<div className="h-full w-full ">
 			<form
 				autoComplete="off"
 				onSubmit={handleSubmit((data) => {
 					//convert  ledgerDate to date
 					const sanedData: LedgerFormValues = {
 						ledgers: [],
-						loanId: loan,
+						loanId: loan.id,
 					};
 					data.ledgers.forEach((ledger) => {
 						if (ledger.editable) {
@@ -193,7 +213,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 						}
 					});
 
-					createLedger.mutate({ ...sanedData, loanId: loan });
+					createLedger.mutate({ ...sanedData, loanId: loan.id });
 				})}
 			>
 				<div
@@ -239,24 +259,27 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 						</thead>
 						<tbody>
 							{fields.map((field, index) => {
-								return (
-									<>
-										<LedgerAdd
-											field={field}
-											index={index}
-											handleRemove={handleRemove}
-											data={allFields as unknown as LedgerFormValues}
-											handleOpenModal={handleOpenModal}
-											handleSetValue={handleSetValue}
-											handleSetDate={handleSetDate}
-											handleEdit={handleEdit}
-											handleDeleteLedger={handleDeleteLedger}
-											control={control as never}
-											errors={errors}
-											register={register as never}
-										/>
-									</>
-								);
+								console.log(field.approvalState);
+								if (field.approvalState === ApprovalStateType.PENDING) {
+									return (
+										<>
+											<LedgerAdd
+												field={field}
+												index={index}
+												handleRemove={handleRemove}
+												data={allFields as unknown as LedgerFormValues}
+												handleOpenModal={handleOpenModal}
+												handleSetValue={handleSetValue}
+												handleSetDate={handleSetDate}
+												handleEdit={handleEdit}
+												handleDeleteLedger={handleDeleteLedger}
+												control={control as never}
+												errors={errors}
+												register={register as never}
+											/>
+										</>
+									);
+								}
 							})}
 							<tr>
 								<td colSpan={9}>&nbsp;</td>
@@ -266,45 +289,14 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 							</tr>
 						</tbody>
 					</table>
-					<div className="w-[98%] absolute bottom-[5px] rounded-xl">
-						<table className="w-full  rounded-xl bg-white flex flex-col justify-between  ">
-							<tfoot className="bg-gray-200 h-10 ">
-								<tr>
-									<td
-										style={{
-											width: "180px",
-											paddingLeft: "20px",
-										}}
-									></td>
-									<td
-										style={{
-											width: "160px",
-											paddingLeft: "20px",
-											verticalAlign: "middle",
-											textAlign: "center",
-											paddingTop: "5px",
-										}}
-									>
-										Totals: {allFields.ledgers.length}
-									</td>
-									<td style={{ width: "100px", paddingLeft: "20px" }}></td>
-									<td style={{ width: "230px", paddingLeft: "20px" }}></td>
-									<td style={{ width: "260px", paddingLeft: "20px" }}>
-										{moneyFormat(totals.debits) || "$ 0"}
-									</td>
-									<td style={{ width: "220px", paddingLeft: "20px" }}>
-										{moneyFormat(totals.credits) || "$ 0"}
-									</td>
-									<td style={{ width: "150px", paddingLeft: "20px" }}>
-										{moneyFormat(totals.balance) || "$ 0"}
-									</td>
-									<td style={{ width: "10px" }}></td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
 				</div>
 			</form>
+			<FundingBreakdownEdit
+				loan={loan}
+				newLoanAmount={totals.newLoanAmount}
+				setValidApprove={setValidApprove}
+				setLoanUpdated={setLoanUpdated}
+			/>
 			<Modal
 				visible={openClassModal}
 				title="Type of Payment"

@@ -5,23 +5,30 @@ import type { FC } from "react";
 import { LedgerComponent } from "./LedgerComponent";
 import type { Ledgers } from "../types";
 import Loading from "@/assets/icons/loading";
+import type { Loan } from "@/features/admin/components/create-loan/types/fields";
+import type { Loan as LoanLedger } from "@/features/admin/components/create-loan/types/fields";
 import ManageLedgerService from "@/features/admin/components/servicing/api/ledger";
 import { calculateBalance } from "../utils/calculate-balance";
 import { dateWithFormat } from "@/utils/formats";
 
 const orderLedgers = (): void => {};
 interface LedgerListProps {
-	loan?: string;
+	loan: Loan;
+	setValidApprove: (validApprove: boolean) => void;
+	setLoanUpdated: (loanUpdated: LoanLedger) => void;
 }
 
-const LedgerList: FC<LedgerListProps> = ({ loan }) => {
-
+const LedgerList: FC<LedgerListProps> = ({
+	loan,
+	setValidApprove,
+	setLoanUpdated,
+}) => {
 	const [ledgers, setLedgers] = useState<Array<Ledgers>>([]);
 
 	const { refetch, isLoading } = useQuery(
 		["leger-get-by-loan"],
 		() => {
-			return ManageLedgerService.getLedgerByLoanId(loan || "");
+			return ManageLedgerService.getLedgerByLoanId(loan.id || "");
 		},
 		{
 			onSuccess: (data) => {
@@ -88,6 +95,8 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 					refetchLedgers={refetchLedgers}
 					handleDeleteLedger={handleDeleteLedger}
 					orderLedgers={orderLedgers}
+					setValidApprove={setValidApprove}
+					setLoanUpdated={setLoanUpdated}
 				/>
 			)}
 		</>

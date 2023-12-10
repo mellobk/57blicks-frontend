@@ -1,11 +1,10 @@
-import { Button } from "@/components/ui/Button";
-
-import type { FC } from "react";
 import { Approved } from "../Approved/Approved";
-import { Modal } from "@/components/ui/Modal";
+import { Button } from "@/components/ui/Button";
 import { Decline } from "../Decline/Decline";
-import { NotificationType } from "@/types/api/notifications.ts";
+import type { FC } from "react";
 import { Icon } from "@/components/ui/Icon";
+import { Modal } from "@/components/ui/Modal";
+import { NotificationType } from "@/types/api/notifications.ts";
 
 interface ModalActionsProps {
 	type?: string;
@@ -19,6 +18,7 @@ interface ModalActionsProps {
 	handleViewOnly?: () => void;
 	viewOnly?: boolean;
 	comment?: JSX.Element | null;
+	validApprove?: boolean;
 }
 
 export const ModalActions: FC<ModalActionsProps> = ({
@@ -31,6 +31,7 @@ export const ModalActions: FC<ModalActionsProps> = ({
 	openApproved,
 	handleViewOnly,
 	comment,
+	validApprove = true,
 }) => {
 	const typeData = type === NotificationType.LOAN ? " Loan" : "Ledger";
 	return (
@@ -48,6 +49,7 @@ export const ModalActions: FC<ModalActionsProps> = ({
 				<div className="cursor-pointer">
 					<Button
 						buttonText="Approve"
+						disabled={!validApprove}
 						className=" rounded-3xl bg-green-900 text-green-500"
 						onClick={onOpenApproved}
 					/>
