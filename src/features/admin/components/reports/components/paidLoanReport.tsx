@@ -67,6 +67,9 @@ export const PaidLoanReport: FC = () => {
 
 		const headerCsv = [
 			"Borrower",
+			"Address",
+			"phone",
+			"email",
 			"Collateral Address",
 			"Total Loan",
 			"Origin Date",
@@ -76,6 +79,9 @@ export const PaidLoanReport: FC = () => {
 		const csvData = insuranceCsv?.map((data) => {
 			return [
 				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data?.borrower?.user.mailingAddress,
+				data?.borrower?.user.phoneNumber,
+				data?.borrower?.user.email,
 				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate.toString()),
@@ -96,6 +102,9 @@ export const PaidLoanReport: FC = () => {
 
 		const headerCsv = [
 			"Borrower",
+			"Address",
+			"phone",
+			"email",
 			"Collateral Address",
 			"Total Loan",
 			"Origin Date",
@@ -105,6 +114,9 @@ export const PaidLoanReport: FC = () => {
 		const csvData = insuranceCsv?.map((data) => {
 			return [
 				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data?.borrower?.user.mailingAddress,
+				data?.borrower?.user.phoneNumber,
+				data?.borrower?.user.email,
 				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate.toString()),
@@ -134,6 +146,42 @@ export const PaidLoanReport: FC = () => {
 		{
 			name: "address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
+			omit: false,
+		},
+		{
+			name: "Insurance Expiration Date",
+			selector: (row: Loan) =>
+				formatDate(
+					row?.collaterals[0]?.insuranceExpirationDate.toString() || ""
+				),
+			omit: false,
+		},
+	];
+
+	const columnsModal = [
+		{
+			name: "Name",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string =>
+				`${row?.borrower?.user.firstName} ${row?.borrower?.user.lastName}`,
+			omit: false,
+		},
+		{
+			name: "Phone",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.borrower?.user.phoneNumber || "",
+			omit: false,
+		},
+
+		{
+			name: "address",
+			selector: (row: Loan): string => row.collaterals[0]?.address || "",
+			omit: false,
+		},
+		{
+			name: "Email",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.borrower?.user.email || "",
 			omit: false,
 		},
 		{
@@ -234,7 +282,7 @@ export const PaidLoanReport: FC = () => {
 				title="Paid Loans"
 			>
 				<DataTable
-					columns={columns}
+					columns={columnsModal}
 					data={propertyInsuranceQuery.data?.defaultLoans || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>

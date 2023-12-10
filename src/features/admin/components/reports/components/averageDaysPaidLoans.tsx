@@ -202,7 +202,7 @@ export const AverageDaysPaidLoans: FC = () => {
 
 	return (
 		<div className="flex w-full justify-center gap-3">
-			<div className="w-[30%]">
+			<div className="w-[30%] h-[82%] flex">
 				<ReportTable title="Average Roll Rate for all Loans">
 					<div>{consultantQuery.data?.averagePaidLoans || 0}</div>
 				</ReportTable>
@@ -230,7 +230,7 @@ export const AverageDaysPaidLoans: FC = () => {
 			<div className="h-[82%] w-[30%]">
 				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 					<div className="font-bold text-[13px]">
-						Average Roll Rate by Assets Type
+						Average Roll Rate by Asset Type
 					</div>
 					<div className="flex gap-2 ml-2" onClick={downloadReport}>
 						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
