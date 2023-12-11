@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -29,6 +30,7 @@ import { EnableInvestor } from "../EnableInvestor/EnableInvestor";
 import userStore from "@/stores/user-store.ts";
 import { PermissionType } from "@/types/api/permissions-type";
 import { useNavigate } from "@tanstack/router";
+/* import ManageNotificationService from "../../../notifications/api/notification"; */
 
 interface SuccessProps {}
 
@@ -49,6 +51,10 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 	const [enableOpenModal, setEnableOpenModal] = useState<boolean>(false);
 
 	const userInfo = userStore((state) => state.userInfo);
+
+	/* 	const createLedgerQuery = useMutation(async (body: any) => {
+		return ManageNotificationService.createNotifications(body);
+	}); */
 
 	const investorQuery = useQuery(
 		["investor-query"],
@@ -156,6 +162,17 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 
 	const handleEnableUser = (id: string) => {
 		restoreInvestorMutation.mutate(id);
+
+		/* 		createLedgerQuery.mutate({
+			title: "Delete User",
+			timestamp: new Date(),
+			content: `${userLoggedInfo.firstName} ${userLoggedInfo.lastName}  delete a user !`,
+			additionalData: "",
+			userFullName: `${userLoggedInfo.firstName} ${userLoggedInfo.lastName}`,
+			priority: "HIGH",
+			type: "ALERT",
+			roles: ["super-admin"],
+		}); */
 	};
 
 	const handleUploadModal = () => {

@@ -1,5 +1,5 @@
-import { Investor } from "@/types/api/investor";
-import { Loan } from "@/types/api/loan";
+import type { Investor } from "@/types/api/investor";
+import type { Loan } from "@/types/api/loan";
 import { authApiClient } from "@/utils/api-client";
 
 const getInvestors = async (searchValue?: string) => {
@@ -22,9 +22,18 @@ const getInvestorsWithLoans = async (searchValue?: string) => {
 	return response.data;
 };
 
+const getInvestorsWithLoansById = async (id?: string) => {
+	const response = await authApiClient.get<Array<Loan>>(
+		`/investors/loans/${id}`
+	);
+
+	return response.data;
+};
+
 const InvestorsService = {
 	getInvestors,
 	getInvestorsWithLoans,
+	getInvestorsWithLoansById,
 };
 
 export default InvestorsService;

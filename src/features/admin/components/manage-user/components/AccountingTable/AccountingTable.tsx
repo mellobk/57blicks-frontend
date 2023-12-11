@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, type ReactElement, useEffect, useState } from "react";
@@ -22,6 +23,7 @@ import userStore from "@/stores/user-store.ts";
 import { PermissionType } from "@/types/api/permissions-type";
 import { TabData } from "../../utils/tabs";
 import { useNavigate } from "@tanstack/router";
+/* import ManageNotificationService from "../../../notifications/api/notification"; */
 
 export const AccountingTable: FC = () => {
 	const navigate = useNavigate();
@@ -32,6 +34,10 @@ export const AccountingTable: FC = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [selectedUser, setSelectedUser] = useState<User | null>(null);
 	const [detailModal, setDetailModal] = useState<boolean>(true);
+
+	/* 	const createLedgerQuery = useMutation(async (body: any) => {
+		return ManageNotificationService.createNotifications(body);
+	}); */
 
 	useEffect(() => {
 		const find = findPermission(
@@ -86,6 +92,16 @@ export const AccountingTable: FC = () => {
 
 	const handleDeleteUser = (id: string) => {
 		deleteAdminMutation.mutate(id);
+		/* 	createLedgerQuery.mutate({
+			title: "Delete User",
+			timestamp: new Date(),
+			content: `${userLoggedInfo.firstName} ${userLoggedInfo.lastName}  delete a user !`,
+			additionalData: "",
+			userFullName: `${userLoggedInfo.firstName} ${userLoggedInfo.lastName}`,
+			priority: "HIGH",
+			type: "ALERT",
+			roles: ["super-admin"],
+		}); */
 	};
 
 	const handleDeleteAdmin = (id: string) => {

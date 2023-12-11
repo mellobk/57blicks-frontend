@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -24,6 +25,7 @@ import { TabData } from "../../utils/tabs";
 import userStore from "@/stores/user-store.ts";
 import { PermissionType } from "@/types/api/permissions-type";
 import { useNavigate } from "@tanstack/router";
+/* import ManageNotificationService from "../../../notifications/api/notification"; */
 
 interface SuccessProps {}
 
@@ -38,6 +40,10 @@ export const AdminTable: FC<SuccessProps> = () => {
 
 	const userInfo = userStore((state) => state.userInfo);
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
+
+	/* 	const createLedgerQuery = useMutation(async (body: any) => {
+		return ManageNotificationService.createNotifications(body);
+	}); */
 
 	useEffect(() => {
 		if (!emptyObject(userInfo)) {
@@ -83,6 +89,16 @@ export const AdminTable: FC<SuccessProps> = () => {
 
 	const handleDeleteUser = (id: string) => {
 		deleteAdminMutation.mutate(id);
+		/* 		createLedgerQuery.mutate({
+			title: "Delete User",
+			timestamp: new Date(),
+			content: `${userLoggedInfo.firstName} ${userLoggedInfo.lastName}  delete a user !`,
+			additionalData: "",
+			userFullName: `${userLoggedInfo.firstName} ${userLoggedInfo.lastName}`,
+			priority: "HIGH",
+			type: "ALERT",
+			roles: ["super-admin"],
+		}); */
 	};
 
 	const handleDeleteAdmin = (id: string) => {
