@@ -20,6 +20,7 @@ import Csv from "@/assets/images/png/Csv.png";
 import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
 import { ResponsivePieCanvas } from "@nivo/pie";
+import type { Loan } from "@/types/api/loan";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -29,7 +30,8 @@ import { ResponsivePieCanvas } from "@nivo/pie";
 
 export const ConsultantLoanReport: FC = () => {
 	const [chartData, setChartData] = useState([]);
-	const [_, setKey] = useState<Array<string>>([]);
+	const [keys, setKey] = useState<Array<string>>([]);
+	const [excelData, setExcelData] = useState<Array<any>>([]);
 	const consultantQuery = useQuery(
 		["all-consultant-loans"],
 		() => {
@@ -37,6 +39,50 @@ export const ConsultantLoanReport: FC = () => {
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
+
+	useEffect(() => {
+		if (consultantQuery.data) {
+			const insuranceCsv = consultantQuery.data;
+
+			const csvData = keys?.map((data) => {
+				const productData = insuranceCsv[data]?.map((value: Loan) => {
+					return [
+						`${value.borrower?.user.firstName} ${value.borrower?.user.lastName}`,
+						value?.borrower?.user.mailingAddress,
+						value?.borrower?.user.phoneNumber,
+						value?.borrower?.user.email,
+						value?.collaterals[0]?.address,
+						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
+						formatDate(value?.originationDate.toString()),
+						formatDate(value?.maturityDate.toString()),
+						formatDate(
+							value.collaterals[0]?.insuranceExpirationDate.toString() || ""
+						),
+					];
+				});
+				return [[data], ...productData];
+			});
+
+			const arrayExcel: Array<Array<any>> = [];
+			csvData.map((data) => {
+				return arrayExcel.push(...data);
+			});
+
+			setExcelData(arrayExcel);
+		}
+	}, [consultantQuery.data]);
+
+	const headerCsv = [
+		"Borrower",
+		"Address",
+		"phone",
+		"email",
+		"Collateral Address",
+		"Total Loan",
+		"Origin Date",
+		"Maturity Date",
+		"Insurance Expiration Date",
+	];
 
 	useEffect(() => {
 		if (consultantQuery.data) {
@@ -75,61 +121,15 @@ export const ConsultantLoanReport: FC = () => {
 	}, [consultantQuery.data]);
 
 	const downloadReport = (): void => {
-		const insuranceCsv = consultantQuery.data?.defaultLoans;
+		const data = [headerCsv, ...(excelData ?? [])];
 
-		const headerCsv = [
-			"Borrower",
-			"Collateral Address",
-			"Total Loan",
-			"Origin Date",
-			"Maturity Date",
-			"Insurance Expiration Date",
-		];
-		const csvData = insuranceCsv?.map((data) => {
-			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
-				data?.collaterals[0]?.address,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
-				formatDate(data?.maturityDate.toString()),
-				formatDate(
-					data.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
-			];
-		});
-
-		const data = [headerCsv, ...(csvData ?? [])];
-
-		downloadCSV(data, "paidLoans.csv");
+		downloadCSV(data, "LoansByConsultant.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
-		const insuranceCsv = consultantQuery.data?.defaultLoans;
+		const data = [headerCsv, ...(excelData ?? [])];
 
-		const headerCsv = [
-			"Borrower",
-			"Collateral Address",
-			"Total Loan",
-			"Origin Date",
-			"Maturity Date",
-			"Insurance Expiration Date",
-		];
-		const csvData = insuranceCsv?.map((data) => {
-			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
-				data?.collaterals[0]?.address,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
-				formatDate(data?.maturityDate.toString()),
-				formatDate(
-					data.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
-			];
-		});
-
-		const data = [headerCsv, ...(csvData ?? [])];
-
-		downloadXLSX(data, "paidLoans.xlsx");
+		downloadXLSX(data, "LoansByConsultant.xlsx");
 	};
 
 	return (
