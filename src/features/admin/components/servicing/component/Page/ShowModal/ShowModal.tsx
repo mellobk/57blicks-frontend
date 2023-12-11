@@ -16,6 +16,8 @@ import { PermissionType } from "@/types/api/permissions-type";
 import { findPermission } from "@/utils/common-functions";
 import BorrowerNotifications from "../../BorrowerNotifications";
 import Payable from "../../Payable";
+import { useQuery } from "@tanstack/react-query";
+import LoansService from "@/api/loans";
 
 interface Props {
 	openModal?: boolean;
@@ -81,11 +83,11 @@ export const ShowModal: FC<Props> = ({
 		TABS.find((tab) => tab.label === "Loan")
 	);
 
-	// const loanQuery = useQuery(
-	// 	["loan-query", data?.loan.id],
-	// 	() => LoansService.getLoan(data?.loan.id),
-	// 	{ enabled: !!data?.loan.id }
-	// );
+	const loanQuery = useQuery(
+		["loan-query", data?.loan.id],
+		() => LoansService.getLoan(data?.loan.id),
+		{ enabled: !!data?.loan.id }
+	);
 
 	return (
 		<Modal
@@ -149,7 +151,7 @@ export const ShowModal: FC<Props> = ({
 				<Payable loan={data.loan} />
 			)}
 			{actualTabData?.label === "Funding" && data && (
-				<FundingBreakdown />
+				<FundingBreakdown data={loanQuery.data} />
 			)}
 			{actualTabData?.label === "Invoices" && data && (
 				<InvoiceScreen loan={data.loan} />
