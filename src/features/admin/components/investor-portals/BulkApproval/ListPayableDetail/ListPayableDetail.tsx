@@ -1,6 +1,6 @@
 import { dateFormat, moneyFormat } from "@/utils/formats";
 
-import { useEffect, useState, type FC } from "react";
+import { useEffect, type FC } from "react";
 import type { PayableApproval } from "../../../servicing/api/payable";
 import { Toggle } from "@/components/ui/Toggle";
 import moment from "moment";
