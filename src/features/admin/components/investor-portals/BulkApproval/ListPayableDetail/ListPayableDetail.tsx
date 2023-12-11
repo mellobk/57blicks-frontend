@@ -17,9 +17,7 @@ const ListPayableDetail: FC<ListPayableDetailProps> = ({
 	addPayableListsDetails,
 	removePayableListsDetails,
 }) => {
-	useEffect(() => {
-		console.log("payableListsDetails", payableListsDetails);
-	}, [payableListsDetails]);
+	useEffect(() => {}, [payableListsDetails]);
 
 	return (
 		<>
