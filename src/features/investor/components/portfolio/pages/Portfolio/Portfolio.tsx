@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import { type FC, useEffect, useState } from "react";
 import moment from "moment";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import InvestorsService from "@/api/investors";
 import { Input } from "@/components/forms/Input";
@@ -20,15 +23,32 @@ export const Portfolio: FC = () => {
 	const currentMonthName = moment().format("MMMM");
 
 	const userInfo = userStore((state) => state.loggedUserInfo);
-	console.log(userInfo);
-
+	/*
 	const investorsQuery = useQuery(["investors-query"], () =>
-		InvestorsService.getInvestorsWithLoans(searchValue)
-	);
+		InvestorsService.getInvestorsWithLoansById(userInfo.investor?.id || "")
+	); */
+
+	const myData = useMutation(async () => {
+		return InvestorsService.getInvestorsWithLoansById(
+			userInfo.investor?.id || ""
+		);
+	});
 
 	useEffect(() => {
-		setSelectedLoan(investorsQuery.data?.[0]);
-	}, [investorsQuery.isSuccess]);
+		/* console.log(investorsQuery.data?.[0]);
+		setSelectedLoan(); */
+		if (myData.isSuccess) {
+			setSelectedLoan(myData.data as any);
+		}
+	}, [myData]);
+
+	useEffect(() => {
+		/* console.log(investorsQuery.data?.[0]);
+		setSelectedLoan(); */
+		if (userInfo.investor?.id) {
+			void myData.mutate();
+		}
+	}, [userInfo]);
 
 	const columns = [
 		{
@@ -154,7 +174,7 @@ export const Portfolio: FC = () => {
 						className="h-full p-0 m-0 rounded-t-2xl overflow-y-auto"
 						columns={columns}
 						data={selectedLoan?.participationBreakdowns || []}
-						progressPending={investorsQuery.isFetching}
+						progressPending={myData.isLoading}
 						fixedHeader
 					/>
 					<Footer data={selectedLoan?.participationBreakdowns || []} />
@@ -163,7 +183,7 @@ export const Portfolio: FC = () => {
 					className="flex flex-col h-[50%] bg-white rounded-2xl p-0 m-0 overflow-y-auto"
 					columns={getLoanColumns()}
 					data={selectedLoan?.participationBreakdowns || []}
-					progressPending={investorsQuery.isFetching}
+					progressPending={myData.isLoading}
 					fixedHeader
 				/>
 			</div>
