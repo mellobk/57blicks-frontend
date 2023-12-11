@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Loan } from "../../servicing/types/api";
 import type { IReportAverageDays } from "../types/types";
 
@@ -70,29 +72,17 @@ const getPaidOffLoans = async (days: string) => {
 };
 
 const getLoanConsultant = async () => {
-	const response = await authApiClient.get<{
-		paid: { quantity: number; percentage: number };
-		unPaid: { quantity: number; percentage: number };
-		defaultLoans: Array<Loan>;
-	}>(loanConsult());
+	const response = await authApiClient.get<any>(loanConsult());
 	return response.data;
 };
 
 const getLoanProduct = async () => {
-	const response = await authApiClient.get<{
-		paid: { quantity: number; percentage: number };
-		unPaid: { quantity: number; percentage: number };
-		defaultLoans: Array<Loan>;
-	}>(loanProduct());
+	const response = await authApiClient.get<any>(loanProduct());
 	return response.data;
 };
 
 const getLoanAssets = async () => {
-	const response = await authApiClient.get<{
-		paid: { quantity: number; percentage: number };
-		unPaid: { quantity: number; percentage: number };
-		defaultLoans: Array<Loan>;
-	}>(loanAssets());
+	const response = await authApiClient.get<any>(loanAssets());
 	return response.data;
 };
 

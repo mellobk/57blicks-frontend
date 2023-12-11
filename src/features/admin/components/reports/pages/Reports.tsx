@@ -58,13 +58,13 @@ export const Reports: FC = () => {
 				<div className="flex  w-[100%] p-2">
 					<AverageLoan />
 				</div>
-				<div className="flex flex-col items-center  w-[30%]   bg-white p-2 ">
+				<div className="flex flex-col items-center  w-[33.33%]   bg-white p-2 ">
 					<ConsultantLoanReport />
 				</div>
-				<div className="flex flex-col items-center  w-[30%]   bg-white p-2 ">
+				<div className="flex flex-col items-center  w-[33.33%]   bg-white p-2 ">
 					<AssetLoanReport />
 				</div>
-				<div className="flex flex-col items-center  w-[30%]   bg-white p-2 ">
+				<div className="flex flex-col items-center  w-[33.33%]   bg-white p-2 ">
 					<LoanProductReport />
 				</div>
 				<div className="flex flex-col items-center  w-[100%]   bg-white p-2 ">

@@ -18,6 +18,10 @@ import Csv from "@/assets/images/png/Csv.png";
 import Xlsx from "@/assets/images/png/Xlsx.png";
 import ReportTable from "./ReportComponent/ReportComponent";
 import { PieCanvas } from "./PieCanvas/PieCanvas";
+import { formatDate, moneyFormat } from "@/utils/formats";
+import type { Loan } from "@/types/api/loan";
+import { downloadXLSX } from "@/utils/create-xlsx";
+import { downloadCSV } from "@/utils/create-cvs";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -26,8 +30,28 @@ import { PieCanvas } from "./PieCanvas/PieCanvas";
 // you'll often use just a few of them.
 
 export const AverageDaysPaidLoans: FC = () => {
+	const headerCsv = [
+		"Borrower",
+		"Address",
+		"phone",
+		"email",
+		"Collateral Address",
+		"Total Loan",
+		"Origin Date",
+		"Maturity Date",
+		"Insurance Expiration Date",
+	];
+
 	const [chartData, setChartData] = useState([]);
 	const [chartAssetData, setAssetChartData] = useState([]);
+	const [assetKeys, setAssetKey] = useState<Array<string>>([]);
+	const [productKeys, setProductKeys] = useState<Array<string>>([]);
+	const [excelDataLoanAsset, setExcelDataLoanAsset] = useState<Array<any>>([]);
+	const [excelDataLoans, setExcelDataLoans] = useState<Array<any>>([]);
+	const [excelDataLoanProduct, setExcelDataLoanProduct] = useState<Array<any>>(
+		[]
+	);
+
 	const consultantQuery = useQuery(
 		["average-paid-days-loans"],
 		() => {
@@ -42,11 +66,7 @@ export const AverageDaysPaidLoans: FC = () => {
 				.loanProductDaysAverage as unknown as Array<any>;
 
 			const keyAssetValues = getData.map((value) => Object.keys(value)[0]);
-			const keys = Object.keys(keyAssetValues);
-			/* 	const valuesArray = keys.map((key) => getData[key]); */
-
-			console.log(keyAssetValues, keys, getData);
-
+			setProductKeys(keyAssetValues as any);
 			const object: Record<string, any> = {};
 
 			getData.forEach((value) => {
@@ -95,11 +115,7 @@ export const AverageDaysPaidLoans: FC = () => {
 				.loansPaidByAsset as unknown as Array<any>;
 
 			const keyAssetValues = getData.map((value) => Object.keys(value)[0]);
-			const keys = Object.keys(keyAssetValues);
-			/* 	const valuesArray = keys.map((key) => getData[key]); */
-
-			console.log(keyAssetValues, keys, getData);
-
+			setAssetKey(keyAssetValues as any);
 			const object: Record<string, any> = {};
 
 			getData.forEach((value) => {
@@ -124,86 +140,176 @@ export const AverageDaysPaidLoans: FC = () => {
 				};
 			});
 
-			/* 			const data = [
-				{
-					id: `Paid - ${getData.paid.percentage}%`,
-					label: `Paid - ${getData.paid.percentage}%`,
-					value: getData.paid.quantity,
-					color: "hsl(110, 70%, 50%)",
-				},
-				{
-					id: `Unpaid - ${getData.unPaid.percentage}%`,
-					label: `Unpaid -${getData.unPaid.percentage}%`,
-					value: getData.unPaid.quantity,
-					color: "hsl(187, 70%, 50%)",
-				},
-			]; */
+			console.log(data);
 			setAssetChartData(data as any);
 		}
 	}, [consultantQuery.data]);
 
-	const downloadReport = (): void => {
-		/* 		const insuranceCsv = consultantQuery.data?.defaultLoans;
+	useEffect(() => {
+		if (consultantQuery.data) {
+			const insuranceCsv = consultantQuery.data.dataByAsset;
 
-		const headerCsv = [
-			"Borrower",
-			"Collateral Address",
-			"Total Loan",
-			"Origin Date",
-			"Maturity Date",
-			"Insurance Expiration Date",
-		];
-		const csvData = insuranceCsv?.map((data) => {
-			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
-				data?.collaterals[0]?.address,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
-				formatDate(data?.maturityDate.toString()),
-				formatDate(
-					data.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
-			];
-		});
+			const csvData = assetKeys?.map((data) => {
+				const productData = insuranceCsv[data]?.map((value: Loan) => {
+					return [
+						`${value.borrower?.user.firstName} ${value.borrower?.user.lastName}`,
+						value?.borrower?.user.mailingAddress,
+						value?.borrower?.user.phoneNumber,
+						value?.borrower?.user.email,
+						value?.collaterals[0]?.address,
+						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
+						formatDate(value?.originationDate.toString()),
+						formatDate(value?.maturityDate.toString()),
+						formatDate(
+							value.collaterals[0]?.insuranceExpirationDate.toString() || ""
+						),
+					];
+				});
+				return [[data], ...(productData || [])];
+			});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+			const arrayExcel: Array<Array<any>> = [];
+			csvData.map((data) => {
+				return arrayExcel.push(...data);
+			});
 
-		downloadCSV(data, "paidLoans.csv"); */
+			setExcelDataLoanAsset(arrayExcel);
+		}
+	}, [assetKeys]);
+
+	useEffect(() => {
+		if (consultantQuery.data) {
+			const insuranceCsv = consultantQuery.data.dataByProduct;
+
+			const csvData = productKeys?.map((data) => {
+				const productData = insuranceCsv[data]?.map((value: Loan) => {
+					return [
+						`${value.borrower?.user.firstName} ${value.borrower?.user.lastName}`,
+						value?.borrower?.user.mailingAddress,
+						value?.borrower?.user.phoneNumber,
+						value?.borrower?.user.email,
+						value?.collaterals[0]?.address,
+						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
+						formatDate(value?.originationDate.toString()),
+						formatDate(value?.maturityDate.toString()),
+						formatDate(
+							value.collaterals[0]?.insuranceExpirationDate.toString() || ""
+						),
+					];
+				});
+				return [[data], ...(productData || [])];
+			});
+
+			const arrayExcel: Array<Array<any>> = [];
+			csvData.map((data) => {
+				return arrayExcel.push(...data);
+			});
+
+			setExcelDataLoanProduct(arrayExcel);
+		}
+	}, [productKeys]);
+
+	useEffect(() => {
+		if (consultantQuery.data) {
+			const insuranceCsv = consultantQuery.data.dataByAsset;
+
+			const csvData = assetKeys?.map((data) => {
+				console.log(assetKeys, insuranceCsv);
+				const productData = insuranceCsv[data]?.map((value: Loan) => {
+					return [
+						`${value.borrower?.user.firstName} ${value.borrower?.user.lastName}`,
+						value?.borrower?.user.mailingAddress,
+						value?.borrower?.user.phoneNumber,
+						value?.borrower?.user.email,
+						value?.collaterals[0]?.address,
+						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
+						formatDate(value?.originationDate.toString()),
+						formatDate(value?.maturityDate.toString()),
+						formatDate(
+							value.collaterals[0]?.insuranceExpirationDate.toString() || ""
+						),
+					];
+				});
+				return [[data], ...(productData || [])];
+			});
+
+			const arrayExcel: Array<Array<any>> = [];
+			csvData.map((data) => {
+				return arrayExcel.push(...data);
+			});
+
+			setExcelDataLoanAsset(arrayExcel);
+		}
+	}, [productKeys]);
+
+	useEffect(() => {
+		if (consultantQuery.data) {
+			const insuranceCsv = consultantQuery.data.data || [];
+
+			const csvData = insuranceCsv?.map((data: any) => {
+				return [
+					`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+					data?.borrower?.user.mailingAddress,
+					data?.borrower?.user.phoneNumber,
+					data?.borrower?.user.email,
+					data?.collaterals[0]?.address,
+					moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+					formatDate(data?.originationDate.toString()),
+					formatDate(data?.maturityDate.toString()),
+					formatDate(
+						data.collaterals[0]?.insuranceExpirationDate.toString() || ""
+					),
+				];
+			});
+
+			setExcelDataLoans(csvData);
+		}
+	}, [consultantQuery.data]);
+
+	const downloadLoanAssetReport = (): void => {
+		const data = [headerCsv, ...(excelDataLoanAsset ?? [])];
+
+		downloadCSV(data, "AverageRollRateByAsset.csv");
 	};
 
-	const downloadXlsxReport = (): void => {
-		/* 	const insuranceCsv = consultantQuery.data?.defaultLoans;
+	const downloadXlsxLoanAssetReport = (): void => {
+		const data = [headerCsv, ...(excelDataLoanAsset ?? [])];
 
-		const headerCsv = [
-			"Borrower",
-			"Collateral Address",
-			"Total Loan",
-			"Origin Date",
-			"Maturity Date",
-			"Insurance Expiration Date",
-		];
-		const csvData = insuranceCsv?.map((data) => {
-			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
-				data?.collaterals[0]?.address,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
-				formatDate(data?.maturityDate.toString()),
-				formatDate(
-					data.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
-			];
-		});
+		downloadXLSX(data, "AverageRollRateByAsset.xlsx");
+	};
 
-		const data = [headerCsv, ...(csvData ?? [])];
+	const downloadLoanProductReport = (): void => {
+		const data = [headerCsv, ...(excelDataLoanProduct ?? [])];
 
-		downloadXLSX(data, "paidLoans.xlsx"); */
+		downloadCSV(data, "AverageRollRateByProduct.csv");
+	};
+
+	const downloadXlsxLoanProductReport = (): void => {
+		const data = [headerCsv, ...(excelDataLoanProduct ?? [])];
+
+		downloadXLSX(data, "AverageRollRateByProduct.xlsx");
+	};
+
+	const downloadLoansReport = (): void => {
+		const data = [headerCsv, ...(excelDataLoans ?? [])];
+
+		downloadCSV(data, "AverageRollRateForAllLoans.csv");
+	};
+
+	const downloadXlsxLoansReport = (): void => {
+		const data = [headerCsv, ...(excelDataLoans ?? [])];
+
+		downloadXLSX(data, "AverageRollRateForAllLoans.xlsx");
 	};
 
 	return (
 		<div className="flex w-full justify-center gap-3">
 			<div className="w-[30%] h-[82%] flex">
-				<ReportTable title="Average Roll Rate for all Loans">
+				<ReportTable
+					title="Average Roll Rate for all Loans"
+					downloadReport={downloadLoansReport}
+					downloadXlsxReport={downloadXlsxLoansReport}
+				>
 					<div>{consultantQuery.data?.averagePaidLoans || 0}</div>
 				</ReportTable>
 			</div>
@@ -212,14 +318,14 @@ export const AverageDaysPaidLoans: FC = () => {
 					<div className="font-bold text-[13px]">
 						Average Roll Rate by Loan Product
 					</div>
-					<div className="flex gap-2 ml-2" onClick={downloadReport}>
+					<div className="flex gap-2 ml-2" onClick={downloadLoanProductReport}>
 						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 							<img src={Csv} alt="DKC Csv" />
 						</div>
 
 						<div
 							className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
-							onClick={downloadXlsxReport}
+							onClick={downloadXlsxLoanProductReport}
 						>
 							<img src={Xlsx} alt="DKC Xlsx" />
 						</div>
@@ -232,14 +338,14 @@ export const AverageDaysPaidLoans: FC = () => {
 					<div className="font-bold text-[13px]">
 						Average Roll Rate by Asset Type
 					</div>
-					<div className="flex gap-2 ml-2" onClick={downloadReport}>
+					<div className="flex gap-2 ml-2" onClick={downloadLoanAssetReport}>
 						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 							<img src={Csv} alt="DKC Csv" />
 						</div>
 
 						<div
 							className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
-							onClick={downloadXlsxReport}
+							onClick={downloadXlsxLoanAssetReport}
 						>
 							<img src={Xlsx} alt="DKC Xlsx" />
 						</div>
