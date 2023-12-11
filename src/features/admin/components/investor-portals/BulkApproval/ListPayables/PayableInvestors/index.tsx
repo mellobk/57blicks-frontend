@@ -12,6 +12,7 @@ import ManagePayablesService, {
 import { Toggle } from "@/components/ui/Toggle";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "@/assets/icons/loading";
+import TotalPayableDetail from "../../TotalPayableDetail";
 
 interface PayableInvestorsProps {
 	investorPending: PayableDetailPending;
@@ -141,14 +142,21 @@ const PayableInvestors: FC<PayableInvestorsProps> = ({
 				{showDetails &&
 					query.data &&
 					query.data.map((payable, index) => (
-						<ListPayableDetail
-							key={index}
-							payable={payable}
-							payableListsDetails={payableListsDetails}
-							addPayableListsDetails={addPayableListsDetails}
-							removePayableListsDetails={removePayableListsDetails}
-						/>
+						<div key={index}>
+							<ListPayableDetail
+								key={index}
+								payable={payable}
+								payableListsDetails={payableListsDetails}
+								addPayableListsDetails={addPayableListsDetails}
+								removePayableListsDetails={removePayableListsDetails}
+							/>
+						</div>
 					))}
+				{showDetails && (
+					<div className="flex flex-row w-full">
+						{query.data && <TotalPayableDetail payable={query.data} />}
+					</div>
+				)}
 			</div>
 		</>
 	);

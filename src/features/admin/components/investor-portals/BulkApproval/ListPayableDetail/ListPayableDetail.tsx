@@ -1,6 +1,6 @@
 import { dateFormat, moneyFormat } from "@/utils/formats";
 
-import { useEffect, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import type { PayableApproval } from "../../../servicing/api/payable";
 import { Toggle } from "@/components/ui/Toggle";
 import moment from "moment";
@@ -17,9 +17,7 @@ const ListPayableDetail: FC<ListPayableDetailProps> = ({
 	addPayableListsDetails,
 	removePayableListsDetails,
 }) => {
-	useEffect(() => {
-		console.log("payableListsDetails", payableListsDetails);
-	}, [payableListsDetails]);
+	useEffect(() => {}, [payableListsDetails]);
 
 	return (
 		<>
