@@ -1,5 +1,5 @@
 import { Cell } from "@/components/table/Cell";
-import { useState, type ComponentType, useEffect } from "react";
+import type { ComponentType } from "react";
 import { type Control, useWatch, type UseFormSetValue } from "react-hook-form";
 import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import {
@@ -22,7 +22,6 @@ interface Props {
 }
 
 export const Footer: ComponentType<Props> = ({
-	disabled,
 	totals,
 	control,
 	setValue,

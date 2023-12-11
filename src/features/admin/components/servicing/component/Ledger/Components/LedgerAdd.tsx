@@ -17,7 +17,6 @@ import { InputNumber } from "@/components/forms/InputNumber";
 import { dateWithFormatUS, moneyFormat } from "@/utils/formats";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
-import LedgerApprove from "./LedgerApprove";
 import type { Loan } from "@/features/admin/components/servicing/types/api";
 import moment from "moment";
 import { columnWidth } from "./header/column-width";
@@ -61,7 +60,6 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	register,
 	handleRemove,
 	handleOpenModal,
-	refetchLedgers,
 }) => {
 	const [dataLedgers, setDataLedgers] = useState<Ledger>();
 	const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
