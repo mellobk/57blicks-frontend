@@ -1,8 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { type FC, useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import {
-	ApprovalStateType,
-	LedgerType,
 	type LedgerFormValues,
 	type Ledgers,
 	LedgerTypeOfPayment,
@@ -98,7 +97,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 
 	useEffect(() => {
 		remove();
-		const totalLoanAmount = Number(loan.totalLoanAmount);
 		if (ledgersData && ledgersData.length > 0) {
 			let debits = 0;
 			let credits = 0;
@@ -142,6 +140,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			debits,
 			credits,
 			balance,
+			newLoanAmount: 0,
 		};
 		setTotals(totals);
 	};
@@ -259,27 +258,24 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 						</thead>
 						<tbody>
 							{fields.map((field, index) => {
-								console.log(field.approvalState);
-								if (field.approvalState === ApprovalStateType.PENDING) {
-									return (
-										<>
-											<LedgerAdd
-												field={field}
-												index={index}
-												handleRemove={handleRemove}
-												data={allFields as unknown as LedgerFormValues}
-												handleOpenModal={handleOpenModal}
-												handleSetValue={handleSetValue}
-												handleSetDate={handleSetDate}
-												handleEdit={handleEdit}
-												handleDeleteLedger={handleDeleteLedger}
-												control={control as never}
-												errors={errors}
-												register={register as never}
-											/>
-										</>
-									);
-								}
+								return (
+									<>
+										<LedgerAdd
+											field={field}
+											index={index}
+											handleRemove={handleRemove}
+											data={allFields as unknown as LedgerFormValues}
+											handleOpenModal={handleOpenModal}
+											handleSetValue={handleSetValue}
+											handleSetDate={handleSetDate}
+											handleEdit={handleEdit}
+											handleDeleteLedger={handleDeleteLedger}
+											control={control as never}
+											errors={errors}
+											register={register as never}
+										/>
+									</>
+								);
 							})}
 							<tr>
 								<td colSpan={9}>&nbsp;</td>

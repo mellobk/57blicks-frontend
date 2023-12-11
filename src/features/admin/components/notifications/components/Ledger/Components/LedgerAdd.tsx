@@ -8,6 +8,7 @@ import type {
 
 import {
 	ApprovalStateType,
+	LedgerTypeOfPayment,
 	type Ledger,
 	type LedgerFormValues,
 } from "../types";
@@ -59,6 +60,10 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 			});
 		}
 	}, [data]);
+
+	if (dataLedgers?.typeOfPayment !== LedgerTypeOfPayment.PRINCIPAL) {
+		return <></>;
+	}
 
 	return (
 		<tr
