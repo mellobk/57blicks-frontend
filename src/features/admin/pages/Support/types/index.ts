@@ -16,8 +16,8 @@ export enum TicketCategoryType {
 	GENERAL = "GENERAL",
 	PORTAL = "PORTAL",
 	OPPORTUNITY = "OPPORTUNITY",
-	BANKING = 'BANKING',
-	REPORTING = 'REPORTING',
+	BANKING = "BANKING",
+	REPORTING = "REPORTING",
 	OTHER = "OTHER",
 }
 
@@ -44,16 +44,30 @@ export interface CreateTicketForm {
 
 export interface Attachment {
 	id: string;
-	createdAt?: Date;
-	updatedAt?: Date;
-	deletedAt?: Date;
-	originalName?: string;
-	mimeType?: string;
-	size?: string;
-	s3Url?: string;
+	createdAt: Date;
+	updatedAt: Date;
+	deletedAt: Date;
+	originalName: string;
+	mimeType: string;
+	size: string;
+	s3Url: string;
 	ticketId: string;
-	data?: Array<Attachment>;
 }
+
+export interface PaginationMeta {
+	page: number;
+	take: number;
+	itemCount: number;
+	pageCount: number;
+	hasPreviousPage: boolean;
+	hasNextPage: boolean;
+}
+
+export interface AttachmentResponse {
+	data: Array<Attachment>;
+	meta: PaginationMeta;
+}
+
 export interface Chat {
 	id: string;
 	createdAt: Date;
@@ -61,8 +75,7 @@ export interface Chat {
 	deletedAt?: Date;
 	content?: string;
 	createdBy?: string;
-	isInternal: boolean,
-	ticketId: string
+	isInternal: boolean;
+	ticketId: string;
 	data?: Array<Chat>;
-
 }

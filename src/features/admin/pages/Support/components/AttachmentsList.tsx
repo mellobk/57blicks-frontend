@@ -1,50 +1,22 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { type FC, useEffect, useState } from "react";
-import { DocumentPreview } from "@/features/admin/components/opportunities/components/PastOpportunities/DocumentPreview/DocumentPreview";
-import { PDFListItems } from "@/features/admin/pages/Support/components/Pdf-list-items";
+import { type FC, useEffect } from "react";
 import type { Attachment } from "src/features/admin/pages/Support/types/index.ts";
 import { useQuery } from "@tanstack/react-query";
 import ManageAttachmentService from "@/features/admin/components/servicing/component/Tickets/attachments";
 import { downloadFile } from "../api/support";
+import { dateFormat, formatTime } from "@/utils/formats";
+import { openUrlFile } from "@/utils/file/download-file-form-url";
+import useToast from "@/hooks/use-toast";
 
 interface Props {
 	idTicket?: string;
 }
 
 export const AttachmentsList: FC<Props> = ({ idTicket }) => {
-	const [attachmentList, setAttachmentList] = useState<Array<Attachment>>([]);
-	const [attachmentSelected, setAttachmentSelected] =
-		useState<Attachment | null>(null);
+	const notify = useToast();
 
-	const { refetch: refetchAttachmentDetails } = useQuery(
+	const { refetch: refetchAttachmentDetails, data } = useQuery(
 		["get-attachment-list", idTicket],
-		() => ManageAttachmentService.getListAttachment(),
-		{
-			onSuccess: (data: Attachment) => {
-				if (data?.data) {
-					console.log("what is data ---> ", data?.data);
-					setAttachmentList(
-						data?.data?.filter((data) => data.ticketId === idTicket)
-					);
-				}
-			},
-		}
-	);
-
-	const { refetch: refetchDownloadedFile } = useQuery(
-		["download-file", attachmentSelected?.s3Url],
-		() => downloadFile(attachmentSelected?.s3Url || ""),
-		{
-			onSuccess: (data: Attachment) => {
-				// enabled: !!attachmentSelected?.s3Url,
-				console.log('data url is ---> ', data)
-			},
-		}
+		() => ManageAttachmentService.getListAttachment()
 	);
 
 	useEffect(() => {
@@ -53,31 +25,73 @@ export const AttachmentsList: FC<Props> = ({ idTicket }) => {
 		}
 	}, [idTicket, refetchAttachmentDetails]);
 
-	useEffect(() => {
-		if (attachmentSelected) {
-			void refetchDownloadedFile();
+	const handleDownload = async (pdf: Attachment) => {
+		try {
+			const url = await downloadFile(pdf.s3Url);
+			openUrlFile(url);
+		} catch {
+			notify("Error downloading file", "error");
 		}
-	}, [attachmentSelected, refetchDownloadedFile]);
+	};
+
+	const list = data?.map((pdf, key) => (
+		<div
+			key={key}
+			className="flex justify-between items-center hover:bg-gray-200"
+			style={{
+				borderBottom: "1px solid var(--default-input, #EDF3F5)",
+				paddingTop: "15px",
+				cursor: "pointer",
+			}}
+			onClick={() => handleDownload(pdf)}
+		>
+			<div className="w-[80px] h-20 flex justify-center items-center ">
+				<div className="w-10 h-10 rounded-3xl bg-gray-200 align-middle items-center flex justify-center ">
+					<i className="pi pi-file"></i>
+				</div>
+			</div>
+			<div className="w-full h-20  ">
+				<div>
+					<p
+						className="text-[16px] "
+						style={{
+							width: "200px",
+							fontWeight: "600",
+							whiteSpace: "nowrap",
+							overflow: "hidden",
+							textOverflow: "ellipsis",
+						}}
+					>
+						{pdf.originalName}
+					</p>
+				</div>
+				<div style={{ color: "#B0B4BA", fontWeight: "400", fontSize: "13px" }}>
+					{pdf.size} MB
+				</div>
+				<div
+					className="flex justify-between items-center w-full"
+					style={{
+						color: "#B0B4BA",
+						fontWeight: "400",
+						fontSize: "13px",
+						width: "100%",
+						paddingRight: "10px",
+					}}
+				>
+					{pdf?.updatedAt && (
+						<>
+							<span>{dateFormat(pdf?.updatedAt?.toString())}</span>
+							<span>{formatTime(pdf?.updatedAt?.toString())}</span>
+						</>
+					)}
+				</div>
+			</div>
+		</div>
+	));
 
 	return (
-		<div>
-			<div className="h-80 lg:col-span-3 col-span-1 bg-gray-400">
-				<DocumentPreview
-					isLoading={false}
-					url={
-						"https://463225101844-files-app.s3.us-east-1.amazonaws.com/opportunities/8b4989e3-074f-42a3-aba5-cf7b4ce701bd.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAWXWS6DYKBMKKMIWY%2F20231130%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231130T153110Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEJb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQDSw1aEaZ56Ugo3dbENn7D6J%2B5xk8kzxk%2Bd2qF0%2F2rEEAIhAIUfQDlCvNa%2BEx7cepatlHlYA7V8NStF1BDJQ8MaMRi7KuYDCO%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMNDYzMjI1MTAxODQ0IgxFjy4p3yQYenWRtjUqugOB0EgYlZsbs8VZyxEC0d056oK7sKhVNwlXLVo2i6GzXu%2FrYKw8JHuzIcI%2BP55RfKxXqot6ahGPw4lnQpo%2FUSlQZtshbcNqcdybjcJHdkBc1KZVOYTUAczbw3WChHkYoTGeSVeZphTXFV8qVCBk%2BkY0gdO67RL3cbFmhly7ZVVxCtZNHnbwp%2BSsktMnmOgaJctikXv4IxM3jGBkITPeu9RbZC51kCeoSgr1LkJM5uuZfoznzqt0nNDoQyWbjGficBtmSVcCmn56bHkpXl8b5ka8SZem5b6GeQ%2FRV7j5UN9gz%2FwOMwTbvlhE9ITS3R%2FPcrn3wnjWt5QqHpmLnOPtxesHBSfwinAlxbCQ%2Fq2csRLE%2FwEscYLd1TuKCdVB6wcV8oFrZtg7jeJF4Y54X8Lg5m4zGVmNTW83DdzZIgQPCi8%2F0C0wjbCGxtNDzXx6YIHolkWEcg03t0YeXp2Uo4S%2B94Ii0JP4HVCrpmL4knH7O%2BrjWjHo3I3xfzYu4grVBjckdHO%2BJpVDdGVydwEghN5BVDSZA7mOBdWRiU7cqtrphIPvd5YPf%2BTkSOOkKAPwsWnxryJXcYWOBjihz3otMKiroqsGOqQBMIec9kld13BFOzz21V2h5vfSLbN5NOy3tc%2FRQbNqvB8WnMhf1G5sYKxdo7cKAfCtqbMRodrpSENbdNGz81pgV14pt42TNnA8%2Bkxjfswy7sXlt60GU5TrhEPH6nJTTWVNqezxbz1wbZuQMDmtQu1t436CTue9c2vI0HAWekW1%2BUjW5Y8Tl7QhXczmQ3MsRW0mYj3R2cQOtTdH2a7jUTmfD1E%2FMYY%3D&X-Amz-Signature=550c21d81390c82098387c46e2aa74aacc971ab07d24282498b866159c6066ee&X-Amz-SignedHeaders=host&x-id=GetObject"
-					}
-				/>
-			</div>
-			<div
-				className="overflow-y-auto"
-				style={{ paddingTop: "40px", height: "300px" }}
-			>
-				<PDFListItems
-					data={attachmentList}
-					setAttachmentSelected={setAttachmentSelected}
-				/>
-			</div>
+		<div className="overflow-y-auto" style={{ height: "90vh" }}>
+			{list}
 		</div>
 	);
 };

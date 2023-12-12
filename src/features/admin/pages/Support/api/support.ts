@@ -41,5 +41,5 @@ export const downloadFile = async (filePath: string): Promise<string> => {
 		`/files/download/${encodedFilePath}`
 	);
 
-	return response.data;
+	return response.data as string;
 };
