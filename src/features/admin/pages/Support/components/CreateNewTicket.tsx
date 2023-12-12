@@ -1,9 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import type { FC } from "react";
 import { Input } from "@/components/forms/Input";
 import { Modal } from "@/components/ui/Modal/Modal";
@@ -18,7 +12,6 @@ import type { CreateTicketForm } from "../types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postTicket } from "../api/support";
 import useToast from "@/hooks/use-toast";
-import { inputClassName } from "@/utils/class-names";
 
 interface Props {
 	openModal: boolean;
@@ -27,7 +20,12 @@ interface Props {
 }
 
 export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
-	const { control, formState: { errors }, register, handleSubmit } = useForm<CreateTicketForm>({
+	const {
+		control,
+		formState: { errors },
+		register,
+		handleSubmit,
+	} = useForm<CreateTicketForm>({
 		resolver: zodResolver(AddTicketSchema),
 	});
 	/* 	const createLedgerQuery = useMutation(async (body: any) => {
@@ -92,8 +90,7 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 					<div
 						className=" rounded-3xl border border-gray-200 p-2 bg-white"
 						style={{
-							width: "548px",
-							height: "377px",
+							width: "50%",
 						}}
 					>
 						<form
@@ -103,31 +100,30 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 							<div className="flex justify-between items-center">
 								<div className="w-full">
 									<Input
-										id="Title"
+										error={errors["title"]?.message}
 										label="Title"
 										placeholder="Enter Title"
-										required
 										register={register("title")}
-										className={inputClassName(errors)}
+										wrapperClassName="mt-6"
+										required
 									/>
 									<Dropdown
 										control={control}
 										className="mt-6"
 										label="Category"
-										name="Category"
+										name="category"
 										options={TICKET_CATEGORIES}
 										required
-										error={errors?.message}
+										error={errors["category"]?.message}
 									/>
 									<TextArea
-										data-testid="general-information-investment-summary"
+										error={errors["description"]?.message}
 										label="Message"
 										maxLength={1000}
-										placeholder="Enter Message"
+										placeholder="Enter message"
+										register={register("description")}
 										wrapperClassName="mt-6"
 										required
-										register={register("description")}
-										className={inputClassName(errors)}
 									/>
 								</div>
 							</div>
