@@ -56,11 +56,10 @@ export interface Attachment {
 }
 export interface Chat {
 	id: string;
-	createdAt: Date;
+	createdAt?: Date;
 	updatedAt?: Date;
 	deletedAt?: Date;
 	content?: string;
-	createdBy?: string;
 	isInternal: boolean,
 	ticketId: string
 	data?: Array<Chat>;

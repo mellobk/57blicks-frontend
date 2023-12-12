@@ -148,9 +148,11 @@ export enum TicketPriorityType {
 
 export enum TicketCategoryType {
 	INVESTMENT = "Investment",
-	GENERAL = "Generak",
+	GENERAL = "General",
 	PORTAL = "Portal",
 	OPPORTUNITY = "Opportunity",
+	BANKING = "Banking",
+	REPORTING = "reporting",
 	OTHER = "Other",
 }
 

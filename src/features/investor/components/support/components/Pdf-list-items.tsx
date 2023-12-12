@@ -5,23 +5,20 @@ import { dateFormat, formatTime } from "@/utils/formats";
 
 interface Props {
 	data?: Array<Attachment>;
-	setAttachmentSelected: (attachment: Attachment) => void;
 }
-export const PDFListItems: FC<Props> = ({ data, setAttachmentSelected }) =>
+
+export const PDFListItems: FC<Props> = ({ data }) =>
 	data?.map((pdf, key) => (
 		<div
-			key={key}
 			className="flex justify-between items-center"
 			style={{
 				backgroundColor: key % 2 === 0 ? "" : "#F4F7F9",
 				borderBottom: "1px solid var(--default-input, #EDF3F5)",
 				paddingTop: "15px",
-				cursor: "pointer", // Add cursor style for indicating clickability
 			}}
-			onClick={() => setAttachmentSelected(pdf)}
 		>
 			<div className="w-[80px] h-20 flex justify-center items-center ">
-				<div className="w-10 h-10 rounded-3xl bg-gray-200 align-middle items-center flex justify-center ">
+				<div className="w-10 h-10 rounded-3xl bg-gray-200  align-middle items-center flex justify-center ">
 					<img height="24px" width="24px" src={PDF} alt="support Empty" />
 				</div>
 			</div>

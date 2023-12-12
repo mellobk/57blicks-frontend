@@ -10,54 +10,31 @@ import { PDFListItems } from "@/features/admin/pages/Support/components/Pdf-list
 import type { Attachment } from "src/features/admin/pages/Support/types/index.ts";
 import { useQuery } from "@tanstack/react-query";
 import ManageAttachmentService from "@/features/admin/components/servicing/component/Tickets/attachments";
-import { downloadFile } from "../api/support";
 
 interface Props {
 	idTicket?: string;
 }
 
-export const AttachmentsList: FC<Props> = ({ idTicket }) => {
+export const AttachmentsList: FC<Props> = ({idTicket}) => {
 	const [attachmentList, setAttachmentList] = useState<Array<Attachment>>([]);
-	const [attachmentSelected, setAttachmentSelected] =
-		useState<Attachment | null>(null);
 
-	const { refetch: refetchAttachmentDetails } = useQuery(
-		["get-attachment-list", idTicket],
-		() => ManageAttachmentService.getListAttachment(),
+	const queryAttachmentDetails = useQuery(
+		["get-attachment-list"],
+		() => {
+			return ManageAttachmentService.getListAttachment();
+		},
 		{
 			onSuccess: (data: Attachment) => {
 				if (data?.data) {
-					console.log("what is data ---> ", data?.data);
-					setAttachmentList(
-						data?.data?.filter((data) => data.ticketId === idTicket)
-					);
+					setAttachmentList(data?.data?.filter((data) => data.ticketId === idTicket));
 				}
 			},
 		}
 	);
 
-	const { refetch: refetchDownloadedFile } = useQuery(
-		["download-file", attachmentSelected?.s3Url],
-		() => downloadFile(attachmentSelected?.s3Url || ""),
-		{
-			onSuccess: (data: Attachment) => {
-				// enabled: !!attachmentSelected?.s3Url,
-				console.log('data url is ---> ', data)
-			},
-		}
-	);
-
 	useEffect(() => {
-		if (idTicket) {
-			void refetchAttachmentDetails();
-		}
-	}, [idTicket, refetchAttachmentDetails]);
-
-	useEffect(() => {
-		if (attachmentSelected) {
-			void refetchDownloadedFile();
-		}
-	}, [attachmentSelected, refetchDownloadedFile]);
+		void queryAttachmentDetails.refetch();
+	}, [attachmentList]);
 
 	return (
 		<div>
@@ -73,10 +50,7 @@ export const AttachmentsList: FC<Props> = ({ idTicket }) => {
 				className="overflow-y-auto"
 				style={{ paddingTop: "40px", height: "300px" }}
 			>
-				<PDFListItems
-					data={attachmentList}
-					setAttachmentSelected={setAttachmentSelected}
-				/>
+				<PDFListItems data={attachmentList} />
 			</div>
 		</div>
 	);

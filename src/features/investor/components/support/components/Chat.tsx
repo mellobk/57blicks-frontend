@@ -47,8 +47,7 @@ export const ChatBox: FC<Props> = ({ idTicket, internal = false }) => {
 
 	const handleMessagesent = () => {
 		console.log("Message:", message);
-		const isInternal = internal ? true : false;
-		mutation.mutate({ id: idTicket, newMessage: message, isInternal });
+		mutation.mutate({ id: idTicket, newMessage: message });
 	};
 	return (
 		<>

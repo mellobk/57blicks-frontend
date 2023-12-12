@@ -23,7 +23,6 @@ interface Props {
 	setOpenModalDelete: (event_: boolean) => void;
 	closeModalDelete: () => void;
 	openModalDelete: boolean;
-	setOpenModalCloseTicket: (event_: boolean) => void;
 	closeModalCloseTicket: () => void;
 	openModalCloseTicket: boolean;
 	selectedSupport: Ticket | undefined;
@@ -37,7 +36,6 @@ export const Sender: FC<Props> = ({
 	setOpenModalDelete,
 	openModalDelete,
 	closeModalDelete,
-	setOpenModalCloseTicket,
 	openModalCloseTicket,
 	closeModalCloseTicket,
 	selectedSupport,
@@ -101,16 +99,10 @@ export const Sender: FC<Props> = ({
 						</h3>
 					</div>
 					<div className="flex justify-between gap-3">
-						<div
-							style={{
-								visibility: rightView === "Attachments" ? "hidden" : "visible",
-							}}
-						>
-							<IconFileUpload
-								data-testid="general-information-image"
-								selectedSupport={selectedSupport}
-							/>
-						</div>
+						<IconFileUpload
+							data-testid="general-information-image"
+							selectedSupport={selectedSupport}
+						/>
 						<Button
 							className={` w-40 h-7  bg-gray-200 pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-black-200 font-bold align-middle `}
 							style={{
@@ -137,57 +129,6 @@ export const Sender: FC<Props> = ({
 							>
 								Attachments
 							</span>
-						</Button>
-						<Button
-							className=" h-7  bg-gray-200 pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-black-200 font-bold align-middle "
-							style={{
-								visibility:
-									rightView === "InternalNotes" ? "hidden" : "visible",
-							}}
-							onClick={(): any => {
-								rightMenuEvent("InternalNotes");
-							}}
-						>
-							<div className="pr-2 align-middle pt-0.5  ">
-								<Icon name="notes" width="20" color="#0E2130" />
-							</div>
-							<span
-								style={{
-									color: "var(--colors-primary, #0E2130)",
-									fontFeatureSettings: "'clig' off, 'liga' off",
-									fontFamily: "Inter",
-									fontSize: "16px",
-									fontStyle: "normal",
-									fontWeight: "600",
-									lineHeight: "normal",
-									letterSpacing: "-0.8px",
-								}}
-							>
-								Internal Notes
-							</span>
-						</Button>
-						<Button
-							className=" h-7  bg-white pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-black-200 font-bold align-middle "
-							onClick={(): any => {
-								setOpenModalCloseTicket(true);
-							}}
-						>
-							<div
-								className="  h-7   bg-green-800 pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-green-500 font-bold align-middle "
-								style={{
-									color: "var(--colors-green, #00BA35)",
-									fontFeatureSettings: "'clig' off, 'liga' off",
-									fontFamily: "Inter",
-									fontSize: "10.182px",
-									fontStyle: "normal",
-									fontWeight: "600",
-									lineHeight: "normal",
-									letterSpacing: "-0.509px",
-									alignItems: "center",
-								}}
-							>
-								Resolve Ticket
-							</div>
 						</Button>
 						<div>
 							<IconButton

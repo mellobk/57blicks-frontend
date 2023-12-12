@@ -1,25 +1,31 @@
+import userStore from "@/stores/user-store";
 import type { FC } from "react";
 import type { Chat } from "src/features/admin/pages/Support/types/index.ts";
+import { formatTime } from "@/utils/formats";
 
 interface Props {
 	data?: Array<Chat>;
+	internal?: boolean;
 }
 
-export const MessagesChat: FC<Props> = ({ data }) =>
-	data?.map((message) => (
+export const MessagesChat: FC<Props> = ({ data }) => {
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
+
+	return data?.map((message) => (
 		<div
+			key={message.id}
 			className="flex"
 			style={{
 				flexDirection: "column",
-				// alignItems: message.type === "investor" ? "" : "flex-end",
-				alignItems: message.content === "investor" ? "" : "flex-end",
+				alignItems: userLoggedInfo?.id === message?.createdBy ? "flex-end" : "",
 			}}
 		>
 			<div
 				style={{
-					height: "58px",
+					height: "auto",
 					width: "auto",
 					marginTop: "35px",
+					maxWidth: "300px",
 				}}
 			>
 				<div
@@ -28,21 +34,23 @@ export const MessagesChat: FC<Props> = ({ data }) =>
 						color: "#B0B4BA",
 					}}
 				>
-					{/* <span className="">{message.name}</span>
-					<span className="">{message.time}</span> */}
-					<span className="">Name</span>
-					<span className="">Time</span>
+					<span className="">{userLoggedInfo.firstName}</span>
+					<span className="">{formatTime(message?.createdAt?.toString())}</span>
 				</div>
 				<div
-					className=" rounded-2xl"
+					className="rounded-2xl"
 					style={{
-						height: "58px",
+						height: "auto",
 						paddingTop: "10px",
 						paddingLeft: "10px",
-						// color: message.type === "investor" ? "#656A74" : "#C79E63",
-                        // backgroundColor : message.type === "investor" ?  "#F4F7F9" : "rgba(199, 158, 99, 0.12)",
-						color: message.content === "investor" ? "#656A74" : "#C79E63",
-                        backgroundColor : message.content === "investor" ?  "#F4F7F9" : "rgba(199, 158, 99, 0.12)",
+						paddingBottom: "10px",
+						paddingRight: "10px",
+						backgroundColor:
+							userLoggedInfo.id === message.createdBy
+								? "rgba(199, 158, 99, 0.12)"
+								: "#F4F7F9",
+						color:
+							userLoggedInfo.id === message.createdBy ? "#C79E63" : "#656A74",
 					}}
 				>
 					{message.content}
@@ -50,3 +58,4 @@ export const MessagesChat: FC<Props> = ({ data }) =>
 			</div>
 		</div>
 	));
+};

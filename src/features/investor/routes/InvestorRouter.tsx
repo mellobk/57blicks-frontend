@@ -2,7 +2,7 @@ import { InvestorLayout } from "@/components/layout/InvestorLayout";
 import { Opportunities } from "@/features/investor/components/opportunities/pages/Opportunities/Opportunities";
 import { Portfolio } from "@/features/investor/components/portfolio/pages/Portfolio/Portfolio";
 import { InvestorRoute } from "@/routes/routes";
-import { Support } from "@/features/admin/pages/Support/Support";
+import { Support } from "@/features/investor/components/support/Support";
 import { Profile } from "@/features/admin/components/profile/pages/Profile/Profile";
 import { Reports } from "@/features/admin/components/reports/pages/Reports";
 

@@ -9,7 +9,6 @@ const getListAttachment = async (): Promise<Array<Attachment> | null> => {
 		const response = await authApiClient.get<Array<Attachment>>(
 			`${getAttachmentsData()}`
 		);
-		console.log("ENTER HERE???", response);
 		return response.data;
 	} catch {
 		/* empty */

@@ -35,14 +35,12 @@ export const postTicket = async (
 export const sentTicket = async ({
 	id,
 	newMessage,
-	isInternal,
 }: {
 	id: string;
 	newMessage: string;
-	isInternal: boolean
 }): Promise<void> => {
 	console.log("WHAT IS MESSAGE ----> ", newMessage)
-	await authApiClient.post(`/comments/${id}`, { content: newMessage, isInternal });
+	await authApiClient.post(`/comments/${id}`, { content: newMessage, isInternal:false });
 };
 
 export const uploadAttachment = async (file: Blob, ticketId: string): Promise<void> => {
@@ -54,15 +52,3 @@ export const uploadAttachment = async (file: Blob, ticketId: string): Promise<vo
 		formData
 	);
 };
-
-export const downloadFile = async (filePath: string): Promise<Blob> => {
-	// Use encodeURIComponent to ensure proper URL encoding of the file path
-	const encodedFilePath = encodeURIComponent(filePath);
-  
-	// Use the authApiClient to make the GET request
-	const response = await authApiClient.get(`/files/download/${encodedFilePath}`, {
-	  responseType: 'blob', // Specify the response type as blob for binary data
-	});
-	console.log('whta is response.data', response.data)
-	return response.data;
-  };

@@ -18,7 +18,6 @@ import type { CreateTicketForm } from "../types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postTicket } from "../api/support";
 import useToast from "@/hooks/use-toast";
-import { inputClassName } from "@/utils/class-names";
 
 interface Props {
 	openModal: boolean;
@@ -27,13 +26,9 @@ interface Props {
 }
 
 export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
-	const { control, formState: { errors }, register, handleSubmit } = useForm<CreateTicketForm>({
+	const { control, register, handleSubmit } = useForm<CreateTicketForm>({
 		resolver: zodResolver(AddTicketSchema),
 	});
-	/* 	const createLedgerQuery = useMutation(async (body: any) => {
-		return ManageNotificationService.createNotifications(body);
-	});
-	const userLoggedInfo = userStore((state) => state.loggedUserInfo); */
 	const notify = useToast();
 	const queryClient = useQueryClient();
 
@@ -108,16 +103,14 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 										placeholder="Enter Title"
 										required
 										register={register("title")}
-										className={inputClassName(errors)}
 									/>
 									<Dropdown
 										control={control}
 										className="mt-6"
-										label="Category"
-										name="Category"
+										label="category"
+										name="category"
 										options={TICKET_CATEGORIES}
 										required
-										error={errors?.message}
 									/>
 									<TextArea
 										data-testid="general-information-investment-summary"
@@ -127,7 +120,6 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 										wrapperClassName="mt-6"
 										required
 										register={register("description")}
-										className={inputClassName(errors)}
 									/>
 								</div>
 							</div>
