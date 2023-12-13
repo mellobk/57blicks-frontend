@@ -26,4 +26,10 @@ export interface Loan {
 	fundingBreakdowns: Array<FundingBreakdown>;
 	participationBreakdowns: Array<ParticipationBreakdown>;
 	user: User;
+	prorated?: string;
+	regular?: string;
+	current?: string;
+	principal?: string;
+	balance?: string;
+	end_date?: string;
 }

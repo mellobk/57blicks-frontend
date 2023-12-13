@@ -1,86 +1,87 @@
-import { type FC, useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import { moneyFormat, percentageFormat } from "@/utils/formats";
+import { useEffect, useState } from "react";
+
+import { BreadCrumb } from "@/components/ui/BreadCrumb";
+import type { FC } from "react";
+import { Footer } from "@/features/investor/components/portfolio/components/Footer/Footer";
+import InvestorsService from "@/api/investors";
+import Loading from "@/assets/icons/loading";
+import type { Loan } from "@/types/api/loan";
+import PayablesInvestor from "./PayablesInvestor";
+import { Table } from "@/components/ui/Table";
+import YearPicker from "@/components/ui/YearPicker";
+import { collateralsToString } from "@/utils/collateral-to-string";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 
-import InvestorsService from "@/api/investors";
-import { Input } from "@/components/forms/Input";
-import { BreadCrumb } from "@/components/ui/BreadCrumb";
-import { Table } from "@/components/ui/Table";
-import { Footer } from "@/features/investor/components/portfolio/components/Footer/Footer";
-import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
-import type { Loan } from "@/types/api/loan";
-import { moneyFormat, percentageFormat } from "@/utils/formats";
-import { getLoanColumns } from "@/utils/investors";
-import userStore from "@/stores/user-store";
-
 export const Portfolio: FC = () => {
-	const [selectedLoan, setSelectedLoan] = useState<Loan>();
-	const [searchValue, setSearchValue] = useState<string>("");
-	const [searchVisible, setSearchVisible] = useState<boolean>(false);
+	const [year, setYear] = useState<number>(new Date().getFullYear());
 	const currentMonthName = moment().format("MMMM");
 
-	const userInfo = userStore((state) => state.loggedUserInfo);
-	console.log(userInfo);
-
-	const investorsQuery = useQuery(["investors-query"], () =>
-		InvestorsService.getInvestorsWithLoans(searchValue)
+	const investorsQuery = useQuery(
+		["loans-by-investors"],
+		() => InvestorsService.getLoansByInvestor(),
+		{
+			enabled: false,
+		}
 	);
-
-	useEffect(() => {
-		setSelectedLoan(investorsQuery.data?.[0]);
-	}, [investorsQuery.isSuccess]);
 
 	const columns = [
 		{
 			name: "Investor",
-			selector: (row: ParticipationBreakdown) =>
-				`LLC / ${row.loan.collaterals?.[0]?.address || ""}`,
+			selector: (row: Loan) =>
+				`LLC / ${collateralsToString(row.collaterals) || ""}`,
 			sortable: true,
 		},
 		{
 			name: "Total Loan Amount",
-			selector: (row: ParticipationBreakdown) =>
-				moneyFormat(Number(row.loan.totalLoanAmount)),
+			selector: (row: Loan) => moneyFormat(Number(row.totalLoanAmount)),
 			sortable: true,
 		},
 		{
 			name: "Investor Equity",
-			selector: (row: ParticipationBreakdown) =>
-				moneyFormat(Number(row.amount)),
+			selector: (row: Loan) =>
+				moneyFormat(Number(row.participationBreakdowns[0]?.amount || 0)),
 			sortable: true,
 		},
 		{
 			name: "Rate",
-			selector: (row: ParticipationBreakdown) =>
-				percentageFormat(Number(row.rate)),
+			selector: (row: Loan) =>
+				percentageFormat(Number(row.participationBreakdowns[0]?.rate || 0)),
 			sortable: true,
 		},
 		{
 			name: "Regular Payment",
-			selector: (row: ParticipationBreakdown) =>
-				moneyFormat(Number(row.regular)),
+			selector: (row: Loan) =>
+				moneyFormat(Number(row.participationBreakdowns[0]?.regular || 0)),
 			sortable: true,
 		},
 		{
 			name: "Origin Date",
-			selector: (row: ParticipationBreakdown) =>
-				row.loan?.originationDate?.toString() || "",
+			selector: (row: Loan) => row.originationDate?.toString() || "",
 			sortable: true,
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: ParticipationBreakdown) =>
-				row.loan?.maturityDate?.toString() || "",
+			selector: (row: Loan) => row.maturityDate?.toString() || "",
 			sortable: true,
 		},
 		{
 			name: `${currentMonthName} (Current)`,
-			selector: (row: ParticipationBreakdown) =>
-				moneyFormat(Number(row.regular)),
+			selector: (row: Loan) => {
+				return moneyFormat(
+					moment(row.originationDate).toDate().getMonth() ===
+						new Date().getMonth()
+						? Number(row.participationBreakdowns[0]?.prorated)
+						: Number(row.participationBreakdowns[0]?.regular || 0)
+				);
+			},
 			sortable: true,
 			conditionalCellStyles: [
 				{
-					when: (row: ParticipationBreakdown) => !!row,
+					when: (row: Loan) => !!row,
 					style: {
 						background: "#C79E631F",
 						color: "#C79E63",
@@ -89,6 +90,21 @@ export const Portfolio: FC = () => {
 			],
 		},
 	];
+
+	useEffect(() => {
+		investorsQuery.refetch();
+	}, []);
+
+	if (investorsQuery.isLoading) {
+		<div className="flex flex-col rounded-3xl bg-white gap-6 divide-y divide-gray-200 w-screen p-6 h-full overflow-y-auto">
+			<div className="flex flex-col w-full  items-center justify-items-center justify-center">
+				<div>
+					<Loading />
+				</div>
+				<div className="pt-6">Saving please wait...</div>
+			</div>
+		</div>;
+	}
 
 	return (
 		<div className="flex flex-col w-full h-full">
@@ -110,62 +126,39 @@ export const Portfolio: FC = () => {
 							className="flex gap-2 justify-end"
 							style={{
 								position: "relative",
-								right: "158px",
+								right: "20px",
 								width: "350px",
 								zIndex: "0",
 							}}
 						>
-							<div
-								className={`${
-									searchVisible || searchValue
-										? "w-[200px] bg-transparent transition duration-500"
-										: "bg-transparent  w-[30px] transition duration-500 "
-								} `}
-								onMouseEnter={() => setSearchVisible(true)}
-								onMouseLeave={() => setSearchVisible(false)}
-							>
-								<Input
-									type="text"
-									value={searchValue}
-									placeholder="Search"
-									iconColor="white"
-									iconWidth={`${searchValue ? "12" : "20"}`}
-									iconName={`${searchValue ? "wrong" : "search"}`}
-									onChange={(data) => setSearchValue(data.target.value)}
-									clickIcon={() => setSearchValue("")}
-									className={`placeholder-gray-400 text-white text-[13px] font-normal font-weight-400 leading-normal w-full ${
-										searchVisible || searchValue
-											? "bg-black-200  "
-											: "bg-transparent "
-									}  tracking-wide flex h-3 p-4 items-center self-stretch rounded-md border-none outline-none `}
-								/>
-							</div>
+							<YearPicker
+								year={new Date().getFullYear()}
+								onChange={(year: number) => {
+									setYear(year);
+								}}
+							/>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div className="flex flex-col h-full gap-3 overflow-y-auto">
 				<div
-					className={`flex flex-col ${
-						selectedLoan ? "h-[50%]" : "h-full"
-					} bg-white rounded-2xl justify-between overflow-y-auto`}
+					className={`flex flex-col $  h-[50%] bg-white rounded-2xl justify-between overflow-y-auto`}
 				>
 					<Table
 						className="h-full p-0 m-0 rounded-t-2xl overflow-y-auto"
 						columns={columns}
-						data={selectedLoan?.participationBreakdowns || []}
+						data={investorsQuery?.data || []}
 						progressPending={investorsQuery.isFetching}
 						fixedHeader
 					/>
-					<Footer data={selectedLoan?.participationBreakdowns || []} />
+					<Footer data={investorsQuery?.data || []} />
 				</div>
-				<Table
-					className="flex flex-col h-[50%] bg-white rounded-2xl p-0 m-0 overflow-y-auto"
-					columns={getLoanColumns()}
-					data={selectedLoan?.participationBreakdowns || []}
-					progressPending={investorsQuery.isFetching}
-					fixedHeader
-				/>
+				<div
+					className={`flex flex-col $  h-[50%] bg-white rounded-2xl justify-between overflow-y-auto`}
+				>
+					<PayablesInvestor year={year} loan={investorsQuery?.data} />
+				</div>
 			</div>
 		</div>
 	);
