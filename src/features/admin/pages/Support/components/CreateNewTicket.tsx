@@ -18,6 +18,8 @@ import type { CreateTicketForm } from "../types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postTicket } from "../api/support";
 import useToast from "@/hooks/use-toast";
+/* import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
+import userStore from "@/stores/user-store"; */
 
 interface Props {
 	openModal: boolean;
@@ -25,31 +27,38 @@ interface Props {
 	data?: Ticket;
 }
 
-export const CreateNewTicket: FC<Props> = ({
-	openModal,
-	closeModal,
-}) => {
-	const {
-		control,
-		register,
-		handleSubmit
-	} = useForm<CreateTicketForm>({
+export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
+	const { control, register, handleSubmit } = useForm<CreateTicketForm>({
 		resolver: zodResolver(AddTicketSchema),
 	});
+	/* 	const createLedgerQuery = useMutation(async (body: any) => {
+		return ManageNotificationService.createNotifications(body);
+	});
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo); */
 	const notify = useToast();
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation(postTicket, {
-    onSuccess: async () => {
+		onSuccess: async () => {
 			notify("Ticket created successfully", "success");
 			await queryClient.invalidateQueries({ queryKey: ["get-ticket-details"] });
-      closeModal();
-    }
-  });
+			closeModal();
+		},
+	});
 
-  const onSubmit = (data: CreateTicketForm): void => {
-    mutation.mutate(data);
-  };
+	const onSubmit = (data: CreateTicketForm): void => {
+		mutation.mutate(data);
+		/* 		createLedgerQuery.mutate({
+			title: "Support Ticket",
+			timestamp: new Date(),
+			content: `New ticket support was created`,
+			additionalData: "",
+			userFullName: `${userLoggedInfo.firstName} ${userLoggedInfo.lastName}`,
+			priority: "HIGH",
+			type: "ALERT",
+			roles: ["super-admin"],
+		}); */
+	};
 
 	return (
 		<div>
@@ -130,8 +139,8 @@ export const CreateNewTicket: FC<Props> = ({
 									/>
 								</div>
 							</div>
-							<button 
-								type="submit" 
+							<button
+								type="submit"
 								className="bg-blue-50 pt-1 pb-1.5 pl-4 pr-4 text-blue-200 text-sm font-semibold rounded-3xl hover:bg-blue-70"
 							>
 								Send Ticket

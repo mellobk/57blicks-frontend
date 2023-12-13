@@ -1,6 +1,6 @@
 import type { Investor } from "@/types/api/investor";
 import type { Loan } from "@/types/api/loan";
-import { Payable } from "@/features/admin/components/servicing/component/Payable/types";
+import type { Payable } from "@/features/admin/components/servicing/component/Payable/types";
 import { authApiClient } from "@/utils/api-client";
 
 const getInvestors = async (searchValue?: string) => {
