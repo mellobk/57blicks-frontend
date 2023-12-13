@@ -41,21 +41,21 @@ export const ChatBox: FC<Props> = ({ idTicket, internal = false }) => {
 	});
 
 	useEffect(() => {
-		// Fetch chat details only once after the initial render
 		void queryChatDetails.refetch();
-	}, []); // Empty dependency array
+	}, []);
 
 	const handleMessagesent = () => {
 		console.log("Message:", message);
 		const isInternal = internal ? true : false;
 		mutation.mutate({ id: idTicket, newMessage: message, isInternal });
 	};
+
 	return (
 		<>
 			<div
 				className="overflow-y-auto"
 				style={{
-					height: "450px",
+					height: "400px",
 				}}
 			>
 				<MessagesChat
@@ -64,13 +64,13 @@ export const ChatBox: FC<Props> = ({ idTicket, internal = false }) => {
 			</div>
 			<div
 				className="flex flex-row h-30 justify-between"
-				style={{ paddingTop: "30px" }}
+				style={{ paddingTop: "50px" }}
 			>
 				<div className="w-full " style={{ marginRight: "10px" }}>
 					<TextArea
 						data-testid="general-information-investment-summary"
-						value={message} // Bind the value of the TextArea to the state
-						onChange={(e) => setMessage(e.target.value)} // Update the state on change
+						value={message}
+						onChange={(event) => setMessage(event.target.value)}
 						maxLength={1000}
 						label={""}
 						placeholder="Enter Message"
@@ -82,11 +82,11 @@ export const ChatBox: FC<Props> = ({ idTicket, internal = false }) => {
 					<IconButton
 						bgColor="bg-gold-100 "
 						color="#C79E63"
-						name="send"
+						name={mutation.isLoading ? "loading" : "send"}
 						onClick={() => {
 							handleMessagesent();
 						}}
-						width="50"
+						width="30"
 						height="full"
 					/>
 				</div>

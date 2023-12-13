@@ -1,9 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import type { FC } from "react";
 import { Input } from "@/components/forms/Input";
 import { Modal } from "@/components/ui/Modal/Modal";
@@ -24,26 +18,34 @@ interface Props {
 	closeModal: () => void;
 	data?: Ticket;
 }
-
 export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
-	const { control, register, handleSubmit } = useForm<CreateTicketForm>({
+	const {
+		control,
+		formState: { errors },
+		register,
+		handleSubmit,
+		reset, // Add reset function to the useForm hook
+	} = useForm<CreateTicketForm>({
 		resolver: zodResolver(AddTicketSchema),
 	});
+
 	const notify = useToast();
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation(postTicket, {
 		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ["get-ticket-details"],
+			});
 			notify("Ticket created successfully", "success");
-			await queryClient.invalidateQueries({ queryKey: ["get-ticket-details"] });
 			closeModal();
 		},
 	});
 
-	const onSubmit = (data: CreateTicketForm): void => {
-		mutation.mutate(data);
+	const onSubmit = async (data: CreateTicketForm): Promise<void> => {
+		await mutation.mutateAsync(data);
+		reset();
 	};
-
 	return (
 		<div>
 			<Modal
@@ -85,10 +87,9 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 					}}
 				>
 					<div
-						className=" rounded-3xl border border-gray-200 p-2 bg-white"
+						className="rounded-3xl border border-gray-200 p-2 bg-white"
 						style={{
-							width: "548px",
-							height: "377px",
+							width: "50%",
 						}}
 					>
 						<form
@@ -98,36 +99,39 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 							<div className="flex justify-between items-center">
 								<div className="w-full">
 									<Input
-										id="Title"
+										error={errors["title"]?.message}
 										label="Title"
 										placeholder="Enter Title"
-										required
 										register={register("title")}
+										wrapperClassName="mt-6"
+										required
 									/>
 									<Dropdown
 										control={control}
 										className="mt-6"
-										label="category"
+										label="Category"
 										name="category"
 										options={TICKET_CATEGORIES}
 										required
+										error={errors["category"]?.message}
 									/>
 									<TextArea
-										data-testid="general-information-investment-summary"
+										error={errors["description"]?.message}
 										label="Message"
 										maxLength={1000}
-										placeholder="Enter Message"
+										placeholder="Enter message"
+										register={register("description")}
 										wrapperClassName="mt-6"
 										required
-										register={register("description")}
 									/>
 								</div>
 							</div>
 							<button
 								type="submit"
 								className="bg-blue-50 pt-1 pb-1.5 pl-4 pr-4 text-blue-200 text-sm font-semibold rounded-3xl hover:bg-blue-70"
+								disabled={mutation.isLoading}
 							>
-								Send Ticket
+								{mutation.isLoading ? "Sending..." : "Send Ticket"}
 							</button>
 						</form>
 					</div>

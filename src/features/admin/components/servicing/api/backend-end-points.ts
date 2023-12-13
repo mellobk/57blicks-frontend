@@ -94,7 +94,7 @@ export const getAttachmentsData = (): string => {
 };
 
 export const getChatsData = (): string => {
-	return `/comments/`;
+	return `/comments?page=1&take=50`;
 };
 
 export const setChatsData = (id: string): string => {
