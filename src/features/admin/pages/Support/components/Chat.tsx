@@ -37,6 +37,7 @@ export const ChatBox: FC<Props> = ({ idTicket, internal = false }) => {
 	const mutation = useMutation(sentTicket, {
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: ["get-Chat-list"] });
+			setMessage("");
 		},
 	});
 
