@@ -13,3 +13,15 @@ export function downloadFileFromUrl(url: string, filename: string): void {
 		})
 		.catch(() => {});
 }
+
+export function openUrlFile(url: string): void {
+	fetch(url)
+		.then((response) => response.blob())
+		.then((blob) => {
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement("a");
+			a.href = url;
+			window.open(url, "_blank");
+		})
+		.catch(() => {});
+}

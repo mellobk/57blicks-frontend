@@ -8,8 +8,9 @@ import { type FC, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import ManageTicketService from "./tickets";
 import type { Ticket } from "../../types/api";
-import Avatars from "@/assets/images/png/Avatars.png";
 import { dateFormat } from "@/utils/formats";
+import { Avatar } from "@/components/ui/Avatar";
+import userStore from "@/stores/user-store";
 
 interface Props {
 	// getFilename: (referenceId: number) => string;
@@ -30,6 +31,7 @@ export const TicketsList: FC<Props> = ({
 	setRefreshTicketList,
 }) => {
 	const [tickets, setTickets] = useState<Array<Ticket>>([]);
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 
 	const queryInvoiceDetails = useQuery(
 		["get-ticket-details"],
@@ -41,9 +43,16 @@ export const TicketsList: FC<Props> = ({
 		},
 		{
 			onSuccess: (data: Ticket) => {
-				console.log("data -->", data);
 				if (data.data) {
-					setTickets(data.data);
+					if (userLoggedInfo.role?.name?.includes("super")) {
+						setTickets(data.data);
+						setSelectedTicket(data.data[0]);
+					} else if (userLoggedInfo.role?.name?.includes("investor")) {
+						setTickets(
+							data.data.filter((data) => data.userId === userLoggedInfo?.id)
+						);
+						setSelectedTicket(data.data.filter((data) => data.userId === userLoggedInfo?.id)[0]);
+					}
 				}
 			},
 		}
@@ -55,8 +64,7 @@ export const TicketsList: FC<Props> = ({
 		} else {
 			void queryInvoiceDetails.refetch();
 		}
-		console.log("tickets --> ", tickets);
-	}, [tickets, filter, searchInput, refreshTicketList]);
+	}, [userLoggedInfo, filter, searchInput, refreshTicketList]);
 
 	return (
 		<>
@@ -106,11 +114,10 @@ export const TicketsList: FC<Props> = ({
 									}}
 								>
 									<div>
-										<img
-											height="15px"
-											width="15px"
-											src={Avatars}
-											alt="support Empty"
+										<Avatar
+											name={
+												ticket?.user?.firstName + " " + ticket?.user?.lastName
+											}
 										/>
 									</div>
 									<div
@@ -127,8 +134,9 @@ export const TicketsList: FC<Props> = ({
 												marginLeft: "8px",
 											}}
 										>
-											{/* {ticket.name} */}
-											<p>Nombre Ususario</p>
+											<p>
+												{ticket?.user?.firstName + " " + ticket?.user?.lastName}
+											</p>
 										</div>
 										<div className="flex">{dateFormat(ticket.updatedAt)}</div>
 									</div>

@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import type { FC } from "react";
 import { Input } from "@/components/forms/Input";
 import { Modal } from "@/components/ui/Modal/Modal";
@@ -20,18 +26,9 @@ interface Props {
 }
 
 export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
-	const {
-		control,
-		formState: { errors },
-		register,
-		handleSubmit,
-	} = useForm<CreateTicketForm>({
+	const { control, register, handleSubmit } = useForm<CreateTicketForm>({
 		resolver: zodResolver(AddTicketSchema),
 	});
-	/* 	const createLedgerQuery = useMutation(async (body: any) => {
-		return ManageNotificationService.createNotifications(body);
-	});
-	const userLoggedInfo = userStore((state) => state.loggedUserInfo); */
 	const notify = useToast();
 	const queryClient = useQueryClient();
 
@@ -90,7 +87,8 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 					<div
 						className=" rounded-3xl border border-gray-200 p-2 bg-white"
 						style={{
-							width: "50%",
+							width: "548px",
+							height: "377px",
 						}}
 					>
 						<form
@@ -100,30 +98,28 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 							<div className="flex justify-between items-center">
 								<div className="w-full">
 									<Input
-										error={errors["title"]?.message}
+										id="Title"
 										label="Title"
 										placeholder="Enter Title"
-										register={register("title")}
-										wrapperClassName="mt-6"
 										required
+										register={register("title")}
 									/>
 									<Dropdown
 										control={control}
 										className="mt-6"
-										label="Category"
+										label="category"
 										name="category"
 										options={TICKET_CATEGORIES}
 										required
-										error={errors["category"]?.message}
 									/>
 									<TextArea
-										error={errors["description"]?.message}
+										data-testid="general-information-investment-summary"
 										label="Message"
 										maxLength={1000}
-										placeholder="Enter message"
-										register={register("description")}
+										placeholder="Enter Message"
 										wrapperClassName="mt-6"
 										required
+										register={register("description")}
 									/>
 								</div>
 							</div>

@@ -90,5 +90,17 @@ export const filterTicketData = (search: string, status: string): string => {
 };
 
 export const getAttachmentsData = (): string => {
-	return `/attachments`;
+	return `/attachments/`;
+};
+
+export const getChatsData = (): string => {
+	return `/comments/`;
+};
+
+export const setChatsData = (id: string): string => {
+	return `/comments/${id}`;
+};
+
+export const updateAttachmentApi = (id: string): string => {
+	return `/attachments/upload/${id}`;
 };

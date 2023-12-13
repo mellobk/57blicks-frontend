@@ -25,7 +25,6 @@ export const Support: FC = () => {
 	const [rightView, setRightView] = useState<string>("");
 	const [refreshTicketList, setRefreshTicketList] = useState<boolean>(false);
 
-	console.log(searchValue)
 	const closeModalCreateTicket = (): void => {
 		setOpenModalCreateTicket(false);
 	};
@@ -39,6 +38,7 @@ export const Support: FC = () => {
 	};
 
 	const handleSearch = (data: string) => {
+		console.log("searchValue", searchValue);
 		setSearchValue(data);
 		return data;
 	};
@@ -95,7 +95,6 @@ export const Support: FC = () => {
 								setOpenModalDelete={setOpenModalDelete}
 								openModalDelete={openModalDelete}
 								closeModalDelete={closeModalDelete}
-								setOpenModalCloseTicket={setOpenModalCloseTicket}
 								openModalCloseTicket={openModalCloseTicket}
 								closeModalCloseTicket={closeModalCloseTicket}
 								selectedSupport={selectedSupport}

@@ -9,7 +9,6 @@ import { IconButton } from "@/components/ui/IconButton";
 import { AttachmentsList } from "./AttachmentsList";
 import { ChatBox } from "./Chat";
 import type { Ticket } from "@/features/admin/components/servicing/types/api";
-import { IconFileUpload } from "@/components/forms/FileUpload/IconFileUpload";
 
 interface Props {
 	type?: string;
@@ -38,9 +37,14 @@ export const RightView: FC<Props> = ({ type, onClose, selectedSupport }) => {
 						visibility: type === "Attachments" ? "visible" : "hidden",
 					}}
 				>
-					<IconFileUpload
-						data-testid="general-information-image"
-						selectedSupport={selectedSupport}
+					<IconButton
+						bgColor="bg-gray-200"
+						color="#0E2130"
+						name="uploadFile"
+						onClick={(): any => {
+							// setOpenConfirmationModal(true);
+						}}
+						width="16"
 					/>
 				</div>
 				<IconButton
@@ -60,7 +64,7 @@ export const RightView: FC<Props> = ({ type, onClose, selectedSupport }) => {
 				{type === "Attachments" ? (
 					<AttachmentsList idTicket={selectedSupport?.id} />
 				) : (
-					<ChatBox idTicket={selectedSupport.id} internal={true} />
+					<ChatBox idTicket={selectedSupport.id} />
 				)}
 			</div>
 		</div>
