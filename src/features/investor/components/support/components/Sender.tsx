@@ -99,10 +99,16 @@ export const Sender: FC<Props> = ({
 						</h3>
 					</div>
 					<div className="flex justify-between gap-3">
-						<IconFileUpload
-							data-testid="general-information-image"
-							selectedSupport={selectedSupport}
-						/>
+						<div
+							style={{
+								visibility: rightView === "Attachments" ? "hidden" : "visible",
+							}}
+						>
+							<IconFileUpload
+								data-testid="general-information-image"
+								selectedSupport={selectedSupport}
+							/>
+						</div>
 						<Button
 							className={` w-40 h-7  bg-gray-200 pt-1 pb-1 pl-3 pr-3 rounded-[15px] flex  text-xs text-black-200 font-bold align-middle `}
 							style={{

@@ -12,13 +12,15 @@ export const postTicket = async (
 export const sentTicket = async ({
 	id,
 	newMessage,
+	isInternal,
 }: {
 	id: string;
 	newMessage: string;
+	isInternal: boolean;
 }): Promise<void> => {
 	await authApiClient.post(`/comments/${id}`, {
 		content: newMessage,
-		isInternal: false,
+		isInternal,
 	});
 };
 
@@ -30,4 +32,14 @@ export const uploadAttachment = async (
 	formData.append("file", file);
 
 	await authApiClient.post(`/attachments/upload/${ticketId}`, formData);
+};
+
+export const downloadFile = async (filePath: string): Promise<string> => {
+	const encodedFilePath = encodeURIComponent(filePath);
+
+	const response = await authApiClient.get(
+		`/files/download/${encodedFilePath}`
+	);
+
+	return response.data as string;
 };
