@@ -13,6 +13,7 @@ import { Table } from "@/components/ui/Table";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import Loading from "@/assets/icons/loading";
 
 interface PayablesInvestorProps {
 	year: number;
@@ -87,6 +88,19 @@ const PayablesInvestor: FC<PayablesInvestorProps> = ({ year, loan }) => {
 	useEffect(() => {
 		investorsQuery.refetch();
 	}, [year]);
+
+	if (investorsQuery.isLoading || investorsQuery.isFetching) {
+		return (
+			<div className="flex flex-col rounded-3xl bg-white gap-6 divide-y divide-gray-200 w-screen p-6 h-full overflow-y-auto">
+				<div className="flex flex-col w-full  items-center justify-items-center justify-center">
+					<div>
+						<Loading />
+					</div>
+					<div className="pt-6">Saving please wait...</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div>
