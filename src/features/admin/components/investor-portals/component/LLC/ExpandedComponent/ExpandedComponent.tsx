@@ -1,10 +1,10 @@
+import { Cell } from "@/components/table/Cell";
 import type { ComponentType } from "react";
 import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
-
-import { Cell } from "@/components/table/Cell";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import type { Investor } from "@/types/api/investor";
 import { getFooterData } from "@/utils/investors.ts";
+import moment from "moment";
 
 interface Props extends ExpanderComponentProps<Investor> {
 	selectedParticipation?: FundingBreakdown;
@@ -34,9 +34,9 @@ export const ExpandedComponent: ComponentType<Props> = ({
 					<div className="grid grid-cols-8 w-full items-center">
 						<Cell
 							format="text"
-							value={`LLC / ${
-								participant.loan.collaterals?.[0]?.address || ""
-							}`}
+							value={`LLC  ${participant.loan.collaterals?.[0]?.address || ""}
+
+              `}
 							bold
 						/>
 						<Cell
@@ -68,7 +68,12 @@ export const ExpandedComponent: ComponentType<Props> = ({
 									: "bg-gold-500/[12%] text-gold-500"
 							}
 							format="money"
-							value={participant.regular}
+							value={`${
+								moment(participant.loan.originationDate).toDate().getMonth() ===
+								new Date().getMonth()
+									? Number(participant.prorated)
+									: Number(participant.regular || 0)
+							}`}
 							bold
 						/>
 					</div>
@@ -88,7 +93,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 					<Cell
 						className="bg-gold-500/[12%] text-gold-500"
 						format="money"
-						value={totals.regular}
+						value={totals.current}
 						bold
 					/>
 				</div>
