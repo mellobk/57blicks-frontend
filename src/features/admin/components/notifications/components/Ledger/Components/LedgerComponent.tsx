@@ -21,6 +21,7 @@ import { TypeOfPayment } from "@/features/admin/components/servicing/component/T
 import { FundingBreakdownEdit } from "../../FundingBreakdownEdit";
 import type { Loan } from "@/features/admin/components/create-loan/types/fields";
 import type { Loan as LoanLedger } from "@/features/admin/components/create-loan/types/fields";
+import { LoanStatusType } from "@/types/api/notifications";
 
 interface LedgerComponentProps {
 	loan: Loan;
@@ -287,7 +288,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					</table>
 				</div>
 			</form>
-			{loan.status === "Approved" && (
+			{loan.status === LoanStatusType.APPROVED && (
 				<FundingBreakdownEdit
 					loan={loan}
 					newLoanAmount={totals.newLoanAmount}
