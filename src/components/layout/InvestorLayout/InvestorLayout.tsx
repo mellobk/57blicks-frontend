@@ -357,7 +357,7 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 										status: "ACCEPTED",
 									});
 
-									createLedgerQuery.mutate({
+									/* 	createLedgerQuery.mutate({
 										title: "Offer accepted",
 										timestamp: new Date(),
 										content: `An investor accepted a new offer`,
@@ -366,7 +366,7 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 										priority: "HIGH",
 										type: "ALERT",
 										roles: ["investor"],
-									});
+									}); */
 								}}
 							/>
 						</div>
