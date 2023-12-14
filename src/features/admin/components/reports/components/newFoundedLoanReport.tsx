@@ -9,14 +9,6 @@ import { useState, type FC, useEffect } from "react";
 
 // install (please try to align the version of installed @nivo packages)
 // yarn add @nivo/pie
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-import { ResponsivePieCanvas } from "@nivo/pie";
->>>>>>> Stashed changes
-=======
-import { ResponsivePieCanvas } from "@nivo/pie";
->>>>>>> Stashed changes
 import { formatDate, moneyFormat } from "@/utils/formats";
 import { downloadCSV } from "@/utils/create-cvs";
 import { downloadXLSX } from "@/utils/create-xlsx";
@@ -28,15 +20,7 @@ import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
 import { Tabs } from "../../servicing/component/Tabs";
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 import { newFoundedTabs } from "../../servicing/utils/tabs";
-=======
-import { newFoundedTabs, paidLoansTabs } from "../../servicing/utils/tabs";
->>>>>>> Stashed changes
-=======
-import { newFoundedTabs, paidLoansTabs } from "../../servicing/utils/tabs";
->>>>>>> Stashed changes
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and

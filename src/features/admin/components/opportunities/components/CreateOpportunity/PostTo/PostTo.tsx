@@ -50,7 +50,6 @@ export const PostTo: FC<Props> = ({
 }) => {
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [searchValue, setSearchValue] = useState<string>("");
-	const [formUsers, setFormUsers] = useState<any>([]);
 	const [selectedInvestor, setSelectedInvestor] = useState<{
 		investor: Investor;
 		opportunityInvestorIndex: number;
