@@ -26,7 +26,6 @@ export const LEAD_SOURCES = [
 	{ code: "LC_LEAD", name: "LC Lead" },
 ];
 
-
 export const LENDERS = [
 	{ code: "dkc_lending_llc", name: "DKC Lending LLC" },
 	{ code: "dkc_lending_fl", name: "DKC Lending FL" },
@@ -51,10 +50,6 @@ export const LOAN_TYPES = [
 	{
 		code: "Fix and Lease Loans",
 		name: "Fix and Lease Loans",
-	},
-	{
-		code: "Transactional Funding",
-		name: "Transactional Funding",
 	},
 ];
 
