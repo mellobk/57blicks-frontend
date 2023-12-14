@@ -85,6 +85,10 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 		setOpenModalNotification(!openModalNotification);
 	};
 
+	const handleFaq = (): void => {
+		void navigate({ to: `/investors/Faq` });
+	};
+
 	const handleOpenModal = (): void => {
 		setOpenModalUser(!openModalUser);
 	};
@@ -134,6 +138,9 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 					)}
 				</ul>
 				<div className="flex items-center gap-2">
+					<div onClick={handleFaq} className="relative cursor-pointer">
+						<Icon name="faq" color={"#dcdfe0"} width="25" />{" "}
+					</div>
 					<div
 						onClick={handleOpenModalNotification}
 						className="relative cursor-pointer"
