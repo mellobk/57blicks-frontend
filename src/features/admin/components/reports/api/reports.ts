@@ -14,6 +14,7 @@ import {
 	loanConsult,
 	loanPaidAverageDays,
 	loanProduct,
+	newLoansFounded,
 	paidOffLoan,
 } from "./backend-end-points";
 
@@ -59,6 +60,15 @@ const getAllDefaultLoan = async () => {
 		unauthorized: { quantity: number; percentage: number };
 		defaultLoans: Array<Loan>;
 	}>(allDefaultLoan());
+	return response.data;
+};
+
+const getNewLoansFounded = async (days: string) => {
+	const response = await authApiClient.get<{
+		loanQuantity: number;
+		loanAverage: number;
+		defaultLoans: Array<Loan>;
+	}>(newLoansFounded(days));
 	return response.data;
 };
 
@@ -114,6 +124,7 @@ const ManageReportsService = {
 	getLoanAverages,
 	getLoanPaidAverageDays,
 	getDefaultUnauthorizedLoan,
+	getNewLoansFounded,
 };
 
 export default ManageReportsService;

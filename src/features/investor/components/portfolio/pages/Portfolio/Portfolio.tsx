@@ -1,10 +1,21 @@
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-floating-promises */
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
+import { type FC, useEffect, useState } from "react";
+import moment from "moment";
 import { moneyFormat, percentageFormat } from "@/utils/formats";
-import { useEffect, useState } from "react";
-
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
-import type { FC } from "react";
 import { Footer } from "@/features/investor/components/portfolio/components/Footer/Footer";
 import InvestorsService from "@/api/investors";
 import Loading from "@/assets/icons/loading";
@@ -13,7 +24,7 @@ import PayablesInvestor from "./PayablesInvestor";
 import { Table } from "@/components/ui/Table";
 import YearPicker from "@/components/ui/YearPicker";
 import { collateralsToString } from "@/utils/collateral-to-string";
-import moment from "moment";
+
 import { useQuery } from "@tanstack/react-query";
 
 export const Portfolio: FC = () => {

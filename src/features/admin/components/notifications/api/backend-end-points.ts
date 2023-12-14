@@ -10,6 +10,13 @@ export const updateUserNotificationData = (id: string): string => {
 	return `/user-notifications/${id}`;
 };
 
+export const updateInvestmentStatus = (
+	investorId: string,
+	opportunityId: string
+): string => {
+	return `/investments/status/${investorId}/${opportunityId}`;
+};
+
 export const userNotification = (): string => {
 	return `/user-notifications?page=1&take=20`;
 };

@@ -1,3 +1,12 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable @typescript-eslint/await-thenable */
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { type FC, useEffect, useState } from "react";
 import {
 	type Control,
@@ -18,8 +27,9 @@ import { Title } from "@/components/ui/Title";
 import { ToggleButton } from "@/components/ui/ToggleButton";
 import { DocumentPreview } from "@/features/admin/components/opportunities/components/CreateOpportunity/DocumentPreview/DocumentPreview";
 import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
-import { Investor } from "@/types/api/investor";
+import type { Investor } from "@/types/api/investor";
 import { nameFormat } from "@/utils/formats";
+import userStore from "@/stores/user-store";
 
 interface Props {
 	control: Control<Opportunity>;
@@ -38,7 +48,9 @@ export const PostTo: FC<Props> = ({
 	setOpenSuccessModal,
 	setValue,
 }) => {
+	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [searchValue, setSearchValue] = useState<string>("");
+	const [formUsers, setFormUsers] = useState<any>([]);
 	const [selectedInvestor, setSelectedInvestor] = useState<{
 		investor: Investor;
 		opportunityInvestorIndex: number;
@@ -66,10 +78,17 @@ export const PostTo: FC<Props> = ({
 		return OpportunitiesService.createOpportunity(data);
 	});
 
+	const createUniqueUsersMutation = useMutation((data: any) => {
+		return OpportunitiesService.uniqueUsers(data);
+	});
+
 	const uploadOpportunityMutation = useMutation((file: Blob) => {
 		return OpportunitiesService.uploadOpportunity(file);
 	});
 
+	const createUsersNotificationMutation = useMutation((data: any) => {
+		return OpportunitiesService.userNotifications(data);
+	});
 	const allEmail = () => {
 		investorsNotifications.map((_, index) => {
 			setValue(`investorsNotifications.${index}.email`, true);
@@ -89,8 +108,8 @@ export const PostTo: FC<Props> = ({
 
 	const onPost = async () => {
 		try {
-			const pdfDoc = pdf(<DocumentPreview control={control} />);
-			const blob = await pdfDoc.toBlob();
+			const pdfDocument = pdf(<DocumentPreview control={control} />);
+			const blob = await pdfDocument.toBlob();
 
 			uploadOpportunityMutation.mutate(blob, {
 				onSuccess: (data) => {
@@ -127,6 +146,7 @@ export const PostTo: FC<Props> = ({
 				sms: false,
 				note,
 				investorId: investor.id,
+				userId: investor?.user?.id,
 			});
 		} else {
 			setValue(`investorsNotifications.${index}.email`, true);
@@ -143,7 +163,7 @@ export const PostTo: FC<Props> = ({
 		setValue(`investorsNotifications.${index}.note`, note);
 	};
 
-	const toggleEmail = (investorId: string) => {
+	const toggleEmail = (investorId: string, userId: string) => {
 		const index = findIndex(investorId);
 
 		if (index < 0) {
@@ -151,6 +171,7 @@ export const PostTo: FC<Props> = ({
 				email: true,
 				sms: false,
 				investorId,
+				userId,
 			});
 		} else {
 			setValue(
@@ -160,7 +181,7 @@ export const PostTo: FC<Props> = ({
 		}
 	};
 
-	const toggleInvestor = (investorId: string) => {
+	const toggleInvestor = (investorId: string, userId: string) => {
 		const index = findIndex(investorId);
 
 		if (index < 0) {
@@ -168,6 +189,7 @@ export const PostTo: FC<Props> = ({
 				email: false,
 				sms: false,
 				investorId,
+				userId,
 			});
 		} else {
 			remove(index);
@@ -176,7 +198,7 @@ export const PostTo: FC<Props> = ({
 		setSelectedInvestor(null);
 	};
 
-	const toggleSMS = (investorId: string) => {
+	const toggleSMS = (investorId: string, userId: string) => {
 		const index = findIndex(investorId);
 
 		if (index < 0) {
@@ -184,6 +206,7 @@ export const PostTo: FC<Props> = ({
 				email: false,
 				sms: true,
 				investorId,
+				userId,
 			});
 		} else {
 			setValue(
@@ -193,12 +216,51 @@ export const PostTo: FC<Props> = ({
 		}
 	};
 
+	const createNotifications = async (
+		userId: string,
+		notificationId: string
+	) => {
+		createUsersNotificationMutation.mutate({
+			userId: userId,
+			notificationId: notificationId,
+			status: "SENT",
+		});
+	};
+
+	const createNotificationUser = async () => {
+		if (form?.investorsNotifications?.length) {
+			for (const promise of form?.investorsNotifications) {
+				try {
+					const result = await createUniqueUsersMutation.mutateAsync({
+						title: "Offer",
+						timestamp: new Date(),
+						content: `New Offer Created`,
+						additionalData: `{"investorId": "${promise.investorId}", "opportunityId": "${createOpportunityMutation?.data?.id}" }`,
+						userFullName: `${userLoggedInfo.firstName} ${userLoggedInfo.lastName}`,
+						priority: "HIGH",
+						type: "ALERT",
+						roles: [],
+					});
+					await createNotifications(
+						promise?.userId as unknown as string,
+						result as unknown as string
+					);
+				} catch (error) {
+					console.error("Error en la mutación:", error);
+					// Puedes manejar el error según tus necesidades
+				}
+			}
+		}
+	};
+
 	useEffect(() => {
 		if (createOpportunityMutation.isSuccess) {
 			reset();
 			createOpportunityMutation.reset();
 			setOpenModal(false);
 			setOpenSuccessModal(true);
+
+			void createNotificationUser();
 		}
 	}, [createOpportunityMutation.isSuccess]);
 
@@ -231,7 +293,9 @@ export const PostTo: FC<Props> = ({
 									className={selectedInvestor ? "hidden" : ""}
 									color="#0E2130"
 									name="wrong"
-									onClick={() => setOpenModal(false)}
+									onClick={() => {
+										setOpenModal(false);
+									}}
 									width="12"
 								/>
 							</div>
@@ -268,7 +332,10 @@ export const PostTo: FC<Props> = ({
 														<input
 															checked={!!opportunityInvestor}
 															onChange={() => {
-																toggleInvestor(investor.id);
+																toggleInvestor(
+																	investor.id,
+																	investor?.user?.id || ""
+																);
 															}}
 															type="checkbox"
 														/>
@@ -298,7 +365,7 @@ export const PostTo: FC<Props> = ({
 														offIconName="cellphone"
 														offLabel="SMS"
 														onChange={() => {
-															toggleSMS(investor.id);
+															toggleSMS(investor.id, investor?.user?.id || "");
 														}}
 														lineThrough
 													/>
@@ -309,7 +376,10 @@ export const PostTo: FC<Props> = ({
 														offIconName="email"
 														offLabel="EMAIL"
 														onChange={() => {
-															toggleEmail(investor.id);
+															toggleEmail(
+																investor.id,
+																investor?.user?.id || ""
+															);
 														}}
 														lineThrough
 													/>
@@ -341,14 +411,18 @@ export const PostTo: FC<Props> = ({
 										bgColor="bg-gray-1300"
 										color="#FBFEFF"
 										name="arrowLeft"
-										onClick={() => setSelectedInvestor(null)}
+										onClick={() => {
+											setSelectedInvestor(null);
+										}}
 										width="12"
 									/>
 									<IconButton
 										bgColor="bg-gray-1300"
 										color="#FBFEFF"
 										name="wrong"
-										onClick={() => setOpenModal(false)}
+										onClick={() => {
+											setOpenModal(false);
+										}}
 										width="12"
 									/>
 								</div>

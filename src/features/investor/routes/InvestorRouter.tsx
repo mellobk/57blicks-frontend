@@ -5,7 +5,7 @@ import { InvestorRoute } from "@/routes/routes";
 import { Support } from "@/features/investor/components/support/Support";
 import { Faq } from "@/features/investor/components/faq/Faq";
 import { Profile } from "@/features/admin/components/profile/pages/Profile/Profile";
-import { Reports } from "@/features/admin/components/reports/pages/Reports";
+import { Reports } from "../components/reports/pages/Reports";
 
 export const InvestorRoutes = [
 	{
