@@ -9,7 +9,6 @@ import { useState, type FC, useEffect } from "react";
 
 // install (please try to align the version of installed @nivo packages)
 // yarn add @nivo/pie
-import { ResponsivePieCanvas } from "@nivo/pie";
 import { formatDate, moneyFormat } from "@/utils/formats";
 import { downloadCSV } from "@/utils/create-cvs";
 import { downloadXLSX } from "@/utils/create-xlsx";
@@ -21,7 +20,7 @@ import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
 import { Tabs } from "../../servicing/component/Tabs";
-import { paidLoansTabs } from "../../servicing/utils/tabs";
+import { newFoundedTabs } from "../../servicing/utils/tabs";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -29,38 +28,17 @@ import { paidLoansTabs } from "../../servicing/utils/tabs";
 // website examples showcase many properties,
 // you'll often use just a few of them.
 
-export const PaidLoanReport: FC = () => {
+export const NewFoundedLoanReport: FC = () => {
 	const [actualTabData, setActualTabData] = useState<string>("30");
 	const [openInsurance, setOpenInsurance] = useState(false);
-	const [chartData, setChartData] = useState([]);
+
 	const propertyInsuranceQuery = useQuery(
-		["all-paid-loans"],
+		["all-new-loans-founded"],
 		() => {
-			return ManageReportsService.getPaidOffLoans(actualTabData);
+			return ManageReportsService.getNewLoansFounded(actualTabData);
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
-
-	useEffect(() => {
-		if (propertyInsuranceQuery.data) {
-			const getData = propertyInsuranceQuery.data;
-			const data = [
-				{
-					id: `Paid - ${getData.paid.percentage}%`,
-					label: `Paid - ${getData.paid.percentage}%`,
-					value: getData.paid.quantity,
-					color: "hsl(110, 70%, 50%)",
-				},
-				{
-					id: `Unpaid - ${getData.unPaid.percentage}%`,
-					label: `Unpaid -${getData.unPaid.percentage}%`,
-					value: getData.unPaid.quantity,
-					color: "hsl(187, 70%, 50%)",
-				},
-			];
-			setChartData(data as any);
-		}
-	}, [propertyInsuranceQuery.data]);
 
 	const downloadReport = (): void => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
@@ -94,7 +72,7 @@ export const PaidLoanReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadCSV(data, "paidLoans.csv");
+		downloadCSV(data, "newLoansFounded.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -129,7 +107,7 @@ export const PaidLoanReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadXLSX(data, "paidLoans.xlsx");
+		downloadXLSX(data, "newLoansFounded.xlsx");
 	};
 
 	useEffect(() => {
@@ -203,10 +181,10 @@ export const PaidLoanReport: FC = () => {
 						setOpenInsurance(true);
 					}}
 				>
-					Paid Loans
+					New Loans Founded
 				</div>
 				<Tabs
-					tabs={paidLoansTabs}
+					tabs={newFoundedTabs}
 					actualTab={actualTabData}
 					onClick={(value): void => {
 						setActualTabData(value);
@@ -225,42 +203,11 @@ export const PaidLoanReport: FC = () => {
 					</div>
 				</div>
 			</div>
-			<ResponsivePieCanvas
-				data={chartData}
-				margin={{ top: 40, right: 200, bottom: 40, left: 80 }}
-				innerRadius={0.5}
-				padAngle={0.7}
-				cornerRadius={3}
-				activeOuterRadiusOffset={8}
-				colors={{ scheme: "paired" }}
-				borderColor={{
-					from: "color",
-					modifiers: [["opacity", 0.6]],
-				}}
-				arcLinkLabelsSkipAngle={10}
-				arcLinkLabelsTextColor="#333333"
-				arcLinkLabelsThickness={2}
-				arcLinkLabelsColor={{ from: "color" }}
-				arcLabelsSkipAngle={10}
-				arcLabelsTextColor="white"
-				legends={[
-					{
-						anchor: "right",
-						direction: "column",
-						justify: false,
-						translateX: 140,
-						translateY: 0,
-						itemsSpacing: 2,
-						itemWidth: 60,
-						itemHeight: 14,
-						itemTextColor: "#999",
-						itemDirection: "left-to-right",
-						itemOpacity: 1,
-						symbolSize: 14,
-						symbolShape: "circle",
-					},
-				]}
-			/>
+
+			<div className="flex flex-col w-full h-[80px] justify-center items-center font-bold  text-[28px] gap-1 m-2">
+				<div>average: {propertyInsuranceQuery.data?.loanAverage}</div>
+				<div> quantity: {propertyInsuranceQuery.data?.loanQuantity}</div>
+			</div>
 
 			<div
 				onClick={() => {
@@ -279,7 +226,8 @@ export const PaidLoanReport: FC = () => {
 				onHide={() => {
 					setOpenInsurance(false);
 				}}
-				title="Paid Loans"
+				title="New Loans Founded"
+				width="90vw"
 			>
 				<DataTable
 					columns={columnsModal}

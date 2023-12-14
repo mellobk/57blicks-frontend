@@ -41,25 +41,32 @@ const ReportTable: FC<CreatePermissionProps> = ({
 			<div className="cursor-pointer w-full">
 				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 					<div
-						className="font-bold text-[13px]"
+						className="font-bold text-[13px] text-center flex items-center justify-center w-full"
 						onClick={() => {
 							setOpenInsurance(true);
 						}}
 					>
 						{title}
 					</div>
-					<div className="flex gap-2 ml-2" onClick={downloadReport}>
+					<div className="flex gap-2 ml-2">
 						<div className="flex gap-2 ml-2">
-							<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
-								<img src={Csv} alt="DKC Csv" />
-							</div>
+							{downloadReport && (
+								<div
+									onClick={downloadReport}
+									className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl"
+								>
+									<img src={Csv} alt="DKC Csv" />
+								</div>
+							)}
 
-							<div
-								className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
-								onClick={downloadXlsxReport}
-							>
-								<img src={Xlsx} alt="DKC Xlsx" />
-							</div>
+							{downloadXlsxReport && (
+								<div
+									className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
+									onClick={downloadXlsxReport}
+								>
+									<img src={Xlsx} alt="DKC Xlsx" />
+								</div>
+							)}
 						</div>
 
 						<ResponsivePieCanvas

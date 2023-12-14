@@ -24,6 +24,12 @@ export const paidLoansTabs = [
 	{ label: "YTD", value: "", routeTo: "" },
 ];
 
+export const newFoundedTabs = [
+	{ label: "30", value: "30", routeTo: "30" },
+	{ label: "60", value: "60", routeTo: "60" },
+	{ label: "90", value: "90", routeTo: "90" },
+];
+
 export const userTabs = [
 	{ label: "Activity", routeTo: "manage-users/admins" },
 	{ label: "Permission", routeTo: "manage-users/admins" },
