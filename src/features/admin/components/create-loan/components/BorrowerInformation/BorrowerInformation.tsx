@@ -1,12 +1,10 @@
 import type { FC } from "react";
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
-import { Control } from "react-hook-form";
-import { Dropdown } from "@/components/forms/Dropdown";
+import type { Control } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
 import { MaskInput } from "@/components/forms/MaskInput";
 import { Title } from "@/components/ui/Title/Title";
 import type { Loan } from "@/features/admin/components/create-loan/types/fields";
-import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
 
 interface Props {
 	control: Control<Loan>;
@@ -14,11 +12,7 @@ interface Props {
 	register: UseFormRegister<Loan>;
 }
 
-export const BorrowerInformation: FC<Props> = ({
-	control,
-	errors,
-	register,
-}) => (
+export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
 	<div>
 		<Title text="Borrower Information" />
 		<Input

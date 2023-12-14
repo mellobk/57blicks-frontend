@@ -32,9 +32,9 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 		return `DKC_Opportunity_${referenceId}.pdf`;
 	};
 
-	const createLedgerQuery = useMutation(async (body: any) => {
+	/* 	const createLedgerQuery = useMutation(async (body: any) => {
 		return ManageNotificationService.createNotifications(body);
-	});
+	}); */
 
 	const navigate = useNavigate();
 	const userLoggedInfo = userStore((state) => state.setLoggedUserInfo);
