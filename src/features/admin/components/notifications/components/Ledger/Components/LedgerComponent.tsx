@@ -287,12 +287,15 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					</table>
 				</div>
 			</form>
-			<FundingBreakdownEdit
-				loan={loan}
-				newLoanAmount={totals.newLoanAmount}
-				setValidApprove={setValidApprove}
-				setLoanUpdated={setLoanUpdated}
-			/>
+			{loan.status === "Approved" && (
+				<FundingBreakdownEdit
+					loan={loan}
+					newLoanAmount={totals.newLoanAmount}
+					setValidApprove={setValidApprove}
+					setLoanUpdated={setLoanUpdated}
+				/>
+			)}
+
 			<Modal
 				visible={openClassModal}
 				title="Type of Payment"
