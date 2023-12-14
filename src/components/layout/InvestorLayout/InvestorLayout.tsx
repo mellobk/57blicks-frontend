@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { type FC, type ReactNode, useEffect, useState } from "react";
 import "@/assets/images/png/LogoGold_2x.png";
 import "./InvestorLayout.css";
@@ -17,21 +19,43 @@ import socket from "@/socket.ts";
 import type { UserNotification } from "@/types/api/notifications.ts";
 import { Notification } from "@/features/admin/components/notifications/components/Notification/Notification.tsx";
 import { Button } from "@/components/ui/Button/Button.tsx";
+import { Modal } from "@/components/ui/Modal/Modal.tsx";
+import OpportunitiesService from "@/api/opportunities.ts";
+import { DocumentPreview } from "@/features/investor/components/opportunities/components/DocumentPreview/DocumentPreview.tsx";
 
 type Props = {
 	children?: ReactNode;
 };
 
 export const InvestorLayout: FC<Props> = ({ children }) => {
+	const getFilename = (referenceId: number): string => {
+		return `DKC_Opportunity_${referenceId}.pdf`;
+	};
+
+	/* 	const createLedgerQuery = useMutation(async (body: any) => {
+		return ManageNotificationService.createNotifications(body);
+	}); */
+
 	const navigate = useNavigate();
 	const userLoggedInfo = userStore((state) => state.setLoggedUserInfo);
 	const userInfo = userStore((state) => state.loggedUserInfo);
+
+	const [selectedOpportunity, setSelectedOpportunity] = useState<string>();
 
 	const [openModalNotification, setOpenModalNotification] = useState<boolean>();
 	const [notificationsCount, setNotificationsCount] = useState<number>();
 	const [notifications, setNotifications] = useState<Array<UserNotification>>();
 	const localUserName = getLocalStorage(userName);
 	const [openModalUser, setOpenModalUser] = useState<boolean>();
+	const [openModal, setOpenModal] = useState<boolean>();
+	const [investorId, setInvestorId] = useState<string>();
+	const [opportunityId, setOpportunityId] = useState<string>();
+
+	const getOpportunityQuery = useQuery(
+		["opportunity-notifications-query", selectedOpportunity],
+		() => OpportunitiesService.getOpportunity(selectedOpportunity || ""),
+		{ enabled: !!selectedOpportunity }
+	);
 
 	const userLoggedQuery = useQuery(
 		["user-logged-query"],
@@ -65,6 +89,22 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 		return ManageNotificationService.putReadUserNotification();
 	});
 
+	const updateOpportunityQuery = useMutation(
+		async (body: {
+			investorId: string;
+			opportunityId: string;
+			status: string;
+		}) => {
+			return ManageNotificationService.putInvestmentStatus(
+				body.investorId,
+				body.opportunityId,
+				{
+					status: body.status,
+				}
+			);
+		}
+	);
+
 	useEffect(() => {
 		setNotifications(userNotification.data?.data || []);
 		setNotificationsCount(
@@ -85,6 +125,10 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 		setOpenModalNotification(!openModalNotification);
 	};
 
+	const handleFaq = (): void => {
+		void navigate({ to: `/investors/Faq` });
+	};
+
 	const handleOpenModal = (): void => {
 		setOpenModalUser(!openModalUser);
 	};
@@ -92,6 +136,12 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 	const navigateToProfile = (): void => {
 		void navigate({ to: `/investors/Profile` });
 	};
+
+	useEffect(() => {
+		if (updateOpportunityQuery.isSuccess) {
+			setOpenModal(false);
+		}
+	}, [updateOpportunityQuery.isLoading]);
 
 	useEffect(() => {
 		if (userLoggedQuery.data) {
@@ -134,6 +184,9 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 					)}
 				</ul>
 				<div className="flex items-center gap-2">
+					<div onClick={handleFaq} className="relative cursor-pointer">
+						<Icon name="faq" color={"#dcdfe0"} width="25" />{" "}
+					</div>
 					<div
 						onClick={handleOpenModalNotification}
 						className="relative cursor-pointer"
@@ -248,6 +301,27 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 														status: "READ",
 													});
 												}
+
+												const parseData = data.notification?.additionalData;
+												const jsonString = parseData?.replace(
+													/: ([\da-f\-]{36}),/g,
+													': "$1",'
+												);
+
+												if (parseData) {
+													const data = JSON.parse(jsonString || "") as {
+														investorId: string;
+														opportunityId: string;
+													};
+													setInvestorId(data.investorId);
+													setOpportunityId(data.opportunityId);
+													setOpenModal(!openModal);
+													setSelectedOpportunity(data.opportunityId);
+												} else {
+													setOpenModal(false);
+													setInvestorId("");
+													setOpportunityId("");
+												}
 											}}
 										/>
 									</div>
@@ -257,6 +331,69 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 					</div>
 				</>
 			)}
+
+			<Modal
+				onHide={() => {
+					setOpenModal(!openModal);
+				}}
+				title={"New Offer"}
+				visible={openModal}
+				width="90vw"
+				minHeight="90vh"
+			>
+				<>
+					<div
+						className=" flex absolute  items-center justify-end gap-2"
+						style={{ right: "65px", top: "24px", zIndex: 1 }}
+					>
+						<div className="cursor-pointer">
+							<Button
+								buttonText="Approve"
+								className=" rounded-3xl bg-green-900 text-green-500"
+								onClick={() => {
+									updateOpportunityQuery.mutate({
+										investorId: investorId || "",
+										opportunityId: opportunityId || "",
+										status: "ACCEPTED",
+									});
+
+									/* 	createLedgerQuery.mutate({
+										title: "Offer accepted",
+										timestamp: new Date(),
+										content: `An investor accepted a new offer`,
+										additionalData: "",
+										userFullName: localUserName,
+										priority: "HIGH",
+										type: "ALERT",
+										roles: ["investor"],
+									}); */
+								}}
+							/>
+						</div>
+
+						<div className="cursor-pointer">
+							<Button
+								buttonText="Decline"
+								className=" rounded-3xl bg-red-200 text-red-500"
+								onClick={() => {
+									updateOpportunityQuery.mutate({
+										investorId: investorId || "",
+										opportunityId: opportunityId || "",
+										status: "REJECTED",
+									});
+								}}
+							/>
+						</div>
+					</div>
+					<div className="lg:col-span-7 col-span-1 flex flex-col gap-8 py-2 h-[80vh]">
+						<DocumentPreview
+							data={getOpportunityQuery.data}
+							getFilename={getFilename}
+							isLoading={getOpportunityQuery.isLoading}
+						/>
+					</div>
+				</>
+			</Modal>
 		</div>
 	);
 };

@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Loan, Notification } from "../types/types";
 import {
 	createNotificationData,
 	readAllNotification,
 	updateFundingBreakDown,
+	updateInvestmentStatus,
 	updateLedger,
 	updateUserNotificationData,
 	userNotification,
@@ -25,6 +28,18 @@ const putLedger = async (updateLedgerProps: UpdateLedgerProps) => {
 const putUserNotification = async (id: string, body: Notification) => {
 	const response = await authApiClient.put<Notification>(
 		updateUserNotificationData(id),
+		body
+	);
+	return response.data;
+};
+
+const putInvestmentStatus = async (
+	investorId: string,
+	opportunityId: string,
+	body: Notification
+) => {
+	const response = await authApiClient.put<any>(
+		updateInvestmentStatus(investorId, opportunityId),
 		body
 	);
 	return response.data;
@@ -67,6 +82,7 @@ const ManageNotificationService = {
 	getUserNotification,
 	putReadUserNotification,
 	updateFundingBreakdown,
+	putInvestmentStatus,
 };
 
 export default ManageNotificationService;

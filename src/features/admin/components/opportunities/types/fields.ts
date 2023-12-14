@@ -3,6 +3,7 @@ export type InvestorsNotifications = {
 	investorId: string;
 	note?: string;
 	sms: boolean;
+	userId?: string;
 };
 
 export type Opportunity = {

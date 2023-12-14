@@ -14,7 +14,11 @@ export const dateFormat = (inputDate: string) => {
 };
 
 export const formatTime = (dateString: string) => {
-	const options: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+	const options: Intl.DateTimeFormatOptions = {
+		hour: "2-digit",
+		minute: "2-digit",
+		hour12: false,
+	};
 	const date = new Date(dateString);
 
 	if (!(date instanceof Date) || isNaN(date.getTime())) {
@@ -91,7 +95,7 @@ export const formatDate = (dateString: string) => {
 	const day = (date.getDate() + 1).toString().padStart(2, "0");
 	const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed
 	const year = date.getFullYear();
-	return `${day}-${month}-${year}`;
+	return `${month}-${day}-${year}`;
 };
 
 export const dateFormatOptions = (date: Date, dateFormat: string): string => {

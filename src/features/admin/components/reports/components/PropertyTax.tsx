@@ -101,7 +101,7 @@ const PropertyTax = () => {
 			omit: false,
 		},
 		{
-			name: "address",
+			name: "Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},
@@ -131,7 +131,7 @@ const PropertyTax = () => {
 		},
 
 		{
-			name: "address",
+			name: "Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},

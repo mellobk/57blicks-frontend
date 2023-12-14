@@ -144,7 +144,7 @@ export const PaidLoanReport: FC = () => {
 			omit: false,
 		},
 		{
-			name: "address",
+			name: "Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},
@@ -174,7 +174,7 @@ export const PaidLoanReport: FC = () => {
 		},
 
 		{
-			name: "address",
+			name: "Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},
@@ -198,7 +198,7 @@ export const PaidLoanReport: FC = () => {
 		<div className="h-[60%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 				<div
-					className="font-bold text-[13px]"
+					className="font-bold text-[13px] w-full"
 					onClick={() => {
 						setOpenInsurance(true);
 					}}

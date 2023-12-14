@@ -30,6 +30,7 @@ import MenuTable from "@/assets/icons/menu-table";
 import MoneyBag from "@/assets/icons/money-bag";
 import Note from "@/assets/icons/note";
 import Notification from "@/assets/icons/notification";
+import Faq from "@/assets/icons/faq";
 import Ok from "@/assets/icons/ok";
 import Open from "@/assets/icons/open";
 import OpenEye from "@/assets/icons/open-eye";
@@ -87,6 +88,7 @@ export const ICONS = {
 	moneyBag: MoneyBag,
 	note: Note,
 	notification: Notification,
+	faq: Faq,
 	ok: Ok,
 	open: Open,
 	openEye: OpenEye,
