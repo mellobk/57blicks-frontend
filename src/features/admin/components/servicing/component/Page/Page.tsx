@@ -39,6 +39,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				data.name.toLocaleLowerCase() === (actualTab || id)?.toLowerCase()
 		);
 
+		console.log(findLender);
+
 		return findLender?.id || "";
 	};
 
