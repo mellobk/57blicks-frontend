@@ -144,7 +144,7 @@ export const PaidLoanReport: FC = () => {
 			omit: false,
 		},
 		{
-			name: "address",
+			name: "Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},
@@ -174,7 +174,7 @@ export const PaidLoanReport: FC = () => {
 		},
 
 		{
-			name: "address",
+			name: "Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},

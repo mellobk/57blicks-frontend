@@ -11,7 +11,7 @@ import { Footer } from "@/features/admin/components/investor-portals/component/P
 import investorPortalsStore from "@/features/admin/components/investor-portals/stores/investor-portals-store";
 import { investorPortalsTabs } from "@/features/admin/components/investor-portals/utils/tabs";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
-import { moneyFormat, percentageFormat } from "@/utils/formats";
+import { formatDate, moneyFormat, percentageFormat } from "@/utils/formats";
 
 import PayablesAdmin from "../PayablesAdmin";
 
@@ -85,13 +85,13 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Origin Date",
 			selector: (row: FundingBreakdown) =>
-				row.loan?.originationDate?.toString() || "",
+				formatDate(row.loan?.originationDate?.toString() || ""),
 			sortable: true,
 		},
 		{
 			name: "Maturity Date",
 			selector: (row: FundingBreakdown) =>
-				row.loan?.maturityDate?.toString() || "",
+				formatDate(row.loan?.maturityDate?.toString() || ""),
 			sortable: true,
 		},
 		{

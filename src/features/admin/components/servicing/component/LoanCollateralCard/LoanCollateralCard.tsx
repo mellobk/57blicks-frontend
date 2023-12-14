@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { LoanCard } from "../LoanCard";
 import { LoanLinkCard } from "../LoanLinkCard";
 import type { Collateral } from "../../types/api";
+import { formatDate } from "@/utils/formats";
 
 interface LoginTitleProps {
 	title?: string;
@@ -24,7 +25,7 @@ export const LoanCollateralCard: FC<LoginTitleProps> = ({
 
 			<LoanCard
 				title="Insurance Expiration Date"
-				text={data?.insuranceExpirationDate.toString()}
+				text={formatDate(data?.insuranceExpirationDate.toString() || "")}
 				background
 			/>
 			<div>

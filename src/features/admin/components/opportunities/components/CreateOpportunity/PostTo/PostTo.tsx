@@ -233,7 +233,7 @@ export const PostTo: FC<Props> = ({
 					const result = await createUniqueUsersMutation.mutateAsync({
 						title: "Offer",
 						timestamp: new Date(),
-						content: `New Offer Created`,
+						content: `New offer created`,
 						additionalData: `{"investorId": "${promise.investorId}", "opportunityId": "${createOpportunityMutation?.data?.id}" }`,
 						userFullName: `${userLoggedInfo.firstName} ${userLoggedInfo.lastName}`,
 						priority: "HIGH",
