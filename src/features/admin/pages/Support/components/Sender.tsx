@@ -82,7 +82,9 @@ export const Sender: FC<Props> = ({
 	};
 
 	return (
-		<div className="lg:col-span-3 col-span-1 flex flex-col gap-6 lg:pl-6 h-full overflow-y-auto">
+		<div className="lg:col-span-3 col-span-1 flex flex-col gap-6 lg:pl-6"
+		style={{height: "680px"}}
+		>
 			<div className="flex flex-col h-full justify-between">
 				<div className="flex justify-between">
 					<div className="flex justify-between">

@@ -90,7 +90,7 @@ export const AttachmentsList: FC<Props> = ({ idTicket }) => {
 	));
 
 	return (
-		<div className="overflow-y-auto" style={{ height: "90vh" }}>
+		<div className="overflow-y-auto" style={{ height: "80vh" }}>
 			{list}
 		</div>
 	);

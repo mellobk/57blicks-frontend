@@ -20,7 +20,7 @@ interface Props {
 export const RightView: FC<Props> = ({ type, onClose, selectedSupport }) => {
 	return (
 		<div>
-			<div className="flex justify-between" style={{ margin: "15px" }}>
+			<div className="flex justify-between" style={{ marginRight: "15px", marginTop: "0", marginLeft: "15px", marginBottom: "0" }}>
 				<h2
 					style={{
 						fontFamily: "Inter",
