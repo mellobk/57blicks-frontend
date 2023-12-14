@@ -58,4 +58,5 @@ export type Loan = {
 	principal: string;
 	balance: string;
 	type: string;
+	status?: string;
 };
