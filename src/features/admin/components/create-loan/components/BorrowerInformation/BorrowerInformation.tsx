@@ -73,7 +73,6 @@ export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
 			placeholder="Enter EIN/SSN"
 			register={register("borrower.ssnEin")}
 			wrapperClassName="mt-6"
-			required
 		/>
 		<Input
 			data-testid="borrower-Information-mailing-address"
