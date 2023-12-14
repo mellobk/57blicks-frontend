@@ -14,8 +14,8 @@ import { Footer } from "@/features/admin/components/investor-portals/component/L
 import { investorPortalsTabs } from "@/features/admin/components/investor-portals/utils/tabs";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import type { Loan } from "@/types/api/loan";
-import { getLoanColumns } from "@/utils/investors";
 import BulkApproval from "../../BulkApproval";
+import PayablesAdmin from "../../component/PayablesAdmin";
 
 export const LLC: FC = () => {
 	const [selectedLoan, setSelectedLoan] = useState<Loan | null>();
@@ -195,21 +195,17 @@ export const LLC: FC = () => {
 					/>
 					<Footer data={investorsQuery.data || []} />
 				</div>
-				<Table
-					className={`flex flex-col ${
-						selectedLoan
-							? "h-[50%]"
-							: selectedParticipation
-							? "min-h-[88px]"
-							: "hidden"
-					}  bg-white rounded-2xl p-0 m-0 overflow-y-auto`}
-					columns={getLoanColumns()}
-					data={
-						selectedLoan?.participationBreakdowns ||
-						(selectedParticipation ? [selectedParticipation] : [])
-					}
-					fixedHeader
-				/>
+
+				{selectedParticipation && (
+					<PayablesAdmin
+						year={new Date().getFullYear()}
+						loan={selectedParticipation.loan}
+						participation={selectedParticipation}
+					/>
+				)}
+				{selectedLoan && (
+					<PayablesAdmin year={new Date().getFullYear()} loan={selectedLoan} />
+				)}
 			</div>
 		</div>
 	);

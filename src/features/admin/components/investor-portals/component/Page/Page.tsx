@@ -10,9 +10,10 @@ import { Tabs } from "@/components/ui/Tabs";
 import { Footer } from "@/features/admin/components/investor-portals/component/Page/Footer/Footer";
 import investorPortalsStore from "@/features/admin/components/investor-portals/stores/investor-portals-store";
 import { investorPortalsTabs } from "@/features/admin/components/investor-portals/utils/tabs";
-import { FundingBreakdown } from "@/types/api/funding-breakdown";
+import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import { moneyFormat, percentageFormat } from "@/utils/formats";
-import { getLoanColumns } from "@/utils/investors";
+
+import PayablesAdmin from "../PayablesAdmin";
 
 interface Props {
 	actualTab: string;
@@ -163,8 +164,12 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 										? "w-[200px] bg-transparent transition duration-500"
 										: "bg-transparent  w-[30px] transition duration-500 "
 								} `}
-								onMouseEnter={() => setSearchVisible(true)}
-								onMouseLeave={() => setSearchVisible(false)}
+								onMouseEnter={() => {
+									setSearchVisible(true);
+								}}
+								onMouseLeave={() => {
+									setSearchVisible(false);
+								}}
 							>
 								<Input
 									type="text"
@@ -173,8 +178,12 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 									iconColor="white"
 									iconWidth={`${searchValue ? "12" : "20"}`}
 									iconName={`${searchValue ? "wrong" : "search"}`}
-									onChange={(data) => setSearchValue(data.target.value)}
-									clickIcon={() => setSearchValue("")}
+									onChange={(data) => {
+										setSearchValue(data.target.value);
+									}}
+									clickIcon={() => {
+										setSearchValue("");
+									}}
 									className={`placeholder-gray-400 text-white text-[13px] font-normal font-weight-400 leading-normal w-full ${
 										searchVisible || searchValue
 											? "bg-black-200  "
@@ -199,12 +208,11 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 					/>
 					<Footer data={lenderQuery.data?.fundingBreakdowns || []} />
 				</div>
+
 				{selectedRow && (
-					<Table
-						className="flex flex-col min-h-[88px] bg-white rounded-2xl p-0 m-0 overflow-y-auto"
-						columns={getLoanColumns()}
-						data={[selectedRow]}
-						fixedHeader
+					<PayablesAdmin
+						year={new Date().getFullYear()}
+						loan={selectedRow.loan}
 					/>
 				)}
 			</div>

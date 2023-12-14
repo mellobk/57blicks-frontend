@@ -32,9 +32,23 @@ const getLoansByInvestor = async (): Promise<Array<Loan>> => {
 	return response.data;
 };
 
-const getPayablesByInvestor = async (year: number): Promise<Array<Payable>> => {
+const getPayablesByInvestor = async (
+	year: number,
+	investorId?: string
+): Promise<Array<Payable>> => {
 	const response = await authApiClient.get<Array<Payable>>(
-		`/investors/payables-by-investor?year=${year}`
+		`/investors/payables-by-investor?year=${year}&investorId=${investorId}`
+	);
+	return response.data;
+};
+
+const getPayablesByAdmin = async (
+	year: number,
+	participationId?: string,
+	loanId?: string
+): Promise<Array<Payable>> => {
+	const response = await authApiClient.get<Array<Payable>>(
+		`/investors/payables-for-admin?year=${year}&participationId=${participationId}&loanId=${loanId}`
 	);
 	return response.data;
 };
@@ -44,6 +58,7 @@ const InvestorsService = {
 	getInvestorsWithLoans,
 	getLoansByInvestor,
 	getPayablesByInvestor,
+	getPayablesByAdmin,
 };
 
 export default InvestorsService;

@@ -2,6 +2,7 @@ import { type ComponentType } from "react";
 
 import { Cell } from "@/components/table/Cell";
 import { Loan } from "@/types/api/loan";
+import moment from "moment";
 
 interface Props {
 	data: Loan[];
@@ -10,10 +11,16 @@ interface Props {
 export const Footer: ComponentType<Props> = ({ data }) => {
 	const totals = data.reduce(
 		(accumulator, { participationBreakdowns }) => {
-			participationBreakdowns?.forEach(({ rate, regular, loan }) => {
+			participationBreakdowns?.forEach(({ rate, regular, loan, prorated }) => {
 				accumulator.rate += Number(rate);
 				accumulator.regular += Number(regular);
 				accumulator.totalLoanAmount += Number(loan.totalLoanAmount);
+				accumulator.current += Number(
+					moment(loan.originationDate).toDate().getMonth() ===
+						new Date().getMonth()
+						? Number(prorated)
+						: Number(regular || 0)
+				);
 			});
 
 			return accumulator;
@@ -22,6 +29,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 			rate: 0,
 			regular: 0,
 			totalLoanAmount: 0,
+			current: 0,
 		}
 	);
 
@@ -39,7 +47,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 				<Cell
 					className="bg-gold-500/[12%] text-gold-500"
 					format="money"
-					value={totals.regular}
+					value={totals.current}
 					bold
 				/>
 			</div>

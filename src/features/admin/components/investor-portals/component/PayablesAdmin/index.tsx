@@ -6,6 +6,7 @@ import {
 } from "@/utils/investors";
 
 import type { FC } from "react";
+import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import InvestorsService from "@/api/investors";
 import Loading from "@/assets/icons/loading";
 import type { Loan } from "@/types/api/loan";
@@ -15,17 +16,23 @@ import { useQuery } from "@tanstack/react-query";
 
 interface PayablesInvestorProps {
 	year: number;
-	loan?: Array<Loan>;
+	loan: Loan;
+	participation?: FundingBreakdown;
 }
 
-const PayablesInvestor: FC<PayablesInvestorProps> = ({ year, loan }) => {
+const PayablesAdmin: FC<PayablesInvestorProps> = ({
+	year,
+	loan,
+	participation,
+}) => {
 	const investorsQuery = useQuery(["payables-by-investors"], () =>
-		InvestorsService.getPayablesByInvestor(year)
+		InvestorsService.getPayablesByAdmin(year, participation?.id || "", loan.id)
 	);
+	console.log("🚀 ~ file: index.tsx:31 ~ investorsQuery:", investorsQuery.data);
 
 	useEffect(() => {
 		investorsQuery.refetch();
-	}, [year]);
+	}, [year, participation, loan]);
 
 	if (investorsQuery.isLoading || investorsQuery.isFetching) {
 		return (
@@ -45,7 +52,7 @@ const PayablesInvestor: FC<PayablesInvestorProps> = ({ year, loan }) => {
 			<Table
 				className="flex flex-col bg-white rounded-2xl p-0 m-0 overflow-y-auto"
 				columns={getLoanColumnsInvestor()}
-				data={fillDataLoansPayables(investorsQuery.data || [], loan || [])}
+				data={fillDataLoansPayables(investorsQuery.data || [], [loan])}
 				progressPending={false}
 				fixedHeader
 			/>
@@ -53,4 +60,4 @@ const PayablesInvestor: FC<PayablesInvestorProps> = ({ year, loan }) => {
 	);
 };
 
-export default PayablesInvestor;
+export default PayablesAdmin;
