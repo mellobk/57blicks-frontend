@@ -122,7 +122,7 @@ export const NewFoundedLoanReport: FC = () => {
 			omit: false,
 		},
 		{
-			name: "address",
+			name: "Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},
@@ -152,7 +152,7 @@ export const NewFoundedLoanReport: FC = () => {
 		},
 
 		{
-			name: "address",
+			name: "Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},
@@ -181,7 +181,7 @@ export const NewFoundedLoanReport: FC = () => {
 						setOpenInsurance(true);
 					}}
 				>
-					New Loans Founded
+					New Loans Funded
 				</div>
 				<Tabs
 					tabs={newFoundedTabs}
@@ -205,8 +205,8 @@ export const NewFoundedLoanReport: FC = () => {
 			</div>
 
 			<div className="flex flex-col w-full h-[80px] justify-center items-center font-bold  text-[28px] gap-1 m-2">
-				<div>average: {propertyInsuranceQuery.data?.loanAverage}</div>
-				<div> quantity: {propertyInsuranceQuery.data?.loanQuantity}</div>
+				<div>Average: {propertyInsuranceQuery.data?.loanAverage}</div>
+				<div> Quantity: {propertyInsuranceQuery.data?.loanQuantity}</div>
 			</div>
 
 			<div
@@ -226,7 +226,7 @@ export const NewFoundedLoanReport: FC = () => {
 				onHide={() => {
 					setOpenInsurance(false);
 				}}
-				title="New Loans Founded"
+				title="New Loans Funded"
 				width="90vw"
 			>
 				<DataTable

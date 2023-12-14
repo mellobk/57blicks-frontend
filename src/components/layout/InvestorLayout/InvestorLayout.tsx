@@ -360,7 +360,7 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 									createLedgerQuery.mutate({
 										title: "Offer accepted",
 										timestamp: new Date(),
-										content: `A investor accepted a new offer.`,
+										content: `An investor accepted a new offer`,
 										additionalData: "",
 										userFullName: localUserName,
 										priority: "HIGH",

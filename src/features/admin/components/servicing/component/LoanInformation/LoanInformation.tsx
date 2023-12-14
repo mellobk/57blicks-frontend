@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { LoanCard } from "../LoanCard";
 import { LoanCollateralCard } from "../LoanCollateralCard";
 import type { Collateral, FundingBreakdown } from "../../types/api";
-import { moneyFormat } from "@/utils/formats";
+import { formatDate, moneyFormat } from "@/utils/formats";
 
 interface LoanInformationProps {
 	data?: FundingBreakdown;
@@ -46,7 +46,10 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 
 					<LoanCard
 						title="Insurance Expiration Date"
-						text={data?.loan?.collaterals[0]?.insuranceExpirationDate.toString()}
+						text={formatDate(
+							data?.loan?.collaterals[0]?.insuranceExpirationDate.toString() ||
+								""
+						)}
 						background
 					/>
 				</div>
@@ -55,12 +58,12 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 			<div className="w-[33.33%] flex gap-2 flex-col ">
 				<LoanCard
 					title="Origination Date"
-					text={data?.loan?.originationDate.toString()}
+					text={formatDate(data?.loan?.originationDate.toString() || "")}
 				/>
 
 				<LoanCard
 					title="Maturity Date"
-					text={data?.loan?.maturityDate.toString()}
+					text={formatDate(data?.loan?.maturityDate.toString() || "")}
 					background
 				/>
 

@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import { type FC, useEffect, useState } from "react";
 import moment from "moment";
-import { moneyFormat, percentageFormat } from "@/utils/formats";
+import { formatDate, moneyFormat, percentageFormat } from "@/utils/formats";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Footer } from "@/features/investor/components/portfolio/components/Footer/Footer";
 import InvestorsService from "@/api/investors";
@@ -65,12 +65,13 @@ export const Portfolio: FC = () => {
 		},
 		{
 			name: "Origin Date",
-			selector: (row: Loan) => row.originationDate?.toString() || "",
+			selector: (row: Loan) =>
+				formatDate(row.originationDate?.toString() || ""),
 			sortable: true,
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: Loan) => row.maturityDate?.toString() || "",
+			selector: (row: Loan) => formatDate(row.maturityDate?.toString() || ""),
 			sortable: true,
 		},
 		{
