@@ -167,7 +167,7 @@ export const Inbox: FC<Props> = ({
 				</div>
 				<div
 					className="overflow-y-auto"
-					style={{ height: "550px", marginTop: "20px" }}
+					style={{ height: "520px", marginTop: "20px" }}
 				>
 					<TicketsList
 						searchInput={value}

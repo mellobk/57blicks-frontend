@@ -25,6 +25,7 @@ export const Support: FC = () => {
 	const [rightView, setRightView] = useState<string>("");
 	const [refreshTicketList, setRefreshTicketList] = useState<boolean>(false);
 
+	console.log(searchValue)
 	const closeModalCreateTicket = (): void => {
 		setOpenModalCreateTicket(false);
 	};
@@ -38,7 +39,6 @@ export const Support: FC = () => {
 	};
 
 	const handleSearch = (data: string) => {
-		console.log("searchValue", searchValue);
 		setSearchValue(data);
 		return data;
 	};
@@ -69,13 +69,13 @@ export const Support: FC = () => {
 	};
 	return (
 		<div className="flex flex-col w-full h-full">
-			<div className="flex flex-col h-full gap-3 overflow-y-auto">
-				<div className="flex flex-col h-full bg-white rounded-2xl justify-between overflow-y-auto">
+			<div className="flex flex-col h-full gap-3">
+				<div className="flex flex-col h-full bg-white rounded-2xl justify-between">
 					{!mock && (
 						<div
 							className={`grid ${
 								rightView === "" ? "lg:grid-cols-4" : "lg:grid-cols-5"
-							} gap-6 divide-x divide-gray-200 bg-white rounded-3xl w-full h-full p-4 overflow-y-auto`}
+							} gap-6 divide-x divide-gray-200 bg-white rounded-3xl w-full h-full p-6 overflow-y-auto`}
 						>
 							<Inbox
 								searchVisible={searchVisible}

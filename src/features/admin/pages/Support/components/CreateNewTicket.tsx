@@ -18,35 +18,34 @@ interface Props {
 	closeModal: () => void;
 	data?: Ticket;
 }
-
 export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 	const {
 		control,
 		formState: { errors },
 		register,
 		handleSubmit,
+		reset, // Add reset function to the useForm hook
 	} = useForm<CreateTicketForm>({
 		resolver: zodResolver(AddTicketSchema),
 	});
-	/* 	const createLedgerQuery = useMutation(async (body: any) => {
-		return ManageNotificationService.createNotifications(body);
-	});
-	const userLoggedInfo = userStore((state) => state.loggedUserInfo); */
+
 	const notify = useToast();
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation(postTicket, {
 		onSuccess: async () => {
+			await queryClient.invalidateQueries({
+				queryKey: ["get-ticket-details"],
+			});
 			notify("Ticket created successfully", "success");
-			await queryClient.invalidateQueries({ queryKey: ["get-ticket-details"] });
 			closeModal();
 		},
 	});
 
-	const onSubmit = (data: CreateTicketForm): void => {
-		mutation.mutate(data);
+	const onSubmit = async (data: CreateTicketForm): Promise<void> => {
+		await mutation.mutateAsync(data);
+		reset();
 	};
-
 	return (
 		<div>
 			<Modal
@@ -88,7 +87,7 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 					}}
 				>
 					<div
-						className=" rounded-3xl border border-gray-200 p-2 bg-white"
+						className="rounded-3xl border border-gray-200 p-2 bg-white"
 						style={{
 							width: "50%",
 						}}
@@ -130,8 +129,9 @@ export const CreateNewTicket: FC<Props> = ({ openModal, closeModal }) => {
 							<button
 								type="submit"
 								className="bg-blue-50 pt-1 pb-1.5 pl-4 pr-4 text-blue-200 text-sm font-semibold rounded-3xl hover:bg-blue-70"
+								disabled={mutation.isLoading}
 							>
-								Send Ticket
+								{mutation.isLoading ? "Sending..." : "Send Ticket"}
 							</button>
 						</form>
 					</div>
