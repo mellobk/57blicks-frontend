@@ -5,7 +5,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type { FC } from "react";
-import { IconButton } from "@/components/ui/IconButton";
 import { Icon } from "@/components/ui/Icon";
 import { Button } from "@/components/ui/Button";
 import { ChatBox } from "./Chat";
@@ -20,7 +19,6 @@ import { IconFileUpload } from "@/components/forms/FileUpload/IconFileUpload";
 interface Props {
 	rightView: string;
 	rightMenuEvent: (event_: string) => void;
-	setOpenModalDelete: (event_: boolean) => void;
 	closeModalDelete: () => void;
 	openModalDelete: boolean;
 	closeModalCloseTicket: () => void;
@@ -33,7 +31,6 @@ interface Props {
 export const Sender: FC<Props> = ({
 	rightView,
 	rightMenuEvent,
-	setOpenModalDelete,
 	openModalDelete,
 	closeModalDelete,
 	openModalCloseTicket,
@@ -139,17 +136,6 @@ export const Sender: FC<Props> = ({
 								Attachments
 							</span>
 						</Button>
-						<div>
-							<IconButton
-								bgColor="bg-red-500/[.12]"
-								color="#FF0033"
-								name="trashBin"
-								onClick={(): any => {
-									setOpenModalDelete(true);
-								}}
-								width="16"
-							/>
-						</div>
 					</div>
 				</div>
 				{selectedSupport?.id && <ChatBox idTicket={selectedSupport.id} />}

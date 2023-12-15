@@ -42,16 +42,26 @@ export const TicketsList: FC<Props> = ({
 			);
 		},
 		{
-			onSuccess: (data: Ticket) => {
-				if (data.data) {
-					if (userLoggedInfo.role?.name?.includes("super")) {
-						setTickets(data.data);
-						setSelectedTicket(data.data[0]);
-					} else if (userLoggedInfo.role?.name?.includes("investor")) {
+			onSuccess: (data: Array<Ticket>) => {
+				if (data) {
+					const sortedData = data.sort((a, b) => {
+						const dateA = new Date(a?.updatedAt ?? 0);
+						const dateB = new Date(b?.updatedAt ?? 0); 
+
+						return dateB.getTime() - dateA.getTime();
+					});
+					if (userLoggedInfo.role?.name?.includes("investor")) {
 						setTickets(
-							data.data.filter((data) => data.userId === userLoggedInfo?.id)
+							sortedData.filter((data) => data.userId === userLoggedInfo?.id)
 						);
-						setSelectedTicket(data.data.filter((data) => data.userId === userLoggedInfo?.id)[0]);
+						setSelectedTicket(
+							sortedData?.filter(
+								(data) => data.userId === userLoggedInfo?.id
+							)[0]
+						);
+					} else {
+						setTickets(data);
+						setSelectedTicket(data[0]);
 					}
 				}
 			},
@@ -62,6 +72,7 @@ export const TicketsList: FC<Props> = ({
 		if (refreshTicketList) {
 			setRefreshTicketList(false);
 		} else {
+			console.log("ENTER HERE??");
 			void queryInvoiceDetails.refetch();
 		}
 	}, [userLoggedInfo, filter, searchInput, refreshTicketList]);
