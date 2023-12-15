@@ -86,11 +86,11 @@ export const commentApi = (id: string): string => {
 };
 
 export const filterTicketData = (search: string, status: string): string => {
-	return `/tickets/admin?${`&q=${search}&status=${status}`}`;
+	return `/tickets/admin?page=1&take=50${`&q=${search}&status=${status}`}`;
 };
 
 export const getAttachmentsData = (): string => {
-	return `/attachments/`;
+	return `/attachments/?page=1&take=50`;
 };
 
 export const getChatsData = (): string => {

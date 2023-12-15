@@ -35,7 +35,7 @@ export const AttachmentsList: FC<Props> = ({ idTicket }) => {
 	};
 
 	const list = data
-		?.filter((attachment) => attachment.ticketId === idTicket)
+		?.filter((chat) => chat.ticketId === idTicket)
 		.map((pdf, key) => (
 			<div
 				key={key}

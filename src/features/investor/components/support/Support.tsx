@@ -92,7 +92,6 @@ export const Support: FC = () => {
 							<Sender
 								rightView={rightView}
 								rightMenuEvent={rightMenuEvent}
-								setOpenModalDelete={setOpenModalDelete}
 								openModalDelete={openModalDelete}
 								closeModalDelete={closeModalDelete}
 								openModalCloseTicket={openModalCloseTicket}
