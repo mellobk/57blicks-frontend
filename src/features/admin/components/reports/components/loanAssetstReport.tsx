@@ -95,7 +95,7 @@ export const AssetLoanReport: FC = () => {
 				return {
 					id: `${value} `,
 					label: `${value} `,
-					value: getData[value as any].length,
+					value: getData[value as any]?.length || [],
 					color: "hsl(110, 70%, 50%)",
 				};
 			});
