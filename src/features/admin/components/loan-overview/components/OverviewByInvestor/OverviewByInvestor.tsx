@@ -6,6 +6,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { ParticipantTable } from "../ParticipantTable/ParticipantTable";
 import { moneyFormat } from "@/utils/formats";
+import { LenderNameType } from "@/types/api/lender";
 
 type Props = {
 	data: Array<IParticipantOverview>;
@@ -24,7 +25,7 @@ export const OverviewByInvestor: FC<Props> = ({ data }) => {
 	};
 
 	const allowExpansion = (rowData: IParticipantOverview) => {
-		return rowData.children.length > 0;
+		return rowData.name === LenderNameType.DKC_LENDING_LLC;
 	};
 
 	return (
