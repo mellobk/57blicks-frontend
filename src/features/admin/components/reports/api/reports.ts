@@ -4,6 +4,7 @@ import type { Loan } from "../../servicing/types/api";
 import type { IReportAverageDays } from "../types/types";
 
 import {
+	allDefaultInterestLoan,
 	allDefaultLoan,
 	defaultInsuranceLoan,
 	defaultInterestLoan,
@@ -112,6 +113,15 @@ const getLoanPaidAverageDays = async () => {
 	return response.data;
 };
 
+const getAllDefaultInterestLoan = async () => {
+	const response = await authApiClient.get<{
+		totalCredit: string;
+		totalDebit: string;
+		loans: any;
+	}>(allDefaultInterestLoan());
+	return response.data;
+};
+
 const ManageReportsService = {
 	getDefaultInsuranceLoan,
 	getDefaultTaxLoan,
@@ -125,6 +135,7 @@ const ManageReportsService = {
 	getLoanPaidAverageDays,
 	getDefaultUnauthorizedLoan,
 	getNewLoansFounded,
+	getAllDefaultInterestLoan,
 };
 
 export default ManageReportsService;
