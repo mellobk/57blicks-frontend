@@ -73,7 +73,7 @@ export const AverageDaysPaidLoans: FC = () => {
 				if (
 					typeof value === "object" &&
 					value &&
-					Object.keys(value).length > 0
+					Object.keys(value)?.length > 0
 				) {
 					const key = Object.keys(value)[0];
 					if (key) {
@@ -122,7 +122,7 @@ export const AverageDaysPaidLoans: FC = () => {
 				if (
 					typeof value === "object" &&
 					value &&
-					Object.keys(value).length > 0
+					Object.keys(value)?.length > 0
 				) {
 					const key = Object.keys(value)[0];
 					if (key) {
