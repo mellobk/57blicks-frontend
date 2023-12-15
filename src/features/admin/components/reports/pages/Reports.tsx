@@ -3,9 +3,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, type FC } from "react";
-import PropertyInsurance from "../components/PropertyInsurance";
+/* import PropertyInsurance from "../components/PropertyInsurance";
 import PropertyTax from "../components/PropertyTax";
-import PropertyInterest from "../components/PropertyInterest";
+import PropertyInterest from "../components/PropertyInterest"; */
 import { AllDefaultReport } from "../components/allDefaultReport";
 import { emptyObject, findPermission } from "@/utils/common-functions";
 import { useNavigate } from "@tanstack/router";
@@ -15,9 +15,9 @@ import { PaidLoanReport } from "../components/paidLoanReport";
 import { ConsultantLoanReport } from "../components/consultantLoanReport";
 import { AssetLoanReport } from "../components/loanAssetstReport";
 import { LoanProductReport } from "../components/loanProductReport";
-import AverageLoan from "../components/AverageLoan";
+/* import AverageLoan from "../components/AverageLoan"; */
 import { AverageDaysPaidLoans } from "../components/averageDaysPaidLoans";
-import PropertyUnauthorized from "../components/PropertyUnauthorized";
+/* import PropertyUnauthorized from "../components/PropertyUnauthorized"; */
 import { NewFoundedLoanReport } from "../components/newFoundedLoanReport";
 import { InterestCollectionReport } from "../components/InterestCollectionReport";
 export const Reports: FC = () => {

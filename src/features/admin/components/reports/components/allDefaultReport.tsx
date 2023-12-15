@@ -9,7 +9,7 @@ import { useState, type FC, useEffect } from "react";
 // install (please try to align the version of installed @nivo packages)
 // yarn add @nivo/pie
 import { ResponsivePieCanvas } from "@nivo/pie";
-import { formatDate, moneyFormat } from "@/utils/formats";
+import { moneyFormat } from "@/utils/formats";
 import { downloadCSV } from "@/utils/create-cvs";
 import { downloadXLSX } from "@/utils/create-xlsx";
 import type { Loan } from "../../servicing/types/api";

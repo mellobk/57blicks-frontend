@@ -205,7 +205,7 @@ export const NewFoundedLoanReport: FC = () => {
 				width="90vw"
 			>
 				<DataTable
-					columns={columnsModal}
+					columns={columnsModal as any}
 					data={propertyInsuranceQuery.data?.defaultLoans || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>
