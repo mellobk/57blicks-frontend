@@ -44,29 +44,18 @@ export const NewFoundedLoanReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower",
-			"Address",
-			"phone",
-			"email",
-			"Collateral Address",
-			"Total Loan",
-			"Origin Date",
-			"Maturity Date",
-			"Insurance Expiration Date",
+			"Borrower LLC",
+			"Property Address",
+			"Loan Amount",
+			"Asset Type",
 		];
 		const csvData = insuranceCsv?.map((data) => {
 			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
-				data?.borrower?.user.phoneNumber,
-				data?.borrower?.user.email,
-				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate.toString()),
-				formatDate(data?.maturityDate.toString()),
-				formatDate(
-					data.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
+				data?.collaterals[0]?.assetType,
 			];
 		});
 
@@ -79,29 +68,18 @@ export const NewFoundedLoanReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower",
-			"Address",
-			"phone",
-			"email",
-			"Collateral Address",
-			"Total Loan",
-			"Origin Date",
-			"Maturity Date",
-			"Insurance Expiration Date",
+			"Borrower LLC",
+			"Property Address",
+			"Loan Amount",
+			"Asset Type",
 		];
 		const csvData = insuranceCsv?.map((data) => {
 			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
-				data?.borrower?.user.phoneNumber,
-				data?.borrower?.user.email,
-				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate.toString()),
-				formatDate(data?.maturityDate.toString()),
-				formatDate(
-					data.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
+				data?.collaterals[0]?.assetType,
 			];
 		});
 
@@ -138,36 +116,31 @@ export const NewFoundedLoanReport: FC = () => {
 
 	const columnsModal = [
 		{
-			name: "Name",
+			name: "Borrower LLC",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string =>
-				`${row?.borrower?.user.firstName} ${row?.borrower?.user.lastName}`,
+			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
 		},
 		{
-			name: "Phone",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.borrower?.user.phoneNumber || "",
-			omit: false,
-		},
-
-		{
-			name: "Address",
+			name: "Property Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},
 		{
-			name: "Email",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.borrower?.user.email || "",
+			name: "Loan Amount",
+			selector: (row: Loan) =>
+				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
 		},
 		{
-			name: "Insurance Expiration Date",
-			selector: (row: Loan) =>
-				formatDate(
-					row?.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
+			name: "Origination Date",
+			selector: (row: Loan) => row?.originationDate,
+			omit: false,
+		},
+		{
+			name: "Asset Type",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
 			omit: false,
 		},
 	];
@@ -207,6 +180,8 @@ export const NewFoundedLoanReport: FC = () => {
 			<div className="flex flex-col w-full h-[80px] justify-center items-center font-bold  text-[28px] gap-1 m-2">
 				<div>Average: {propertyInsuranceQuery.data?.loanAverage}</div>
 				<div> Quantity: {propertyInsuranceQuery.data?.loanQuantity}</div>
+				{/* 				Total New Loan Volume: New Loans: Average Loan Size # of New Loans
+				Average Interest Rate Average LTV{/*  */}
 			</div>
 
 			<div

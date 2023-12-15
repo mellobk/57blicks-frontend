@@ -49,3 +49,7 @@ export const defaultInterestLoan = (): string => {
 export const allDefaultLoan = (): string => {
 	return `/loans/default/all`;
 };
+
+export const allDefaultInterestLoan = (): string => {
+	return `/loans/default/loan-ledger`;
+};

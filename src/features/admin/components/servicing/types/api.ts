@@ -69,6 +69,7 @@ export interface Collateral {
 }
 
 export interface Loan {
+	fundingBreakDowns: any;
 	id?: string;
 	name?: string;
 	comment?: string;
@@ -134,16 +135,16 @@ export interface IBorrowerInformation {
 }
 
 export enum TicketStatusType {
-	NEW = 'NEW',
-	OPEN = 'OPEN',
-	PENDING = 'PENDING',
-	CLOSED = 'CLOSED',
+	NEW = "NEW",
+	OPEN = "OPEN",
+	PENDING = "PENDING",
+	CLOSED = "CLOSED",
 }
 
 export enum TicketPriorityType {
-	LOW = 'LOW',
-	MEDIUM = 'MEDIUM',
-	HIGH = 'HIGH',
+	LOW = "LOW",
+	MEDIUM = "MEDIUM",
+	HIGH = "HIGH",
 }
 
 export enum TicketCategoryType {
@@ -155,7 +156,6 @@ export enum TicketCategoryType {
 	REPORTING = "reporting",
 	OTHER = "Other",
 }
-
 
 export interface Ticket {
 	id: string;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
@@ -74,29 +75,25 @@ export const AllDefaultReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower",
-			"Address",
-			"phone",
-			"email",
-			"Collateral Address",
-			"Total Loan",
-			"Origin Date",
-			"Maturity Date",
-			"Insurance Expiration Date",
+			"Borrower LLC",
+			"Property Address",
+			"Loan Amount",
+			"Lender",
+			"Default Type",
+			"LTV",
+			"Phone #",
+			"Email",
 		];
 		const csvData = insuranceCsv?.map((data) => {
 			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				data?.fundingBreakDowns[1]?.lender.name,
+				data?.defaultType,
+				data?.ltv,
 				data?.borrower?.user.phoneNumber,
 				data?.borrower?.user.email,
-				data?.collaterals[0]?.address,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
-				formatDate(data?.maturityDate.toString()),
-				formatDate(
-					data.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
 			];
 		});
 
@@ -109,29 +106,25 @@ export const AllDefaultReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower",
-			"Address",
-			"phone",
-			"email",
-			"Collateral Address",
-			"Total Loan",
-			"Origin Date",
-			"Maturity Date",
-			"Insurance Expiration Date",
+			"Borrower LLC",
+			"Property Address",
+			"Loan Amount",
+			"Lender",
+			"Default Type",
+			"LTV",
+			"Phone #",
+			"Email",
 		];
 		const csvData = insuranceCsv?.map((data) => {
 			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				data?.fundingBreakDowns[1]?.lender?.name,
+				data?.defaultType,
+				data?.ltv,
 				data?.borrower?.user.phoneNumber,
 				data?.borrower?.user.email,
-				data?.collaterals[0]?.address,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
-				formatDate(data?.maturityDate.toString()),
-				formatDate(
-					data.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
 			];
 		});
 
@@ -142,59 +135,66 @@ export const AllDefaultReport: FC = () => {
 
 	const columns = [
 		{
-			name: "Name",
+			name: "Borrower LLC",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string =>
-				`${row?.borrower?.user.firstName} ${row?.borrower?.user.lastName}`,
+			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
 		},
 		{
-			name: "Address",
+			name: "Property Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},
 		{
-			name: "Insurance Expiration Date",
+			name: "Loan Amount",
 			selector: (row: Loan) =>
-				formatDate(
-					row?.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
+				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
 		},
 	];
 
 	const columnsModal = [
 		{
-			name: "Name",
+			name: "Borrower LLC",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string =>
-				`${row?.borrower?.user.firstName} ${row?.borrower?.user.lastName}`,
+			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
 		},
 		{
-			name: "Phone",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.borrower?.user.phoneNumber || "",
-			omit: false,
-		},
-
-		{
-			name: "Address",
+			name: "Property Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
+			omit: false,
+		},
+		{
+			name: "Loan Amount",
+			selector: (row: Loan) =>
+				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
+			omit: false,
+		},
+		{
+			name: "Lender",
+			selector: (row: Loan) => row?.fundingBreakDowns[1]?.lender.name || "",
+			omit: false,
+		},
+		{
+			name: "Default Type",
+			selector: (row: Loan) => row?.defaultType || "",
+			omit: false,
+		},
+		{
+			name: "LTV",
+			selector: (row: Loan) => row?.ltv || "",
+			omit: false,
+		},
+		{
+			name: "Phone #",
+			selector: (row: Loan) => row?.borrower?.user.phoneNumber || "",
 			omit: false,
 		},
 		{
 			name: "Email",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.user.email || "",
-			omit: false,
-		},
-		{
-			name: "Insurance Expiration Date",
-			selector: (row: Loan) =>
-				formatDate(
-					row?.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
 			omit: false,
 		},
 	];
@@ -277,6 +277,7 @@ export const AllDefaultReport: FC = () => {
 				onHide={() => {
 					setOpenInsurance(false);
 				}}
+				width="90vw"
 				title="Default Loans"
 			>
 				<DataTable

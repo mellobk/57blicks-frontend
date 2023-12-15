@@ -19,6 +19,7 @@ import AverageLoan from "../components/AverageLoan";
 import { AverageDaysPaidLoans } from "../components/averageDaysPaidLoans";
 import PropertyUnauthorized from "../components/PropertyUnauthorized";
 import { NewFoundedLoanReport } from "../components/newFoundedLoanReport";
+import { InterestCollectionReport } from "../components/InterestCollectionReport";
 export const Reports: FC = () => {
 	const navigate = useNavigate();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
@@ -38,6 +39,9 @@ export const Reports: FC = () => {
 		<div className="flex w-full bg-white justify-center   rounded-3xl h-[100vw] ">
 			<div className="flex w-full bg-white justify-center flex-wrap rounded-3xl">
 				<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
+					<InterestCollectionReport />
+				</div>
+				<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
 					<AllDefaultReport />
 				</div>
 				<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
@@ -46,7 +50,7 @@ export const Reports: FC = () => {
 				<div className="flex flex-col items-center  w-[40%]   bg-white p-2">
 					<NewFoundedLoanReport />
 				</div>
-				<div className="flex  w-[30%] p-2">
+				{/* 			<div className="flex  w-[30%] p-2">
 					<PropertyInsurance />
 				</div>
 				<div className="flex  w-[30%] p-2">
@@ -57,11 +61,10 @@ export const Reports: FC = () => {
 				</div>
 				<div className="flex  w-[30%] p-2">
 					<PropertyUnauthorized />
-				</div>
-
-				<div className="flex  w-[100%] p-2">
+				</div> */}
+				{/* 	<div className="flex  w-[100%] p-2">
 					<AverageLoan />
-				</div>
+				</div> */}
 				<div className="flex flex-col items-center  w-[33.33%]   bg-white p-2 ">
 					<ConsultantLoanReport />
 				</div>

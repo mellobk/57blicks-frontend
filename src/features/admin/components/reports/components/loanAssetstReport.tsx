@@ -21,6 +21,8 @@ import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
 import { ResponsivePieCanvas } from "@nivo/pie";
 import type { Loan } from "@/types/api/loan";
+import { Modal } from "@/components/ui/Modal";
+import DataTable from "react-data-table-component";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -29,16 +31,13 @@ import type { Loan } from "@/types/api/loan";
 // you'll often use just a few of them.
 
 export const AssetLoanReport: FC = () => {
+	const [openInsurance, setOpenInsurance] = useState(false);
+
 	const headerCsv = [
-		"Borrower",
-		"Address",
-		"phone",
-		"email",
-		"Collateral Address",
-		"Total Loan",
-		"Origin Date",
-		"Maturity Date",
-		"Insurance Expiration Date",
+		"Borrower LLC",
+		"Property Address",
+		"Loan Amount",
+		"Asset Type",
 	];
 
 	const [chartData, setChartData] = useState([]);
@@ -52,9 +51,40 @@ export const AssetLoanReport: FC = () => {
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
+	const columnsModal = [
+		{
+			name: "Borrower LLC",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.borrower?.llc || "",
+			omit: false,
+		},
+		{
+			name: "Property Address",
+			selector: (row: Loan): string => row.collaterals[0]?.address || "",
+			omit: false,
+		},
+		{
+			name: "Loan Amount",
+			selector: (row: Loan) =>
+				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
+			omit: false,
+		},
+		{
+			name: "Origination Date",
+			selector: (row: Loan) => row?.originationDate,
+			omit: false,
+		},
+		{
+			name: "Asset Type",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
+			omit: false,
+		},
+	];
+
 	useEffect(() => {
 		if (getLoanAssets.data) {
-			const getData = getLoanAssets?.data as unknown as Array<any>;
+			const getData = getLoanAssets?.data.data as unknown as Array<any>;
 
 			const keys = Object.keys(getData);
 			/* 	const valuesArray = keys.map((key) => getData[key]); */
@@ -92,22 +122,16 @@ export const AssetLoanReport: FC = () => {
 
 	useEffect(() => {
 		if (getLoanAssets.data) {
-			const insuranceCsv = getLoanAssets.data;
+			const insuranceCsv = getLoanAssets.data.data;
 
 			const csvData = keys?.map((data) => {
 				const productData = insuranceCsv[data]?.map((value: Loan) => {
 					return [
-						`${value.borrower?.user.firstName} ${value.borrower?.user.lastName}`,
+						value.borrower?.llc,
 						value?.borrower?.user.mailingAddress,
-						value?.borrower?.user.phoneNumber,
-						value?.borrower?.user.email,
-						value?.collaterals[0]?.address,
 						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
 						formatDate(value?.originationDate.toString()),
-						formatDate(value?.maturityDate.toString()),
-						formatDate(
-							value.collaterals[0]?.insuranceExpirationDate.toString() || ""
-						),
+						value?.collaterals[0]?.assetType,
 					];
 				});
 				return [[data], ...productData];
@@ -134,7 +158,7 @@ export const AssetLoanReport: FC = () => {
 	};
 
 	return (
-		<div className="h-[80%] w-full">
+		<div className="h-[60%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 				<div className="font-bold text-[13px]">Loans by Asset Type</div>
 				<div className="flex gap-2 ml-2" onClick={downloadReport}>
@@ -186,6 +210,41 @@ export const AssetLoanReport: FC = () => {
 					},
 				]}
 			/>
+
+			<div
+				className="p-4 flex flex-col gap-1"
+				onClick={() => {
+					setOpenInsurance(true);
+				}}
+			>
+				<div className="font-bold text-[15px] p-5 bg-gray-200 flex  justify-between">
+					<span># of Loans</span>{" "}
+					<span>{getLoanAssets?.data?.loansNumber}</span>
+				</div>
+				<div className="font-bold text-[13px]  p-5 flex  justify-between">
+					<span>Average Interest Rate</span>{" "}
+					<span>{getLoanAssets?.data?.averageInterest?.toFixed(4)}</span>
+				</div>
+				<div className="font-bold text-[13px] p-5 bg-gray-200 flex  justify-between">
+					<span>Average LTV</span>{" "}
+					<span>{getLoanAssets?.data?.averageLtv?.toFixed(4)}</span>
+				</div>
+			</div>
+
+			<Modal
+				visible={openInsurance}
+				onHide={() => {
+					setOpenInsurance(false);
+				}}
+				title="Interest Collection Report"
+				width="90vw"
+			>
+				<DataTable
+					columns={columnsModal as any}
+					data={getLoanAssets.data?.loans || []}
+					progressPending={getLoanAssets.isLoading}
+				/>
+			</Modal>
 		</div>
 	);
 };

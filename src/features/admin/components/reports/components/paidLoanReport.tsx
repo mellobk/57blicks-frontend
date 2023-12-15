@@ -66,29 +66,18 @@ export const PaidLoanReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower",
-			"Address",
-			"phone",
-			"email",
-			"Collateral Address",
-			"Total Loan",
-			"Origin Date",
-			"Maturity Date",
-			"Insurance Expiration Date",
+			"Borrower LLC",
+			"Property Address",
+			"Loan Amount",
+			"Asset Type",
 		];
 		const csvData = insuranceCsv?.map((data) => {
 			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
-				data?.borrower?.user.phoneNumber,
-				data?.borrower?.user.email,
-				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate.toString()),
-				formatDate(data?.maturityDate.toString()),
-				formatDate(
-					data.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
+				data?.collaterals[0]?.assetType,
 			];
 		});
 
@@ -101,29 +90,18 @@ export const PaidLoanReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower",
-			"Address",
-			"phone",
-			"email",
-			"Collateral Address",
-			"Total Loan",
-			"Origin Date",
-			"Maturity Date",
-			"Insurance Expiration Date",
+			"Borrower LLC",
+			"Property Address",
+			"Loan Amount",
+			"Asset Type",
 		];
 		const csvData = insuranceCsv?.map((data) => {
 			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
-				data?.borrower?.user.phoneNumber,
-				data?.borrower?.user.email,
-				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate.toString()),
-				formatDate(data?.maturityDate.toString()),
-				formatDate(
-					data.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
+				data?.collaterals[0]?.assetType,
 			];
 		});
 
@@ -138,64 +116,57 @@ export const PaidLoanReport: FC = () => {
 
 	const columns = [
 		{
-			name: "Name",
+			name: "Borrower LLC",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.name || "",
+			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
 		},
 		{
-			name: "Address",
+			name: "Property Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},
 		{
-			name: "Insurance Expiration Date",
+			name: "Loan Amount",
 			selector: (row: Loan) =>
-				formatDate(
-					row?.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
+				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
 		},
 	];
 
 	const columnsModal = [
 		{
-			name: "Name",
+			name: "Borrower LLC",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string =>
-				`${row?.borrower?.user.firstName} ${row?.borrower?.user.lastName}`,
+			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
 		},
 		{
-			name: "Phone",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.borrower?.user.phoneNumber || "",
-			omit: false,
-		},
-
-		{
-			name: "Address",
+			name: "Property Address",
 			selector: (row: Loan): string => row.collaterals[0]?.address || "",
 			omit: false,
 		},
 		{
-			name: "Email",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.borrower?.user.email || "",
+			name: "Loan Amount",
+			selector: (row: Loan) =>
+				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
 		},
 		{
-			name: "Insurance Expiration Date",
-			selector: (row: Loan) =>
-				formatDate(
-					row?.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
+			name: "Origination Date",
+			selector: (row: Loan) => row?.originationDate,
+			omit: false,
+		},
+		{
+			name: "Asset Type",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
 			omit: false,
 		},
 	];
 
 	return (
-		<div className="h-[60%] w-full">
+		<div className="h-[75%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 				<div
 					className="font-bold text-[13px] w-full"
@@ -282,7 +253,7 @@ export const PaidLoanReport: FC = () => {
 				title="Paid Loans"
 			>
 				<DataTable
-					columns={columnsModal}
+					columns={columnsModal as any}
 					data={propertyInsuranceQuery.data?.defaultLoans || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>

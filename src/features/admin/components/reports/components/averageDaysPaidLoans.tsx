@@ -217,17 +217,11 @@ export const AverageDaysPaidLoans: FC = () => {
 				console.log(assetKeys, insuranceCsv);
 				const productData = insuranceCsv[data]?.map((value: Loan) => {
 					return [
-						`${value.borrower?.user.firstName} ${value.borrower?.user.lastName}`,
+						value.borrower?.llc,
 						value?.borrower?.user.mailingAddress,
-						value?.borrower?.user.phoneNumber,
-						value?.borrower?.user.email,
-						value?.collaterals[0]?.address,
 						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
 						formatDate(value?.originationDate.toString()),
-						formatDate(value?.maturityDate.toString()),
-						formatDate(
-							value.collaterals[0]?.insuranceExpirationDate.toString() || ""
-						),
+						value?.collaterals[0]?.assetType,
 					];
 				});
 				return [[data], ...(productData || [])];
