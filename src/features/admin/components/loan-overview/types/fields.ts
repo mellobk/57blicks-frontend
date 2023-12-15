@@ -2,7 +2,7 @@ import type { LenderNameType } from "@/types/api/lender";
 
 export type DueToDrawDetails = {
 	amountOwed: number;
-	lender: string;
+	lender: LenderNameType;
 	loanName: string;
 	loanAddress: string;
 };
@@ -36,7 +36,7 @@ export interface IParticipantOverview {
 
 export interface IConstructionHoldbackOverview {
 	amountOwed: number;
-	lender: string;
+	lender: LenderNameType;
 	loanName: string;
 	loanAddress: string;
 }
