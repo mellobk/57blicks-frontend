@@ -14,3 +14,23 @@
 .p-dialog-header-close {
   z-index: 1;
 }
+
+.p-datatable .p-datatable-wrapper {
+  overflow-y: auto;
+}
+
+.p-datatable .p-datatable-wrapper::-webkit-scrollbar {
+  width: 10px;
+}
+
+.p-datatable .p-datatable-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.p-datatable .p-datatable-wrapper::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.p-datatable .p-datatable-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

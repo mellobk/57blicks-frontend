@@ -73,7 +73,14 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 	};
 
 	return (
-		<DataTable value={participants} editMode="cell" className="p-3" stripedRows>
+		<DataTable
+			value={participants}
+			editMode="cell"
+			className="p-3"
+			stripedRows
+			scrollable
+			scrollHeight="400px"
+		>
 			<Column field="name" header="Participant" filter></Column>
 			<Column
 				sortable
