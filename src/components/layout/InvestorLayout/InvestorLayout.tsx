@@ -357,16 +357,27 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 										status: "ACCEPTED",
 									});
 
+<<<<<<< Updated upstream
 									/* 	createLedgerQuery.mutate({
 										title: "Offer accepted",
 										timestamp: new Date(),
 										content: `An investor accepted a new offer`,
+=======
+									createLedgerQuery.mutate({
+										title: "Offer accepted",
+										timestamp: new Date(),
+										content: `A investor accepted a new offer.`,
+>>>>>>> Stashed changes
 										additionalData: "",
 										userFullName: localUserName,
 										priority: "HIGH",
 										type: "ALERT",
 										roles: ["investor"],
+<<<<<<< Updated upstream
 									}); */
+=======
+									});
+>>>>>>> Stashed changes
 								}}
 							/>
 						</div>

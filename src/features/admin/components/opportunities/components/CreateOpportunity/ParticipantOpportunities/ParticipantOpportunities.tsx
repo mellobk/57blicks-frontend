@@ -26,7 +26,10 @@ export const ParticipantOpportunities: FC<Props> = ({
 		setValue(
 			`participantOpportunities.${percentage}`,
 			checked
-				? String((Number(loanAmount) * (parseInt(percentage) / 100)).toFixed(2))
+				? String(
+						(Number(loanAmount) * (parseInt(percentage) / 100))?.toFixed(2) ||
+							"0"
+				  )
 				: ""
 		);
 	};

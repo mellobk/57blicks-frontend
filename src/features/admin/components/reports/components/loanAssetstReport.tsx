@@ -223,11 +223,11 @@ export const AssetLoanReport: FC = () => {
 				</div>
 				<div className="font-bold text-[13px]  p-5 flex  justify-between">
 					<span>Average Interest Rate</span>{" "}
-					<span>{getLoanAssets?.data?.averageInterest?.toFixed(4)}</span>
+					<span>{getLoanAssets?.data?.averageInterest?.toFixed(4) || "0"}</span>
 				</div>
 				<div className="font-bold text-[13px] p-5 bg-gray-200 flex  justify-between">
 					<span>Average LTV</span>{" "}
-					<span>{getLoanAssets?.data?.averageLtv?.toFixed(4)}</span>
+					<span>{getLoanAssets?.data?.averageLtv?.toFixed(4) || "0"}</span>
 				</div>
 			</div>
 

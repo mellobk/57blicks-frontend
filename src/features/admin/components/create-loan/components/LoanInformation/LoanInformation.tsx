@@ -42,7 +42,9 @@ export const LoanInformation: FC<Props> = ({
 		setValue(
 			"amountDrawn",
 			String(
-				(Number(totalLoanAmount) - Number(constructionHoldback) || 0).toFixed(2)
+				(Number(totalLoanAmount) - Number(constructionHoldback) || 0)?.toFixed(
+					2
+				) || "0"
 			)
 		);
 	}, [totalLoanAmount, constructionHoldback]);
@@ -51,7 +53,7 @@ export const LoanInformation: FC<Props> = ({
 		<div>
 			<Title text="Loan Information" />
 			<Dropdown
-        data-testid="loan-information-loan-type"
+				data-testid="loan-information-loan-type"
 				control={control}
 				error={errors?.type?.message}
 				className="mt-6"
@@ -61,7 +63,7 @@ export const LoanInformation: FC<Props> = ({
 				required
 			/>
 			<Input
-        data-testid="loan-information-collateral-address"
+				data-testid="loan-information-collateral-address"
 				error={errors?.collaterals?.[0]?.address?.message}
 				label="Collateral Address"
 				placeholder="Enter Collateral Address"
@@ -71,7 +73,7 @@ export const LoanInformation: FC<Props> = ({
 			/>
 			<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 				<FormatInput
-          data-testid="loan-information-loan-amount"
+					data-testid="loan-information-loan-amount"
 					control={control}
 					error={errors?.totalLoanAmount?.message}
 					format="money"
@@ -81,7 +83,7 @@ export const LoanInformation: FC<Props> = ({
 					required
 				/>
 				<FormatInput
-          data-testid="loan-information-interest-rate"
+					data-testid="loan-information-interest-rate"
 					control={control}
 					error={errors?.interestRate?.message}
 					format="percentage"
@@ -106,41 +108,45 @@ export const LoanInformation: FC<Props> = ({
 						// maxDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
 						// minDate: new Date(),
 						name: "originationDate",
-						className:"[&>*]:flex [&>*]:w-50 [&>*]:h-10 [&>*]:py-3 [&>*]:px-4 [&>*]:self-stretch [&>*]:rounded-md [&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
-						wrapperClassName: "mt-6" + inputClassName(errors?.originationDate?.message),
+						className:
+							"[&>*]:flex [&>*]:w-50 [&>*]:h-10 [&>*]:py-3 [&>*]:px-4 [&>*]:self-stretch [&>*]:rounded-md [&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
+						wrapperClassName:
+							"mt-6" + inputClassName(errors?.originationDate?.message),
 						onChange: (date: Date): void => {
-						setValue("originationDate", moment(date).format("MM-DD-YYYY"));
+							setValue("originationDate", moment(date).format("MM-DD-YYYY"));
 						},
 					}}
 				/>
-                <MaskInput
-                    data-testid="loan-information-maturity-date"
-                    error={errors?.maturityDate?.message}
-                    label="Maturity Date"
-                    mask="99-99-9999"
-                    placeholder="MM-DD-YYYY"
-                    register={register("maturityDate")}
-                    wrapperClassName="mt-6"
-                    required
+				<MaskInput
+					data-testid="loan-information-maturity-date"
+					error={errors?.maturityDate?.message}
+					label="Maturity Date"
+					mask="99-99-9999"
+					placeholder="MM-DD-YYYY"
+					register={register("maturityDate")}
+					wrapperClassName="mt-6"
+					required
 					datePickerProps={{
 						placeholder: "MM-DD-YYYY",
 						// maxDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
 						// minDate: new Date(),
 						name: "maturityDate",
-						className:"[&>*]:flex [&>*]:w-50 [&>*]:h-10 [&>*]:py-3 [&>*]:px-4 [&>*]:self-stretch [&>*]:rounded-md [&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
-						wrapperClassName: "mt-6" + inputClassName(errors?.maturityDate?.message),
+						className:
+							"[&>*]:flex [&>*]:w-50 [&>*]:h-10 [&>*]:py-3 [&>*]:px-4 [&>*]:self-stretch [&>*]:rounded-md [&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
+						wrapperClassName:
+							"mt-6" + inputClassName(errors?.maturityDate?.message),
 						onChange: (date: Date): void => {
-						setValue("maturityDate", moment(date).format("MM-DD-YYYY"), {
-							shouldValidate: true,
-							shouldDirty: true,
-						});
+							setValue("maturityDate", moment(date).format("MM-DD-YYYY"), {
+								shouldValidate: true,
+								shouldDirty: true,
+							});
 						},
 					}}
-                />
-            </div>
+				/>
+			</div>
 			<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 				<FormatInput
-          data-testid="loan-information-construction-holdback"
+					data-testid="loan-information-construction-holdback"
 					control={control}
 					error={errors?.constructionHoldback?.message}
 					format="money"
@@ -150,7 +156,7 @@ export const LoanInformation: FC<Props> = ({
 					required
 				/>
 				<FormatInput
-          data-testid="loan-information-amount-drawn"
+					data-testid="loan-information-amount-drawn"
 					control={control}
 					error={errors?.amountDrawn?.message}
 					format="money"
@@ -163,7 +169,7 @@ export const LoanInformation: FC<Props> = ({
 			</div>
 			<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 				<MaskInput
-          data-testid="loan-information-insurance-expiration-date"
+					data-testid="loan-information-insurance-expiration-date"
 					error={errors?.collaterals?.[0]?.insuranceExpirationDate?.message}
 					label="Insurance Expiration Date"
 					mask="99-99-9999"
@@ -176,18 +182,24 @@ export const LoanInformation: FC<Props> = ({
 						// maxDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
 						// minDate: new Date(),
 						name: "collaterals.0.insuranceExpirationDate",
-						className:"[&>*]:flex [&>*]:w-50 [&>*]:h-10 [&>*]:py-3 [&>*]:px-4 [&>*]:self-stretch [&>*]:rounded-md [&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
-						wrapperClassName: "mt-6" + inputClassName(errors?.collaterals?.message),
+						className:
+							"[&>*]:flex [&>*]:w-50 [&>*]:h-10 [&>*]:py-3 [&>*]:px-4 [&>*]:self-stretch [&>*]:rounded-md [&>*]:placeholder-gray-400 [&>*]:bg-gray-200 [&>*]:border-gray-200 [&>*]:font-inter [&>*]:text-[13px] [&>*]:text-primary-500 [&>*]:leading-4",
+						wrapperClassName:
+							"mt-6" + inputClassName(errors?.collaterals?.message),
 						onChange: (date: Date): void => {
-						setValue("collaterals.0.insuranceExpirationDate", moment(date).format("MM-DD-YYYY"), {
-							shouldValidate: true,
-							shouldDirty: true,
-						});
+							setValue(
+								"collaterals.0.insuranceExpirationDate",
+								moment(date).format("MM-DD-YYYY"),
+								{
+									shouldValidate: true,
+									shouldDirty: true,
+								}
+							);
 						},
 					}}
 				/>
 				<Input
-          data-testid="loan-information-prepayment-penalty"
+					data-testid="loan-information-prepayment-penalty"
 					error={errors?.prepaymentPenalty?.message}
 					label="Prepayment Penalty"
 					placeholder="0%, (90 Days)"
@@ -197,7 +209,7 @@ export const LoanInformation: FC<Props> = ({
 				/>
 			</div>
 			<Input
-        data-testid="loan-information-collateral-tax-url"
+				data-testid="loan-information-collateral-tax-url"
 				error={errors?.collaterals?.[0]?.taxUrl?.message}
 				label="Tax Property URL"
 				placeholder="Enter Tax Property URL"
@@ -206,7 +218,7 @@ export const LoanInformation: FC<Props> = ({
 				required
 			/>
 			<Input
-        data-testid="loan-information-collateral-link"
+				data-testid="loan-information-collateral-link"
 				error={errors?.collaterals?.[0]?.link?.message}
 				label="Collateral Link (Google Drive)"
 				placeholder="Enter Collateral Link"
@@ -215,7 +227,7 @@ export const LoanInformation: FC<Props> = ({
 				required
 			/>
 			<Dropdown
-        data-testid="loan-information-asset-type"
+				data-testid="loan-information-asset-type"
 				control={control}
 				error={errors?.collaterals?.[0]?.assetType?.message}
 				className="mt-6"
@@ -226,7 +238,7 @@ export const LoanInformation: FC<Props> = ({
 			/>
 			<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 				<Input
-          data-testid="loan-information-loan-consultant"
+					data-testid="loan-information-loan-consultant"
 					error={errors?.loanConsultant?.message}
 					label="Loan Consultant"
 					placeholder="Enter Loan Consultant"
@@ -235,7 +247,7 @@ export const LoanInformation: FC<Props> = ({
 					required
 				/>
 				<FormatInput
-          data-testid="loan-information-ltv"
+					data-testid="loan-information-ltv"
 					control={control}
 					error={errors?.ltv?.message}
 					format="percentage"
@@ -246,7 +258,7 @@ export const LoanInformation: FC<Props> = ({
 				/>
 			</div>
 			<Dropdown
-        data-testid="loan-information-lead-source"
+				data-testid="loan-information-lead-source"
 				control={control}
 				error={errors?.leadSource?.message}
 				className="mt-6"
