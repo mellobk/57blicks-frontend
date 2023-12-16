@@ -59,7 +59,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 			setValue("maturityDate", data?.maturityDate.toString());
 			setValue("constructionHoldBack", data?.constructionHoldback);
 			setValue("amountDrawn", data?.amountDrawn);
-			setValue("ltv", data?.ltv);
+			setValue("ltv", Number.parseFloat(data?.ltv.toString() || "").toFixed(0));
 		}
 		setValidApprove && setValidApprove(true);
 	}, [data]);
@@ -162,7 +162,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 					!edit && "opacity-40"
 				}`}
 			>
-				<div className="mb-20 flex gap-2 flex-col">
+				<div className="mb-10 flex gap-2 flex-col">
 					{edit ? (
 						<Select
 							key={"loan-information-loan-type"}
@@ -183,12 +183,6 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 					) : (
 						<LoanCard title="Loan Type" text={loanData?.type} />
 					)}
-
-					<LoanCard
-						title="Collateral Address"
-						text={loanData?.collaterals[0]?.address}
-						background
-					/>
 				</div>
 
 				<div className="flex gap-2 flex-col">
@@ -261,14 +255,6 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 							text={loanData?.prepaymentPenalty}
 						/>
 					)}
-
-					<LoanCard
-						title="Insurance Expiration Date"
-						text={formatDate(
-							loanData?.collaterals[0]?.insuranceExpirationDate.toString() || ""
-						)}
-						background
-					/>
 				</div>
 			</div>
 
@@ -351,10 +337,6 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 						background
 					/>
 				)}
-				<LoanCard
-					title="Asset Class"
-					text={loanData?.collaterals[0]?.assetType}
-				/>
 				{edit ? (
 					<Input
 						type="number"
@@ -364,7 +346,13 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 						required
 					/>
 				) : (
-					<LoanCard title="LTV" text={`${loanData?.ltv}%`} background />
+					<LoanCard
+						title="LTV"
+						text={`${Number.parseFloat(loanData?.ltv.toString() || "").toFixed(
+							0
+						)}%`}
+						background
+					/>
 				)}
 
 				<div>
@@ -434,12 +422,18 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 									required
 								/>
 							) : (
-								<LoanLinkCard
-									title="Tax URL"
-									text={data?.taxUrl}
-									background="#f4f2ec"
-									colorIcon="#cda874"
-								/>
+								<a
+									href={data?.taxUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<LoanLinkCard
+										title="Tax URL"
+										text={data?.taxUrl}
+										background="#f4f2ec"
+										colorIcon="#cda874"
+									/>
+								</a>
 							)}
 
 							{edit ? (
@@ -452,12 +446,18 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 									required
 								/>
 							) : (
-								<LoanLinkCard
-									title="Collateral Link (Google Drive)"
-									text={data?.link}
-									background="#dcefff"
-									colorIcon="#0085ff"
-								/>
+								<a
+									href={data?.taxUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<LoanLinkCard
+										title="Collateral Link (Google Drive)"
+										text={data?.link}
+										background="#dcefff"
+										colorIcon="#0085ff"
+									/>
+								</a>
 							)}
 
 							{edit ? (
