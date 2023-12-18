@@ -1,4 +1,5 @@
 import * as z from "zod";
+
 import { errorMessages } from "@/utils/error-messages";
 
 export const CollateralSchema = z.object({
@@ -11,11 +12,11 @@ export const CollateralSchema = z.object({
 	link: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(255, errorMessages.maxLength)
+		.max(1000, errorMessages.maxLength)
 		.url(),
 	taxUrl: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(255, errorMessages.maxLength)
+		.max(1000, errorMessages.maxLength)
 		.url(),
 });
