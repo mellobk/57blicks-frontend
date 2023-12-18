@@ -19,18 +19,21 @@ export const ChatBox: FC<Props> = ({ idTicket, internal = false }) => {
 	const queryClient = useQueryClient();
 	const queryKey = useMemo(() => ["get-Chat-list"], []);
 
-	const fetchChatList = useCallback(() => ManageChatService.getChat(), []);
+	const fetchChatList = useCallback(
+		() => ManageChatService.getChat(idTicket),
+		[]
+	);
 
 	const queryChatDetails = useQuery(queryKey, fetchChatList, {
 		onSuccess: useCallback(
 			(data: Chat) => {
-				const sortedData = data?.data?.sort((a, b) => {
-					const dateA = new Date(a?.updatedAt ?? 0); 
-					const dateB = new Date(b?.updatedAt ?? 0); 
+				const sortedData = data?.comments?.sort((a, b) => {
+					const dateA: Date = new Date(a?.updatedAt ?? 0);
+					const dateB: Date = new Date(b?.updatedAt ?? 0);
 
-					return  dateA.getTime() - dateB.getTime();
+					return dateA.getTime() - dateB.getTime();
 				});
-				if (data?.data) {
+				if (sortedData) {
 					setChatList(
 						sortedData?.filter((chat) => chat.isInternal === internal) || []
 					);

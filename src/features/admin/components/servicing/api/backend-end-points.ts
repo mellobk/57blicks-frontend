@@ -93,8 +93,8 @@ export const getAttachmentsData = (): string => {
 	return `/attachments/?page=1&take=50`;
 };
 
-export const getChatsData = (): string => {
-	return `/comments?page=1&take=50`;
+export const getChatsData = (id: string): string => {
+	return `/tickets/${id}`;
 };
 
 export const setChatsData = (id: string): string => {

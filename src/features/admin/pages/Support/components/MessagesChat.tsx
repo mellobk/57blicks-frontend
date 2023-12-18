@@ -17,7 +17,7 @@ export const MessagesChat: FC<Props> = ({ data }) => {
 			className="flex"
 			style={{
 				flexDirection: "column",
-				alignItems: userLoggedInfo?.id === message?.createdBy ? "flex-end" : "",
+				alignItems: userLoggedInfo?.id === message?.user?.id ? "flex-end" : "",
 			}}
 		>
 			<div
@@ -46,11 +46,11 @@ export const MessagesChat: FC<Props> = ({ data }) => {
 						paddingBottom: "10px",
 						paddingRight: "10px",
 						backgroundColor:
-							userLoggedInfo.id === message.createdBy
+							userLoggedInfo.id === message?.user?.id
 								? "rgba(199, 158, 99, 0.12)"
 								: "#F4F7F9",
 						color:
-							userLoggedInfo.id === message.createdBy ? "#C79E63" : "#656A74",
+							userLoggedInfo.id === message?.user?.id ? "#C79E63" : "#656A74",
 					}}
 				>
 					{message.content}

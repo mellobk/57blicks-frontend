@@ -68,6 +68,37 @@ export interface AttachmentResponse {
 	meta: PaginationMeta;
 }
 
+export interface UserChat {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	deletedAt: Date;
+	firstName: string;
+	lastName: string;
+}
+
+export interface AttachmentsChat {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	deletedAt: Date;
+	originalName: string;
+	mimeType: string;
+	size: number;
+	s3Url: string;
+	ticketId: string;
+}
+
+export interface CommentsChat {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	deletedAt: Date;
+	content: string;
+	isInternal: boolean;
+	ticketId: string;
+	user: UserChat;
+}
 export interface Chat {
 	id: string;
 	createdAt: Date;
@@ -78,4 +109,7 @@ export interface Chat {
 	isInternal: boolean;
 	ticketId: string;
 	data?: Array<Chat>;
+	comments?: Array<Chat>;
+	user: UserChat;
+	attachments?: Array<AttachmentsChat>;
 }
