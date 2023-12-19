@@ -16,13 +16,8 @@ export const Opportunities: FC = () => {
 	const userInfo = userStore((state) => state.loggedUserInfo);
 	const [selectedOpportunity, setSelectedOpportunity] =
 		useState<OpportunityMin>();
+	const [SearchedData, setSearchedData] = useState<boolean>(false);
 	const [tableData, setTableData] = useState<Array<OpportunityMin>>();
-
-	/* 		const getOpportunitiesQuery = useQuery(
-		["opportunities-query"],
-		() => OpportunitiesService.getMyOpportunities(userInfo?.investor?.id || ""),
-		{ enabled: !selectedOpportunity }
-	); */
 
 	const investorInfoQuery = useMutation(async () => {
 		return OpportunitiesService.getMyOpportunities(
@@ -37,9 +32,10 @@ export const Opportunities: FC = () => {
 	}, [userInfo]);
 
 	useEffect(() => {
-		if (investorInfoQuery.data) {
+		if (investorInfoQuery.data && !SearchedData) {
 			setTableData(investorInfoQuery.data);
 			setSelectedOpportunity(investorInfoQuery?.data?.[0]);
+			setSearchedData(true);
 		}
 	}, [investorInfoQuery]);
 

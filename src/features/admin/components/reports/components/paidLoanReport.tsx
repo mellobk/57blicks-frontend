@@ -83,7 +83,7 @@ export const PaidLoanReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadCSV(data, "paidLoans.csv");
+		downloadCSV(data, "LoansPaidOff.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -107,7 +107,7 @@ export const PaidLoanReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadXLSX(data, "paidLoans.xlsx");
+		downloadXLSX(data, "LoansPaidOff.xlsx");
 	};
 
 	useEffect(() => {
@@ -174,7 +174,7 @@ export const PaidLoanReport: FC = () => {
 						setOpenInsurance(true);
 					}}
 				>
-					Paid Loans
+					Loans Paid off
 				</div>
 				<Tabs
 					tabs={paidLoansTabs}
