@@ -10,7 +10,7 @@ import { Modal } from "@/components/ui/Modal";
 import { approveModalTabs } from "@/features/admin/components/servicing/utils/tabs";
 import { Tabs } from "@/features/admin/components/servicing/component/Tabs";
 import ManageNotificationService, {
-	UpdateLedgerProps,
+	type UpdateLedgerProps,
 } from "../../api/notification";
 import { LoanInformation } from "../LoanInformation";
 import { BorrowerInformation } from "../BorrowerInformation";
@@ -36,6 +36,7 @@ import { getLocalStorage } from "@/utils/local-storage";
 import { userName } from "@/utils/constant";
 import { TextArea } from "@/components/forms/TextArea";
 import { LedgerTypeOfPayment } from "../../../servicing/component/Ledger/types";
+import { FundingBreakdown } from "../../../servicing/component/FundingBreakdown/FundingBreakdown";
 
 interface ServicingModalProps {
 	openModal?: boolean;
@@ -180,6 +181,10 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 				setTabTitle("Ledger");
 				break;
 			}
+			case "funding": {
+				setTabTitle("Funding Breakdown");
+				break;
+			}
 
 			default: {
 				setTabTitle("Loan Information");
@@ -318,6 +323,10 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 							setValidApprove={setValidApprove}
 							setLoanUpdated={setLoanUpdated}
 						/>
+					)}
+
+					{tabTitle === "Funding Breakdown" && approvalQuery.data && (
+						<FundingBreakdown data={approvalQuery.data} />
 					)}
 				</Modal>
 			)}

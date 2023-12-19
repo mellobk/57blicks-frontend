@@ -16,6 +16,7 @@ export const approveModalTabs = [
 	{ label: "Loan", routeTo: "servicing/dkc-llc" },
 	{ label: "Borrower", routeTo: "servicing/dkc-fl" },
 	{ label: "Ledger", routeTo: "servicing/dkc-iv" },
+	{ label: "Funding", routeTo: "servicing/dkc-iv" },
 ];
 export const paidLoansTabs = [
 	{ label: "30", value: "30", routeTo: "30" },
