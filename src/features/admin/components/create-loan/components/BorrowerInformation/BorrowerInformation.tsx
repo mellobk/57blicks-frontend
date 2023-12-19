@@ -67,7 +67,6 @@ export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
 		/>
 		<MaskInput
 			data-testid="borrower-Information-ssn-ein"
-			error={errors?.borrower?.ssnEin?.message}
 			label="EIN/SSN"
 			mask="999999999"
 			placeholder="Enter EIN/SSN"
