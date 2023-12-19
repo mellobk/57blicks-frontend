@@ -2,10 +2,7 @@ import * as z from "zod";
 import { errorMessages } from "@/utils/error-messages";
 
 export const FundingBreakdownSchema = z.object({
-	amount: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(15, errorMessages.maxLength),
+	amount: z.string().nonempty(errorMessages.required),
 	constructionHoldback: z
 		.string()
 		.nonempty(errorMessages.required)

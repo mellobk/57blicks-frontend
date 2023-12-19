@@ -6,10 +6,7 @@ import { FundingBreakdownSchema } from "@/features/admin/components/create-loan/
 import { errorMessages } from "@/utils/error-messages";
 
 export const LoanSchema = z.object({
-	amountDrawn: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(15, errorMessages.maxLength),
+	amountDrawn: z.string().nonempty(errorMessages.required),
 	borrower: BorrowerSchema,
 	collaterals: z.array(CollateralSchema),
 	constructionHoldback: z
@@ -29,36 +26,19 @@ export const LoanSchema = z.object({
 	ltv: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(5, errorMessages.maxLength),
+		.max(100, errorMessages.maxLength),
 	maturityDate: z.string().nonempty(errorMessages.required),
 	originationDate: z.string().nonempty(errorMessages.required),
 	participationBreakdown: z.array(FundingBreakdownSchema),
-	prepaymentPenalty: z
-		.string()
-		.nonempty(errorMessages.required),
-	totalLoanAmount: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(15, errorMessages.maxLength),
+	prepaymentPenalty: z.string().nonempty(errorMessages.required),
+	totalLoanAmount: z.string().nonempty(errorMessages.required),
 	prorated: z
 		.string()
 		.nonempty(errorMessages.required)
-		.max(15, errorMessages.maxLength),
-	principal: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(15, errorMessages.maxLength),
-	balance: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(15, errorMessages.maxLength),
-	regular: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(15, errorMessages.maxLength),
-	current: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(15, errorMessages.maxLength),
+		.max(100, errorMessages.maxLength),
+	principal: z.string().nonempty(errorMessages.required),
+	balance: z.string().nonempty(errorMessages.required),
+	regular: z.string().nonempty(errorMessages.required),
+	current: z.string().nonempty(errorMessages.required),
 	type: z.string().nonempty(errorMessages.required),
 });

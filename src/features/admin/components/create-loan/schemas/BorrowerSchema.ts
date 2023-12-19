@@ -5,12 +5,12 @@ import { errorMessages } from "@/utils/error-messages";
 export const BorrowerSchema = z.object({
 	accountNumber: z.string().max(50, errorMessages.maxLength).optional(),
 	accountType: z.string().optional(),
-	bankingName: z.string().max(50, errorMessages.maxLength).optional(),
+	bankingName: z.string().optional(),
 	llc: z
 		.string()
 		.nonempty(errorMessages.required)
 		.max(100, errorMessages.maxLength),
-	routingNumber: z.string().max(50, errorMessages.maxLength).optional(),
+	routingNumber: z.string().optional(),
 	ssnEin: z.string().optional(),
 	user: UserSchema,
 });
