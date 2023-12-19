@@ -11,9 +11,6 @@ export const BorrowerSchema = z.object({
 		.nonempty(errorMessages.required)
 		.max(100, errorMessages.maxLength),
 	routingNumber: z.string().max(50, errorMessages.maxLength).optional(),
-	ssnEin: z
-		.string()
-		.min(9, errorMessages.minLength)
-		.max(9, errorMessages.maxLength),
+	ssnEin: z.string().optional(),
 	user: UserSchema,
 });
