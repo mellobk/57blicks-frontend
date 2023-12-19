@@ -446,11 +446,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 									required
 								/>
 							) : (
-								<a
-									href={data?.taxUrl}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
+								<a href={data?.link} target="_blank" rel="noopener noreferrer">
 									<LoanLinkCard
 										title="Collateral Link (Google Drive)"
 										text={data?.link}
