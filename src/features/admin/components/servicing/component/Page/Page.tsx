@@ -179,7 +179,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Rate",
-			selector: (row: FundingBreakdown) => row?.rate,
+			selector: (row: FundingBreakdown) => row?.loan.interestRate,
 			omit: false,
 			maxWidth: "100px",
 			minWidth: "100px",
@@ -195,7 +195,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Origin Date",
 			selector: (row: FundingBreakdown) =>
-				formatDate(row?.loan?.originationDate.toString()),
+				row?.loan?.originationDate.toString(),
 			omit: false,
 			maxWidth: "130px",
 			minWidth: "130px",

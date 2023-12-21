@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 
 import type { FC } from "react";
 import { Input } from "@/components/forms/Input";
-import { LOAN_TYPES } from "../../../create-loan/utils/selects";
+import { LEAD_SOURCES, LOAN_TYPES } from "../../../create-loan/utils/selects";
 import { LoanCard } from "../LoanCard";
 import { LoanLinkCard } from "../LoanLinkCard";
 import { Select } from "@/components/forms/Select";
@@ -59,10 +59,15 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 			setValue("maturityDate", data?.maturityDate.toString());
 			setValue("constructionHoldBack", data?.constructionHoldback);
 			setValue("amountDrawn", data?.amountDrawn);
+			setValue("loanConsultant", data?.loanConsultant);
 			setValue("ltv", Number.parseFloat(data?.ltv.toString() || "").toFixed(0));
 		}
 		setValidApprove && setValidApprove(true);
 	}, [data]);
+
+	const [accountData, setAccountData] = useState<string>(
+		loanData?.leadSource || ""
+	);
 
 	useEffect(() => {
 		if (watch("loanType")) {
@@ -121,6 +126,21 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 				ltv: watch("ltv"),
 			}));
 		}
+		if (watch("loanConsultant")) {
+			setLoanData((previous) => ({
+				...previous,
+				loanConsultant: watch("loanConsultant"),
+			}));
+		}
+		if (watch("leadSource")) {
+			setLoanData((previous) => ({
+				...previous,
+				leadSource:
+					LEAD_SOURCES.find(
+						(data) => data.name === (watch("leadSource") as string)
+					)?.code || "",
+			}));
+		}
 	}, [
 		watch("loanType"),
 		watch("totalLoanAmount"),
@@ -131,6 +151,8 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 		watch("constructionHoldBack"),
 		watch("amountDrawn"),
 		watch("ltv"),
+		watch("leadSource"),
+		watch("loanConsultant"),
 	]);
 
 	const setCollateralData = (data: string, index: number, type: string) => {
@@ -253,6 +275,57 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 						<LoanCard
 							title="Prepayment Penalty"
 							text={loanData?.prepaymentPenalty}
+						/>
+					)}
+
+					{edit ? (
+						<Input
+							type="text"
+							error={
+								errors?.["loanConsultant"] &&
+								(errors?.["loanConsultant"]?.message as string)
+							}
+							label="Loan Consultant "
+							register={register("loanConsultant")}
+							required
+						/>
+					) : (
+						<LoanCard
+							title="Loan Consultant "
+							text={loanData?.loanConsultant}
+							background
+						/>
+					)}
+
+					{edit ? (
+						<Select
+							register={register("leadSource")}
+							className="flex flex-col gap-2"
+							label="Lead Origin"
+							placeholder="Select Lead Origin"
+							value={accountData}
+							options={LEAD_SOURCES}
+							onChange={(event): void => {
+								setAccountData(event.target.value as string);
+								setValue("leadSource", event.target.value);
+							}}
+						/>
+					) : (
+						/* 		<Input
+							type="text"
+							error={
+								errors?.["leadSource"] &&
+								(errors?.["leadSource"]?.message as string)
+							}
+							label="Lead Origin"
+							register={register("leadSource")}
+							required
+						/> */
+						<LoanCard
+							title="Lead Origin"
+							text={
+								LEAD_SOURCES.find((data) => data.code === accountData)?.name
+							}
 						/>
 					)}
 				</div>
@@ -458,7 +531,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 
 							{edit ? (
 								<Input
-									label="Asset Class"
+									label="Asset Type"
 									value={data?.assetType}
 									onChange={(data) => {
 										setCollateralData(data.target.value, index, "assetType");
@@ -466,7 +539,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 									required
 								/>
 							) : (
-								<LoanCard title="Asset Class" text={data?.assetType} />
+								<LoanCard title="Asset Type" text={data?.assetType} />
 							)}
 						</div>
 					);
