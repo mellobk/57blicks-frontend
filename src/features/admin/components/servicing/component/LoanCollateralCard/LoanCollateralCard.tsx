@@ -50,7 +50,7 @@ export const LoanCollateralCard: FC<LoginTitleProps> = ({
 				</a>
 			</div>
 
-			<LoanCard title="Asset Class" text={data?.assetType} />
+			<LoanCard title="Asset Type" text={data?.assetType} />
 		</div>
 	);
 };

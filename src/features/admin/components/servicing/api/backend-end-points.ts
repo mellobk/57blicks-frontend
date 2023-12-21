@@ -85,6 +85,10 @@ export const commentApi = (id: string): string => {
 	return `/comments/${id}`;
 };
 
+export const collateralApi = (id: string): string => {
+	return `/collaterals/${id}`;
+};
+
 export const filterTicketData = (search: string, status: string): string => {
 	return `/tickets/admin?page=1&take=50${`&q=${search}&status=${status}`}`;
 };
