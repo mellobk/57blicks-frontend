@@ -74,7 +74,9 @@ const PreviewInvoice: FC = () => {
 			maturityDate: dateFormatFormat(loan.maturityDate ?? ""),
 			interestPayment: calculateInterestPayment(ledgers),
 			details: generateDetail(ledgers, invoice),
-			regular: moneyFormat(Number.parseInt(loan.regular) || 0),
+			regular: moneyFormat(Number.parseInt(String(loan.regular)) || 0),
+			address: "",
+			borrower: "",
 		});
 	};
 	useEffect(() => {
