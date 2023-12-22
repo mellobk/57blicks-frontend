@@ -195,7 +195,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Origin Date",
 			selector: (row: FundingBreakdown) =>
-				row?.loan?.originationDate.toString(),
+				formatDate(row?.loan?.originationDate.toString()),
 			omit: false,
 			maxWidth: "130px",
 			minWidth: "130px",
