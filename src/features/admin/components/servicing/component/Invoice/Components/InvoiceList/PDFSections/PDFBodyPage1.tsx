@@ -1,8 +1,8 @@
+/* eslint-disable unicorn/filename-case */
 import { StyleSheet, Text, View } from "@react-pdf/renderer";
 
 import type { FC } from "react";
-import { InvoiceDataPdf } from "../../../types";
-import { round } from "@/utils/common-functions";
+import type { InvoiceDataPdf } from "../../../types";
 
 const styles = StyleSheet.create({
 	loanSection: {

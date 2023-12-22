@@ -1,11 +1,9 @@
 import { Document, Page, StyleSheet, Text } from "@react-pdf/renderer";
 
-import { BodyPage1PDF } from "./PDFSections/PDFBodyPage1";
 import type { FC } from "react";
 import { HeaderPDF } from "./PDFSections/HeaderPDF";
 import { HeaderTablePDF } from "./PDFSections/HeaderTablePDF";
 import type { InvoiceDataPdf } from "../../types";
-import { PDFFooterPage1 } from "./PDFSections/PDFFooterPage1";
 import { PDFServicingNotice } from "./PDFSections/PDFServicingNotice";
 import { PDFTable } from "./PDFSections/PDFTable";
 
