@@ -199,16 +199,6 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			omit: false,
 			maxWidth: "130px",
 			minWidth: "130px",
-			conditionalCellStyles: [
-				{
-					when: (row: FundingBreakdown) =>
-						validateDate(row?.loan?.originationDate.toString() || ""),
-					style: {
-						background: "#fbf4f7",
-						color: "#fe3d64",
-					},
-				},
-			],
 		},
 		{
 			name: "Maturity Date",
