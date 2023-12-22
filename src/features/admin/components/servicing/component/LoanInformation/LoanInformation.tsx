@@ -3,6 +3,7 @@ import { LoanCard } from "../LoanCard";
 import { LoanCollateralCard } from "../LoanCollateralCard";
 import type { Collateral, FundingBreakdown } from "../../types/api";
 import { formatDate, moneyFormat } from "@/utils/formats";
+import { LEAD_SOURCES } from "../../../create-loan/utils/selects";
 
 interface LoanInformationProps {
 	data?: FundingBreakdown;
@@ -36,6 +37,21 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 					<LoanCard
 						title="Prepayment Penalty"
 						text={data?.loan?.prepaymentPenalty}
+					/>
+
+					<LoanCard
+						title="Loan Consultant"
+						text={data?.loan.loanConsultant}
+						background
+					/>
+
+					<LoanCard
+						title="Lead Origin"
+						text={
+							LEAD_SOURCES.find(
+								(dataSource) => dataSource.code === data?.loan.leadSource
+							)?.name
+						}
 					/>
 				</div>
 			</div>
