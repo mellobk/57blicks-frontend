@@ -29,6 +29,9 @@ export interface InvoiceDataPdf {
 	maturityDate: string;
 	originationDate: string;
 	details: Array<InvoiceDataPdfDetails>;
+	regular: string;
+	borrower: string;
+	address: string;
 }
 
 export interface notification {

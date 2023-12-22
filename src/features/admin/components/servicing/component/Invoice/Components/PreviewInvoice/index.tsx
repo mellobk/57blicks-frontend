@@ -1,26 +1,23 @@
 import { type FC, useEffect, useState } from "react";
-import type { Invoice, InvoiceDataPdf, InvoiceDataPdfDetails } from "../types";
-import { InvoiceDocumentPreview } from "./InvoiceList/InvoiceDocumentPreview";
+import type {
+	Invoice,
+	InvoiceDataPdf,
+	InvoiceDataPdfDetails,
+} from "../../types";
+import { InvoiceDocumentPreview } from "../InvoiceList/InvoiceDocumentPreview";
 import { PDFViewer as PDFViewerGenerator } from "@react-pdf/renderer";
 import type { Loan } from "@/features/admin/components/servicing/types/api";
 import {
 	type Ledgers,
 	LedgerType,
 	LedgerTypeOfPayment,
-} from "../../Ledger/types";
+} from "../../../Ledger/types";
 import {
 	dateFormatFormat,
 	dateFormatOptions,
 	moneyFormat,
 } from "@/utils/formats";
 import { round } from "@/utils/common-functions";
-import moment from "moment";
-
-interface IInvoicePdfPreviewProps {
-	invoice: Invoice;
-	loan: Loan;
-	ledgers: Array<Ledgers>;
-}
 
 const calculateInterestPayment = (
 	ledgers: Array<Ledgers> | undefined
@@ -47,7 +44,7 @@ const generateDetail = (
 	if (ledgers) {
 		ledgers.forEach((ledger) => {
 			return details.push({
-				dueDate: moment(invoice.startDate).add(4, "days").format("MM-DD-YYYY"),
+				dueDate: dateFormatOptions(invoice.endDate, "MM-DD-YYYY"),
 				description: ledger.memo || "",
 				monthlyPayment: moneyFormat(ledger.debit || 0),
 				lateFee:
@@ -60,11 +57,11 @@ const generateDetail = (
 	return details;
 };
 
-const IInvoicePdfPreview: FC<IInvoicePdfPreviewProps> = ({
-	invoice,
-	loan,
-	ledgers,
-}) => {
+const invoice = {} as unknown as Invoice;
+const loan = [] as unknown as Loan;
+const ledgers = [] as unknown as Array<Ledgers>;
+
+const PreviewInvoice: FC = () => {
 	const [, setPages] = useState<number>(0);
 	const [invoiceDataPdf, setInvoiceDataPdf] = useState<InvoiceDataPdf>();
 	//const [pdf, setPdf] = useState<string>();
@@ -73,13 +70,11 @@ const IInvoicePdfPreview: FC<IInvoicePdfPreviewProps> = ({
 		setInvoiceDataPdf({
 			loanAmount: moneyFormat(Number.parseInt(loan.totalLoanAmount) || 0),
 			loanPercent: `${round(Number(loan.interestRate), 1)} %`,
-			originationDate: moment(invoice.date).format("MM-DD-YYYY"),
-			maturityDate: moment(loan.maturityDate).format("MM-DD-YYYY"),
+			originationDate: dateFormatFormat(invoice.date ?? ""),
+			maturityDate: dateFormatFormat(loan.maturityDate ?? ""),
 			interestPayment: calculateInterestPayment(ledgers),
 			details: generateDetail(ledgers, invoice),
-			regular: moneyFormat(Number.parseInt(String(loan.regular)) || 0),
-			address: loan.collaterals[0]?.address || "",
-			borrower: loan.borrower?.user.firstName || "",
+			regular: moneyFormat(Number.parseInt(loan.regular) || 0),
 		});
 	};
 	useEffect(() => {
@@ -93,7 +88,8 @@ const IInvoicePdfPreview: FC<IInvoicePdfPreviewProps> = ({
 			<div
 				className="lg:col-span-3 col-span-1 lg:pl-6"
 				style={{
-					height: "calc(100vh - 12rem)",
+					height: "100%",
+					width: "100%",
 				}}
 			>
 				{invoiceDataPdf && (
@@ -109,4 +105,4 @@ const IInvoicePdfPreview: FC<IInvoicePdfPreviewProps> = ({
 	);
 };
 
-export default IInvoicePdfPreview;
+export default PreviewInvoice;

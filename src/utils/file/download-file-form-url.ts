@@ -14,6 +14,17 @@ export function downloadFileFromUrl(url: string, filename: string): void {
 		.catch(() => {});
 }
 
+export async function createFileFromUrl(url: string): Promise<Blob> {
+	return fetch(url)
+		.then((response) => response.blob())
+		.then((blob) => {
+			return blob;
+		})
+		.catch(() => {
+			return new Blob();
+		});
+}
+
 export function openUrlFile(url: string): void {
 	fetch(url)
 		.then((response) => response.blob())

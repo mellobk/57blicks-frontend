@@ -137,33 +137,12 @@ export const PDFTable: FC<PDFTableProps> = ({
 					<Text style={styles.tableCell}>{detail.lateFee}</Text>
 				</View>
 				<View style={styles.tableColDue}>
-					<Text style={styles.tableCellMoney}>{detail.due}</Text>
+					<Text style={styles.tableCellMoney}>{detail.paid}</Text>
 				</View>
 				<View style={styles.tableColPaid}>
-					<Text style={styles.tableCellMoney}>{detail.paid}</Text>
+					<Text style={styles.tableCellMoney}>{detail.due}</Text>
 				</View>
 			</View>
 		))}
-
-		{/* <View style={styles.tableRow}>
-			<View style={styles.tableColDueDate}>
-				<Text style={styles.tableCell}>Due Date</Text>
-			</View>
-			<View style={styles.tableColDEscription}>
-				<Text style={styles.tableCell}>Description</Text>
-			</View>
-			<View style={styles.tableColMonthly}>
-				<Text style={styles.tableCell}>Monthly Interest</Text>
-			</View>
-			<View style={styles.tableColFee}>
-				<Text style={styles.tableCell}>Late Fees</Text>
-			</View>
-			<View style={styles.tableColDue}>
-				<Text style={styles.tableCell}>Due</Text>
-			</View>
-			<View style={styles.tableColPaid}>
-				<Text style={styles.tableCell}>Paid</Text>
-			</View>
-		</View> */}
 	</View>
 );

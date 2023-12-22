@@ -111,10 +111,7 @@ export const BodyPage1PDF: FC<BodyPage1PDFProps> = ({
 			</View>
 			<View style={[styles.block]}>
 				<Text style={styles.textLeftPercent}></Text>
-				<Text style={styles.textLeft}>
-					{invoiceDataPdf.loanPercent}
-					{round(Number(invoiceDataPdf.loanPercent), 1)}
-				</Text>
+				<Text style={styles.textLeft}>{invoiceDataPdf.loanPercent}</Text>
 			</View>
 		</View>
 		<View style={styles.content}>
@@ -125,11 +122,11 @@ export const BodyPage1PDF: FC<BodyPage1PDFProps> = ({
 				<Text
 					style={[
 						styles.textLeftInterest,
-						{ width: getLength(invoiceDataPdf.interestPayment) * (100 / 8) },
+						{ width: getLength(invoiceDataPdf.regular) * (100 / 8) },
 					]}
 				></Text>
 				<Text style={[styles.textLeft, { color: "#C79E63" }]}>
-					{invoiceDataPdf.interestPayment}
+					{invoiceDataPdf.regular}
 				</Text>
 			</View>
 		</View>
