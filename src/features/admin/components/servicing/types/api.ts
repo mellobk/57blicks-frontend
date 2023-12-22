@@ -91,6 +91,7 @@ export interface Loan {
 	collaterals: Array<Collateral>;
 	ltv: string;
 	defaultType: string;
+	regular?: string;
 }
 
 export interface FundingBreakdown {

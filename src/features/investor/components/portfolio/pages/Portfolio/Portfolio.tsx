@@ -47,20 +47,39 @@ export const Portfolio: FC = () => {
 		},
 		{
 			name: "Investor Equity",
-			selector: (row: Loan) =>
-				moneyFormat(Number(row.participationBreakdowns[0]?.amount || 0)),
+			selector: (row: Loan) => {
+				return moneyFormat(
+					Number(
+						row.participationBreakdowns
+							? row.participationBreakdowns[0]?.amount || 0
+							: row.fundingBreakDowns[0]?.amount || 0
+					)
+				);
+			},
 			sortable: true,
 		},
 		{
 			name: "Rate",
 			selector: (row: Loan) =>
-				percentageFormat(Number(row.participationBreakdowns[0]?.rate || 0)),
+				percentageFormat(
+					Number(
+						row.participationBreakdowns
+							? row.participationBreakdowns[0]?.rate || 0
+							: row.fundingBreakDowns[0]?.rate || 0
+					)
+				),
 			sortable: true,
 		},
 		{
 			name: "Regular Payment",
 			selector: (row: Loan) =>
-				moneyFormat(Number(row.participationBreakdowns[0]?.regular || 0)),
+				moneyFormat(
+					Number(
+						row.participationBreakdowns
+							? row.participationBreakdowns[0]?.regular || 0
+							: row.fundingBreakDowns[0]?.regular || 0
+					)
+				),
 			sortable: true,
 		},
 		{
@@ -80,8 +99,16 @@ export const Portfolio: FC = () => {
 				return moneyFormat(
 					moment(row.originationDate).toDate().getMonth() ===
 						new Date().getMonth()
-						? Number(row.participationBreakdowns[0]?.prorated)
-						: Number(row.participationBreakdowns[0]?.regular || 0)
+						? Number(
+								row.participationBreakdowns
+									? row.participationBreakdowns[0]?.prorated
+									: row.fundingBreakDowns[0]?.prorated || 0
+						  )
+						: Number(
+								row.participationBreakdowns
+									? row.participationBreakdowns[0]?.regular || 0
+									: row.fundingBreakDowns[0]?.regular || 0
+						  )
 				);
 			},
 			sortable: true,

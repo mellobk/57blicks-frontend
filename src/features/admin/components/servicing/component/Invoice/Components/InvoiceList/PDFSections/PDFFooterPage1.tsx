@@ -81,13 +81,7 @@ const styles = StyleSheet.create({
 
 export const PDFFooterPage1 = (): JSX.Element => (
 	<View>
-		<View style={[styles.block]}>
-			<Text>
-				Thank you for choosing DKC Lending for your private financing needs! We
-				are happy to be your loan servicing company, please read the following
-				for future interest payment instructions for the duration of the loan.
-			</Text>
-		</View>
+		<View style={[styles.block]}></View>
 		<View style={[styles.block2]}>
 			<Text>Table Breakdown</Text>
 		</View>

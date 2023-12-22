@@ -30,11 +30,6 @@ export const InvoiceDocumentPreview: FC<Props> = ({ invoiceDataPdf }) => {
 		>
 			<Page style={styles.body} size="A4" id="page1">
 				<HeaderPDF invoiceDataPdf={invoiceDataPdf} />
-				<BodyPage1PDF invoiceDataPdf={invoiceDataPdf} />
-				<PDFFooterPage1 />
-			</Page>
-			<Page style={styles.body} size="A4" id="page2">
-				<HeaderTablePDF title={"Table Breakdown"} />
 				<PDFTable invoiceDataPdf={invoiceDataPdf} />
 			</Page>
 			<Page style={styles.body} size="A4" id="page3" wrap={true}>

@@ -20,13 +20,23 @@ const getFooterData = (data: Array<Loan>): TotalInvestorLoanFooter => {
 	);
 	const totalInvestorEquity = data.reduce(
 		(accumulator, current) =>
-			accumulator + Number(current.participationBreakdowns[0]?.amount),
+			accumulator +
+			Number(
+				current.participationBreakdowns
+					? current.participationBreakdowns[0]?.amount
+					: current.fundingBreakDowns[0]?.amount || 0
+			),
 		0
 	);
 
 	const totalRegularPayment = data.reduce(
 		(accumulator, current) =>
-			accumulator + Number(current.participationBreakdowns[0]?.regular),
+			accumulator +
+			Number(
+				current.participationBreakdowns
+					? current.participationBreakdowns[0]?.regular
+					: current.fundingBreakDowns[0]?.regular || 0
+			),
 		0
 	);
 
@@ -34,8 +44,18 @@ const getFooterData = (data: Array<Loan>): TotalInvestorLoanFooter => {
 	const current = data.reduce((accumulator, current) => {
 		return moment(current.originationDate).toDate().getMonth() ===
 			new Date().getMonth()
-			? accumulator + Number(current.participationBreakdowns[0]?.prorated)
-			: accumulator + Number(current.participationBreakdowns[0]?.regular);
+			? accumulator +
+					Number(
+						current.participationBreakdowns
+							? current.participationBreakdowns[0]?.prorated
+							: current.fundingBreakDowns[0]?.prorated || 0
+					)
+			: accumulator +
+					Number(
+						current.participationBreakdowns
+							? current.participationBreakdowns[0]?.regular
+							: current.fundingBreakDowns[0]?.regular || 0
+					);
 	}, 0);
 
 	return {
