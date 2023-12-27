@@ -40,6 +40,7 @@ export const DatePicker = ({
 			maxDate={maxDate}
 			minDate={minDate}
 			view={view}
+			selectOtherMonths={true}
 			className={`${className} [&>*]:shadow-none
         ${invalid ? "[&>*]:border-red-ERROR " : ""}
       `}
