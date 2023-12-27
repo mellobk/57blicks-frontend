@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
@@ -14,6 +15,14 @@ import ManageInvestorReportsService from "../api/reports";
 import userStore from "@/stores/user-store";
 import ReportTable from "@/features/admin/components/reports/components/ReportComponent/ReportComponent";
 import { PieCanvas } from "@/features/admin/components/reports/components/PieCanvas/PieCanvas";
+import { formatDate, moneyFormat } from "@/utils/formats";
+import { downloadXLSX } from "@/utils/create-xlsx";
+import { downloadCSV } from "@/utils/create-cvs";
+import DataTable from "react-data-table-component";
+import { Modal } from "@/components/ui/Modal";
+import type { Loan } from "@/features/admin/components/servicing/types/api";
+import Csv from "@/assets/images/png/Csv.png";
+import Xlsx from "@/assets/images/png/Xlsx.png";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -22,6 +31,7 @@ import { PieCanvas } from "@/features/admin/components/reports/components/PieCan
 // you'll often use just a few of them.
 
 export const AllDefaultReport: FC = () => {
+	const [openInsurance, setOpenInsurance] = useState(false);
 	const userInfo = userStore((state) => state.loggedUserInfo);
 	const [reportLoan, setReportLoan] = useState<any>();
 	const [chartData, setChartData] = useState([]);
@@ -35,6 +45,7 @@ export const AllDefaultReport: FC = () => {
 	useEffect(() => {
 		/* console.log(investorsQuery.data?.[0]);
 		setSelectedLoan(); */
+
 		if (myData.isSuccess) {
 			setReportLoan(myData.data as any);
 
@@ -91,36 +102,176 @@ export const AllDefaultReport: FC = () => {
 		}
 	}, [userInfo]);
 
+	const downloadReport = (): void => {
+		const insuranceCsv = reportLoan.loans;
+
+		const headerCsv = [
+			"Borrower LLC",
+			"Property Address",
+			"Loan Amount",
+			"Asset Type",
+		];
+		const csvData = insuranceCsv?.map((value: any) => {
+			return [
+				value.borrower?.llc,
+				value?.borrower?.user.mailingAddress,
+				moneyFormat(Number.parseInt(value?.totalLoanAmount)),
+				formatDate(value?.originationDate.toString()),
+				value?.collaterals[0]?.assetType,
+			];
+		});
+
+		const data = [headerCsv, ...(csvData ?? [])];
+
+		downloadCSV(data, "allLoans.csv");
+	};
+
+	const downloadXlsxReport = (): void => {
+		const insuranceCsv = reportLoan.loans;
+
+		const headerCsv = [
+			"Borrower LLC",
+			"Property Address",
+			"Loan Amount",
+			"Asset Type",
+		];
+		const csvData = insuranceCsv?.map((value: any) => {
+			return [
+				value.borrower?.llc,
+				value?.borrower?.user.mailingAddress,
+				moneyFormat(Number.parseInt(value?.totalLoanAmount)),
+				formatDate(value?.originationDate.toString()),
+				value?.collaterals[0]?.assetType,
+			];
+		});
+
+		const data = [headerCsv, ...(csvData ?? [])];
+
+		downloadXLSX(data, "allLoans.xlsx");
+	};
+
+	const columnsModal = [
+		{
+			name: "Borrower LLC",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.borrower?.llc || "",
+			omit: false,
+		},
+		{
+			name: "Property Address",
+			selector: (row: Loan): string => row.collaterals[0]?.address || "",
+			omit: false,
+		},
+		{
+			name: "Loan Amount",
+			selector: (row: Loan) =>
+				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
+			omit: false,
+		},
+		{
+			name: "Origination Date",
+			selector: (row: Loan) => row?.originationDate,
+			omit: false,
+		},
+		{
+			name: "Asset Type",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
+			omit: false,
+		},
+	];
+
 	return (
 		<div className="h-[25%] w-full flex gap-3 flex-wrap justify-center p-4">
-			<div className="h-[70%] w-[45%] mb-7">
-				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
-					<div className="font-bold text-[13px]">Loans by Product</div>
+			<div className="h-[70%] w-[45%] mb-9">
+				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 relative">
+					<div
+						className="font-bold text-[13px] z-0"
+						onClick={() => {
+							setOpenInsurance(true);
+						}}
+					>
+						Loans by Product
+					</div>
+					<div
+						className="flex gap-2 ml-2 z-10 cursor-pointer"
+						onClick={downloadReport}
+					>
+						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
+							<img src={Csv} alt="DKC Csv" />
+						</div>
+
+						<div
+							className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
+							onClick={downloadXlsxReport}
+						>
+							<img src={Xlsx} alt="DKC Xlsx" />
+						</div>
+					</div>
 				</div>
 				<PieCanvas data={chartData} />
 			</div>
 			<div className="h-[70%] w-[45%]">
 				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
-					<div className="font-bold text-[13px]">Loans by Asset Type</div>
+					<div
+						className="font-bold text-[13px]"
+						onClick={() => {
+							setOpenInsurance(true);
+						}}
+					>
+						Loans by Asset Type
+					</div>
+					<div className="flex gap-2 ml-2" onClick={downloadReport}>
+						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
+							<img src={Csv} alt="DKC Csv" />
+						</div>
+
+						<div
+							className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
+							onClick={downloadXlsxReport}
+						>
+							<img src={Xlsx} alt="DKC Xlsx" />
+						</div>
+					</div>
 				</div>
 				<PieCanvas data={chartAssetData} />
 			</div>
-			<div className="w-[20%] h-[50%] flex">
+			<div
+				className="w-[20%] h-[50%] flex"
+				onClick={() => {
+					setOpenInsurance(true);
+				}}
+			>
 				<ReportTable title="Number of Loans">
 					<div>{reportLoan?.numbersOfLoans || 0}</div>
 				</ReportTable>
 			</div>
-			<div className="w-[30%] h-[50%] flex">
+			<div
+				className="w-[30%] h-[50%] flex"
+				onClick={() => {
+					setOpenInsurance(true);
+				}}
+			>
 				<ReportTable title="Average Loan Amount">
 					<div>{reportLoan?.averageLoanAmount || 0}</div>
 				</ReportTable>
 			</div>
-			<div className="w-[20%] h-[50%] flex">
+			<div
+				className="w-[20%] h-[50%] flex"
+				onClick={() => {
+					setOpenInsurance(true);
+				}}
+			>
 				<ReportTable title="Interest Average">
 					<div>{reportLoan?.interestData || 0}</div>
 				</ReportTable>
 			</div>
-			<div className="w-[20%] h-[50%] flex">
+			<div
+				className="w-[20%] h-[50%] flex"
+				onClick={() => {
+					setOpenInsurance(true);
+				}}
+			>
 				<ReportTable title="Roll Rate">
 					<div>{reportLoan?.rollRate || 0}</div>
 				</ReportTable>
@@ -139,6 +290,21 @@ export const AllDefaultReport: FC = () => {
 					</div>
 				</ReportTable>
 			</div>
+
+			<Modal
+				visible={openInsurance}
+				onHide={() => {
+					setOpenInsurance(false);
+				}}
+				width="90vw"
+				title="Default Loans"
+			>
+				<DataTable
+					columns={columnsModal as any}
+					data={reportLoan?.loans || []}
+					progressPending={myData.isLoading}
+				/>
+			</Modal>
 		</div>
 	);
 };

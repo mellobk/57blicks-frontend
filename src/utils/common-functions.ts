@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
 	Investor,
 	Role,
@@ -150,4 +151,15 @@ export const findPermission = (
 	);
 
 	return foundPermissions || false;
+};
+
+export const getIsSameMonthYear = (date: string): any => {
+	const specificDate = new Date(date);
+
+	const currentDate = new Date();
+
+	return (
+		specificDate.getMonth() === currentDate.getMonth() &&
+		specificDate.getFullYear() === currentDate.getFullYear()
+	);
 };

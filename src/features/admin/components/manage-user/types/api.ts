@@ -1,5 +1,7 @@
 import type { Collateral } from "@/types/api/collateral";
 import type { Opportunity } from "../../opportunities/types/fields";
+import type { Borrower } from "@/types/fields/borrower";
+import type { Lender } from "@/types/api/lender";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Role {
@@ -95,4 +97,6 @@ export interface IGlobalSearch {
 	users?: Array<User>;
 	collaterals?: Array<Collateral>;
 	opportunities?: Array<Opportunity>;
+	borrowers?: Array<Borrower>;
+	lenders?: Array<Lender>;
 }

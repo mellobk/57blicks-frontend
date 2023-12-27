@@ -26,6 +26,8 @@ import { useNavigate } from "@tanstack/router";
 /* import ManageNotificationService from "../../../notifications/api/notification"; */
 
 export const AccountingTable: FC = () => {
+	const idQueryParameter = new URLSearchParams(window.location.search);
+	const idParameter = idQueryParameter.get("id");
 	const navigate = useNavigate();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [openModal, setOpenModal] = useState<boolean>(false);
@@ -103,6 +105,16 @@ export const AccountingTable: FC = () => {
 			roles: ["super-admin"],
 		}); */
 	};
+
+	useEffect(() => {
+		if (accountQuery?.data?.length && idParameter) {
+			const userParameters = accountQuery.data.find(
+				(data) => data.id === idParameter
+			);
+			setSelectedUser(userParameters || {});
+			console.log(userParameters);
+		}
+	}, [accountQuery.data, idParameter]);
 
 	const handleDeleteAdmin = (id: string) => {
 		console.log(id);

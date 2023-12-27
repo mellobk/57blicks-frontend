@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { useEffect, useState } from "react";
 
 import type { FC } from "react";
@@ -13,6 +17,11 @@ import { getLabel } from "@/utils/common-functions";
 import { useDebounce } from "@/hooks/debounce";
 import { useNavigate } from "@tanstack/router";
 import { useQuery } from "@tanstack/react-query";
+import type { Collateral } from "@/features/admin/components/servicing/types/api";
+import {
+	servicingInvestorTabs,
+	servicingTabs,
+} from "@/features/admin/components/servicing/utils/tabs";
 
 interface GlobalSearchProps {
 	handleOpenGlobalSearch?: () => void;
@@ -64,7 +73,7 @@ export const GlobalSearch: FC<GlobalSearchProps> = ({
 
 	const navigateUser = (data: User): void => {
 		void navigate({
-			to: `/manage-users/${getPluralRole(data.role?.name || "")}`,
+			to: `/manage-users/${getPluralRole(data.role?.name || "")}?id=${data.id}`,
 		});
 
 		if (handleOpenGlobalSearch) {
@@ -80,6 +89,56 @@ export const GlobalSearch: FC<GlobalSearchProps> = ({
 		if (handleOpenGlobalSearch) {
 			handleOpenGlobalSearch();
 		}
+	};
+
+	const navigateCollaterals = (
+		id: string,
+		servicingName?: string,
+		borrower?: string
+	): void => {
+		/* 	 */
+
+		const findData = servicingTabs.find((data) => {
+			return data.label === servicingName;
+		});
+
+		if (findData) {
+			void navigate({
+				to: `/${findData.routeTo}?id=${id}${borrower ? "&tab=Borrower" : ""}`,
+			});
+		}
+
+		if (handleOpenGlobalSearch) {
+			handleOpenGlobalSearch();
+		}
+	};
+
+	const navigateLender = (
+		id: string,
+		servicingName?: string,
+		participationId?: string
+	): void => {
+		/* 	 */
+
+		const findData = servicingInvestorTabs.find((data) => {
+			return data.label === servicingName;
+		});
+
+		console.log(servicingName, id, findData);
+
+		if (findData) {
+			void navigate({
+				to: `/${findData.routeTo}?id=${id}${
+					servicingName === "DKC Lending LLC"
+						? `&participationId=${participationId}`
+						: ""
+				}`,
+			});
+		}
+
+		/* 	if (handleOpenGlobalSearch) {
+			handleOpenGlobalSearch();
+		} */
 	};
 
 	return (
@@ -172,6 +231,97 @@ export const GlobalSearch: FC<GlobalSearchProps> = ({
 										);
 									}
 								)}
+								<div className="border-t border-gray-1900 mt-3 opacity-20"></div>
+
+								<div className="text-gray-2000 font-bold">Collaterals</div>
+								{globalSearchQuery.data?.collaterals?.map(
+									(collateral: Collateral) => {
+										return (
+											<div
+												key={collateral.id}
+												className="flex gap-3 items-center px-[5px] cursor-pointer"
+												onClick={(): void => {
+													navigateCollaterals(
+														(collateral &&
+															collateral.loans &&
+															collateral?.loans[0]?.id) ||
+															"",
+														(collateral &&
+															collateral.loans &&
+															collateral?.loans[0]?.fundingBreakDowns &&
+															collateral?.loans[0]?.fundingBreakDowns[0]?.lender
+																?.name) ||
+															""
+													);
+												}}
+											>
+												<div>
+													<Icon name="attach" width="20" />
+												</div>
+												<div className="text-black font-bold">
+													{collateral.address}
+												</div>{" "}
+											</div>
+										);
+									}
+								)}
+								<div className="border-t border-gray-1900 mt-3 opacity-20"></div>
+
+								<div className="text-gray-2000 font-bold">Borrowers</div>
+								{globalSearchQuery.data?.borrowers?.map((borrower: any) => {
+									return (
+										<div
+											key={borrower.id}
+											className="flex gap-3 items-center px-[5px] cursor-pointer"
+											onClick={(): void => {
+												navigateCollaterals(
+													(borrower &&
+														borrower.loans &&
+														borrower?.loans[0]?.id) ||
+														"",
+													(borrower &&
+														borrower.loans &&
+														borrower?.loans[0]?.fundingBreakDowns &&
+														borrower?.loans[0]?.fundingBreakDowns[0]?.lender
+															?.name) ||
+														"",
+													"borrower"
+												);
+											}}
+										>
+											<div>
+												<Icon name="attach" width="20" />
+											</div>
+											<div className="text-black font-bold">{borrower.llc}</div>{" "}
+										</div>
+									);
+								})}
+								<div className="border-t border-gray-1900 mt-3 opacity-20"></div>
+
+								<div className="text-gray-2000 font-bold">Investors</div>
+								{globalSearchQuery.data?.lenders?.map((data: any) => {
+									return data.fundingBreakdowns.map((value: any) => {
+										return (
+											<div
+												key={value.id}
+												className="flex gap-3 items-center px-[5px] cursor-pointer"
+												onClick={(): void => {
+													navigateLender(
+														value?.loan?.id || "",
+														data?.name || ""
+													);
+												}}
+											>
+												<div>
+													<Icon name="attach" width="20" />
+												</div>
+												<div className="text-black font-bold">
+													{value.loan.borrower.user.firstName}
+												</div>{" "}
+											</div>
+										);
+									});
+								})}
 								<div className="border-t border-gray-1900 mt-3 opacity-20"></div>
 							</div>
 						)}

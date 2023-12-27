@@ -30,6 +30,8 @@ import { useNavigate } from "@tanstack/router";
 interface SuccessProps {}
 
 export const AdminTable: FC<SuccessProps> = () => {
+	const idQueryParameter = new URLSearchParams(window.location.search);
+	const idParameter = idQueryParameter.get("id");
 	const navigate = useNavigate();
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
@@ -212,6 +214,15 @@ export const AdminTable: FC<SuccessProps> = () => {
 		void adminQuery.refetch();
 	}, [userLoggedInfo]);
 
+	useEffect(() => {
+		if (adminQuery?.data?.length && idParameter) {
+			const userParameters = adminQuery.data.find(
+				(data) => data.id === idParameter
+			);
+			setSelectedUser(userParameters || {});
+			console.log(userParameters);
+		}
+	}, [adminQuery.data, idParameter]);
 	return (
 		<>
 			{adminQuery.data && (

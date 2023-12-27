@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { type FC, useState } from "react";
+import { type FC, useState, useEffect } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { LoanInformation } from "../../LoanInformation";
 import { BorrowerInformation } from "../../BorrowerInformation";
@@ -24,6 +24,7 @@ interface Props {
 	handleOnCLose?: () => void;
 	handleRefreshData?: () => void;
 	data?: any;
+	tab?: string;
 }
 
 const tabsPermissions = {
@@ -42,6 +43,7 @@ export const ShowModal: FC<Props> = ({
 	handleOnCLose,
 	handleRefreshData,
 	data,
+	tab,
 }) => {
 	const userInfo = userStore((state) => state.loggedUserInfo);
 
@@ -79,9 +81,17 @@ export const ShowModal: FC<Props> = ({
 		tabsPermissions.invoice,
 	];
 
-	const [actualTabData, setActualTabData] = useState(
-		TABS.find((tab) => tab.label === "Loan")
-	);
+	const [actualTabData, setActualTabData] = useState<{
+		label: string;
+		title: string;
+	}>();
+	useEffect(() => {
+		if (!actualTabData) {
+			const findTab = TABS.find((tabInfo) => tabInfo.label === (tab || "Loan"));
+			setActualTabData(findTab as any);
+			console.log(findTab, tab);
+		}
+	}, [TABS]);
 
 	const loanQuery = useQuery(
 		["loan-query", data?.loan.id],

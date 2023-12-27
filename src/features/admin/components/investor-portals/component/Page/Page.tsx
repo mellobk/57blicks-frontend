@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type FC, useEffect, useState } from "react";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
@@ -21,6 +23,8 @@ interface Props {
 }
 
 export const Page: FC<Props> = ({ actualTab, id }) => {
+	const idQueryParameter = new URLSearchParams(window.location.search);
+	const idParameter = idQueryParameter.get("id");
 	const [selectedRow, setSelectedRow] = useState<FundingBreakdown | null>(null);
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
@@ -59,7 +63,22 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 	];
 
+	useEffect(() => {
+		if (lenderQuery.data && idParameter) {
+			const foundLoan = lenderQuery.data?.fundingBreakdowns.find((data) => {
+				return data.loan.id === idParameter;
+			});
+
+			setSelectedRow(foundLoan as any);
+		}
+	}, [lenderQuery.data, idParameter]);
+
 	const columns = [
+		{
+			name: "Borrower Llc",
+			selector: (row: FundingBreakdown) => row.loan?.borrower?.llc || "",
+			sortable: true,
+		},
 		{
 			name: "Collateral Address",
 			selector: (row: FundingBreakdown) =>
