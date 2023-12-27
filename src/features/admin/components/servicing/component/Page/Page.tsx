@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -12,7 +13,7 @@ import { Table } from "./Table/Table";
 import { Toggle } from "@/components/ui/Toggle";
 import { ShowModal } from "@/features/admin/components/servicing/component/Page/ShowModal/ShowModal";
 import { formatDate, moneyFormat } from "@/utils/formats";
-import { validateDate } from "@/utils/common-functions";
+import { getIsSameMonthYear, validateDate } from "@/utils/common-functions";
 import LendersService from "@/api/lenders.ts";
 import type { Lender } from "@/types/api/lender";
 import LoansService from "@/api/loans";
@@ -26,6 +27,9 @@ interface Props {
 }
 
 export const Page: FC<Props> = ({ actualTab, id }) => {
+	const idQueryParameter = new URLSearchParams(window.location.search);
+	const idParameter = idQueryParameter.get("id");
+	const tabParameter = idQueryParameter.get("tab");
 	const [modalData, setModalData] = useState<FundingBreakdown | null>(null);
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [archived, setArchived] = useState<boolean>(false);
@@ -106,6 +110,18 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	}, [updateLoanQuery]); */
 
 	useEffect(() => {
+		if (tableData && idParameter) {
+			/* 			const userParameters = tableData.find((data) => data.id === idParameter);
+			setSelectedUser(userParameters || {}); */
+
+			const userParameters = tableData.find(
+				(data) => data?.loan?.id === idParameter
+			);
+			setModalData(userParameters as any);
+		}
+	}, [tableData, idParameter]);
+
+	useEffect(() => {
 		if (updateLoanQuery.isSuccess) {
 			getDkcLenderQuery.mutate();
 			updateLoanQuery.reset();
@@ -156,6 +172,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			maxWidth: "230px",
 			minWidth: "230px",
 			selector: (row: FundingBreakdown) =>
+				row?.loan.borrower?.llc ||
 				`${row?.loan.borrower?.user.firstName} ${row?.loan.borrower?.user.lastName}`,
 			omit: false,
 		},
@@ -187,7 +204,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Regular Payment",
 			selector: (row: FundingBreakdown) =>
-				moneyFormat(Number.parseInt(row?.regular)),
+				moneyFormat(Number.parseInt(row?.loan?.regular || "0")),
 			omit: false,
 			maxWidth: "150px",
 			minWidth: "150px",
@@ -289,8 +306,15 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: `${currentMonthName} (Current)`,
-			selector: (row: ParticipationBreakdown) =>
-				moneyFormat(Number(row.regular)),
+			selector: (row: ParticipationBreakdown) => {
+				const data = getIsSameMonthYear(
+					row.loan.originationDate as unknown as string
+				)
+					? row.loan.prorated
+					: row.loan.regular;
+				console.log(data);
+				return moneyFormat(Number.parseFloat(data || "0"));
+			},
 			sortable: true,
 			conditionalCellStyles: [
 				{
@@ -337,6 +361,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				handleOnCLose={(): void => {
 					setModalData(null);
 				}}
+				tab={tabParameter || ""}
 			/>
 		</div>
 	);

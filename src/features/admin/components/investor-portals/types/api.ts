@@ -73,6 +73,17 @@ export interface Loan {
 	collaterals: Array<Collateral>;
 	ltv: string;
 }
+export interface Role {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	createdBy: null;
+	updatedBy: null;
+	deletedAt: null;
+	name: string;
+	isSpecialCase?: boolean;
+	description?: string;
+}
 
 export interface FundingBreakdown {
 	id: string;
@@ -83,6 +94,7 @@ export interface FundingBreakdown {
 	prorated: string;
 	regular: string;
 	loan: Loan;
+	lender?: Role;
 	type: "Investor" | "YieldSpread" | "Lender" | "Servicing";
 }
 

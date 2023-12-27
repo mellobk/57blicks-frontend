@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-use-before-define */
 export interface DkcServicing {
 	id?: string;
 	createdAt?: Date;
@@ -10,6 +12,18 @@ export interface DkcServicing {
 	monthlyPayment?: string;
 	originDate?: string;
 	maturityDate?: string;
+}
+
+export interface Role {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	createdBy: null;
+	updatedBy: null;
+	deletedAt: null;
+	name: string;
+	isSpecialCase?: boolean;
+	description?: string;
 }
 
 export interface Datum {
@@ -56,7 +70,44 @@ export interface Borrower {
 	user: User;
 }
 
+export interface FundingBreakdown {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	amount: string;
+	rate: string;
+	prorated: string;
+	regular: string;
+	loan: Loan;
+	lender?: Role;
+	type: "Investor" | "YieldSpread" | "Lender" | "Servicing";
+}
+
 export interface Collateral {
+	loans?: Array<{
+		fundingBreakDowns?: Array<FundingBreakdown>;
+		id?: string;
+		name?: string;
+		comment?: string;
+		createdAt?: Date;
+		updatedAt: Date;
+		type: string;
+		totalLoanAmount: string;
+		interestRate: string;
+		originationDate: Date;
+		maturityDate: Date;
+		constructionHoldback: string;
+		amountDrawn: string;
+		prepaymentPenalty: string;
+		status: string;
+		taxesPaid: boolean;
+		loanConsultant: string;
+		leadSource: string;
+		borrower?: Borrower;
+		collaterals: Array<Collateral>;
+		ltv: string;
+		defaultType: string;
+	}>;
 	id: string;
 	createdAt: Date;
 	updatedAt: Date;
@@ -94,19 +145,8 @@ export interface Loan {
 	regular?: string;
 }
 
-export interface FundingBreakdown {
-	id: string;
-	createdAt: Date;
-	updatedAt: Date;
-	amount: string;
-	rate: string;
-	prorated: string;
-	regular: string;
-	loan: Loan;
-	type: "Investor" | "YieldSpread" | "Lender" | "Servicing";
-}
-
 export interface DkcLenders {
+	loan: any;
 	data?: Array<Datum>;
 	id?: string;
 	createdAt?: Date;

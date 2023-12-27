@@ -37,6 +37,7 @@ import { userName } from "@/utils/constant";
 import { TextArea } from "@/components/forms/TextArea";
 import { LedgerTypeOfPayment } from "../../../servicing/component/Ledger/types";
 import { FundingBreakdown } from "../../../servicing/component/FundingBreakdown/FundingBreakdown";
+import { Button } from "@/components/ui/Button";
 
 interface ServicingModalProps {
 	openModal?: boolean;
@@ -208,88 +209,116 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 						className=" flex absolute  items-center justify-end"
 						style={{ right: "65px", top: "24px", zIndex: 1 }}
 					>
-						{userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN ? (
-							<ModalActions
-								comment={
-									ledgerId ? null : (
-										<TextArea
-											value={comment}
-											onChange={(e): void => {
-												setComment(e.target.value);
-											}}
-											label="Comment"
-											className="w-full border-[1px] border-black rounded-md"
-										></TextArea>
-									)
-								}
-								status={status}
-								validApprove={validApprove}
-								openApproved={openApprovedModal}
-								openDecline={openDeclineModal}
-								handleViewOnly={(): void => {
-									setHandleEdit(!handleEdit);
-								}}
-								onOpenApproved={(): void => {
-									setOpenApprovedModal(!openApprovedModal);
-								}}
-								onOpenDecline={(): void => {
-									setOpenDeclineModal(!openDeclineModal);
-								}}
-								type={type}
-								onSuccess={(): void => {
-									if (ledgerId) {
-										updateFundingBreakDownQuery.mutate(
-											loanUpdated as unknown as LoanLedger
-										);
+						<div>
+							{approvalQuery?.data?.status !== "PENDING" && (
+								<>
+									{approvalQuery?.data?.status === "APPROVED" ? (
+										<div className="cursor-pointer">
+											<Button
+												buttonText="Approved"
+												disabled={!validApprove}
+												className=" rounded-3xl bg-green-900 text-green-500"
+											/>
+										</div>
+									) : (
+										userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN && (
+											<div className="cursor-pointer">
+												<Button
+													buttonText="Declined"
+													className=" rounded-3xl bg-red-200 text-red-500"
+												/>
+											</div>
+										)
+									)}
+								</>
+							)}
+						</div>
+						<>
+							{userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN ? (
+								approvalQuery?.data?.status === "PENDING" && (
+									<ModalActions
+										comment={
+											ledgerId ? null : (
+												<TextArea
+													value={comment}
+													onChange={(e): void => {
+														setComment(e.target.value);
+													}}
+													label="Comment"
+													className="w-full border-[1px] border-black rounded-md"
+												></TextArea>
+											)
+										}
+										status={status}
+										validApprove={validApprove}
+										openApproved={openApprovedModal}
+										openDecline={openDeclineModal}
+										handleViewOnly={(): void => {
+											setHandleEdit(!handleEdit);
+										}}
+										onOpenApproved={(): void => {
+											setOpenApprovedModal(!openApprovedModal);
+										}}
+										onOpenDecline={(): void => {
+											setOpenDeclineModal(!openDeclineModal);
+										}}
+										type={type}
+										onSuccess={(): void => {
+											if (ledgerId) {
+												updateFundingBreakDownQuery.mutate(
+													loanUpdated as unknown as LoanLedger
+												);
 
-										updateLedgerQuery.mutate({
-											id: ledgerId,
-											approvalState: ApprovalLedgerStateType.APPROVED,
-											typeOfPayment: LedgerTypeOfPayment.PRINCIPAL,
-											loan: loanUpdated,
-										} as unknown as UpdateLedgerProps);
-									} else {
+												updateLedgerQuery.mutate({
+													id: ledgerId,
+													approvalState: ApprovalLedgerStateType.APPROVED,
+													typeOfPayment: LedgerTypeOfPayment.PRINCIPAL,
+													loan: loanUpdated,
+												} as unknown as UpdateLedgerProps);
+											} else {
+												const editData = {
+													...editLoan,
+													status: LoanStatusType.APPROVED,
+												};
+												updateLoanQuery.mutate(editData as any);
+											}
+
+											setTypeProcess("approve");
+										}}
+										onDecline={(): void => {
+											if (ledgerId) {
+												updateLedgerQuery.mutate({
+													id: ledgerId,
+													approvalState: ApprovalLedgerStateType.REJECTED,
+												} as unknown as UpdateLedgerProps);
+											} else {
+												updateLoanQuery.mutate({
+													id: id,
+													comment: comment,
+													status: LoanStatusType.REJECTED,
+												});
+											}
+
+											setTypeProcess("decline");
+										}}
+									/>
+								)
+							) : (
+								<ModalActionsAdmin
+									handleViewOnly={(): void => {
+										setHandleEdit(!handleEdit);
+									}}
+									onOpenApproved={(): void => {
 										const editData = {
 											...editLoan,
-											status: LoanStatusType.APPROVED,
+											status: LoanStatusType.PENDING,
 										};
 										updateLoanQuery.mutate(editData as any);
-									}
-
-									setTypeProcess("approve");
-								}}
-								onDecline={(): void => {
-									if (ledgerId) {
-										updateLedgerQuery.mutate({
-											id: ledgerId,
-											approvalState: ApprovalLedgerStateType.REJECTED,
-										} as unknown as UpdateLedgerProps);
-									} else {
-										updateLoanQuery.mutate({
-											id: id,
-											comment: comment,
-											status: LoanStatusType.REJECTED,
-										});
-									}
-
-									setTypeProcess("decline");
-								}}
-							/>
-						) : (
-							<ModalActionsAdmin
-								handleViewOnly={(): void => {
-									setHandleEdit(!handleEdit);
-								}}
-								onOpenApproved={(): void => {
-									const editData = {
-										...editLoan,
-										status: LoanStatusType.PENDING,
-									};
-									updateLoanQuery.mutate(editData as any);
-									setTypeProcess("approve");
-								}}
-							/>
-						)}
+										setTypeProcess("approve");
+									}}
+								/>
+							)}
+						</>
 					</div>
 					<div
 						className=" flex absolute w-full items-center justify-center"

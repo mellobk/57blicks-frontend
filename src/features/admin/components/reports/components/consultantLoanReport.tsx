@@ -34,7 +34,7 @@ export const ConsultantLoanReport: FC = () => {
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const [chartData, setChartData] = useState([]);
 	const [keys, setKey] = useState<Array<string>>([]);
-	const [excelData, setExcelData] = useState<Array<any>>([]);
+	const [_, setExcelData] = useState<Array<any>>([]);
 	const consultantQuery = useQuery(
 		["all-consultant-loans"],
 		() => {
@@ -144,13 +144,35 @@ export const ConsultantLoanReport: FC = () => {
 	}, [consultantQuery.data]);
 
 	const downloadReport = (): void => {
-		const data = [headerCsv, ...(excelData ?? [])];
+		const insuranceCsv = consultantQuery.data.loans;
+
+		const csvData = insuranceCsv?.map((data: any) => {
+			return [
+				data.borrower?.llc,
+				data?.borrower?.user.mailingAddress,
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				formatDate(data?.originationDate.toString()),
+				data?.collaterals[0]?.assetType,
+			];
+		});
+		const data = [headerCsv, ...csvData];
 
 		downloadCSV(data, "LoansByConsultant.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
-		const data = [headerCsv, ...(excelData ?? [])];
+		const insuranceCsv = consultantQuery.data.loans;
+
+		const csvData = insuranceCsv?.map((data: any) => {
+			return [
+				data.borrower?.llc,
+				data?.borrower?.user.mailingAddress,
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				formatDate(data?.originationDate.toString()),
+				data?.collaterals[0]?.assetType,
+			];
+		});
+		const data = [headerCsv, ...csvData];
 
 		downloadXLSX(data, "LoansByConsultant.xlsx");
 	};

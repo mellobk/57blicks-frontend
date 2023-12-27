@@ -35,6 +35,8 @@ import { useNavigate } from "@tanstack/router";
 interface SuccessProps {}
 
 export const InvestorsTable: FC<SuccessProps> = () => {
+	const idQueryParameter = new URLSearchParams(window.location.search);
+	const idParameter = idQueryParameter.get("id");
 	const navigate = useNavigate();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 
@@ -160,6 +162,16 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 		deleteAdminMutation.mutate(id);
 	};
 
+	useEffect(() => {
+		if (investorQuery?.data?.length && idParameter) {
+			const userParameters = investorQuery.data.find(
+				(data) => data?.user?.id === idParameter
+			);
+			setSelectedUser(userParameters || {});
+			console.log(userParameters);
+		}
+	}, [investorQuery.data, idParameter]);
+
 	const handleEnableUser = (id: string) => {
 		restoreInvestorMutation.mutate(id);
 
@@ -215,7 +227,7 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 	};
 
 	const handleRowClicked = (row: unknown): void => {
-		setSelectedUser(row as Investor);
+		setSelectedUser(row || {});
 	};
 
 	const handleRefetch = async (): Promise<void> => {
