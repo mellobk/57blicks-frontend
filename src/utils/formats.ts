@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -91,10 +94,21 @@ export const dateFormatFormat = (inputString: string | Date): string => {
 };
 
 export const formatDate = (dateString: string) => {
-	const date = new Date(dateString);
-	const day = (date.getDate() + 1).toString().padStart(2, "0");
+	// Split the date string into parts
+	const parts = dateString.split("-");
+	// Note: Months are 0-indexed in JavaScript Date, so subtract 1
+	const date = new Date(
+		parts[0] as any,
+		(parts[1] as any) - 1,
+		parts[2] as any
+	);
+
+	// Format day and month with leading zeros
+	const day = date.getDate().toString().padStart(2, "0");
 	const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed
 	const year = date.getFullYear();
+
+	// Return the formatted date string
 	return `${month}-${day}-${year}`;
 };
 
