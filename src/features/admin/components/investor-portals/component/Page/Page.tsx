@@ -75,7 +75,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 
 	const columns = [
 		{
-			name: "Borrower Llc",
+			name: "Borrower",
 			selector: (row: FundingBreakdown) => row.loan?.borrower?.llc || "",
 			sortable: true,
 		},

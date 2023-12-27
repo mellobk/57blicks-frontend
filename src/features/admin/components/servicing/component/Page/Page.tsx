@@ -171,8 +171,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			name: "Borrower",
 			maxWidth: "230px",
 			minWidth: "230px",
-			selector: (row: FundingBreakdown) =>
-				`${row?.loan.borrower?.user.firstName} ${row?.loan.borrower?.user.lastName}`,
+			selector: (row: FundingBreakdown) => `${row?.loan.borrower?.llc} `,
 			omit: false,
 		},
 		{
