@@ -12,6 +12,14 @@ export const servicingTabs = [
 	{ label: "DKC Lending V", routeTo: "servicing/dkc-v" },
 ];
 
+export const servicingInvestorTabs = [
+	{ label: "DKC Lending LLC", routeTo: "investor-portals/dkc-llc" },
+	{ label: "DKC Lending FL", routeTo: "investor-portals/dkc-fl" },
+	{ label: "DKC Lending IV", routeTo: "investor-portals/dkc-iv" },
+	{ label: "DKC Lending CL", routeTo: "investor-portals/dkc-cl" },
+	{ label: "DKC Lending V", routeTo: "investor-portals/dkc-v" },
+];
+
 export const approveModalTabs = [
 	{ label: "Loan", routeTo: "servicing/dkc-llc" },
 	{ label: "Borrower", routeTo: "servicing/dkc-fl" },
