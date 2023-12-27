@@ -221,19 +221,21 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 											/>
 										</div>
 									) : (
-										<div className="cursor-pointer">
-											<Button
-												buttonText="Declined"
-												className=" rounded-3xl bg-red-200 text-red-500"
-											/>
-										</div>
+										userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN && (
+											<div className="cursor-pointer">
+												<Button
+													buttonText="Declined"
+													className=" rounded-3xl bg-red-200 text-red-500"
+												/>
+											</div>
+										)
 									)}
 								</>
 							)}
 						</div>
-						{approvalQuery?.data?.status === "PENDING" && (
-							<>
-								{userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN ? (
+						<>
+							{userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN ? (
+								approvalQuery?.data?.status === "PENDING" && (
 									<ModalActions
 										comment={
 											ledgerId ? null : (
@@ -300,23 +302,23 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 											setTypeProcess("decline");
 										}}
 									/>
-								) : (
-									<ModalActionsAdmin
-										handleViewOnly={(): void => {
-											setHandleEdit(!handleEdit);
-										}}
-										onOpenApproved={(): void => {
-											const editData = {
-												...editLoan,
-												status: LoanStatusType.PENDING,
-											};
-											updateLoanQuery.mutate(editData as any);
-											setTypeProcess("approve");
-										}}
-									/>
-								)}
-							</>
-						)}
+								)
+							) : (
+								<ModalActionsAdmin
+									handleViewOnly={(): void => {
+										setHandleEdit(!handleEdit);
+									}}
+									onOpenApproved={(): void => {
+										const editData = {
+											...editLoan,
+											status: LoanStatusType.PENDING,
+										};
+										updateLoanQuery.mutate(editData as any);
+										setTypeProcess("approve");
+									}}
+								/>
+							)}
+						</>
 					</div>
 					<div
 						className=" flex absolute w-full items-center justify-center"
