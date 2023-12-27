@@ -40,7 +40,7 @@ export const LoanProductReport: FC = () => {
 	];
 	const [chartData, setChartData] = useState([]);
 	const [keys, setKey] = useState<Array<string>>([]);
-	const [excelData, setExcelData] = useState<Array<any>>([]);
+	const [_, setExcelData] = useState<Array<any>>([]);
 	const consultantQuery = useQuery(
 		["all-products-loans"],
 		() => {

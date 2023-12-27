@@ -42,7 +42,7 @@ export const AssetLoanReport: FC = () => {
 
 	const [chartData, setChartData] = useState([]);
 	const [keys, setKey] = useState<Array<string>>([]);
-	const [excelData, setExcelData] = useState<Array<any>>([]);
+	const [_, setExcelData] = useState<Array<any>>([]);
 	const getLoanAssets = useQuery(
 		["all-assets-loans"],
 		() => {

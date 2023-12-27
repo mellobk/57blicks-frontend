@@ -34,7 +34,7 @@ export const ConsultantLoanReport: FC = () => {
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const [chartData, setChartData] = useState([]);
 	const [keys, setKey] = useState<Array<string>>([]);
-	const [excelData, setExcelData] = useState<Array<any>>([]);
+	const [_, setExcelData] = useState<Array<any>>([]);
 	const consultantQuery = useQuery(
 		["all-consultant-loans"],
 		() => {
