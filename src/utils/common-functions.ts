@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
 	Investor,
@@ -8,10 +12,62 @@ import type {
 import type { Permissions } from "../features/admin/components/manage-user/types/api";
 import { RoleType } from "@/types/api/permissions-type";
 import moment from "moment";
+import type { FundingBreakdown } from "@/features/admin/components/servicing/types/api";
 
 export const statusSort = (rowA: Investor, rowB: Investor) => {
 	const a = rowA.user?.isActive || "";
 	const b = rowB.user?.isActive || "";
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
+
+export const statusTaxes = (rowA: FundingBreakdown, rowB: FundingBreakdown) => {
+	const a = rowA.loan.taxesPaid || "";
+	const b = rowB.loan.taxesPaid || "";
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
+
+export const statusDefault = (
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+) => {
+	const a = rowA.loan.status || "";
+	const b = rowB.loan.status || "";
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
+
+export const statusDefaultType = (
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+) => {
+	const a = rowA.loan.defaultType || "";
+	const b = rowB.loan.defaultType || "";
 
 	if (a > b) {
 		return 1;

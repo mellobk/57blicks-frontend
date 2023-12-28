@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { type FC, useEffect, useState } from "react";
 import moment from "moment";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import LendersService from "@/api/lenders";
 import { Input } from "@/components/forms/Input";
@@ -16,6 +18,7 @@ import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import { formatDate, moneyFormat, percentageFormat } from "@/utils/formats";
 
 import PayablesAdmin from "../PayablesAdmin";
+import type { DkcLenders } from "../../../servicing/types/api";
 
 interface Props {
 	actualTab: string;
@@ -30,6 +33,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const setLenderData = investorPortalsStore((state) => state.setLender);
 	const lenderData = investorPortalsStore((state) => state.lenders);
+	const [tableData, setTableData] = useState<Array<DkcLenders>>([]);
 	const currentMonthName = moment().format("MMMM");
 
 	const findDkcLender = () => {
@@ -48,11 +52,15 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{ enabled: lenderData.length <= 0 }
 	);
 
-	const lenderQuery = useQuery(
+	/* 	const lenderQuery = useQuery(
 		["lender-query"],
 		() => LendersService.getLenderById(findDkcLender(), searchValue),
 		{ enabled: lenderData.length > 0 }
-	);
+	); */
+
+	const lenderQuery = useMutation(async () => {
+		return LendersService.getLenderById(findDkcLender(), searchValue);
+	});
 
 	const conditionalRowStyles = [
 		{
@@ -62,6 +70,16 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			},
 		},
 	];
+
+	useEffect(() => {
+		if (lenderQuery.isSuccess) {
+			setTableData(lenderQuery?.data?.fundingBreakdowns || []);
+		}
+	}, [lenderQuery]);
+
+	useEffect(() => {
+		lenderQuery.mutate();
+	}, [searchValue, lenderData]);
 
 	useEffect(() => {
 		if (lenderQuery.data && idParameter) {
@@ -140,9 +158,9 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 	];
 
-	useEffect(() => {
+	/* 	useEffect(() => {
 		void lenderQuery.refetch();
-	}, [searchValue, lenderData]);
+	}, [searchValue, lenderData]); */
 
 	useEffect(() => {
 		setLenderData(lendersQuery.data || []);
@@ -222,9 +240,9 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 						className="h-full p-0 m-0 rounded-t-2xl overflow-y-auto"
 						columns={columns}
 						conditionalRowStyles={conditionalRowStyles}
-						data={lenderQuery.data?.fundingBreakdowns || []}
+						data={tableData || []}
 						onRowClicked={setSelectedRow}
-						progressPending={lenderQuery?.isFetching}
+						progressPending={lenderQuery?.isLoading}
 						fixedHeader
 					/>
 					<Footer data={lenderQuery.data?.fundingBreakdowns || []} />

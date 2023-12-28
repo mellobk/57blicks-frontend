@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-implied-eval */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, type ReactNode, useEffect, useState } from "react";
@@ -24,6 +25,7 @@ import ManageNotificationService from "@/features/admin/components/notifications
 import UserService from "../../../api/user.ts";
 import { findPermission } from "@/utils/common-functions.ts";
 import { PermissionType } from "@/types/api/permissions-type";
+import { getRefreshToken } from "@/lib/cognito.ts";
 
 type Props = {
 	children?: ReactNode;
@@ -93,6 +95,12 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 	}, [openModalGeneralSearch]);
 
 	useEffect(() => {
+		const interval = setInterval(async () => {
+			if (userInfo.email) {
+				await getRefreshToken(userInfo.email);
+			}
+		}, 900_000);
+
 		socket.emit("join", userInfo.id);
 
 		socket.on("notification", () => {
@@ -101,6 +109,7 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 		});
 		return () => {
 			socket.off("notification");
+			clearInterval(interval);
 		};
 	}, [userInfo]);
 
