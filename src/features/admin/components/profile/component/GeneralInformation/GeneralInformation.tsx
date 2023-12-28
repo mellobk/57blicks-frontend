@@ -12,15 +12,24 @@ import { generalInformationSchema } from "../../utils/Schemas/general-schemas";
 import { generalInformationFields } from "../../utils/input-fields";
 import ManageUsersService from "@/features/admin/components/manage-user/api/investors";
 import type { updateGeneralUserInformation } from "@/features/admin/components/manage-user/types/fields";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useStore from "@/stores/app-store";
 import { removeCountryCode, unFormatPhone } from "@/utils/common-functions";
-import userStore from "@/stores/user-store.ts";
+
+import UserService from "@/api/user";
 
 export const GeneralInformation: FC = () => {
-	const userInfo = userStore((state) => state.loggedUserInfo);
 	const [userData, setUserData] = useState<User>();
 	const [userInfoData, setUserInfoData] = useState<User>();
+
+	const userLoggedQuery = useQuery(
+		["user-logged-query"],
+		() => {
+			return UserService.getMyInfo();
+		},
+		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
+	);
+
 	const {
 		register,
 		handleSubmit,
@@ -43,14 +52,14 @@ export const GeneralInformation: FC = () => {
 			setTimeout(() => {
 				clearSuccessMessage();
 			}, 500);
+			void userLoggedQuery.refetch();
 			updateAdmin.reset();
 		}
 	}, [updateAdmin]);
 
 	useEffect(() => {
-		console.log(userInfo);
-		setUserInfoData(userInfo);
-	}, [userInfo]);
+		setUserInfoData(userLoggedQuery.data);
+	}, [userLoggedQuery.isFetching]);
 
 	useEffect(() => {
 		setValue(

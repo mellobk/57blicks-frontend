@@ -124,8 +124,6 @@ export const GlobalSearch: FC<GlobalSearchProps> = ({
 			return data.label === servicingName;
 		});
 
-		console.log(servicingName, id, findData);
-
 		if (findData) {
 			void navigate({
 				to: `/${findData.routeTo}?id=${id}${
@@ -136,9 +134,9 @@ export const GlobalSearch: FC<GlobalSearchProps> = ({
 			});
 		}
 
-		/* 	if (handleOpenGlobalSearch) {
+		if (handleOpenGlobalSearch) {
 			handleOpenGlobalSearch();
-		} */
+		}
 	};
 
 	return (

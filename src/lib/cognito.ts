@@ -1,6 +1,16 @@
+/* eslint-disable @typescript-eslint/require-await */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { COGNITO_CLIENT_ID, COGNITO_USER_POOL_ID } from "@/config";
+import { accessToken } from "@/utils/constant";
+import { sendToLocalStorage } from "@/utils/local-storage";
 import {
 	AuthenticationDetails,
+	CognitoRefreshToken,
 	CognitoUser,
 	CognitoUserAttribute,
 	CognitoUserPool,
@@ -229,6 +239,29 @@ export async function forgotPassword(
 			},
 		});
 	});
+}
+
+export async function getRefreshToken(username: string): Promise<any> {
+	console.log(username);
+	const cognitoUser = getCognitoUser(username);
+
+	const session = await getSession();
+	const refreshToken = session.getRefreshToken().getToken();
+	cognitoUser.refreshSession(
+		new CognitoRefreshToken({ RefreshToken: refreshToken }),
+		(refreshError, newSession) => {
+			if (refreshError) {
+				console.error(refreshError);
+				// Handle refresh error
+			} else {
+				// Session refreshed successfully
+				const newAccessToken = newSession.getAccessToken().getJwtToken();
+				console.log(newAccessToken);
+				sendToLocalStorage(accessToken, newAccessToken);
+				// Use the new tokens as needed
+			}
+		}
+	);
 }
 
 export async function changePassword(
