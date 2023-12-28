@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
 	Investor,
@@ -77,7 +81,7 @@ export const statusDefaultType = (
 };
 
 export const unFormatPhone = (number: string): string => {
-	return number.replaceAll(/[\s()-]/g, "");
+	return number.replace(/[\s()-]/g, "");
 };
 
 export const removeCountryCode = (number: string): string => {
@@ -173,7 +177,7 @@ export const formatDateString = (isoString: string): string => {
 
 export const formatPhoneNumber = (phone: string): string => {
 	// Remove all non-numeric characters
-	let numbers = phone.replaceAll(/\D/g, "");
+	let numbers = phone.replace(/\D/g, "");
 
 	// Extract the last 10 digits (ignoring country code)
 	numbers = numbers.slice(-10);

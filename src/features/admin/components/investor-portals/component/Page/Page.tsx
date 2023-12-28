@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -241,7 +242,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 						conditionalRowStyles={conditionalRowStyles}
 						data={tableData || []}
 						onRowClicked={setSelectedRow}
-						progressPending={lenderQuery?.isFetching}
+						progressPending={lenderQuery?.isLoading}
 						fixedHeader
 					/>
 					<Footer data={lenderQuery.data?.fundingBreakdowns || []} />
