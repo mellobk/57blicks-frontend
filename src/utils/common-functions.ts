@@ -8,6 +8,7 @@ import type {
 import type { Permissions } from "../features/admin/components/manage-user/types/api";
 import { RoleType } from "@/types/api/permissions-type";
 import moment from "moment";
+import type { FundingBreakdown } from "@/features/admin/components/servicing/types/api";
 
 export const statusSort = (rowA: Investor, rowB: Investor) => {
 	const a = rowA.user?.isActive || "";
@@ -24,8 +25,59 @@ export const statusSort = (rowA: Investor, rowB: Investor) => {
 	return 0;
 };
 
+export const statusTaxes = (rowA: FundingBreakdown, rowB: FundingBreakdown) => {
+	const a = rowA.loan.taxesPaid || "";
+	const b = rowB.loan.taxesPaid || "";
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
+
+export const statusDefault = (
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+) => {
+	const a = rowA.loan.status || "";
+	const b = rowB.loan.status || "";
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
+
+export const statusDefaultType = (
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+) => {
+	const a = rowA.loan.defaultType || "";
+	const b = rowB.loan.defaultType || "";
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
+
 export const unFormatPhone = (number: string): string => {
-	return number.replace(/[\s()-]/g, "");
+	return number.replaceAll(/[\s()-]/g, "");
 };
 
 export const removeCountryCode = (number: string): string => {
@@ -121,7 +173,7 @@ export const formatDateString = (isoString: string): string => {
 
 export const formatPhoneNumber = (phone: string): string => {
 	// Remove all non-numeric characters
-	let numbers = phone.replace(/\D/g, "");
+	let numbers = phone.replaceAll(/\D/g, "");
 
 	// Extract the last 10 digits (ignoring country code)
 	numbers = numbers.slice(-10);

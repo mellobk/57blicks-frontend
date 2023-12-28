@@ -13,7 +13,13 @@ import { Table } from "./Table/Table";
 import { Toggle } from "@/components/ui/Toggle";
 import { ShowModal } from "@/features/admin/components/servicing/component/Page/ShowModal/ShowModal";
 import { formatDate, moneyFormat } from "@/utils/formats";
-import { getIsSameMonthYear, validateDate } from "@/utils/common-functions";
+import {
+	getIsSameMonthYear,
+	statusDefault,
+	statusDefaultType,
+	statusTaxes,
+	validateDate,
+} from "@/utils/common-functions";
 import LendersService from "@/api/lenders.ts";
 import type { Lender } from "@/types/api/lender";
 import LoansService from "@/api/loans";
@@ -175,6 +181,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				row?.loan.borrower?.llc ||
 				`${row?.loan.borrower?.user.firstName} ${row?.loan.borrower?.user.lastName}`,
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Collateral Address",
@@ -198,6 +205,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			name: "Rate",
 			selector: (row: FundingBreakdown) => row?.loan.interestRate,
 			omit: false,
+			sortable: true,
 			maxWidth: "100px",
 			minWidth: "100px",
 		},
@@ -206,6 +214,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			selector: (row: FundingBreakdown) =>
 				moneyFormat(Number.parseInt(row?.loan?.regular || "0")),
 			omit: false,
+			sortable: true,
 			maxWidth: "150px",
 			minWidth: "150px",
 		},
@@ -214,6 +223,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			selector: (row: FundingBreakdown) =>
 				formatDate(row?.loan?.originationDate.toString()),
 			omit: false,
+			sortable: true,
 			maxWidth: "130px",
 			minWidth: "130px",
 		},
@@ -222,6 +232,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			selector: (row: FundingBreakdown) =>
 				formatDate(row?.loan?.maturityDate.toString()),
 			omit: false,
+			sortable: true,
 			maxWidth: "130px",
 			minWidth: "130px",
 			conditionalCellStyles: [
@@ -242,6 +253,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 					row?.loan.collaterals[0]?.insuranceExpirationDate.toString() || ""
 				),
 			omit: false,
+			sortable: true,
 			maxWidth: "130px",
 			minWidth: "130px",
 			conditionalCellStyles: [
@@ -260,6 +272,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Taxed Paid",
 			maxWidth: "50px",
+			sortable: true,
+			sortFunction: statusTaxes,
 			selector: (row: FundingBreakdown) => (
 				<div key={row.id}>
 					<Toggle
@@ -279,6 +293,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "In Default",
 			maxWidth: "50px",
+			sortable: true,
+			sortFunction: statusDefault,
 			selector: (row: FundingBreakdown) => (
 				<div key={row.id} className="flex justify-center items-center w-full">
 					<Toggle
@@ -299,6 +315,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Default Type",
 			maxWidth: "",
+			sortFunction: statusDefaultType,
+			sortable: true,
 			selector: (row: FundingBreakdown) => (
 				<div key={row.loan.id}>{row.loan.defaultType}</div>
 			),
@@ -306,6 +324,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: `${currentMonthName} (Current)`,
+			sortable: true,
 			selector: (row: ParticipationBreakdown) => {
 				const data = getIsSameMonthYear(
 					row.loan.originationDate as unknown as string
@@ -315,7 +334,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				console.log(data);
 				return moneyFormat(Number.parseFloat(data || "0"));
 			},
-			sortable: true,
+
 			conditionalCellStyles: [
 				{
 					when: (row: ParticipationBreakdown) => !!row,
