@@ -1,8 +1,9 @@
+import { Control, FieldErrors, useWatch } from "react-hook-form";
+
 import type { FC } from "react";
 import { FormatInput } from "@/components/forms/FormatInput";
-import { Toggle } from "@/components/ui/Toggle";
-import { Control, FieldErrors, useWatch } from "react-hook-form";
 import { Opportunity } from "@/features/admin/components/opportunities/types/fields";
+import { Toggle } from "@/components/ui/Toggle";
 
 interface Props {
 	control: Control<Opportunity>;
@@ -23,12 +24,12 @@ export const Switch: FC<Props> = ({
 	});
 
 	return (
-		<div className="relative" key={percentage}>
+		<div className=" relative" key={percentage}>
 			<FormatInput
 				className={
 					!!participantOpportunities[percentage]
 						? "disabled:bg-green-500/[0.2] disabled:text-green-500"
-						: ""
+						: "   "
 				}
 				control={control}
 				error={errors?.participantOpportunities?.[percentage]?.message}
@@ -38,12 +39,14 @@ export const Switch: FC<Props> = ({
 				wrapperClassName="mt-6"
 				disabled
 			/>
-			<div className="absolute bottom-3 right-3">
-				<Toggle
-					checked={!!participantOpportunities[percentage]}
-					checkedClassName="bg-green-500"
-					onChecked={(data) => onChange(data.target.checked, percentage)}
-				/>
+			<div className="absolute w-full top-4">
+				<div className="">
+					<Toggle
+						checked={!!participantOpportunities[percentage]}
+						checkedClassName="bg-green-500"
+						onChecked={(data) => onChange(data.target.checked, percentage)}
+					/>
+				</div>
 			</div>
 		</div>
 	);

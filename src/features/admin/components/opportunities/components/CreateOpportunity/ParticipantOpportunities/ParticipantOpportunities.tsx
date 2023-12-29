@@ -1,10 +1,11 @@
-import type { FC } from "react";
-import { useEffect } from "react";
 import type { Control, FieldErrors, UseFormSetValue } from "react-hook-form";
-import { useWatch } from "react-hook-form";
-import { Title } from "@/components/ui/Title";
+
+import type { FC } from "react";
 import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
 import { Switch } from "@/features/admin/components/opportunities/components/CreateOpportunity/ParticipantOpportunities/Switch/Switch";
+import { Title } from "@/components/ui/Title";
+import { useEffect } from "react";
+import { useWatch } from "react-hook-form";
 
 interface Props {
 	control: Control<Opportunity>;
