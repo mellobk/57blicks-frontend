@@ -32,7 +32,7 @@ export const InvoiceDocumentPreview: FC<Props> = ({ invoiceDataPdf }) => {
 			</Page>
 			<Page style={styles.body} size="A4" id="page3" wrap={true}>
 				<HeaderTablePDF title={"Servicing Notice"} />
-				<PDFServicingNotice link="" />
+				<PDFServicingNotice link={invoiceDataPdf.link} />
 				<Text
 					style={{
 						fontSize: "12px",

@@ -8,6 +8,7 @@ import { InvestorPortalsRoutes } from "@/features/admin/components/investor-port
 import { LoanOverview } from "@/features/admin/components/loan-overview/pages/LoanOverview/LoanOverview";
 import { ManageUserRoutes } from "@/features/admin/components/manage-user/routes/ManageUsersRoutes";
 import { OpportunitiesRoutes } from "@/features/admin/components/opportunities/routes/OpportunitiesRoutes";
+import PreviewInvoice from "../components/servicing/component/Invoice/Components/PreviewInvoice";
 import { ProfileRoutes } from "@/features/admin/components/profile/routes/ProfileRoutes";
 import { Reports } from "@/features/admin/components/reports/pages/Reports";
 import { LLC as ServicingLLC } from "@/features/admin/components/servicing/pages/LLC/LLC";
@@ -32,6 +33,12 @@ export const NavbarRoutes = [
 		page: ServicingLLC,
 		layout: DashboardLayout,
 		name: "Servicing",
+	},
+	{
+		path: "/invoice-preview",
+		page: PreviewInvoice,
+		layout: DashboardLayout,
+		name: "invoice-preview",
 	},
 	{
 		path: "/investor-portals/dkc-llc",

@@ -77,6 +77,7 @@ const PreviewInvoice: FC = () => {
 			regular: moneyFormat(Number.parseInt(String(loan.regular)) || 0),
 			address: "",
 			borrower: "",
+			link: "",
 		});
 	};
 	useEffect(() => {

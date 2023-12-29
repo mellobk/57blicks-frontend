@@ -10,14 +10,14 @@ const styles = StyleSheet.create({
 		marginRight: 20,
 	},
 	paragraph: {
-		fontSize: 15,
+		fontSize: 12,
 		margin: "auto",
 		flexDirection: "row",
 		marginTop: 10,
 		marginBottom: 10,
 	},
 	paragraphList: {
-		fontSize: 15,
+		fontSize: 12,
 		margin: "auto",
 		flexDirection: "row",
 
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 	},
 	paragraphLink: {
-		fontSize: 15,
+		fontSize: 12,
 		margin: "auto",
 		flexDirection: "row",
 		marginTop: 10,
