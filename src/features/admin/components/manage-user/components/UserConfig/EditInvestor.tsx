@@ -50,7 +50,7 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 			streetAddress: "-",
 			accountNumber: investor.accountNumber,
 			routingNumber: investor.routingNumber,
-			accountType: investor.accountType,
+			accountType: investor.accountType || ACCOUNT_OPTIONS[0]?.code,
 			bankingName: investor.bankingName,
 		},
 	});
@@ -74,8 +74,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 	);
 
 	useEffect(() => {
-		console.log("🚀 ~ file: EditInvestor.tsx:27 ~ errors:", errors);
-
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [errors]);
 
@@ -94,6 +92,7 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 				lastName: getValues("lastName") || "",
 				mailingAddress: getValues("mailingAddress") || "",
 				email: getValues("email") || "",
+				entityName: getValues("entityName") || "",
 				phoneNumber:
 					`+1` +
 					removeCountryCode(unFormatPhone(getValues("phoneNumber") || "")),
@@ -161,7 +160,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 										<Input
 											label="SSN/EIN"
 											placeholder="Enter SSN/EIN"
-											required
 											register={register("ssnEin")}
 											error={errors["ssnEin"] && errors["ssnEin"]?.message}
 										/>
@@ -173,7 +171,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 										<Input
 											label="Entity Name"
 											placeholder="Enter Entity Name"
-											required
 											register={register("entityName")}
 											error={
 												errors["entityName"] && errors["entityName"]?.message
@@ -208,7 +205,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 										<Input
 											label="Zip"
 											placeholder="Enter zip"
-											required
 											register={register("zip")}
 											error={errors["zip"] && errors["zip"]?.message}
 										/>
@@ -222,7 +218,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 									<Input
 										label="Banking Name"
 										placeholder="Enter Banking Name"
-										required
 										register={register("bankingName")}
 										error={
 											errors["bankingName"] && errors["bankingName"]?.message
@@ -233,7 +228,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 									<Input
 										label="Routing Number"
 										placeholder="Enter Routing Number"
-										required
 										register={register("routingNumber")}
 										error={
 											errors["routingNumber"] &&
@@ -246,7 +240,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 									<Input
 										label="Account Number"
 										placeholder="Enter Account Number"
-										required
 										register={register("accountNumber")}
 										error={
 											errors["accountNumber"] &&
@@ -260,10 +253,6 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 										register={register("accountType")}
 										className="flex flex-col gap-2"
 										label="Account Type"
-										error={
-											errors["accountType"] && errors["accountType"]?.message
-										}
-										required
 										placeholder="Select Account Type"
 										value={investor.accountType}
 										options={ACCOUNT_OPTIONS}
