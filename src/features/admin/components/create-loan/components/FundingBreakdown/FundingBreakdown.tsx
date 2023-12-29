@@ -22,10 +22,7 @@ import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
 import { calculateProrated, calculateRegular } from "@/utils/common-functions";
 import { validateChangeParticipant } from "./utils/validate-change-participant";
 import { moneyFormat } from "@/utils/formats";
-import {
-	validateProratedRowsCalculations,
-	validateRegularRowsCalculations,
-} from "./utils/validate-penny";
+import { validateProratedRowsCalculations } from "./utils/validate-penny";
 
 interface Props {
 	control: Control<Loan>;
