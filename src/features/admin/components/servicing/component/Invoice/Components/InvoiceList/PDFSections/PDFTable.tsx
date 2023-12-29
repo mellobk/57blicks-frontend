@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 		borderRightWidth: 0,
 		borderBottomWidth: 0,
 		marginRight: 20,
-		marginLeft: 20,
+		marginLeft: 0,
 	},
 	tableRowHeader: {
 		margin: "auto",
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 		textAlign: "left",
 	},
 	tableColDue: {
-		width: "15%",
+		width: "10%",
 		borderStyle: "solid",
 		borderWidth: 0,
 		borderLeftWidth: 0,
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
 	},
 
 	tableColPaid: {
-		width: "15%",
+		width: "10%",
 		borderStyle: "solid",
 		borderWidth: 0,
 		borderLeftWidth: 0,

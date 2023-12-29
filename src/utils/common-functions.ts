@@ -9,10 +9,10 @@ import type {
 	User,
 } from "@/features/admin/components/manage-user/types/api";
 
+import type { FundingBreakdown } from "@/features/admin/components/servicing/types/api";
 import type { Permissions } from "../features/admin/components/manage-user/types/api";
 import { RoleType } from "@/types/api/permissions-type";
 import moment from "moment";
-import type { FundingBreakdown } from "@/features/admin/components/servicing/types/api";
 
 export const statusSort = (rowA: Investor, rowB: Investor) => {
 	const a = rowA.user?.isActive || "";

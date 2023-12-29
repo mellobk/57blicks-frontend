@@ -32,6 +32,7 @@ export interface InvoiceDataPdf {
 	regular: string;
 	borrower: string;
 	address: string;
+	link: string;
 }
 
 export interface notification {

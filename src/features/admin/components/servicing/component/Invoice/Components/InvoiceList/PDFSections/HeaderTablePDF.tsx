@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
 	logo: {
 		width: "200px",
 		marginBottom: 8,
+		left: 175,
 		alignContent: "flex-start",
 	},
 	section: {
@@ -33,8 +34,9 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: "extrabold",
 		alignContent: "stretch",
-		textAlign: "right",
+		textAlign: "center",
 		paddingBottom: 10,
+		left: 45,
 		paddingRight: 20,
 	},
 	subtitleHeader: {
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
 	},
 	block: {
 		height: 130,
-		width: 280,
+		width: 480,
 	},
 });
 
@@ -90,8 +92,6 @@ export const HeaderTablePDF: FC<HeaderTablePDFProps> = ({
 	<View style={styles.content}>
 		<View style={[styles.block]}>
 			<Image src={LogoNavy} style={styles.logo} />
-		</View>
-		<View style={[styles.block]}>
 			<Text style={styles.title}>{title}</Text>
 		</View>
 	</View>

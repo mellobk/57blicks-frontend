@@ -76,6 +76,7 @@ const IInvoicePdfPreview: FC<IInvoicePdfPreviewProps> = ({
 			regular: moneyFormat(Number.parseInt(String(loan.regular)) || 0),
 			address: loan.collaterals[0]?.address || "",
 			borrower: loan.borrower?.user.firstName || "",
+			link: loan.collaterals[0]?.link || "",
 		});
 	};
 	useEffect(() => {
