@@ -1,6 +1,8 @@
 import { formatDateString, getLabel } from "@/utils/common-functions";
 
 import type { FC } from "react";
+import moment from "moment";
+import useLocalTimeZoneFormatter from "@/hooks/use-local-time-zone-formatter";
 
 interface NotificationProps {
 	text?: string;
@@ -33,7 +35,7 @@ export const Notification: FC<NotificationProps> = ({
 			<div className="w-full">
 				<div>{text}</div>
 				<div className="text-gray-1500 text-[12px]">
-					{formatDateString(date)}
+					{formatDateString(useLocalTimeZoneFormatter(date))}
 				</div>
 			</div>
 			{state === "SENT" && (
