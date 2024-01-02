@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/Button";
@@ -71,6 +72,12 @@ export const InvestorBankInfo: FC<InvestorBankInfoProps> = ({
 						>
 							<div className="flex  flex-col justify-between w-full  gap-6">
 								<Input
+									label="Account Name"
+									placeholder="Account Name"
+									register={register(addInvestorBankFields?.accountName)}
+								/>
+
+								<Input
 									label="Banking Name"
 									placeholder="Banking Name"
 									register={register(addInvestorBankFields?.bankingName)}
@@ -118,6 +125,7 @@ export const InvestorBankInfo: FC<InvestorBankInfoProps> = ({
 					onClick={(): void => {
 						if (handleInvestorBankInfo) {
 							const data = {
+								accountName: watch(addInvestorBankFields?.accountName),
 								bankingName: watch(addInvestorBankFields?.bankingName),
 								routingNumber: watch(addInvestorBankFields?.routingNumber),
 								accountNumber: watch(addInvestorBankFields?.accountNumber),

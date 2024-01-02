@@ -54,6 +54,7 @@ export interface User {
 		ssnEin?: string;
 		streetAddress?: string;
 		zip?: string;
+		accountName?: string;
 		bankingName?: string;
 		routingNumber?: string;
 		accountNumber?: string;
@@ -62,6 +63,7 @@ export interface User {
 }
 
 export interface Investor {
+	accountName?: string;
 	target?: any;
 	id?: string;
 	createdAt?: Date;

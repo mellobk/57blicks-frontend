@@ -6,6 +6,7 @@ export interface Borrower {
 	updatedAt: Date;
 	llc: string;
 	ssnEin: string;
+	accountName: string;
 	bankingName: string;
 	routingNumber: string;
 	accountNumber: string;

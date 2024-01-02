@@ -161,11 +161,11 @@ export const formatDateString = (isoString: string): string => {
 	];
 
 	// Extract the day name
-	const dayName = days[date.getUTCDay()];
+	const dayName = days[date.getDay()];
 
 	// Extract the hours and minutes
-	let hours = date.getUTCHours();
-	const minutes = ("0" + date.getUTCMinutes()).slice(-2); // Ensures minutes are always 2 digits
+	let hours = date.getHours();
+	const minutes = ("0" + date.getMinutes()).slice(-2); // Ensures minutes are always 2 digits
 
 	// Convert from 24-hour to 12-hour format and set the AM/PM notation
 	const ampm = hours >= 12 ? "AM" : "PM";

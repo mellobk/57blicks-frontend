@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type { FC } from "react";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { Dropdown } from "@/components/forms/Dropdown";
@@ -19,8 +20,18 @@ export const BankingInformation: FC<Props> = ({
 }) => (
 	<div className="pt-6">
 		<Title text="Banking Information" />
+
 		<Input
-      data-testid="banking-information-banking-name"
+			data-testid="banking-information-account-name"
+			error={errors?.borrower?.accountName?.message}
+			label="Account Name"
+			placeholder="Enter Account Name"
+			register={register("borrower.accountName")}
+			wrapperClassName="mt-6"
+		/>
+
+		<Input
+			data-testid="banking-information-banking-name"
 			error={errors?.borrower?.bankingName?.message}
 			label="Banking Name"
 			placeholder="Enter Banking Name"
@@ -28,7 +39,7 @@ export const BankingInformation: FC<Props> = ({
 			wrapperClassName="mt-6"
 		/>
 		<Input
-      data-testid="banking-information-routing-number"
+			data-testid="banking-information-routing-number"
 			error={errors?.borrower?.routingNumber?.message}
 			label="Routing Number"
 			placeholder="Enter Routing Number"
@@ -37,7 +48,7 @@ export const BankingInformation: FC<Props> = ({
 			wrapperClassName="mt-6"
 		/>
 		<Input
-      data-testid="banking-information-account-number"
+			data-testid="banking-information-account-number"
 			error={errors?.borrower?.accountNumber?.message}
 			label="Account Number"
 			placeholder="Enter Account Number"
@@ -46,7 +57,7 @@ export const BankingInformation: FC<Props> = ({
 			wrapperClassName="mt-6"
 		/>
 		<Dropdown
-      data-testid="banking-information-account-type"
+			data-testid="banking-information-account-type"
 			control={control}
 			error={errors?.borrower?.accountType?.message}
 			className="mt-6"

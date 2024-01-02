@@ -28,6 +28,7 @@ export const userInvestorEditSchema = z.object({
 	ssnEin: z.string(),
 	entityName: z.string(),
 	zip: z.string(),
+	accountName: z.string(),
 	accountNumber: z.string(),
 	routingNumber: z.string(),
 	accountType: z.string().optional(),

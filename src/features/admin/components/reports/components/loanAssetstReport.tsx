@@ -258,7 +258,7 @@ export const AssetLoanReport: FC = () => {
 				onHide={() => {
 					setOpenInsurance(false);
 				}}
-				title="Interest Collection Report"
+				title="Loans"
 				width="90vw"
 			>
 				<DataTable

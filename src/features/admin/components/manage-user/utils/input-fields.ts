@@ -28,6 +28,7 @@ export const addInvestorFields: AddInvestorFields = {
 	companyName: "companyName",
 };
 export const addInvestorBankFields: AddInvestorBankFields = {
+	accountName: "accountName",
 	accountNumber: "accountNumber",
 	accountType: "accountType",
 	bankingName: "bankingName",

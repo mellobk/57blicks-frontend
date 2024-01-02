@@ -59,6 +59,7 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 			</div>
 
 			<div className="w-[33.33%]  flex gap-2 flex-col overflow-auto border-l border-gray-200 pl-3.5  opacity-40">
+				<LoanCard title="account Name" text={data?.borrower?.accountName} />
 				<LoanCard
 					title="Banking Name"
 					text={data?.borrower?.bankingName}
