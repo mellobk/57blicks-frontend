@@ -52,6 +52,7 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 	): Promise<void> => {
 		try {
 			const borrowerData = {
+				accountName: servicingData.accountName || "",
 				accountNumber: servicingData.accountNumber || "",
 				routingNumber: servicingData.routingNumber || "",
 				accountType: servicingData.accountType || "",
@@ -88,6 +89,7 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 	const onSubmit: SubmitHandler<FieldValues> = (
 		data: IBorrowerInformation
 	): void => {
+		console.log(data);
 		void updateServicingData(data);
 	};
 
@@ -116,6 +118,11 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 		setValue(
 			borrowerInformationFields?.mailingAddress || "",
 			data?.loan?.borrower?.user?.mailingAddress
+		);
+
+		setValue(
+			borrowerInformationFields?.accountName || "",
+			data?.loan?.borrower?.accountName
 		);
 
 		setValue(
@@ -240,6 +247,13 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 
 				<div className="w-[40%] bg-white flex gap-6 flex-col overflow-auto border border-gray-200 p-4 rounded-3xl ">
 					<div className="text-[28px] text-black">Banking Information</div>
+
+					<Input
+						label="Account Name"
+						placeholder="Account Name"
+						register={register(borrowerInformationFields?.accountName || "")}
+					/>
+
 					<Input
 						label="Banking Name"
 						placeholder="Banking Name"

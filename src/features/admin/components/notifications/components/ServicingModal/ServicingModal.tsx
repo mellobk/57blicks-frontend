@@ -234,90 +234,90 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 							)}
 						</div>
 						<>
-							{userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN ? (
-								approvalQuery?.data?.status === "PENDING" && (
-									<ModalActions
-										comment={
-											ledgerId ? null : (
-												<TextArea
-													value={comment}
-													onChange={(e): void => {
-														setComment(e.target.value);
-													}}
-													label="Comment"
-													className="w-full border-[1px] border-black rounded-md"
-												></TextArea>
-											)
-										}
-										status={status}
-										validApprove={validApprove}
-										openApproved={openApprovedModal}
-										openDecline={openDeclineModal}
-										handleViewOnly={(): void => {
-											setHandleEdit(!handleEdit);
-										}}
-										onOpenApproved={(): void => {
-											setOpenApprovedModal(!openApprovedModal);
-										}}
-										onOpenDecline={(): void => {
-											setOpenDeclineModal(!openDeclineModal);
-										}}
-										type={type}
-										onSuccess={(): void => {
-											if (ledgerId) {
-												updateFundingBreakDownQuery.mutate(
-													loanUpdated as unknown as LoanLedger
-												);
+							{userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN
+								? approvalQuery?.data?.status === "PENDING" && (
+										<ModalActions
+											comment={
+												ledgerId ? null : (
+													<TextArea
+														value={comment}
+														onChange={(e): void => {
+															setComment(e.target.value);
+														}}
+														label="Comment"
+														className="w-full border-[1px] border-black rounded-md"
+													></TextArea>
+												)
+											}
+											status={status}
+											validApprove={validApprove}
+											openApproved={openApprovedModal}
+											openDecline={openDeclineModal}
+											handleViewOnly={(): void => {
+												setHandleEdit(!handleEdit);
+											}}
+											onOpenApproved={(): void => {
+												setOpenApprovedModal(!openApprovedModal);
+											}}
+											onOpenDecline={(): void => {
+												setOpenDeclineModal(!openDeclineModal);
+											}}
+											type={type}
+											onSuccess={(): void => {
+												if (ledgerId) {
+													updateFundingBreakDownQuery.mutate(
+														loanUpdated as unknown as LoanLedger
+													);
 
-												updateLedgerQuery.mutate({
-													id: ledgerId,
-													approvalState: ApprovalLedgerStateType.APPROVED,
-													typeOfPayment: LedgerTypeOfPayment.PRINCIPAL,
-													loan: loanUpdated,
-												} as unknown as UpdateLedgerProps);
-											} else {
+													updateLedgerQuery.mutate({
+														id: ledgerId,
+														approvalState: ApprovalLedgerStateType.APPROVED,
+														typeOfPayment: LedgerTypeOfPayment.PRINCIPAL,
+														loan: loanUpdated,
+													} as unknown as UpdateLedgerProps);
+												} else {
+													const editData = {
+														...editLoan,
+														status: LoanStatusType.APPROVED,
+													};
+													updateLoanQuery.mutate(editData as any);
+												}
+
+												setTypeProcess("approve");
+											}}
+											onDecline={(): void => {
+												if (ledgerId) {
+													updateLedgerQuery.mutate({
+														id: ledgerId,
+														approvalState: ApprovalLedgerStateType.REJECTED,
+													} as unknown as UpdateLedgerProps);
+												} else {
+													updateLoanQuery.mutate({
+														id: id,
+														comment: comment,
+														status: LoanStatusType.REJECTED,
+													});
+												}
+
+												setTypeProcess("decline");
+											}}
+										/>
+								  )
+								: approvalQuery?.data?.status !== "APPROVED" && (
+										<ModalActionsAdmin
+											handleViewOnly={(): void => {
+												setHandleEdit(!handleEdit);
+											}}
+											onOpenApproved={(): void => {
 												const editData = {
 													...editLoan,
-													status: LoanStatusType.APPROVED,
+													status: LoanStatusType.PENDING,
 												};
 												updateLoanQuery.mutate(editData as any);
-											}
-
-											setTypeProcess("approve");
-										}}
-										onDecline={(): void => {
-											if (ledgerId) {
-												updateLedgerQuery.mutate({
-													id: ledgerId,
-													approvalState: ApprovalLedgerStateType.REJECTED,
-												} as unknown as UpdateLedgerProps);
-											} else {
-												updateLoanQuery.mutate({
-													id: id,
-													comment: comment,
-													status: LoanStatusType.REJECTED,
-												});
-											}
-
-											setTypeProcess("decline");
-										}}
-									/>
-								)
-							) : (
-								<ModalActionsAdmin
-									handleViewOnly={(): void => {
-										setHandleEdit(!handleEdit);
-									}}
-									onOpenApproved={(): void => {
-										const editData = {
-											...editLoan,
-											status: LoanStatusType.PENDING,
-										};
-										updateLoanQuery.mutate(editData as any);
-										setTypeProcess("approve");
-									}}
-								/>
-							)}
+												setTypeProcess("approve");
+											}}
+										/>
+								  )}
 						</>
 					</div>
 					<div
