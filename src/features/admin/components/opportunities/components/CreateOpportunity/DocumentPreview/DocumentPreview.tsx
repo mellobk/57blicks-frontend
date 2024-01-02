@@ -132,12 +132,12 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 								{form.loanType && <Detail title="Type" value={form.loanType} />}
 								{form.investmentPermanentPenalty && (
 									<Detail
-										title="Prepayment Penalty"
+										title="Investment Prepayment Penalty"
 										value={form.investmentPermanentPenalty}
 									/>
 								)}
 								<Detail
-									title="Interest Offered to Participant"
+									title="Monthly Interested Offered to Investor"
 									value={percentageFormat(
 										Number(form.investmentMonthlyInterestedOfferedToInvestor)
 									)}

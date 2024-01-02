@@ -1,11 +1,12 @@
-import type { FC } from "react";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+
 import { Dropdown } from "@/components/forms/Dropdown";
+import type { FC } from "react";
+import { FormatInput } from "@/components/forms/FormatInput";
 import { Input } from "@/components/forms/Input";
-import { Title } from "@/components/ui/Title";
 import { LOAN_TYPES } from "@/features/admin/components/create-loan/utils/selects";
 import type { Opportunity } from "@/features/admin/components/opportunities/types/fields";
-import { FormatInput } from "@/components/forms/FormatInput";
+import { Title } from "@/components/ui/Title";
 
 interface Props {
 	control: Control<Opportunity>;
@@ -74,9 +75,9 @@ export const LoanDetails: FC<Props> = ({ control, errors, register }) => (
 		<Input
 			data-testid="loan-details-investment-permanent-penalty"
 			error={errors?.investmentPermanentPenalty?.message}
-			label="Investment Permanent Penalty"
+			label="Investment Prepayment Penalty"
 			maxLength={50}
-			placeholder="Enter Investment Permanent Penalty"
+			placeholder="Enter Investment Prepayment Penalty"
 			register={register("investmentPermanentPenalty")}
 			wrapperClassName="mt-6"
 			required
