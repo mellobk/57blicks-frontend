@@ -63,6 +63,7 @@ export interface Borrower {
 	updatedAt: Date;
 	llc: string;
 	ssnEin: string;
+	accountName: string;
 	bankingName: string;
 	routingNumber: string;
 	accountNumber: string;
@@ -163,6 +164,7 @@ export interface IBorrowerInformation {
 	llc?: string;
 	streetAddress?: string;
 	accountNumber?: string;
+	accountName?: string;
 	routingNumber?: string;
 	accountType?: string;
 	bankingName?: string;

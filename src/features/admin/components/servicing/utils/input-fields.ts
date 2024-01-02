@@ -2,6 +2,7 @@ import type { IBorrowerInformation } from "../types/api";
 
 export const borrowerInformationFields: IBorrowerInformation = {
 	accountNumber: "accountNumber",
+	accountName: "accountName",
 	accountType: "accountType",
 	bankingName: "bankingName",
 	routingNumber: "routingNumber",

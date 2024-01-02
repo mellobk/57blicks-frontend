@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Button } from "@/components/ui/Button";
 import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,6 +49,7 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 			ssnEin: investor.ssnEin,
 			zip: investor.zip,
 			streetAddress: "-",
+			accountName: investor.accountName,
 			accountNumber: investor.accountNumber,
 			routingNumber: investor.routingNumber,
 			accountType: investor.accountType || ACCOUNT_OPTIONS[0]?.code,
@@ -83,6 +85,7 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 			ssnEin: getValues("ssnEin") || "",
 			zip: getValues("zip") || "",
 			streetAddress: "-",
+			accountName: getValues("accountName") || "",
 			accountNumber: getValues("accountNumber") || "",
 			routingNumber: getValues("routingNumber") || "",
 			accountType: getValues("accountType") || "",
@@ -214,6 +217,16 @@ export const EditInvestor: FC<EditInvestorProps> = ({
 						</div>
 						<div className="w-1/3 bg-white p-4 shadow-lg">
 							<div className="flex  flex-col justify-between w-full  gap-6">
+								<div className="w-full">
+									<Input
+										label="Account Name"
+										placeholder="Enter Account Name"
+										register={register("accountName")}
+										error={
+											errors["accountName"] && errors["accountName"]?.message
+										}
+									/>
+								</div>
 								<div className="w-full">
 									<Input
 										label="Banking Name"

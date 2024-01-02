@@ -242,7 +242,6 @@ export async function forgotPassword(
 }
 
 export async function getRefreshToken(username: string): Promise<any> {
-	console.log(username);
 	const cognitoUser = getCognitoUser(username);
 
 	const session = await getSession();
@@ -256,7 +255,7 @@ export async function getRefreshToken(username: string): Promise<any> {
 			} else {
 				// Session refreshed successfully
 				const newAccessToken = newSession.getAccessToken().getJwtToken();
-				console.log(newAccessToken);
+
 				sendToLocalStorage(accessToken, newAccessToken);
 				// Use the new tokens as needed
 			}

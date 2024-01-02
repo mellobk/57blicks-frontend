@@ -319,6 +319,7 @@ export const InvestorsTable: FC<SuccessProps> = () => {
 					onClick={(): void => {
 						setBankInfo({
 							id: row?.id,
+							accountName: row?.accountName || "",
 							accountNumber: row?.accountNumber || "",
 							accountType: row?.accountType || "",
 							routingNumber: row?.routingNumber || "",

@@ -4,6 +4,7 @@ import { errorMessages } from "@/utils/error-messages";
 
 export const BorrowerSchema = z.object({
 	accountNumber: z.string().max(50, errorMessages.maxLength).optional(),
+	accountName: z.string().optional(),
 	accountType: z.string().optional(),
 	bankingName: z.string().optional(),
 	llc: z

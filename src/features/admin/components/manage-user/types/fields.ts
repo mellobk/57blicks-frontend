@@ -46,6 +46,7 @@ export type AddInvestorFields = {
 
 export type AddInvestorBankFields = {
 	id?: string;
+	accountName: string;
 	bankingName: string;
 	routingNumber: string;
 	accountNumber: string;
@@ -57,6 +58,7 @@ export type InvestorFields = {
 	ssnEin: string;
 	zip: string;
 	streetAddress: string;
+	accountName: string;
 	accountNumber: string;
 	routingNumber: string;
 	accountType: string;

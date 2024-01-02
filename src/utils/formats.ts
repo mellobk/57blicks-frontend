@@ -138,3 +138,16 @@ export const formatValue = (value: number, format: "money" | "percentage") => {
 		? moneyFormat(Number(value))
 		: percentageFormat(Number(value));
 };
+
+export const formatDateTimeAccordingToTimeZone = (
+	dateTime: string,
+	timeZone: string,
+	formatOptions: Intl.DateTimeFormatOptions
+): string => {
+	const date = new Date(dateTime);
+	const formatter = new Intl.DateTimeFormat("es", {
+		...formatOptions,
+		timeZone: timeZone,
+	});
+	return formatter.format(date);
+};

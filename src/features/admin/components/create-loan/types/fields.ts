@@ -8,6 +8,7 @@ export type User = {
 
 export type Borrower = {
 	accountNumber?: string;
+	accountName?: string;
 	accountType?: string;
 	bankingName?: string;
 	llc: string;
