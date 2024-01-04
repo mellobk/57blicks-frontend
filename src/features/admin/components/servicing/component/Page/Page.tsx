@@ -16,7 +16,6 @@ import { formatDate, moneyFormat } from "@/utils/formats";
 import {
 	getIsSameMonthYear,
 	statusDefault,
-	statusDefaultType,
 	statusTaxes,
 	validateDate,
 } from "@/utils/common-functions";
@@ -175,8 +174,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const columns = [
 		{
 			name: "Borrower",
-			maxWidth: "230px",
-			minWidth: "230px",
+			maxWidth: "330px",
+			minWidth: "330px",
 			selector: (row: FundingBreakdown) =>
 				row?.loan.borrower?.llc ||
 				`${row?.loan.borrower?.user.firstName} ${row?.loan.borrower?.user.lastName}`,
@@ -189,8 +188,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				row?.loan?.collaterals[0]?.address || "",
 			sortable: true,
 			omit: false,
-			maxWidth: "500px",
-			minWidth: "500px",
+			maxWidth: "400px",
+			minWidth: "400px",
 		},
 		{
 			name: "Total Loan",
@@ -219,13 +218,11 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			minWidth: "150px",
 		},
 		{
-			name: "Origin Date",
+			name: "Origination Date",
 			selector: (row: FundingBreakdown) =>
 				formatDate(row?.loan?.originationDate.toString()),
 			omit: false,
 			sortable: true,
-			maxWidth: "130px",
-			minWidth: "130px",
 		},
 		{
 			name: "Maturity Date",
@@ -270,8 +267,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			],
 		},
 		{
-			name: "Taxed Paid",
-			maxWidth: "50px",
+			name: "Taxes Paid",
 			sortable: true,
 			sortFunction: statusTaxes,
 			selector: (row: FundingBreakdown) => (
@@ -292,7 +288,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 
 		{
 			name: "In Default",
-			maxWidth: "50px",
+
 			sortable: true,
 			sortFunction: statusDefault,
 			selector: (row: FundingBreakdown) => (
@@ -311,7 +307,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			),
 			omit: false,
 		},
-
+		/*
 		{
 			name: "Default Type",
 			maxWidth: "",
@@ -321,7 +317,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				<div key={row.loan.id}>{row.loan.defaultType}</div>
 			),
 			omit: false,
-		},
+		}, */
 		{
 			name: `${currentMonthName} (Current)`,
 			sortable: true,

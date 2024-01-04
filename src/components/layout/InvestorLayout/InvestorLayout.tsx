@@ -293,7 +293,7 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 											text={data.notification?.content}
 											userFullName={data.notification?.userFullName}
 											state={data.status}
-											date={data.createdAt?.toString()}
+											date={data.createdAt}
 											handleOnClick={() => {
 												if (data.status !== "READ") {
 													updateNotificationQuery.mutate({
