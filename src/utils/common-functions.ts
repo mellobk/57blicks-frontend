@@ -168,7 +168,7 @@ export const formatDateString = (isoString: string): string => {
 	const minutes = ("0" + date.getMinutes()).slice(-2); // Ensures minutes are always 2 digits
 
 	// Convert from 24-hour to 12-hour format and set the AM/PM notation
-	const ampm = hours >= 12 ? "AM" : "PM";
+	const ampm = hours >= 12 ? "PM" : "AM";
 	hours = hours % 12;
 	hours = hours || 12; // Convert hour '0' to '12'
 
