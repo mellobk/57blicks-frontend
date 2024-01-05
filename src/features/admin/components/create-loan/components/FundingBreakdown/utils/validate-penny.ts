@@ -15,7 +15,6 @@ export const validateProratedRowsCalculations = (
 	interestRate: string,
 	fundingBreakdown: Array<FundingBreakdownType>
 ): string => {
-	console.log("🚀 ~ file: validate-penny.ts:10 ~ type:", type);
 	let currentProrated = Number(
 		calculateProrated(amount, rate, originationDate)
 	);
@@ -47,7 +46,7 @@ export const validateProratedRowsCalculations = (
 		}
 	}
 
-	return String(currentProrated);
+	return String(round(currentProrated, 2));
 };
 
 export const validateRegularRowsCalculations = (
