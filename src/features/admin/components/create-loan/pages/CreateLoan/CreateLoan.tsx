@@ -17,7 +17,6 @@ import { SelectLender } from "@/features/admin/components/create-loan/components
 import { defaultValues } from "@/features/admin/components/create-loan/utils/values";
 import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
 import {
-	calculateProrated,
 	calculateRegular,
 	unFormatPhone,
 } from "@/utils/common-functions";
@@ -25,6 +24,7 @@ import { userName } from "@/utils/constant";
 import { getLocalStorage } from "@/utils/local-storage";
 import type { Notification } from "@/features/admin/components/notifications/types/types";
 import Loading from "@/assets/icons/loading";
+import { validateProratedRowsCalculations } from "../../components/FundingBreakdown/utils/validate-penny";
 
 export const CreateLoan: FC = () => {
 	const createLedgerQuery = useMutation(async (body: Notification) => {
@@ -76,12 +76,17 @@ export const CreateLoan: FC = () => {
 
 	const onSubmit: SubmitHandler<Loan> = (data: Loan): void => {
 		const phoneNumber = unFormatPhone(data.borrower?.user?.phoneNumber || "");
+
 		const fundingBreakdown = data.fundingBreakdown.map((breakdown) => ({
 			...breakdown,
-			prorated: calculateProrated(
+			prorated: validateProratedRowsCalculations(
 				breakdown.amount,
 				breakdown.rate,
-				data.originationDate
+				data.originationDate,
+				breakdown.type,
+				data.totalLoanAmount,
+				data.interestRate,
+				[...data.participationBreakdown, ...data.fundingBreakdown]
 			),
 			regular: calculateRegular(breakdown.amount, breakdown.rate),
 		}));
@@ -89,10 +94,14 @@ export const CreateLoan: FC = () => {
 		const participationBreakdown = data.participationBreakdown.map(
 			(breakdown) => ({
 				...breakdown,
-				prorated: calculateProrated(
+				prorated: validateProratedRowsCalculations(
 					breakdown.amount,
 					breakdown.rate,
-					data.originationDate
+					data.originationDate,
+					breakdown.type,
+					data.totalLoanAmount,
+					data.interestRate,
+					[...data.participationBreakdown, ...data.fundingBreakdown]
 				),
 				regular: calculateRegular(breakdown.amount, breakdown.rate),
 			})

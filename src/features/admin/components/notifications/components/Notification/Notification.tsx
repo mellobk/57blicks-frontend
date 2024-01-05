@@ -1,7 +1,6 @@
 import { formatDateString, getLabel } from "@/utils/common-functions";
 
 import type { FC } from "react";
-import moment from "moment";
 import useLocalTimeZoneFormatter from "@/hooks/use-local-time-zone-formatter";
 
 interface NotificationProps {
