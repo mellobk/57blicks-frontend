@@ -407,7 +407,7 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 											text={data.notification?.content}
 											userFullName={data.notification?.userFullName}
 											state={data.status}
-											date={data.createdAt?.toString()}
+											date={data.createdAt as Date}
 											handleOnClick={() => {
 												const parseData = data.notification?.additionalData;
 												const jsonString = parseData?.replace(

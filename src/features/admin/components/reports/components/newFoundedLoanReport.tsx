@@ -78,7 +78,6 @@ export const NewFoundedLoanReport: FC = () => {
 				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
 				data?.collaterals[0]?.assetType,
 			];
 		});

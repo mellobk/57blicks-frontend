@@ -1,3 +1,4 @@
+import useLocalTimeZoneFormatter from "@/hooks/user-timezone-date";
 import { formatDateString, getLabel } from "@/utils/common-functions";
 
 import type { FC } from "react";
@@ -7,7 +8,7 @@ interface NotificationProps {
 	text?: string;
 	userFullName?: string;
 	state?: string;
-	date?: string;
+	date?: Date | string;
 	handleOnClick?: () => void;
 }
 
