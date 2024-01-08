@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
@@ -91,28 +92,6 @@ export const NewFoundedLoanReport: FC = () => {
 		void propertyInsuranceQuery.refetch();
 	}, [actualTabData]);
 
-	const columns = [
-		{
-			name: "Name",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.name || "",
-			omit: false,
-		},
-		{
-			name: "Address",
-			selector: (row: Loan): string => row.collaterals[0]?.address || "",
-			omit: false,
-		},
-		{
-			name: "Insurance Expiration Date",
-			selector: (row: Loan) =>
-				formatDate(
-					row?.collaterals[0]?.insuranceExpirationDate.toString() || ""
-				),
-			omit: false,
-		},
-	];
-
 	const columnsModal = [
 		{
 			name: "Borrower LLC",
@@ -142,11 +121,36 @@ export const NewFoundedLoanReport: FC = () => {
 			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
 			omit: false,
 		},
+		{
+			name: "Loan Product",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.type || "",
+			omit: false,
+		},
+		{
+			name: "Lender",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => {
+				const lender = row?.fundingBreakDowns?.find(
+					(data: { lender: { name: string } }) =>
+						data?.lender?.name !== "DKC Servicing Fee Income"
+				);
+				return lender?.lender?.name || "";
+			},
+
+			omit: false,
+		},
+		{
+			name: "Rate",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.interestRate || "",
+			omit: false,
+		},
 	];
 
 	return (
-		<div className="h-[60%] w-full">
-			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
+		<div className=" w-full">
+			<div className="flex items-center justify-between w-full px-5 bg-gray-200 p-3 g-3  h-[45px] ">
 				<div
 					className="font-bold text-[13px] w-full"
 					onClick={() => {
@@ -176,24 +180,42 @@ export const NewFoundedLoanReport: FC = () => {
 				</div>
 			</div>
 
-			<div className="flex flex-col w-full h-[80px] justify-center items-center font-bold  text-[28px] gap-1 m-2">
-				<div>Average: {propertyInsuranceQuery.data?.loanAverage}</div>
-				<div> Quantity: {propertyInsuranceQuery.data?.loanQuantity}</div>
-				{/* 				Total New Loan Volume: New Loans: Average Loan Size # of New Loans
-				Average Interest Rate Average LTV{/*  */}
-			</div>
-
 			<div
+				className=" flex flex-col gap-1 "
 				onClick={() => {
 					setOpenInsurance(true);
 				}}
 			>
-				<DataTable
-					columns={columns}
-					data={propertyInsuranceQuery.data?.defaultLoans.slice(0, 3) || []}
-					progressPending={propertyInsuranceQuery.isLoading}
-				/>
+				<div className="font-bold text-[13px] p-5 bg-gray-200 flex  justify-between  h-[10px] items-center">
+					<span>New Loans Total Average: </span>{" "}
+					<span>
+						{moneyFormat(propertyInsuranceQuery?.data?.loanAverage || 0)}
+					</span>
+				</div>
+				<div className="font-bold text-[13px]  p-5 flex  justify-between   h-[10px] items-center">
+					<span># of New Loans</span>{" "}
+					<span>
+						{propertyInsuranceQuery?.data?.defaultLoans.length || "0"}
+					</span>
+				</div>
+				<div className="font-bold text-[13px] p-5 bg-gray-200 flex  justify-between   h-[10px] items-center">
+					<span>Average Interest Rate</span>{" "}
+					<span>
+						{propertyInsuranceQuery?.data?.averageInterestRate?.toFixed(4)}
+					</span>
+				</div>
+				<div className="font-bold text-[13px] p-5  flex  justify-between  h-[10px] items-center">
+					<span>Average LTV</span>{" "}
+					<span>
+						{propertyInsuranceQuery?.data?.averageLTV?.toFixed(4) || "0"}
+					</span>
+				</div>
 			</div>
+			<div
+				onClick={() => {
+					setOpenInsurance(true);
+				}}
+			></div>
 
 			<Modal
 				visible={openInsurance}

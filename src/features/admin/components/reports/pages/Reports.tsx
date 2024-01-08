@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, type FC } from "react";
+import { useEffect, type FC, useState, type SetStateAction } from "react";
 /* import PropertyInsurance from "../components/PropertyInsurance";
 import PropertyTax from "../components/PropertyTax";
 import PropertyInterest from "../components/PropertyInterest"; */
@@ -20,9 +20,14 @@ import { AverageDaysPaidLoans } from "../components/averageDaysPaidLoans";
 /* import PropertyUnauthorized from "../components/PropertyUnauthorized"; */
 import { NewFoundedLoanReport } from "../components/newFoundedLoanReport";
 import { InterestCollectionReport } from "../components/InterestCollectionReport";
+
+import { Tabs } from "../../servicing/component/Tabs";
+import { loansTabs } from "../../servicing/utils/tabs";
+import { ExtendedLoanReport } from "../components/extendedFoundedLoanReport";
 export const Reports: FC = () => {
 	const navigate = useNavigate();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
+	const [actualTabData, setActualTabData] = useState<string>("consultant");
 
 	useEffect(() => {
 		const find = findPermission(
@@ -36,21 +41,20 @@ export const Reports: FC = () => {
 		}
 	}, [userLoggedInfo]);
 	return (
-		<div className="flex w-full bg-white justify-center   rounded-3xl h-[100vw] ">
-			<div className="flex w-full bg-white justify-center flex-wrap rounded-3xl">
-				<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
-					<InterestCollectionReport />
-				</div>
-				<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
-					<AllDefaultReport />
-				</div>
-				<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
-					<PaidLoanReport />
-				</div>
-				<div className="flex flex-col items-center  w-[40%]   bg-white p-2">
-					<NewFoundedLoanReport />
-				</div>
-				{/* 			<div className="flex  w-[30%] p-2">
+		<div className="flex w-full bg-white  rounded-3xl h-full flex-wrap rounded-3xl">
+			<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
+				<InterestCollectionReport />
+			</div>
+			<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
+				<AllDefaultReport />
+			</div>
+			<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
+				<NewFoundedLoanReport />
+				<hr className="h-[2px]  w-full mt-5"></hr>
+				<PaidLoanReport />
+				{/* 		<hr className="h-[2px] bg-black w-full"></hr> */}
+			</div>
+			{/* 			<div className="flex  w-[30%] p-2">
 					<PropertyInsurance />
 				</div>
 				<div className="flex  w-[30%] p-2">
@@ -62,21 +66,43 @@ export const Reports: FC = () => {
 				<div className="flex  w-[30%] p-2">
 					<PropertyUnauthorized />
 				</div> */}
-				{/* 	<div className="flex  w-[100%] p-2">
+			{/* 	<div className="flex  w-[100%] p-2">
 					<AverageLoan />
 				</div> */}
-				<div className="flex flex-col items-center  w-[33.33%]   bg-white p-2 ">
-					<ConsultantLoanReport />
+			<div className="flex flex-col items-center  w-[50%]   bg-white  px-2">
+				<div className="flex items-center justify-between w-full   bg-gray-200  g-3  mt-2 h-[35px]">
+					<Tabs
+						tabs={loansTabs}
+						actualTab={actualTabData}
+						onClick={(value: SetStateAction<string>): void => {
+							setActualTabData(value);
+						}}
+					/>
 				</div>
-				<div className="flex flex-col items-center  w-[33.33%]   bg-white p-2 ">
-					<AssetLoanReport />
-				</div>
-				<div className="flex flex-col items-center  w-[33.33%]   bg-white p-2 ">
-					<LoanProductReport />
-				</div>
-				<div className="flex flex-col items-center  w-[100%]   bg-white p-2 ">
-					<AverageDaysPaidLoans />
-				</div>
+				{actualTabData === "consultant" && (
+					<div className="flex flex-col items-center  w-[100%]   bg-white ">
+						<ConsultantLoanReport />
+					</div>
+				)}
+				{actualTabData === "asset type" && (
+					<div className="flex flex-col items-center   w-[100%]   bg-white ">
+						<AssetLoanReport />
+					</div>
+				)}
+				{actualTabData === "product" && (
+					<div className="flex flex-col items-center   w-[100%]   bg-white ">
+						<LoanProductReport />
+					</div>
+				)}
+			</div>
+
+			<div className="flex flex-col items-center  w-[50%]   bg-white px-2 ">
+				<AverageDaysPaidLoans />
+			</div>
+
+			<div className="flex flex-col items-center  w-[50%]   bg-white  px-2">
+				<hr className="h-[2px]  w-full mt-2"></hr>
+				<ExtendedLoanReport />
 			</div>
 		</div>
 	);

@@ -33,6 +33,18 @@ export const paidLoansTabs = [
 	{ label: "YTD", value: "", routeTo: "" },
 ];
 
+export const loansTabs = [
+	{ label: "Consultant", value: "consultant", routeTo: "consultant" },
+	{ label: "Asset Type", value: "asset type", routeTo: "asset type" },
+	{ label: "Product", value: "product", routeTo: "product" },
+];
+
+export const loansRollTabs = [
+	{ label: "all", value: "all", routeTo: "all" },
+	{ label: "Asset Type", value: "asset type", routeTo: "asset type" },
+	{ label: "Product", value: "product", routeTo: "product" },
+];
+
 export const newFoundedTabs = [
 	{ label: "30", value: "30", routeTo: "30" },
 	{ label: "60", value: "60", routeTo: "60" },

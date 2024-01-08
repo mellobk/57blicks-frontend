@@ -14,15 +14,11 @@ import { dateWithFormat } from "@/utils/formats";
 const orderLedgers = (): void => {};
 interface LedgerListProps {
 	loan: Loan;
-	setValidApprove: (validApprove: boolean) => void;
-	setLoanUpdated: (loanUpdated: LoanLedger) => void;
+	setValidApprove?: (validApprove: boolean) => void;
+	setLoanUpdated?: (loanUpdated: LoanLedger) => void;
 }
 
-const LedgerList: FC<LedgerListProps> = ({
-	loan,
-	setValidApprove,
-	setLoanUpdated,
-}) => {
+const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 	const [ledgers, setLedgers] = useState<Array<Ledgers>>([]);
 
 	const { refetch, isLoading } = useQuery(
@@ -95,8 +91,6 @@ const LedgerList: FC<LedgerListProps> = ({
 					refetchLedgers={refetchLedgers}
 					handleDeleteLedger={handleDeleteLedger}
 					orderLedgers={orderLedgers}
-					setValidApprove={setValidApprove}
-					setLoanUpdated={setLoanUpdated}
 				/>
 			)}
 		</>

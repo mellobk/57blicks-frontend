@@ -8,7 +8,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useState, type FC, useEffect } from "react";
+import { useState, type FC, useEffect, type SetStateAction } from "react";
 
 // install (please try to align the version of installed @nivo packages)
 // yarn add @nivo/pie
@@ -22,6 +22,8 @@ import { formatDate, moneyFormat } from "@/utils/formats";
 import type { Loan } from "@/types/api/loan";
 import { downloadXLSX } from "@/utils/create-xlsx";
 import { downloadCSV } from "@/utils/create-cvs";
+import { Tabs } from "../../servicing/component/Tabs";
+import { loansRollTabs } from "../../servicing/utils/tabs";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -42,6 +44,7 @@ export const AverageDaysPaidLoans: FC = () => {
 		"Insurance Expiration Date",
 	];
 
+	const [actualRollTabData, setActualRollTabData] = useState<string>("all");
 	const [chartData, setChartData] = useState([]);
 	const [chartAssetData, setAssetChartData] = useState([]);
 	const [assetKeys, setAssetKey] = useState<Array<string>>([]);
@@ -297,56 +300,85 @@ export const AverageDaysPaidLoans: FC = () => {
 	};
 
 	return (
-		<div className="flex w-full justify-center gap-3">
-			<div className="w-[30%] h-[82%] flex">
-				<ReportTable
-					title="Average Roll Rate for all Loans"
-					downloadReport={downloadLoansReport}
-					downloadXlsxReport={downloadXlsxLoansReport}
-				>
-					<div>{consultantQuery.data?.averagePaidLoans || 0}</div>
-				</ReportTable>
+		<div className="flex flex-col w-full justify-center mb-[70px]">
+			<div className="flex items-center justify-between w-full   bg-gray-200  g-3  mt-2 h-[35px]">
+				<Tabs
+					tabs={loansRollTabs}
+					actualTab={actualRollTabData}
+					onClick={(value: SetStateAction<string>): void => {
+						setActualRollTabData(value);
+					}}
+				/>
 			</div>
-			<div className="h-[82%] w-[30%]">
-				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
-					<div className="font-bold text-[13px]">
-						Average Roll Rate by Loan Product
-					</div>
-					<div className="flex gap-2 ml-2" onClick={downloadLoanProductReport}>
-						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
-							<img src={Csv} alt="DKC Csv" />
-						</div>
-
-						<div
-							className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
-							onClick={downloadXlsxLoanProductReport}
+			{actualRollTabData === "all" && (
+				<div className="flex flex-col items-center   w-[100%]   bg-white ">
+					<div className="w-full h-[20vw] flex ">
+						<ReportTable
+							title="Average Roll Rate for all Loans"
+							downloadReport={downloadLoansReport}
+							downloadXlsxReport={downloadXlsxLoansReport}
 						>
-							<img src={Xlsx} alt="DKC Xlsx" />
-						</div>
+							<div className="h-full flex justify-center items-center ">
+								{consultantQuery?.data?.averagePaidLoans || 0}
+							</div>
+						</ReportTable>
 					</div>
 				</div>
-				<PieCanvas data={chartData} />
-			</div>
-			<div className="h-[82%] w-[30%]">
-				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
-					<div className="font-bold text-[13px]">
-						Average Roll Rate by Asset Type
-					</div>
-					<div className="flex gap-2 ml-2" onClick={downloadLoanAssetReport}>
-						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
-							<img src={Csv} alt="DKC Csv" />
-						</div>
+			)}
+			{actualRollTabData === "asset type" && (
+				<div className="flex flex-col items-center   w-[100%]   bg-white ">
+					<div className="h-[20vw] w-full">
+						<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
+							<div className="font-bold text-[13px]">
+								Average Roll Rate by Asset Type
+							</div>
+							<div
+								className="flex gap-2 ml-2"
+								onClick={downloadLoanAssetReport}
+							>
+								<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
+									<img src={Csv} alt="DKC Csv" />
+								</div>
 
-						<div
-							className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
-							onClick={downloadXlsxLoanAssetReport}
-						>
-							<img src={Xlsx} alt="DKC Xlsx" />
+								<div
+									className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
+									onClick={downloadXlsxLoanAssetReport}
+								>
+									<img src={Xlsx} alt="DKC Xlsx" />
+								</div>
+							</div>
 						</div>
+						<PieCanvas data={chartAssetData} />
 					</div>
 				</div>
-				<PieCanvas data={chartAssetData} />
-			</div>
+			)}
+			{actualRollTabData === "product" && (
+				<div className="flex flex-col items-center   w-[100%]   bg-white ">
+					<div className="h-[20vw] w-full pb-5">
+						<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
+							<div className="font-bold text-[13px]">
+								Average Roll Rate by Loan Product
+							</div>
+							<div
+								className="flex gap-2 ml-2"
+								onClick={downloadLoanProductReport}
+							>
+								<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
+									<img src={Csv} alt="DKC Csv" />
+								</div>
+
+								<div
+									className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
+									onClick={downloadXlsxLoanProductReport}
+								>
+									<img src={Xlsx} alt="DKC Xlsx" />
+								</div>
+							</div>
+						</div>
+						<PieCanvas data={chartData} />
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

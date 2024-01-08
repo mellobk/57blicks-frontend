@@ -10,8 +10,7 @@ import { useState, type FC, useEffect } from "react";
 
 // install (please try to align the version of installed @nivo packages)
 // yarn add @nivo/pie
-/* import { ResponsivePieCanvas } from "@nivo/pie"; */
-import { formatDate, moneyFormat } from "@/utils/formats";
+import { moneyFormat } from "@/utils/formats";
 import { downloadCSV } from "@/utils/create-cvs";
 import { downloadXLSX } from "@/utils/create-xlsx";
 import type { Loan } from "../../servicing/types/api";
@@ -23,6 +22,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
 import { Tabs } from "../../servicing/component/Tabs";
 import { paidLoansTabs } from "../../servicing/utils/tabs";
+import { Icon } from "@/components/ui/Icon";
+import { LedgerList } from "../../notifications/components/Ledger";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -30,38 +31,19 @@ import { paidLoansTabs } from "../../servicing/utils/tabs";
 // website examples showcase many properties,
 // you'll often use just a few of them.
 
-export const PaidLoanReport: FC = () => {
+export const ExtendedLoanReport: FC = () => {
 	const [actualTabData, setActualTabData] = useState<string>("30");
 	const [openInsurance, setOpenInsurance] = useState(false);
-	/* 	const [chartData, setChartData] = useState([]); */
+	const [transaction, setTransaction] = useState(false);
+	const [transactionId, setTransactionId] = useState();
+
 	const propertyInsuranceQuery = useQuery(
-		["all-paid-loans"],
+		["all-extended-loans"],
 		() => {
-			return ManageReportsService.getPaidOffLoans(actualTabData);
+			return ManageReportsService.getExtendedFounded(actualTabData);
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
-
-	/* 	useEffect(() => {
-		if (propertyInsuranceQuery.data) {
-			const getData = propertyInsuranceQuery.data;
-			const data = [
-				{
-					id: `Paid - ${getData.paid.percentage}%`,
-					label: `Paid - ${getData.paid.percentage}%`,
-					value: getData.paid.quantity,
-					color: "hsl(110, 70%, 50%)",
-				},
-				{
-					id: `Unpaid - ${getData.unPaid.percentage}%`,
-					label: `Unpaid -${getData.unPaid.percentage}%`,
-					value: getData.unPaid.quantity,
-					color: "hsl(187, 70%, 50%)",
-				},
-			];
-			setChartData(data as any);
-		}
-	}, [propertyInsuranceQuery.data]); */
 
 	const downloadReport = (): void => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
@@ -69,22 +51,30 @@ export const PaidLoanReport: FC = () => {
 		const headerCsv = [
 			"Borrower LLC",
 			"Property Address",
+			"Lender",
 			"Loan Amount",
-			"Asset Type",
+			"Maturity Date",
+			"Paid/Unpaid",
 		];
 		const csvData = insuranceCsv?.map((data) => {
+			const lender = data?.fundingBreakDowns?.find(
+				(data: { lender: { name: string } }) =>
+					data?.lender?.name !== "DKC Servicing Fee Income"
+			);
+
 			return [
 				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
-				data?.collaterals[0]?.assetType,
+				lender?.lender?.name || "",
+				data?.maturityDate,
+				data?.status === "PAID" ? "YES" : "NO",
 			];
 		});
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadCSV(data, "LoansPaidOff.csv");
+		downloadCSV(data, "extendedLoansFounded.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -93,22 +83,30 @@ export const PaidLoanReport: FC = () => {
 		const headerCsv = [
 			"Borrower LLC",
 			"Property Address",
+			"Lender",
 			"Loan Amount",
-			"Asset Type",
+			"Maturity Date",
+			"Paid/Unpaid",
 		];
 		const csvData = insuranceCsv?.map((data) => {
+			const lender = data?.fundingBreakDowns?.find(
+				(data: { lender: { name: string } }) =>
+					data?.lender?.name !== "DKC Servicing Fee Income"
+			);
+
 			return [
 				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
-				data?.collaterals[0]?.assetType,
+				lender?.lender?.name || "",
+				data?.maturityDate,
+				data?.status === "PAID" ? "YES" : "NO",
 			];
 		});
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadXLSX(data, "LoansPaidOff.xlsx");
+		downloadXLSX(data, "extendedLoansFounded.xlsx");
 	};
 
 	useEffect(() => {
@@ -128,59 +126,63 @@ export const PaidLoanReport: FC = () => {
 			omit: false,
 		},
 		{
+			name: "Lender",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => {
+				const lender = row?.fundingBreakDowns?.find(
+					(data: { lender: { name: string } }) =>
+						data?.lender?.name !== "DKC Servicing Fee Income"
+				);
+				return lender?.lender?.name || "";
+			},
+
+			omit: false,
+		},
+		{
 			name: "Loan Amount",
 			selector: (row: Loan) =>
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
 		},
 		{
-			name: "Payoff Date",
-			selector: (row: Loan) => row?.endDate,
+			name: "Maturity Date",
+			selector: (row: Loan) => row?.maturityDate,
 			omit: false,
 		},
-		{
-			name: "Asset Type",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
-			omit: false,
-		},
-		{
-			name: "Loan Product",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.type || "",
-			omit: false,
-		},
-		{
-			name: "Lender",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => {
-				const lender = row?.fundingBreakDowns?.find(
-					(data: { lender: { name: string } }) =>
-						data.lender.name !== "DKC Servicing Fee Income"
-				);
-				return lender.lender.name || "";
-			},
 
+		{
+			name: "Paid/Unpaid",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => (row?.status === "PAID" ? "YES" : "NO"),
 			omit: false,
 		},
 		{
-			name: "Rate",
+			name: "Transactions",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.interestRate || "",
+			selector: (row: Loan): JSX.Element => (
+				<div
+					onClick={() => {
+						setTransaction(true);
+						setTransactionId(row as any);
+					}}
+				>
+					<Icon name="search" color="black" width="15" />
+				</div>
+			),
 			omit: false,
 		},
 	];
 
 	return (
 		<div className=" w-full">
-			<div className="flex items-center justify-between w-full px-5 bg-gray-200 p-3 g-3  h-[45px]">
+			<div className="flex items-center justify-between w-full px-5 bg-gray-200 p-3 g-3  h-[45px] ">
 				<div
 					className="font-bold text-[13px] w-full"
 					onClick={() => {
 						setOpenInsurance(true);
 					}}
 				>
-					Loans Paid off
+					Extended Loans
 				</div>
 				<Tabs
 					tabs={paidLoansTabs}
@@ -210,25 +212,42 @@ export const PaidLoanReport: FC = () => {
 				}}
 			>
 				<div className="font-bold text-[13px] p-5 bg-gray-200 flex  justify-between  h-[10px] items-center">
-					<span>Paid off Loans Total Average: </span>{" "}
+					<span>Extended Loans Total Average: </span>{" "}
 					<span>
 						{moneyFormat(propertyInsuranceQuery?.data?.averageLoanAmount || 0)}
 					</span>
 				</div>
 				<div className="font-bold text-[13px]  p-5 flex  justify-between   h-[10px] items-center">
-					<span># of Paid off Loans </span>{" "}
+					<span># of Extended Loans</span>{" "}
 					<span>
 						{propertyInsuranceQuery?.data?.defaultLoans.length || "0"}
 					</span>
 				</div>
+				<div className="font-bold text-[13px] p-5 bg-gray-200 flex  justify-between   h-[10px] items-center">
+					<span>Average Interest Rate</span>{" "}
+					<span>
+						{propertyInsuranceQuery?.data?.averageInterestRate?.toFixed(4)}
+					</span>
+				</div>
+				<div className="font-bold text-[13px] p-5  flex  justify-between  h-[10px] items-center">
+					<span>Average LTV</span>{" "}
+					<span>
+						{propertyInsuranceQuery?.data?.averageLTV?.toFixed(4) || "0"}
+					</span>
+				</div>
 			</div>
+			<div
+				onClick={() => {
+					setOpenInsurance(true);
+				}}
+			></div>
 
 			<Modal
 				visible={openInsurance}
 				onHide={() => {
 					setOpenInsurance(false);
 				}}
-				title="Paid Loans"
+				title="Extended Loans"
 				width="90vw"
 			>
 				<DataTable
@@ -236,6 +255,17 @@ export const PaidLoanReport: FC = () => {
 					data={propertyInsuranceQuery.data?.defaultLoans || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>
+			</Modal>
+
+			<Modal
+				visible={transaction}
+				onHide={() => {
+					setTransaction(false);
+				}}
+				title="Loan Transactions"
+				width="90vw"
+			>
+				<LedgerList loan={transactionId as any} />
 			</Modal>
 		</div>
 	);

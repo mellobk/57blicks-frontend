@@ -14,6 +14,10 @@ export const newLoansFounded = (days: string): string => {
 	return `/loans/default/new-founded?days=${days}`;
 };
 
+export const extendedFounded = (days: string): string => {
+	return `/loans/default/extended?days=${days}`;
+};
+
 export const loanConsult = (): string => {
 	return `/loans/default/consultant`;
 };

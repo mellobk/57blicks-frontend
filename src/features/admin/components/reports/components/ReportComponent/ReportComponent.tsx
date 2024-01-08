@@ -107,7 +107,7 @@ const ReportTable: FC<CreatePermissionProps> = ({
 						/>
 					</div>
 				</div>
-				<div className="flex w-full h-[80px] justify-center items-center font-bold  text-[28px]">
+				<div className="flex w-full h-full justify-center items-center font-bold  text-[28px]">
 					{children}
 				</div>
 				{dataTable && (

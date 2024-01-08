@@ -231,22 +231,22 @@ export const ConsultantLoanReport: FC = () => {
 				]}
 			/>
 			<div
-				className="p-4 flex flex-col gap-1"
+				className=" flex flex-col gap-1"
 				onClick={() => {
 					setOpenInsurance(true);
 				}}
 			>
-				<div className="font-bold text-[15px] p-5 bg-gray-200 flex  justify-between">
+				<div className="font-bold text-[13px] p-5 bg-gray-200 flex  justify-between  h-[10px] items-center">
 					<span># of Loans</span>{" "}
 					<span>{consultantQuery?.data?.loansNumber}</span>
 				</div>
-				<div className="font-bold text-[13px]  p-5 flex  justify-between">
+				<div className="font-bold text-[13px]  p-5 flex  justify-between  h-[10px] items-center">
 					<span>Average Interest Rate</span>{" "}
 					<span>
 						{consultantQuery?.data?.averageInterest?.toFixed(4) || "0"}
 					</span>
 				</div>
-				<div className="font-bold text-[13px] p-5 bg-gray-200 flex  justify-between">
+				<div className="font-bold text-[13px] p-5 bg-gray-200 flex justify-between  h-[10px] items-center">
 					<span>Average LTV</span>{" "}
 					<span>{consultantQuery?.data?.averageLtv?.toFixed(4) || "0"}</span>
 				</div>

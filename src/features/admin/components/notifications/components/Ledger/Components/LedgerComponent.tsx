@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { type FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState, useRef } from "react";
 import { Modal } from "@/components/ui/Modal";
-import {
-	type LedgerFormValues,
-	type Ledgers,
-	LedgerTypeOfPayment,
-} from "../types";
+import type { LedgerFormValues, Ledgers } from "../types";
 import { useFieldArray } from "react-hook-form";
 import { useZodForm } from "../UseZodForm";
 import { validationSchema } from "../schema";
@@ -14,35 +16,60 @@ import { LedgerAdd } from "./LedgerAdd";
 import { useMutation } from "@tanstack/react-query";
 import ManageLedgerService from "@/features/admin/components/servicing/api/ledger";
 
-import { Icon } from "@/components/ui/Icon";
 import { dateWithFormat } from "@/utils/formats";
 import { calculateBalance } from "../utils/calculate-balance";
+
+import { toast } from "react-toastify";
+
+import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
+import { getLocalStorage } from "@/utils/local-storage";
+import { userName } from "@/utils/constant";
+import moment from "moment";
+
+import { validateDataLedger } from "@/features/admin/components/servicing/component/Ledger/utils/validate-data";
 import { TypeOfPayment } from "@/features/admin/components/servicing/component/TypeOfPayment/TypeOfPayment";
-import { FundingBreakdownEdit } from "../../FundingBreakdownEdit";
-import type { Loan } from "@/features/admin/components/create-loan/types/fields";
-import type { Loan as LoanLedger } from "@/features/admin/components/create-loan/types/fields";
-import { LoanStatusType } from "@/types/api/notifications";
+import Header from "../header";
 
 interface LedgerComponentProps {
-	loan: Loan;
+	loan: any;
 	ledgersData?: Array<Ledgers>;
 	refetchLedgers?: () => void;
 	orderLedgers?: (orderBy: string) => void;
 	handleDeleteLedger?: (id: string) => void;
-	setValidApprove: (validApprove: boolean) => void;
-	setLoanUpdated: (loanUpdated: LoanLedger) => void;
 }
 
 export const LedgerComponent: FC<LedgerComponentProps> = ({
 	loan,
 	ledgersData,
-	orderLedgers,
 	refetchLedgers,
 	handleDeleteLedger,
-	setValidApprove,
-	setLoanUpdated,
 }) => {
+	const scrollAdd = useRef<null | HTMLElement>(null);
+	const localUserName = getLocalStorage(userName);
+	const createLedgerQuery = useMutation(async (body: any) => {
+		return ManageNotificationService.createNotifications(body);
+	});
+
+	const createNotificationsLedger = (data: LedgerFormValues): void => {
+		data.ledgers.map((value) => {
+			if (value.typeOfPayment === "Principal") {
+				const dataNotification = { id: data.loanId, ledgerId: value.id };
+				createLedgerQuery.mutate({
+					title: "Approve Ledger",
+					timestamp: new Date(),
+					content: `${localUserName} is creating a Principal payment and needs confirmation.`,
+					additionalData: JSON.stringify(dataNotification),
+					userFullName: localUserName,
+					priority: "HIGH",
+					type: "LEDGER",
+					roles: ["super-admin"],
+				});
+			}
+		});
+	};
+
 	const [openClassModal, setOpenClassModal] = useState<boolean>();
+	const [openLedgerData, setLedgerData] = useState<any>();
 	const [currentIndex, setCurrentIndex] = useState<number>();
 	const [ledgers] = useState<Array<Ledgers>>(ledgersData || []);
 
@@ -54,16 +81,16 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			onSuccess: (data) => {
 				if (data) {
 					refetchLedgers && refetchLedgers();
+					createNotificationsLedger(openLedgerData);
 				}
 			},
 		}
 	);
 
-	const [totals, setTotals] = useState({
+	const [, setTotals] = useState<any>({
 		debits: 0,
 		credits: 0,
 		balance: 0,
-		newLoanAmount: 0,
 	});
 
 	const {
@@ -101,12 +128,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		if (ledgersData && ledgersData.length > 0) {
 			let debits = 0;
 			let credits = 0;
-			let balance = 0;
-			let principals = 0;
 			ledgersData.forEach((ledger) => {
-				if (ledger && ledger.typeOfPayment === LedgerTypeOfPayment.PRINCIPAL) {
-					principals += Number(ledger.credit) - Number(ledger.debit);
-				}
 				append(ledger as never);
 				if (ledger.debit) {
 					debits += Number(ledger.debit);
@@ -114,15 +136,12 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				if (ledger.credit) {
 					credits += Number(ledger.credit);
 				}
-				if (ledger.balance) {
-					balance = Number(ledger.balance);
-				}
 			});
+
 			const totals = {
 				debits,
 				credits,
-				balance,
-				newLoanAmount: principals,
+				balance: ledgersData.at(-1)?.balance || 0,
 			};
 
 			setTotals(totals);
@@ -141,8 +160,19 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			debits,
 			credits,
 			balance,
-			newLoanAmount: 0,
 		};
+		if (balance < 0) {
+			toast.warn("Balance error!", {
+				position: "top-right",
+				autoClose: 1000,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+			});
+		}
 		setTotals(totals);
 	};
 
@@ -171,6 +201,13 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		);
 	};
 
+	const handleSetMonth = (name: string, value: Date, index: number): void => {
+		setValue(
+			`ledgers.${index}.${name}` as never,
+			moment(value).format("YYYY-MM-DD") as never
+		);
+	};
+
 	const handleEdit = (
 		name: string,
 		value: string | number | boolean,
@@ -191,15 +228,30 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	useEffect(() => {}, [allFields]);
 
 	return (
-		<div className="h-full w-full ">
+		<div className="h-full w-full">
 			<form
 				autoComplete="off"
 				onSubmit={handleSubmit((data) => {
 					//convert  ledgerDate to date
+					const validation = validateDataLedger(data.ledgers);
+					if (validation !== "") {
+						toast.warning("Error: " + validation, {
+							position: "top-right",
+							autoClose: 2000,
+							hideProgressBar: true,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+							theme: "light",
+						});
+						return;
+					}
 					const sanedData: LedgerFormValues = {
 						ledgers: [],
-						loanId: loan.id,
+						loanId: loan?.id || "",
 					};
+
 					data.ledgers.forEach((ledger) => {
 						if (ledger.editable) {
 							const date = ledger.ledgerDate;
@@ -212,90 +264,58 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 							});
 						}
 					});
-
-					createLedger.mutate({ ...sanedData, loanId: loan.id });
+					createLedger.mutate({ ...sanedData, loanId: loan?.id || "" });
+					setLedgerData({ ...sanedData, loanId: loan.id });
 				})}
 			>
-				<div
-					className="h-full w-full rounded-xl bg-white flex flex-col justify-between "
-					style={{ overflow: "overlay" }}
+				<ul
+					style={{
+						fontSize: "13px",
+						overflow: "auto",
+						height: "calc(100vh - 300px)",
+						marginTop: "50px",
+					}}
 				>
-					<table>
-						<thead className="bg-gray-200 h-10">
-							<tr className="bg-gray-200 text-[12px] border-2 items-start 	 ">
-								<td className="font-semibold text-gray-600 pl-4">
-									<div
-										onClick={(): void => {
-											orderLedgers && orderLedgers("date");
-										}}
-										className=""
-									>
-										Date
-									</div>
-								</td>
-								<td className="font-semibold text-gray-600 pl-4">Class</td>
-								<td className="font-semibold text-gray-600 pl-4">
-									Debit/Credit
-								</td>
-								<td className="font-semibold text-gray-600 pl-4">Memo</td>
-								<td className="font-semibold text-gray-600 pl-4">
-									<div className="flex flex-row gap-2  align-middle">
-										Debit
-										<div className="pt-1">
-											<Icon name="debit" width="10" color="grey" />
-										</div>
-									</div>
-								</td>
-								<td className="font-semibold text-gray-600 pl-4">
-									<div className="flex flex-row gap-2  align-middle">
-										Credit
-										<div className="pt-1">
-											<Icon name="credit" width="10" color="grey" />
-										</div>
-									</div>
-								</td>
-								<td className="font-semibold text-gray-600 pl-4">Balance</td>
-							</tr>
-						</thead>
-						<tbody>
-							{fields.map((field, index) => {
-								return (
-									<>
-										<LedgerAdd
-											field={field}
-											index={index}
-											handleRemove={handleRemove}
-											data={allFields as unknown as LedgerFormValues}
-											handleOpenModal={handleOpenModal}
-											handleSetValue={handleSetValue}
-											handleSetDate={handleSetDate}
-											handleEdit={handleEdit}
-											handleDeleteLedger={handleDeleteLedger}
-											control={control as never}
-											errors={errors}
-											register={register as never}
-										/>
-									</>
-								);
-							})}
-							<tr>
-								<td colSpan={9}>&nbsp;</td>
-							</tr>
-							<tr>
-								<td colSpan={9}>&nbsp;</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+					<Header />
+
+					{fields.map((field, index) => {
+						//if last row then send scroll to bottom
+						let lastScrollAdd = null;
+						if (index === fields.length - 1) {
+							lastScrollAdd = scrollAdd;
+							if (lastScrollAdd && lastScrollAdd.current) {
+								lastScrollAdd.current.scrollIntoView({
+									behavior: "smooth",
+									block: "start",
+								});
+							}
+						}
+
+						return (
+							<>
+								<LedgerAdd
+									field={field}
+									index={index}
+									handleRemove={handleRemove}
+									data={allFields as unknown as LedgerFormValues}
+									loan={loan}
+									handleOpenModal={handleOpenModal}
+									handleSetValue={handleSetValue}
+									handleSetDate={handleSetDate}
+									handleSetMonth={handleSetMonth}
+									handleEdit={handleEdit}
+									handleDeleteLedger={handleDeleteLedger}
+									refetchLedgers={refetchLedgers}
+									control={control as never}
+									errors={errors}
+									register={register as never}
+									lastScrollAdd={lastScrollAdd}
+								/>
+							</>
+						);
+					})}
+				</ul>
 			</form>
-			{loan.status === LoanStatusType.APPROVED && (
-				<FundingBreakdownEdit
-					loan={loan}
-					newLoanAmount={totals.newLoanAmount}
-					setValidApprove={setValidApprove}
-					setLoanUpdated={setLoanUpdated}
-				/>
-			)}
 
 			<Modal
 				visible={openClassModal}

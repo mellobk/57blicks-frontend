@@ -36,8 +36,8 @@ export const LENDERS = [
 
 export const LOAN_TYPES = [
 	{
-		code: "Fix and Flip Loans",
-		name: "Fix and Flip Loans",
+		code: "Fix and Flip Loan",
+		name: "Fix and Flip Loan",
 	},
 	{
 		code: "New Construction Loans",

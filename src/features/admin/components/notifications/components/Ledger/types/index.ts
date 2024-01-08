@@ -50,6 +50,7 @@ const radom = Math.floor(Math.random() * 10000) + 1000;
 export const exampleLedger: Ledger = {
 	id: `18a833d2-c425-4c62-a73a-d6ae14fc${radom}`,
 	ledgerDate: "10102023",
+	month: "10102023",
 	typeOfPayment: LedgerTypeOfPayment.PRINCIPAL,
 	typeOfPaymentDescription: "Principal payment",
 	type: LedgerType.DEBIT,

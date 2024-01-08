@@ -10,6 +10,7 @@ import {
 	defaultInterestLoan,
 	defaultTaxLoan,
 	defaultUnauthorizedLoan,
+	extendedFounded,
 	loanAssets,
 	loanAverage,
 	loanConsult,
@@ -68,16 +69,33 @@ const getNewLoansFounded = async (days: string) => {
 	const response = await authApiClient.get<{
 		loanQuantity: number;
 		loanAverage: number;
+		averageInterestRate: number | null;
 		defaultLoans: Array<Loan>;
+		averageLTV: number | null;
+		averageLoanAmount: number | null;
 	}>(newLoansFounded(days));
+	return response.data;
+};
+
+const getExtendedFounded = async (days: string) => {
+	const response = await authApiClient.get<{
+		loanQuantity: number;
+		loanAverage: number;
+		averageInterestRate: number | null;
+		defaultLoans: Array<Loan>;
+		averageLTV: number | null;
+		averageLoanAmount: number | null;
+	}>(extendedFounded(days));
 	return response.data;
 };
 
 const getPaidOffLoans = async (days: string) => {
 	const response = await authApiClient.get<{
-		paid: { quantity: number; percentage: number };
-		unPaid: { quantity: number; percentage: number };
+		paid: { quantity: number | null };
+		averageInterestRate: number | null;
 		defaultLoans: Array<Loan>;
+		averageLTV: number | null;
+		averageLoanAmount: number | null;
 	}>(paidOffLoan(days));
 	return response.data;
 };
@@ -135,6 +153,7 @@ const ManageReportsService = {
 	getLoanPaidAverageDays,
 	getDefaultUnauthorizedLoan,
 	getNewLoansFounded,
+	getExtendedFounded,
 	getAllDefaultInterestLoan,
 };
 
