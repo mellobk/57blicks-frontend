@@ -2,6 +2,7 @@ import type {
 	Collateral,
 	Loan,
 } from "@/features/admin/components/servicing/types/api";
+import { LEAD_SOURCES, LOAN_TYPES } from "../../../create-loan/utils/selects";
 import { formatDate, moneyFormat } from "@/utils/formats";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -14,7 +15,6 @@ import { useEffect, useState } from "react";
 
 import type { FC } from "react";
 import { Input } from "@/components/forms/Input";
-import { LEAD_SOURCES, LOAN_TYPES } from "../../../create-loan/utils/selects";
 import { LoanCard } from "../LoanCard";
 import { LoanLinkCard } from "../LoanLinkCard";
 import { Select } from "@/components/forms/Select";
@@ -228,12 +228,10 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 							)}
 						/>
 					)} */}
-
 					<LoanCard
 						title="Total Loan Amount"
 						text={moneyFormat(Number.parseInt(loanData?.totalLoanAmount || ""))}
 					/>
-
 					{/* {edit ? (
 						<Input
 							type="number"
@@ -253,13 +251,11 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 							background
 						/>
 					)} */}
-
 					<LoanCard
 						title="Interest Rate"
 						text={`${loanData?.interestRate}%`}
 						background
 					/>
-
 					{edit ? (
 						<Input
 							error={
@@ -277,7 +273,6 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 							text={loanData?.prepaymentPenalty}
 						/>
 					)}
-
 					{edit ? (
 						<Input
 							type="text"
@@ -296,7 +291,6 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 							background
 						/>
 					)}
-
 					{edit ? (
 						<Select
 							register={register("leadSource")}
