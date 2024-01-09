@@ -52,11 +52,11 @@ export const DeleteLoan: FC<DeleteLoanProps> = ({
 			moment(originationDate),
 			"days"
 		);
-		// if (daysDifference > 30) {
-		// 	setShowDelete(false);
-		// } else {
-		// 	setShowDelete(true);
-		// }
+		if (daysDifference > 30) {
+			setShowDelete(false);
+		} else {
+			setShowDelete(true);
+		}
 	}, []);
 
 	return (
