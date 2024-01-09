@@ -108,3 +108,7 @@ export const setChatsData = (id: string): string => {
 export const updateAttachmentApi = (id: string): string => {
 	return `/attachments/upload/${id}`;
 };
+
+export const deleteLoanApi = (id: string): string => {
+	return `/loans/${id}`;
+};

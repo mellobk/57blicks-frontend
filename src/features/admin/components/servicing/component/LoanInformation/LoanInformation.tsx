@@ -1,9 +1,10 @@
-import type { FC } from "react";
-import { LoanCard } from "../LoanCard";
-import { LoanCollateralCard } from "../LoanCollateralCard";
 import type { Collateral, FundingBreakdown } from "../../types/api";
 import { formatDate, moneyFormat } from "@/utils/formats";
+
+import type { FC } from "react";
 import { LEAD_SOURCES } from "../../../create-loan/utils/selects";
+import { LoanCard } from "../LoanCard";
+import { LoanCollateralCard } from "../LoanCollateralCard";
 
 interface LoanInformationProps {
 	data?: FundingBreakdown;
