@@ -18,7 +18,6 @@ import BorrowerNotifications from "../../BorrowerNotifications";
 import Payable from "../../Payable";
 import { useQuery } from "@tanstack/react-query";
 import LoansService from "@/api/loans";
-import { Button } from "@/components/ui/Button";
 import { DeleteLoan } from "../../DeleteLoan";
 
 interface Props {
