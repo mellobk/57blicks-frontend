@@ -29,11 +29,6 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 				if (data && data?.length > 0) {
 					const newData: Array<Ledgers> = [];
 					data.forEach((item: Ledgers) => {
-						console.log(
-							"🚀 ~ file: LedgerList.tsx:34 ~ data.forEach ~ item:",
-							item.month
-						);
-
 						const ledger: Ledgers = {
 							id: item.id,
 							ledgerDate:
