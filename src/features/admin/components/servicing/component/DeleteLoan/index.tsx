@@ -8,7 +8,7 @@ import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 import { useMutation } from "@tanstack/react-query";
 import ManageLoanService from "../../api/loan";
 import useToast from "@/hooks/use-toast";
-import moment from "moment";
+//import moment from "moment";
 
 interface DeleteLoanProps {
 	loan: Loan;
@@ -22,7 +22,7 @@ export const DeleteLoan: FC<DeleteLoanProps> = ({
 }) => {
 	const showToast = useToast();
 	const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
-	const [showDelete, setShowDelete] = useState<boolean>(true);
+	const [showDelete] = useState<boolean>(true);
 
 	const deleteLoanMutation = useMutation((id: string) => {
 		return ManageLoanService.deleteLoan(id);
