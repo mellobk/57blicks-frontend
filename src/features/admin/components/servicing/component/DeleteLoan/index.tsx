@@ -46,17 +46,18 @@ export const DeleteLoan: FC<DeleteLoanProps> = ({
 
 	useEffect(() => {
 		//if loan.originationDate is less than 30 days, then disable delete button
-		const originationDate = moment(loan.originationDate).toDate();
-		const currentDate = new Date();
-		const daysDifference = moment(currentDate).diff(
-			moment(originationDate),
-			"days"
-		);
-		if (daysDifference > 30) {
-			setShowDelete(false);
-		} else {
-			setShowDelete(true);
-		}
+		//TODO: Uncomment this code when the backend is ready
+		// const originationDate = moment(loan.originationDate).toDate();
+		// const currentDate = new Date();
+		// const daysDifference = moment(currentDate).diff(
+		// 	moment(originationDate),
+		// 	"days"
+		// );
+		// if (daysDifference > 30) {
+		// 	setShowDelete(false);
+		// } else {
+		// 	setShowDelete(true);
+		// }
 	}, []);
 
 	return (
