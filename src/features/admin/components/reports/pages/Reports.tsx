@@ -41,14 +41,14 @@ export const Reports: FC = () => {
 		}
 	}, [userLoggedInfo]);
 	return (
-		<div className="flex w-full bg-white  rounded-3xl h-full flex-wrap rounded-3xl">
-			<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
+		<div className="flex w-full bg-white  rounded-3xl  flex-wrap  gap-3 justify-center p-2">
+			<div className="flex flex-col items-center  w-[49%]   bg-white  border-8 rounded-2xl shadow-md">
 				<InterestCollectionReport />
 			</div>
-			<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
+			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
 				<AllDefaultReport />
 			</div>
-			<div className="flex flex-col items-center  w-[50%]   bg-white p-2">
+			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
 				<NewFoundedLoanReport />
 				<hr className="h-[2px]  w-full mt-5"></hr>
 				<PaidLoanReport />
@@ -69,8 +69,8 @@ export const Reports: FC = () => {
 			{/* 	<div className="flex  w-[100%] p-2">
 					<AverageLoan />
 				</div> */}
-			<div className="flex flex-col items-center  w-[50%]   bg-white  px-2">
-				<div className="flex items-center justify-between w-full   bg-gray-200  g-3  mt-2 h-[35px]">
+			<div className="flex flex-col items-center  w-[49%]   bg-white  border-8 rounded-2xl shadow-md">
+				<div className="flex items-center justify-between w-full   bg-gray-200  g-3  h-[35px]">
 					<Tabs
 						tabs={loansTabs}
 						actualTab={actualTabData}
@@ -96,12 +96,11 @@ export const Reports: FC = () => {
 				)}
 			</div>
 
-			<div className="flex flex-col items-center  w-[50%]   bg-white px-2 ">
+			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
 				<AverageDaysPaidLoans />
 			</div>
 
-			<div className="flex flex-col items-center  w-[50%]   bg-white  px-2">
-				<hr className="h-[2px]  w-full mt-2"></hr>
+			<div className="flex flex-col items-center  w-[49%]   bg-white  border-8 rounded-2xl shadow-md">
 				<ExtendedLoanReport />
 			</div>
 		</div>

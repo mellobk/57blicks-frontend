@@ -50,12 +50,27 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 	const [openModal, setOpenModal] = useState<boolean>();
 	const [investorId, setInvestorId] = useState<string>();
 	const [opportunityId, setOpportunityId] = useState<string>();
+	const [opportunityStatus, setOpportunityStatus] = useState<string>();
 
 	const getOpportunityQuery = useQuery(
 		["opportunity-notifications-query", selectedOpportunity],
 		() => OpportunitiesService.getOpportunity(selectedOpportunity || ""),
 		{ enabled: !!selectedOpportunity }
 	);
+
+	useEffect(() => {
+		const investment = getOpportunityQuery?.data?.investments.find(
+			(data) => data.investor.user?.id === userInfo.id
+		);
+		console.log(investment?.status);
+		setOpportunityStatus(investment?.status);
+	}, [getOpportunityQuery.isFetching]);
+
+	useEffect(() => {
+		if (openModal) {
+			void getOpportunityQuery.refetch();
+		}
+	}, [openModal]);
 
 	const userLoggedQuery = useQuery(
 		["user-logged-query"],
@@ -342,49 +357,62 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 				minHeight="90vh"
 			>
 				<>
-					<div
-						className=" flex absolute  items-center justify-end gap-2"
-						style={{ right: "65px", top: "24px", zIndex: 1 }}
-					>
-						<div className="cursor-pointer">
-							<Button
-								buttonText="Approve"
-								className=" rounded-3xl bg-green-900 text-green-500"
-								onClick={() => {
-									updateOpportunityQuery.mutate({
-										investorId: investorId || "",
-										opportunityId: opportunityId || "",
-										status: "ACCEPTED",
-									});
+					{opportunityStatus === "PENDING" && (
+						<div
+							className=" flex absolute  items-center justify-end gap-2"
+							style={{ right: "65px", top: "24px", zIndex: 1 }}
+						>
+							<div className="cursor-pointer">
+								<Button
+									buttonText="Approve"
+									className=" rounded-3xl bg-green-900 text-green-500"
+									onClick={() => {
+										updateOpportunityQuery.mutate({
+											investorId: investorId || "",
+											opportunityId: opportunityId || "",
+											status: "ACCEPTED",
+										});
+									}}
+								/>
+							</div>
 
-									/* 	createLedgerQuery.mutate({
-										title: "Offer accepted",
-										timestamp: new Date(),
-										content: `An investor accepted a new offer`,
-										additionalData: "",
-										userFullName: localUserName,
-										priority: "HIGH",
-										type: "ALERT",
-										roles: ["investor"],
-									}); */
-								}}
-							/>
+							<div className="cursor-pointer">
+								<Button
+									buttonText="Decline"
+									className=" rounded-3xl bg-red-200 text-red-500"
+									onClick={() => {
+										updateOpportunityQuery.mutate({
+											investorId: investorId || "",
+											opportunityId: opportunityId || "",
+											status: "REJECTED",
+										});
+									}}
+								/>
+							</div>
 						</div>
-
-						<div className="cursor-pointer">
-							<Button
-								buttonText="Decline"
-								className=" rounded-3xl bg-red-200 text-red-500"
-								onClick={() => {
-									updateOpportunityQuery.mutate({
-										investorId: investorId || "",
-										opportunityId: opportunityId || "",
-										status: "REJECTED",
-									});
-								}}
-							/>
+					)}
+					{opportunityStatus !== "PENDING" && (
+						<div
+							className=" flex absolute  items-center justify-end gap-2"
+							style={{ right: "65px", top: "24px", zIndex: 1 }}
+						>
+							{opportunityStatus === "ACCEPTED" ? (
+								<div className="cursor-pointer">
+									<Button
+										buttonText="Approve"
+										className=" rounded-3xl bg-green-900 text-green-500"
+									/>
+								</div>
+							) : (
+								<div className="cursor-pointer">
+									<Button
+										buttonText="Decline"
+										className=" rounded-3xl bg-red-200 text-red-500"
+									/>
+								</div>
+							)}
 						</div>
-					</div>
+					)}
 					<div className="lg:col-span-7 col-span-1 flex flex-col gap-8 py-2 h-[80vh]">
 						<DocumentPreview
 							data={getOpportunityQuery.data}

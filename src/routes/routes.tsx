@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { ComponentType, ReactElement, ReactNode } from "react";
 import { Route } from "@tanstack/router";
 import { RootRoute } from "./RootRoute";
@@ -12,7 +13,8 @@ import {
 interface Props {
 	path: string;
 	page: ComponentType;
-	layout?: ComponentType<{ children: ReactNode }> | null;
+	layout?: ComponentType<{ children: ReactNode; hScreen?: string }> | null;
+	className?: string;
 }
 
 const UnauthenticatedRoute = (routes: Array<Props>) => {
@@ -34,7 +36,7 @@ const UnauthenticatedRoute = (routes: Array<Props>) => {
 };
 
 export const AuthenticatedRoute = (routes: Array<Props>) => {
-	return routes.map(({ page: Page, layout: Layout, path }) => {
+	return routes.map(({ page: Page, layout: Layout, path, className }) => {
 		return new Route({
 			path,
 			getParentRoute: (): typeof RootRoute => RootRoute,
@@ -51,7 +53,7 @@ export const AuthenticatedRoute = (routes: Array<Props>) => {
 				awsRouterPermission(cognitoGroup as string);
 
 				return Layout ? (
-					<Layout>
+					<Layout hScreen={className}>
 						<Page />
 					</Layout>
 				) : (

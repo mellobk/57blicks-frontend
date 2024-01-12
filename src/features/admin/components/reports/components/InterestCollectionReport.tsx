@@ -43,14 +43,14 @@ export const InterestCollectionReport: FC = () => {
 			const getData = propertyInsuranceQuery.data;
 			const data = [
 				{
-					id: `Interest billed - ${getData.totalCredit} $`,
-					label: `interest billed - ${getData.totalCredit} $`,
+					id: `Interest billed`,
+					label: `interest billed `,
 					value: getData.totalCredit,
 					color: "hsl(110, 70%, 50%)",
 				},
 				{
-					id: `Interest Collected  - ${getData.totalDebit}%`,
-					label: `Interest Collected -${getData.totalDebit}%`,
+					id: `Interest Collected `,
+					label: `Interest Collected `,
 					value: getData.totalDebit,
 					color: "hsl(187, 70%, 50%)",
 				},
