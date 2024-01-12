@@ -21,6 +21,7 @@ export const NavbarRoutes = [
 		page: Reports,
 		layout: DashboardLayout,
 		name: "Reporting",
+		className: "",
 	},
 	{
 		path: "/loan-overview",

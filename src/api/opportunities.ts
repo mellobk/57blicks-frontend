@@ -50,6 +50,21 @@ const getOpportunity = async (opportunityId?: string) => {
 	return;
 };
 
+const getNotificationStatusOpportunity = async (
+	opportunityId?: string,
+	investorId?: string
+) => {
+	if (opportunityId) {
+		const response = await authApiClient.get<Opportunity>(
+			`/investments/status/${investorId}/${opportunityId}`
+		);
+
+		return response.data;
+	}
+
+	return;
+};
+
 const uploadOpportunity = async (file: Blob) => {
 	let formData = new FormData();
 	formData.append("file", file);
@@ -86,6 +101,7 @@ const OpportunitiesService = {
 	uniqueUsers,
 	userNotifications,
 	getMyOpportunities,
+	getNotificationStatusOpportunity,
 };
 
 export default OpportunitiesService;

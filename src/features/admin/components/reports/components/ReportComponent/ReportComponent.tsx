@@ -41,7 +41,7 @@ const ReportTable: FC<CreatePermissionProps> = ({
 			<div className="cursor-pointer w-full">
 				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 					<div
-						className="font-bold text-[13px] text-center flex items-center justify-center w-full"
+						className="font-bold text-[13px] text-left flex items-center w-full"
 						onClick={() => {
 							setOpenInsurance(true);
 						}}

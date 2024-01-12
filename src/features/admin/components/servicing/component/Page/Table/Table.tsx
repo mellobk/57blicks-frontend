@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import type { FC, ReactElement } from "react";
 import { useEffect, useState } from "react";
 
@@ -12,6 +14,7 @@ import { Modal } from "@/components/ui/Modal/Modal";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { moneyFormat } from "@/utils/formats";
 import { useDebounce } from "@/hooks/debounce";
+import { getIsSameMonthYear } from "@/utils/common-functions";
 
 interface Column {
 	name?: string;
@@ -109,6 +112,16 @@ export const Table: FC<Props> = ({
 			return Number.parseFloat(data.regular);
 		});
 
+		const totalRegularCurrent = data?.map((data: FundingBreakdown) => {
+			const currentData = getIsSameMonthYear(
+				data.loan.originationDate as unknown as string
+			)
+				? data.loan.prorated
+				: data.loan.regular;
+
+			return Number.parseFloat(currentData);
+		});
+
 		const total = totalLoanAmount?.reduce(
 			(accumulator, currentValue) => accumulator + currentValue,
 			0
@@ -119,15 +132,26 @@ export const Table: FC<Props> = ({
 			0
 		);
 
+		const totalCurrent = totalRegularCurrent?.reduce(
+			(accumulator, currentValue) => accumulator + currentValue,
+			0
+		);
+
 		const footerTabData: Array<{
 			label: string;
 			width: string;
 			justify?: string;
 		}> = [
-			{ label: `total: ${totalRow}`, width: "730px", justify: "center" },
+			{ label: `total: ${totalRow}`, width: "600px", justify: "center" },
 			{ label: moneyFormat(total), width: "150px" },
 			{ label: "", width: "100px" },
 			{ label: moneyFormat(totalRegular), width: "200px" },
+			{ label: "", width: "150px" },
+			{ label: "", width: "150px" },
+			{ label: "", width: "150px" },
+			{ label: "", width: "120px" },
+			{ label: "", width: "120px" },
+			{ label: moneyFormat(totalCurrent), width: "150px" },
 		];
 
 		return footerTabData;

@@ -1,6 +1,6 @@
 /* eslint-disable unicorn/filename-case */
 // eslint-disable-next-line unicorn/filename-case
-import { type FC, useState } from "react";
+import { type FC, useState, useEffect } from "react";
 import moment from "moment";
 import { useQuery } from "@tanstack/react-query";
 
@@ -16,6 +16,7 @@ import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import type { Loan } from "@/types/api/loan";
 import BulkApproval from "../../BulkApproval";
 import PayablesAdmin from "../../component/PayablesAdmin";
+import { useDebounce } from "@/hooks/debounce";
 
 export const LLC: FC = () => {
 	const [selectedLoan, setSelectedLoan] = useState<Loan | null>();
@@ -24,10 +25,14 @@ export const LLC: FC = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const currentMonthName = moment().format("MMMM");
-
+	const debouncedSearchTerm = useDebounce(searchValue, 1000);
 	const investorsQuery = useQuery(["investors-query"], () =>
 		InvestorsService.getInvestorsWithLoans(searchValue)
 	);
+
+	useEffect(() => {
+		void investorsQuery.refetch();
+	}, [debouncedSearchTerm]);
 
 	const conditionalRowStyles = [
 		{
@@ -122,48 +127,53 @@ export const LLC: FC = () => {
 						className="flex justify-end gap-1 items-center"
 						style={{ position: "absolute" }}
 					>
-						<BulkApproval />
 						<div
 							className="flex gap-2 justify-end"
 							style={{
 								position: "relative",
 								right: "158px",
-								width: "350px",
+								width: "400px",
 								zIndex: "0",
 							}}
 						>
 							<div
-								className={`${
+								className={` flex flex-col${
 									searchVisible || searchValue
 										? "w-[200px] bg-transparent transition duration-500"
-										: "bg-transparent  w-[30px] transition duration-500 "
+										: "bg-transparent  w-[185px] transition duration-500 "
 								} `}
-								onMouseEnter={() => {
-									setSearchVisible(true);
-								}}
-								onMouseLeave={() => {
-									setSearchVisible(false);
-								}}
 							>
-								<Input
-									type="text"
-									value={searchValue}
-									placeholder="Search"
-									iconColor="white"
-									iconWidth={`${searchValue ? "12" : "20"}`}
-									iconName={`${searchValue ? "wrong" : "search"}`}
-									onChange={(data) => {
-										setSearchValue(data.target.value);
+								<div className="mr-2">
+									<BulkApproval />
+								</div>
+								<div
+									onMouseEnter={() => {
+										setSearchVisible(true);
 									}}
-									clickIcon={() => {
-										setSearchValue("");
+									onMouseLeave={() => {
+										setSearchVisible(false);
 									}}
-									className={`placeholder-gray-400 text-white text-[13px] font-normal font-weight-400 leading-normal w-full ${
-										searchVisible || searchValue
-											? "bg-black-200  "
-											: "bg-transparent "
-									}  tracking-wide flex h-3 p-4 items-center self-stretch rounded-md border-none outline-none `}
-								/>
+								>
+									<Input
+										type="text"
+										value={searchValue}
+										placeholder="Search"
+										iconColor="white"
+										iconWidth={`${searchValue ? "12" : "20"}`}
+										iconName={`${searchValue ? "wrong" : "search"}`}
+										onChange={(data) => {
+											setSearchValue(data.target.value);
+										}}
+										clickIcon={() => {
+											setSearchValue("");
+										}}
+										className={`placeholder-gray-400 text-white text-[13px] font-normal font-weight-400 leading-normal w-full ${
+											searchVisible || searchValue
+												? "bg-black-200  "
+												: "bg-transparent "
+										}  tracking-wide flex h-3 p-4 items-center self-stretch rounded-md border-none outline-none `}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>

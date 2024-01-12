@@ -10,8 +10,9 @@ const BulkApproval: FC = () => {
 	const [width] = useState<string>(showBlack ? "1200px" : "900px");
 	return (
 		<>
-			<div className="absolute right-[210px] z-50">
+			<div className=" z-50">
 				<Button
+					className="w-[150px]"
 					type="button"
 					variant={"gold"}
 					buttonText={"Approve Payable"}

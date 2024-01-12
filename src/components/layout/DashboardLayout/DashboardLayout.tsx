@@ -29,9 +29,13 @@ import { getRefreshToken } from "@/lib/cognito.ts";
 
 type Props = {
 	children?: ReactNode;
+	hScreen?: string;
 };
 
-export const DashboardLayout: FC<Props> = ({ children }) => {
+export const DashboardLayout: FC<Props> = ({
+	children,
+	hScreen = "h-screen",
+}) => {
 	const navigate = useNavigate();
 	const createLoanTo: string = "/create-loan";
 	const localUserName = getLocalStorage(userName);
@@ -247,7 +251,7 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 	];
 
 	return (
-		<div className="flex flex-col h-screen bg-gradient relative">
+		<div className={`flex flex-col ${hScreen} bg-gradient relative`}>
 			<div className="flex items-center justify-between px-12 py-4">
 				<img src={LogoGold} alt="DKC Logo" />
 				<ul className="flex space-x-2">
@@ -314,7 +318,9 @@ export const DashboardLayout: FC<Props> = ({ children }) => {
 				</div>
 			</div>
 
-			<div className="flex m-2 h-screen overflow-y-auto bg-w">{children}</div>
+			<div className={`flex m-2 ${hScreen} overflow-y-auto bg-w`}>
+				{children}
+			</div>
 			{openModalUser && (
 				<>
 					<div

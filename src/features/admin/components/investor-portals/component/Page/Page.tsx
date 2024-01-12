@@ -19,6 +19,7 @@ import { formatDate, moneyFormat, percentageFormat } from "@/utils/formats";
 
 import PayablesAdmin from "../PayablesAdmin";
 import type { DkcLenders } from "../../../servicing/types/api";
+import { sortMaturityDate, sortOriginateDate } from "@/utils/common-functions";
 
 interface Props {
 	actualTab: string;
@@ -126,12 +127,14 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			selector: (row: FundingBreakdown) =>
 				formatDate(row.loan?.originationDate?.toString() || ""),
 			sortable: true,
+			sortFunction: sortOriginateDate,
 		},
 		{
 			name: "Maturity Date",
 			selector: (row: FundingBreakdown) =>
 				formatDate(row.loan?.maturityDate?.toString() || ""),
 			sortable: true,
+			sortFunction: sortMaturityDate,
 		},
 		{
 			name: `${currentMonthName} (Current)`,

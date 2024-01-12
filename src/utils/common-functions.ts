@@ -44,6 +44,48 @@ export const statusTaxes = (rowA: FundingBreakdown, rowB: FundingBreakdown) => {
 	return 0;
 };
 
+export function sortMaturityDate(
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+): any {
+	const aDateString = rowA.loan.maturityDate || "";
+	const bDateString = rowB.loan.maturityDate || "";
+
+	// Convert the date strings to Date objects
+	const aDate = aDateString ? new Date(aDateString) : new Date(0); // Default to epoch if empty
+	const bDate = bDateString ? new Date(bDateString) : new Date(0); // Default to epoch if empty
+
+	return aDate.getTime() - bDate.getTime();
+}
+
+export function sortOriginateDate(
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+): any {
+	const aDateString = rowA.loan.originationDate || "";
+	const bDateString = rowB.loan.originationDate || "";
+
+	// Convert the date strings to Date objects
+	const aDate = aDateString ? new Date(aDateString) : new Date(0); // Default to epoch if empty
+	const bDate = bDateString ? new Date(bDateString) : new Date(0); // Default to epoch if empty
+
+	return aDate.getTime() - bDate.getTime();
+}
+
+export function sortInsuranceDate(
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+): any {
+	const aDateString = rowA.loan.collaterals[0]?.insuranceExpirationDate || "";
+	const bDateString = rowB.loan.collaterals[0]?.insuranceExpirationDate || "";
+
+	// Convert the date strings to Date objects
+	const aDate = aDateString ? new Date(aDateString) : new Date(0); // Default to epoch if empty
+	const bDate = bDateString ? new Date(bDateString) : new Date(0); // Default to epoch if empty
+
+	return aDate.getTime() - bDate.getTime();
+}
+
 export const statusDefault = (
 	rowA: FundingBreakdown,
 	rowB: FundingBreakdown

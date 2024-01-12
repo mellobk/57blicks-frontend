@@ -301,7 +301,7 @@ export const AverageDaysPaidLoans: FC = () => {
 
 	return (
 		<div className="flex flex-col w-full justify-center mb-[70px]">
-			<div className="flex items-center justify-between w-full   bg-gray-200  g-3  mt-2 h-[35px]">
+			<div className="flex items-center justify-between w-full   bg-gray-200  g-3   h-[35px]">
 				<Tabs
 					tabs={loansRollTabs}
 					actualTab={actualRollTabData}

@@ -15,6 +15,9 @@ import { ShowModal } from "@/features/admin/components/servicing/component/Page/
 import { formatDate, moneyFormat } from "@/utils/formats";
 import {
 	getIsSameMonthYear,
+	sortInsuranceDate,
+	sortMaturityDate,
+	sortOriginateDate,
 	statusDefault,
 	statusTaxes,
 	validateDate,
@@ -174,8 +177,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const columns = [
 		{
 			name: "Borrower",
-			maxWidth: "330px",
-			minWidth: "330px",
+			maxWidth: "300px",
+			minWidth: "300px",
 			selector: (row: FundingBreakdown) =>
 				row?.loan.borrower?.llc ||
 				`${row?.loan.borrower?.user.firstName} ${row?.loan.borrower?.user.lastName}`,
@@ -188,8 +191,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				row?.loan?.collaterals[0]?.address || "",
 			sortable: true,
 			omit: false,
-			maxWidth: "400px",
-			minWidth: "400px",
+			maxWidth: "300px",
+			minWidth: "300px",
 		},
 		{
 			name: "Total Loan",
@@ -223,6 +226,9 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				formatDate(row?.loan?.originationDate.toString()),
 			omit: false,
 			sortable: true,
+			sortFunction: sortOriginateDate,
+			maxWidth: "150px",
+			minWidth: "150px",
 		},
 		{
 			name: "Maturity Date",
@@ -230,8 +236,9 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				formatDate(row?.loan?.maturityDate.toString()),
 			omit: false,
 			sortable: true,
-			maxWidth: "130px",
-			minWidth: "130px",
+			maxWidth: "150px",
+			minWidth: "150px",
+			sortFunction: sortMaturityDate,
 			conditionalCellStyles: [
 				{
 					when: (row: FundingBreakdown) =>
@@ -250,9 +257,11 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 					row?.loan.collaterals[0]?.insuranceExpirationDate.toString() || ""
 				),
 			omit: false,
+			sortFunction: sortInsuranceDate,
 			sortable: true,
-			maxWidth: "130px",
-			minWidth: "130px",
+			maxWidth: "200px",
+			minWidth: "200px",
+
 			conditionalCellStyles: [
 				{
 					when: (row: FundingBreakdown) =>
@@ -269,6 +278,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Taxes Paid",
 			sortable: true,
+			maxWidth: "120px",
+			minWidth: "120px",
 			sortFunction: statusTaxes,
 			selector: (row: FundingBreakdown) => (
 				<div key={row.id}>
@@ -306,6 +317,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				</div>
 			),
 			omit: false,
+			maxWidth: "120px",
+			minWidth: "120px",
 		},
 		/*
 		{
@@ -320,6 +333,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		}, */
 		{
 			name: `${currentMonthName} (Current)`,
+			maxWidth: "150px",
+			minWidth: "150px",
 			sortable: true,
 			selector: (row: ParticipationBreakdown) => {
 				const data = getIsSameMonthYear(
