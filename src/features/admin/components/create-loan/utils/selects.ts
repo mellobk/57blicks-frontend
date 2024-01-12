@@ -40,16 +40,16 @@ export const LOAN_TYPES = [
 		name: "Fix and Flip Loan",
 	},
 	{
-		code: "New Construction Loans",
-		name: "New Construction Loans",
+		code: "New Construction Loan",
+		name: "New Construction Loan",
 	},
 	{
 		code: "Refinance",
 		name: "Refinance",
 	},
 	{
-		code: "Fix and Lease Loans",
-		name: "Fix and Lease Loans",
+		code: "Fix and Lease Loan",
+		name: "Fix and Lease Loan",
 	},
 ];
 
