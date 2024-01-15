@@ -42,7 +42,7 @@ export const validateProratedRowsCalculations = (
 		if (difference > 0) {
 			currentProrated += difference;
 		} else if (difference < 0) {
-			currentProrated -= difference;
+			currentProrated += difference;
 		}
 	}
 

@@ -224,7 +224,7 @@ export const FundingBreakdown: FC<Props> = ({
 						row.type,
 						totalLoanAmount,
 						interestRate,
-						[...participationBreakdown, ...fundingBreakdown]
+						[...fundingBreakdown, ...participationBreakdown]
 					)}
 				/>
 			),
