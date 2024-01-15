@@ -1,7 +1,9 @@
 import type { Collateral, FundingBreakdown } from "../../types/api";
 import { formatDate, moneyFormat } from "@/utils/formats";
 
-import type { FC } from "react";
+import { Button } from "@/components/ui/Button";
+import ExtendLoan from "./ExtendLoan";
+import { useState, type FC } from "react";
 import { LEAD_SOURCES } from "../../../create-loan/utils/selects";
 import { LoanCard } from "../LoanCard";
 import { LoanCollateralCard } from "../LoanCollateralCard";
@@ -11,6 +13,9 @@ interface LoanInformationProps {
 }
 
 export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
+	const [save, setSave] = useState(true);
+	const [submit, setSubmit] = useState(false);
+
 	return (
 		<div
 			className={` flex  w-full   gap-5 text-gray-1000  justify-center p-[5px] rounded-[16px]  overflow-hidden`}
@@ -66,8 +71,20 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 				<LoanCard
 					title="Maturity Date"
 					text={formatDate(data?.loan?.maturityDate.toString() || "")}
+					className="relative"
 					background
-				/>
+				>
+					{data?.loan && (
+						<ExtendLoan
+							loan={data?.loan}
+							handleEdit={(): void => {
+								setSave(false);
+								setSubmit(false);
+							}}
+							submit={submit}
+						/>
+					)}
+				</LoanCard>
 
 				<LoanCard
 					title="Construction Holdback"
@@ -96,6 +113,17 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 					return <LoanCollateralCard key={data.id} data={data} />;
 				})}
 			</div>
+
+			<Button
+				buttonText="Save"
+				variant={"gray"}
+				disabled={save}
+				className="absolute top-[25px] right-[148px] py-[3px] px-[10px] bg-gray-250 text-white rounded-3xl"
+				onClick={(): void => {
+					//setSave(true);
+					setSubmit(true);
+				}}
+			/>
 		</div>
 	);
 };

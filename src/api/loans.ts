@@ -20,10 +20,17 @@ const updateLoan = async (id: string, body: LoanField): Promise<Loan> => {
 	return response.data;
 };
 
+const extendLoan = async (id: string, body: LoanField): Promise<Loan> => {
+	const response = await authApiClient.put<Loan>(`/loans/extend/${id}`, body);
+
+	return response.data;
+};
+
 const LoansService = {
 	createLoan,
 	getLoan,
 	updateLoan,
+	extendLoan,
 };
 
 export default LoansService;

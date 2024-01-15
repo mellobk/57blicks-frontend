@@ -112,3 +112,7 @@ export const updateAttachmentApi = (id: string): string => {
 export const deleteLoanApi = (id: string): string => {
 	return `/loans/${id}`;
 };
+
+export const loanHistoricalApi = (parameter: ApiParameters): string => {
+	return createApiUrl("loan-historicals", parameter);
+};

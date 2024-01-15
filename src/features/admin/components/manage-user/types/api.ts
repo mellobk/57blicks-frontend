@@ -1,7 +1,7 @@
-import type { Collateral } from "@/types/api/collateral";
-import type { Opportunity } from "../../opportunities/types/fields";
 import type { Borrower } from "@/types/fields/borrower";
+import type { Collateral } from "@/types/api/collateral";
 import type { Lender } from "@/types/api/lender";
+import type { Opportunity } from "../../opportunities/types/fields";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Role {
@@ -83,6 +83,7 @@ export interface IErrorResponse {
 		data: {
 			statusCode: number;
 			message: string;
+			description?: string;
 		};
 	};
 }

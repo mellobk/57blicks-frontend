@@ -1,3 +1,7 @@
+import type {
+	Loan,
+	LoanHistory,
+} from "@/features/admin/components/servicing/types/api";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -5,8 +9,8 @@ import type { FC } from "react";
 import { LedgerComponent } from "./LedgerComponent";
 import type { Ledgers } from "../types";
 import Loading from "@/assets/icons/loading";
-import type { Loan } from "@/features/admin/components/servicing/types/api";
 import ManageLedgerService from "@/features/admin/components/servicing/api/ledger";
+import ManageLoanHistoricalService from "../../../api/loan-historical";
 import { calculateBalance } from "../utils/calculate-balance";
 import { dateWithFormat } from "@/utils/formats";
 
@@ -18,6 +22,22 @@ interface LedgerListProps {
 
 const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 	const [ledgers, setLedgers] = useState<Array<Ledgers>>([]);
+	const [extended, setExtended] = useState<Array<LoanHistory>>([]);
+
+	const queryHistorical = useQuery(
+		["get-loan-historical-by-loan"],
+		() => {
+			return ManageLoanHistoricalService.getLoanHistoricalLoanId({
+				id: loan.id || "",
+				url: "",
+			});
+		},
+		{
+			onSuccess: (data) => {
+				if (data) setExtended(data);
+			},
+		}
+	);
 
 	const { refetch, isLoading } = useQuery(
 		["leger-get-by-loan"],
@@ -58,6 +78,7 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 
 	const refetchLedgers = (): void => {
 		setLedgers([]);
+		void queryHistorical.refetch();
 		void refetch();
 	};
 
@@ -79,7 +100,6 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 	};
 
 	useEffect(() => {}, [ledgers]);
-
 	return (
 		<>
 			{isLoading ? (
@@ -88,6 +108,7 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 				<>
 					<LedgerComponent
 						loan={loan}
+						extended={extended}
 						ledgersData={ledgers}
 						refetchLedgers={refetchLedgers}
 						handleDeleteLedger={handleDeleteLedger}
