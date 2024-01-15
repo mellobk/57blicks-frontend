@@ -53,7 +53,9 @@ const ExtendedLoanList: FC<ExtendedLoanListProps> = ({
 	return (
 		<>
 			<li>
-				{datePrint && <>{moment(datePrint).format("MM/DD/YYYY").toString()}</>}
+				{datePrint && (
+					<>Extended {moment(datePrint).format("MM/DD/YYYY").toString()}</>
+				)}
 			</li>
 		</>
 	);
