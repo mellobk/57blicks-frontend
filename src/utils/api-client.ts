@@ -42,7 +42,11 @@ authApiClient.interceptors.response.use(
 
 		const errorResponse = error as IErrorResponse;
 
-		setErrorMessage(errorResponse.response.data.message);
+		setErrorMessage(
+			`${errorResponse.response.data.message}  ${
+				errorResponse.response.data.description ?? ""
+			} `
+		);
 		setTimeout(clearErrorMessage, 2000);
 
 		return Promise.reject(error);

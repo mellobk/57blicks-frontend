@@ -23,7 +23,10 @@ import ManageLedgerService from "@/features/admin/components/servicing/api/ledge
 import { v4 as uuidv4 } from "uuid";
 import { dateWithFormat } from "@/utils/formats";
 import { calculateBalance } from "../utils/calculate-balance";
-import type { Loan } from "@/features/admin/components/servicing/types/api";
+import type {
+	Loan,
+	LoanHistory,
+} from "@/features/admin/components/servicing/types/api";
 import { toast } from "react-toastify";
 import { validateDataLedger } from "../utils/validate-data";
 import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
@@ -33,9 +36,11 @@ import moment from "moment";
 import LedgerFooter1 from "./footer/LedgerFooter1";
 import LedgerFooter2 from "./footer/LedgerFooter2";
 import Header from "./header";
+import ExtendedLoanList from "./ExtendedLoanList";
 interface LedgerComponentProps {
 	loan: Loan;
 	ledgersData?: Array<Ledgers>;
+	extended?: Array<LoanHistory>;
 	refetchLedgers?: () => void;
 	orderLedgers?: (orderBy: string) => void;
 	handleDeleteLedger?: (id: string) => void;
@@ -44,6 +49,7 @@ interface LedgerComponentProps {
 export const LedgerComponent: FC<LedgerComponentProps> = ({
 	loan,
 	ledgersData,
+	extended,
 	refetchLedgers,
 	handleDeleteLedger,
 }) => {
@@ -75,6 +81,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	const [openLedgerData, setLedgerData] = useState<any>();
 	const [currentIndex, setCurrentIndex] = useState<number>();
 	const [ledgers] = useState<Array<Ledgers>>(ledgersData || []);
+	const extendedData = useRef([]);
 
 	const createLedger = useMutation(
 		(data: LedgerFormValues) => {
@@ -243,6 +250,8 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 
 	useEffect(() => {}, [allFields]);
 
+	useEffect(() => {}, [extended]);
+
 	return (
 		<div className="h-full w-full">
 			<form
@@ -309,6 +318,16 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 
 						return (
 							<>
+								{extended && field.ledgerDate && (
+									<>
+										<ExtendedLoanList
+											extended={extended}
+											date={moment(field.ledgerDate, "MMDDYYYY").toDate()}
+											extendedData={extendedData}
+										/>
+									</>
+								)}
+
 								<LedgerAdd
 									field={field}
 									index={index}

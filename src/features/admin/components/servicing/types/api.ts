@@ -147,6 +147,12 @@ export interface Loan {
 	regular?: string;
 }
 
+export interface LoanHistory {
+	loan: Loan;
+	createdAt: Date;
+	maturityDate: Date;
+}
+
 export interface DkcLenders {
 	loan: any;
 	data?: Array<Datum>;

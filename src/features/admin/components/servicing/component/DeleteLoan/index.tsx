@@ -68,7 +68,7 @@ export const DeleteLoan: FC<DeleteLoanProps> = ({
 						handleDeleteLoan();
 					}}
 					className="absolute  w-8 h-8 text-gray-1200 border-0 bg-gray-100 rounded-full transition duration-200  flex items-center justify-center cursor-pointer"
-					style={{ right: "153px", top: "24px" }}
+					style={{ right: "225px", top: "24px" }}
 				>
 					<Icon name="trashBin" width="14" color="#ff0033" />
 				</div>
