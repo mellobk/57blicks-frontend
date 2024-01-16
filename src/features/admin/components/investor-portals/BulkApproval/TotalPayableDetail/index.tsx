@@ -13,6 +13,7 @@ const TotalPayableDetail: FC<TotalPayableDetailProps> = ({ payable }) => {
 
 	const calculateTotalPayable = () => {
 		let total = 0;
+
 		payable.forEach((payableItem) => {
 			if (
 				payableItem &&
@@ -22,6 +23,7 @@ const TotalPayableDetail: FC<TotalPayableDetailProps> = ({ payable }) => {
 				total += Number(payableItem.payableDetails[0]?.credit);
 			}
 		});
+
 		setTotalPayable(round(total, 2));
 	};
 
