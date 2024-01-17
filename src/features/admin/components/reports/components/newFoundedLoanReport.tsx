@@ -49,14 +49,23 @@ export const NewFoundedLoanReport: FC = () => {
 			"Property Address",
 			"Loan Amount",
 			"Asset Type",
+			"Loan Product",
+			"Lender",
+			"Rate",
 		];
 		const csvData = insuranceCsv?.map((data) => {
+			const lender = data?.fundingBreakDowns?.find(
+				(data: { lender: { name: string } }) =>
+					data?.lender?.name !== "DKC Servicing Fee Income"
+			);
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
+				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
 				data?.collaterals[0]?.assetType,
+				data?.type,
+				lender?.lender?.name,
+				data?.interestRate,
 			];
 		});
 
@@ -73,13 +82,24 @@ export const NewFoundedLoanReport: FC = () => {
 			"Property Address",
 			"Loan Amount",
 			"Asset Type",
+			"Loan Product",
+			"Lender",
+			"Rate",
 		];
 		const csvData = insuranceCsv?.map((data) => {
+			const lender = data?.fundingBreakDowns?.find(
+				(data: { lender: { name: string } }) =>
+					data?.lender?.name !== "DKC Servicing Fee Income"
+			);
+
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
+				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				data?.collaterals[0]?.assetType,
+				data?.type,
+				lender?.lender?.name,
+				data?.interestRate,
 			];
 		});
 
