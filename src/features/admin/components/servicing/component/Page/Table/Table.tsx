@@ -12,9 +12,9 @@ import { Icon } from "@/components/ui/Icon";
 import { Input } from "@/components/forms/Input";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
+import { getIsSameMonthYear } from "@/utils/common-functions";
 import { moneyFormat } from "@/utils/formats";
 import { useDebounce } from "@/hooks/debounce";
-import { getIsSameMonthYear } from "@/utils/common-functions";
 
 interface Column {
 	name?: string;
@@ -109,7 +109,17 @@ export const Table: FC<Props> = ({
 			return Number.parseFloat(data.loan.totalLoanAmount || "");
 		});
 		const totalRegularAmount = data?.map((data: FundingBreakdown) => {
-			return Number.parseFloat(data.regular);
+			let regular = getIsSameMonthYear(
+				data.loan.originationDate as unknown as string
+			)
+				? data.loan.prorated
+				: data.loan.regular;
+
+			if (data.loan.status === "DEFAULT") {
+				regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
+			}
+
+			return Number.parseFloat(regular || "");
 		});
 
 		const totalRegularCurrent = data?.map((data: FundingBreakdown) => {
@@ -142,16 +152,19 @@ export const Table: FC<Props> = ({
 			width: string;
 			justify?: string;
 		}> = [
-			{ label: `total: ${totalRow}`, width: "600px", justify: "center" },
+			{ label: `Total: ${totalRow}`, width: "600px", justify: "center" },
 			{ label: moneyFormat(total), width: "150px" },
 			{ label: "", width: "100px" },
-			{ label: moneyFormat(totalRegular), width: "200px" },
+			{
+				label: "",
+				width: "200px",
+			},
 			{ label: "", width: "150px" },
 			{ label: "", width: "150px" },
 			{ label: "", width: "150px" },
 			{ label: "", width: "120px" },
 			{ label: "", width: "120px" },
-			{ label: moneyFormat(totalCurrent), width: "150px" },
+			{ label: "" + moneyFormat(totalCurrent), width: "150px" },
 		];
 
 		return footerTabData;

@@ -138,7 +138,6 @@ export const fillDataLoansPayables = (
 	payables: Array<Payable>,
 	loan: Array<Loan>
 ): Array<ColumInvestorPayable> => {
-	console.log("🚀 ~ file: investors.ts:141 ~ payables:", payables);
 	const data: Array<ColumInvestorPayable> = [];
 	loan?.forEach((item) => {
 		data.push({

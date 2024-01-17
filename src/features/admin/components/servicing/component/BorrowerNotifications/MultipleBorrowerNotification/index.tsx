@@ -164,7 +164,6 @@ const MultiplesBorrowerNotification: FC<MultiplesBorrowerNotificationProps> = ({
 		borrowerNotificationMutation.mutate(data, {
 			onSuccess: () => {},
 		});
-		console.log("🚀 ~ file: index.tsx:148 ~ sendNotifications ~ loans:", data);
 	};
 
 	const validateSend = (): void => {
