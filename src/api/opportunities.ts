@@ -23,6 +23,14 @@ const deleteOpportunity = async (opportunityId: string) => {
 	return response.data;
 };
 
+const putOpportunity = async (id: string, body: any) => {
+	const response = await authApiClient.put<Notification>(
+		`/opportunities/${id}`,
+		body
+	);
+	return response.data;
+};
+
 const getOpportunities = async () => {
 	const response =
 		await authApiClient.get<Array<OpportunityMin>>("/opportunities");
@@ -102,6 +110,7 @@ const OpportunitiesService = {
 	userNotifications,
 	getMyOpportunities,
 	getNotificationStatusOpportunity,
+	putOpportunity,
 };
 
 export default OpportunitiesService;

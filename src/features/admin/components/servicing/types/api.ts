@@ -72,9 +72,9 @@ export interface Borrower {
 }
 
 export interface FundingBreakdown {
-	id: string;
-	createdAt: Date;
-	updatedAt: Date;
+	id?: string;
+	createdAt?: Date;
+	updatedAt?: Date;
 	amount: string;
 	rate: string;
 	prorated: string;

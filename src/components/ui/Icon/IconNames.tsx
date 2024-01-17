@@ -40,6 +40,7 @@ const IconNames: Array<string> = [
 	"refresh",
 	"csv",
 	"xlsx",
+	"lock",
 ];
 
 export default IconNames;

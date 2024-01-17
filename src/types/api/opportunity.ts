@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Investment } from "@/types/api/investment";
 
 export interface Opportunity {
+	isOpen: any;
 	additionalInformation: string;
 	assetValue: string;
 	createdAt: string;

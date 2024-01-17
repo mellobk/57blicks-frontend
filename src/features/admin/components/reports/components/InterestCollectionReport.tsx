@@ -63,7 +63,7 @@ export const InterestCollectionReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.loans;
 
 		const headerCsv = [
-			"Borrower LLC",
+			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
 			"phone number",
@@ -88,7 +88,7 @@ export const InterestCollectionReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.loans;
 
 		const headerCsv = [
-			"Borrower LLC ",
+			"Borrower Entity ",
 			"Property Address",
 			"Loan Amount",
 			"phone number",

@@ -49,7 +49,7 @@ export const ExtendedLoanReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower LLC",
+			"Borrower Entity",
 			"Property Address",
 			"Lender",
 			"Loan Amount",
@@ -81,7 +81,7 @@ export const ExtendedLoanReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower LLC",
+			"Borrower Entity",
 			"Property Address",
 			"Lender",
 			"Loan Amount",
@@ -115,7 +115,7 @@ export const ExtendedLoanReport: FC = () => {
 
 	const columnsModal = [
 		{
-			name: "Borrower LLC",
+			name: "Borrower Entity",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
@@ -232,7 +232,7 @@ export const ExtendedLoanReport: FC = () => {
 				<div className="font-bold text-[13px] p-5  flex  justify-between  h-[10px] items-center">
 					<span>Average LTV</span>{" "}
 					<span>
-						{propertyInsuranceQuery?.data?.averageLTV?.toFixed(4) || "0"}
+						{propertyInsuranceQuery?.data?.averageLTV?.toFixed(0) || "0"}%
 					</span>
 				</div>
 			</div>

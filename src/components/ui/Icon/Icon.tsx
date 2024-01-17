@@ -55,10 +55,11 @@ import Wrong from "@/assets/icons/wrong";
 import Csv from "@/assets/icons/csv";
 import Xlsx from "@/assets/icons/xlsx";
 import New from "@/assets/icons/new";
-import UploadFile from "@/assets/icons/upload-file"
+import UploadFile from "@/assets/icons/upload-file";
 import List from "@/assets/icons/list";
 import Attach from "@/assets/icons/attach";
 import Notes from "@/assets/icons/notes";
+import Lock from "@/assets/icons/lock";
 
 export const ICONS = {
 	arrowDown: ArrowDown,
@@ -120,7 +121,8 @@ export const ICONS = {
 	uploadFile: UploadFile,
 	list: List,
 	attach: Attach,
-	notes: Notes
+	notes: Notes,
+	lock: Lock,
 };
 
 export interface IconProps {

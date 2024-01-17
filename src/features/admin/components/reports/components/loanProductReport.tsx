@@ -33,7 +33,7 @@ export const LoanProductReport: FC = () => {
 	const [openInsurance, setOpenInsurance] = useState(false);
 
 	const headerCsv = [
-		"Borrower LLC",
+		"Borrower Entity",
 		"Property Address",
 		"Loan Amount",
 		"Asset Type",
@@ -51,7 +51,7 @@ export const LoanProductReport: FC = () => {
 
 	const columnsModal = [
 		{
-			name: "Borrower LLC",
+			name: "Borrower Entity",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
@@ -245,7 +245,7 @@ export const LoanProductReport: FC = () => {
 				</div>
 				<div className="font-bold text-[13px] p-5 bg-gray-200 flex  justify-between  h-[10px] items-center">
 					<span>Average LTV</span>{" "}
-					<span>{consultantQuery?.data?.averageLtv?.toFixed(4) || "0"}</span>
+					<span>{consultantQuery?.data?.averageLtv?.toFixed(0) || "0"}%</span>
 				</div>
 			</div>
 

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type FC, useEffect, useState } from "react";
 import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,10 +18,7 @@ import { MultipleCollateral } from "@/features/admin/components/create-loan/comp
 import { SelectLender } from "@/features/admin/components/create-loan/components/SelectLender/SelectLender";
 import { defaultValues } from "@/features/admin/components/create-loan/utils/values";
 import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
-import {
-	calculateRegular,
-	unFormatPhone,
-} from "@/utils/common-functions";
+import { calculateRegular, unFormatPhone } from "@/utils/common-functions";
 import { userName } from "@/utils/constant";
 import { getLocalStorage } from "@/utils/local-storage";
 import type { Notification } from "@/features/admin/components/notifications/types/types";
@@ -71,7 +70,7 @@ export const CreateLoan: FC = () => {
 		reset: resetMutation,
 		data,
 	} = useMutation((data: Loan) => {
-		return LoansService.createLoan(data);
+		return LoansService.createLoan(data as any);
 	});
 
 	const onSubmit: SubmitHandler<Loan> = (data: Loan): void => {
