@@ -15,6 +15,7 @@ import { ShowModal } from "@/features/admin/components/servicing/component/Page/
 import { formatDate, moneyFormat } from "@/utils/formats";
 import {
 	getIsSameMonthYear,
+	getIsSamePreviousMonthYear,
 	sortInsuranceDate,
 	sortMaturityDate,
 	sortOriginateDate,
@@ -44,14 +45,13 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const [lenders, setLenders] = useState<Array<Lender>>([]);
 	const [tableData, setTableData] = useState<Array<DkcLenders>>([]);
 	const currentMonthName = moment().format("MMMM");
+	const previousMonthName = moment().subtract(1, "months").format("MMMM");
 
 	const findDkcLender = () => {
 		const findLender = lenders?.find(
 			(data) =>
 				data.name.toLocaleLowerCase() === (actualTab || id)?.toLowerCase()
 		);
-
-		console.log(findLender);
 
 		return findLender?.id || "";
 	};
@@ -332,17 +332,49 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			omit: false,
 		}, */
 		{
+			name: `${previousMonthName}`,
+			maxWidth: "150px",
+			minWidth: "150px",
+			sortable: true,
+			selector: (row: ParticipationBreakdown) => {
+				const data = getIsSamePreviousMonthYear(
+					row.loan.originationDate as unknown as string
+				);
+				let value = "0";
+				if (data === 0) {
+					value = row.loan.prorated || "0";
+				} else if (data === -1) {
+					value = row.loan.regular || "0";
+				}
+
+				return moneyFormat(Number.parseFloat(value));
+			},
+
+			conditionalCellStyles: [
+				{
+					when: (row: ParticipationBreakdown) => !!row,
+					style: {
+						background: "#C79E631F",
+						color: "#C79E63",
+					},
+				},
+			],
+		},
+		{
 			name: `${currentMonthName} (Current)`,
 			maxWidth: "150px",
 			minWidth: "150px",
 			sortable: true,
 			selector: (row: ParticipationBreakdown) => {
-				const data = getIsSameMonthYear(
+				let data = getIsSameMonthYear(
 					row.loan.originationDate as unknown as string
 				)
 					? row.loan.prorated
 					: row.loan.regular;
-				console.log(data);
+
+				if (row.loan.status === "DEFAULT") {
+					data = String((Number(row.loan.totalLoanAmount) * 18) / 100 / 12);
+				}
 				return moneyFormat(Number.parseFloat(data || "0"));
 			},
 

@@ -166,7 +166,6 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 									: undefined
 							}
 							onChange={(date: Date): void => {
-								console.log("🚀 ~ file: LedgerAdd.tsx:174 ~ date:", date);
 								handleSetMonth(`month`, date, index);
 							}}
 						/>

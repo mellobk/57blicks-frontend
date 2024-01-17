@@ -12,8 +12,6 @@ function useCustomToast() {
 		severity: "success" | "info" | "warn" | "error" | undefined,
 		life?: number
 	): void => {
-		console.log("🚀 ~ file: use-custom-toast.ts:15 ~ useCustomToast ~  void:");
-
 		toastRef?.current?.show({
 			severity,
 			summary,

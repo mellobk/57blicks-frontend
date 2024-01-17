@@ -76,7 +76,6 @@ const ExtendLoan: FC<ExtendLoanProps> = ({ loan, submit, handleEdit }) => {
 						dateFormat="mm-dd-yy"
 						value={date ?? loan.maturityDate}
 						onChange={(date: Date): void => {
-							console.log("🚀 ~ file: LedgerAdd.tsx:174 ~ date:", date);
 							setDate(date);
 						}}
 					/>

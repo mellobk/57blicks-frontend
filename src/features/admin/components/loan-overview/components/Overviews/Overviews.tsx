@@ -3,6 +3,7 @@ import { DueToDraws } from "@/features/admin/components/loan-overview/components
 import { Subtitle } from "@/features/admin/components/loan-overview/components/Subtitle/Subtitle";
 import { Value } from "@/features/admin/components/loan-overview/components/Value/Value";
 import type { ILoanOverview } from "../../types/fields";
+import { round } from "@/utils/common-functions";
 
 type Props = {
 	data: ILoanOverview;
@@ -54,7 +55,7 @@ export const Overviews: FC<Props> = ({ data }) => {
 				<Value label="Yield Spread" value={data.interestOverview.yieldSpread} />
 				<Value
 					label="Check and Balance"
-					value={data.interestOverview.checkAndBalance}
+					value={round(data.interestOverview.checkAndBalance, 0)}
 					checkAndBalance
 				/>
 			</div>

@@ -20,6 +20,8 @@ import { ConfirmationModal } from "@/components/ui/ConfirmationModal";
 import type { Loan } from "@/features/admin/components/servicing/types/api";
 import moment from "moment";
 import { columnWidth } from "./header/column-width";
+import DeleteLedger from "./DeleteLedger";
+import EditLedger from "./EditLedger";
 interface LedgerAddProps {
 	field: FieldArrayWithId<Ledger>;
 	index: number;
@@ -175,7 +177,6 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							}
 							invalid={!!errors?.ledgers?.[index]?.month}
 							onChange={(date: Date): void => {
-								console.log("🚀 ~ file: LedgerAdd.tsx:174 ~ date:", date);
 								handleSetMonth(`month`, date, index);
 							}}
 						/>
@@ -263,42 +264,20 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 			</div>
 			<div className={`${columnWidth.action} text-primary-200  pl-0`}>
 				<div className="flex justify-between items-center gap-1">
-					<div
-						key={`edit-${index}`}
-						onClick={(): void => {
-							handleEdit(`editable`, !dataLedgers?.editable, index);
-						}}
-					>
-						{dataLedgers && (
-							<Icon
-								name={dataLedgers.editable ? "deleteBack" : "pencil"}
-								color={dataLedgers.editable ? "red" : "gray"}
-								width="14"
-							/>
-						)}
-					</div>
-					<div
-						key={`delete-${index}`}
-						onClick={(): void => {
-							setSelectedIndex(index);
-							setSelectedId(dataLedgers?.id);
-							if (dataLedgers?.action === "add") {
-								handleRemove(index, `${dataLedgers.id}`);
-							} else {
-								setOpenConfirmation(true);
-							}
-						}}
-					>
-						<Icon name="trashBin" color="red" width="20" />
-					</div>
-					<div className="flex justify-between items-center gap-4 ">
-						{/* {dataLedgers && dataLedgers?.action === "show" && (
-							<LedgerApprove
-								ledger={dataLedgers}
-								refetchLedgers={refetchLedgers}
-							/>
-						)} */}
-					</div>
+					<EditLedger
+						dataLedgers={dataLedgers}
+						index={index}
+						handleEdit={handleEdit}
+					/>
+					<DeleteLedger
+						index={index}
+						setSelectedIndex={setSelectedIndex}
+						setSelectedId={setSelectedId}
+						dataLedgers={dataLedgers}
+						handleRemove={handleRemove}
+						setOpenConfirmation={setOpenConfirmation}
+					/>
+					<div className="flex justify-between items-center gap-4 "></div>
 				</div>
 				<ConfirmationModal
 					action="delete"

@@ -64,8 +64,6 @@ export const EditAccounting: FC<EditAccountingProps> = ({
 	);
 
 	useEffect(() => {
-		console.log("🚀 ~ file: EditAccounting.tsx:27 ~ errors:", errors);
-
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [errors]);
 

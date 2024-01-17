@@ -20,18 +20,11 @@ const PayableDetailsFooter: FC<PayableDetailsFooterProps> = ({
 		let debit = 0;
 		let credit = 0;
 
-		console.log("🚀 ~ payableDetail.forEach ~ credit: -------------");
 		payableDetail.forEach((item) => {
 			debit += Number.parseFloat(`${item.debit}`);
 			credit += Number.parseFloat(`${item.credit}`);
-			console.log("🚀 ~ payableDetail.forEach ~ credit:", item.credit);
 		});
 
-		console.log(
-			"🚀 ~ payableDetail.forEach ~ item.credit:",
-			credit,
-			round(credit, 2)
-		);
 		setTotalDebit(debit);
 		setTotalCredit(credit);
 	};

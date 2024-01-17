@@ -261,3 +261,21 @@ export const getIsSameMonthYear = (date: string): any => {
 		specificDate.getFullYear() === currentDate.getFullYear()
 	);
 };
+
+export const getIsSamePreviousMonthYear = (originationDate: string): number => {
+	const origination = new Date(originationDate);
+	//get previous month from now
+	const previousMonth = new Date();
+	previousMonth.setMonth(previousMonth.getMonth() - 1);
+	//if origination date is the same return 0 if is less than return -1 if is greater than return 1
+	if (
+		origination.getMonth() === previousMonth.getMonth() &&
+		origination.getFullYear() === previousMonth.getFullYear()
+	) {
+		return 0;
+	}
+	if (origination < previousMonth) {
+		return -1;
+	}
+	return 1;
+};
