@@ -122,22 +122,12 @@ export const Table: FC<Props> = ({
 			return Number.parseFloat(regular || "");
 		});
 
-		const totalRegularCurrent = data?.map((data: FundingBreakdown) => {
-			const currentData = getIsSameMonthYear(
-				data.loan.originationDate as unknown as string
-			)
-				? data.loan.prorated
-				: data.loan.regular;
-
-			return Number.parseFloat(currentData);
-		});
-
 		const total = totalLoanAmount?.reduce(
 			(accumulator, currentValue) => accumulator + currentValue,
 			0
 		);
 
-		const totalCurrent = totalRegularCurrent?.reduce(
+		const totalRegular = totalRegularAmount?.reduce(
 			(accumulator, currentValue) => accumulator + currentValue,
 			0
 		);
@@ -151,7 +141,7 @@ export const Table: FC<Props> = ({
 			{ label: moneyFormat(total), width: "150px" },
 			{ label: "", width: "100px" },
 			{
-				label: "",
+				label: "" + moneyFormat(totalRegular),
 				width: "200px",
 			},
 			{ label: "", width: "150px" },
@@ -159,7 +149,7 @@ export const Table: FC<Props> = ({
 			{ label: "", width: "150px" },
 			{ label: "", width: "120px" },
 			{ label: "", width: "120px" },
-			{ label: "" + moneyFormat(totalCurrent), width: "150px" },
+			{ label: moneyFormat(totalRegular), width: "150px" },
 		];
 
 		return footerTabData;
