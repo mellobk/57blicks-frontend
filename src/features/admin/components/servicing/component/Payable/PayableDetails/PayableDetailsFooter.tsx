@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import type { FC } from "react";
 import type { PayableDetail } from "../types/payable-details";
 import { moneyFormat } from "@/utils/formats";
-import { round } from "@/utils/common-functions";
 
 interface PayableDetailsFooterProps {
 	payableDetail: Array<PayableDetail>;

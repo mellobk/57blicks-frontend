@@ -137,11 +137,6 @@ export const Table: FC<Props> = ({
 			0
 		);
 
-		const totalRegular = totalRegularAmount?.reduce(
-			(accumulator, currentValue) => accumulator + currentValue,
-			0
-		);
-
 		const totalCurrent = totalRegularCurrent?.reduce(
 			(accumulator, currentValue) => accumulator + currentValue,
 			0
