@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable unicorn/filename-case */
 // eslint-disable-next-line unicorn/filename-case
 import { type FC, useState, useEffect } from "react";
@@ -17,6 +19,11 @@ import type { Loan } from "@/types/api/loan";
 import BulkApproval from "../../BulkApproval";
 import PayablesAdmin from "../../component/PayablesAdmin";
 import { useDebounce } from "@/hooks/debounce";
+import {
+	sortLLCInvestorEquity,
+	sortLLCRegular,
+	sortLLCTotalLoan,
+} from "@/utils/common-functions";
 
 export const LLC: FC = () => {
 	const [selectedLoan, setSelectedLoan] = useState<Loan | null>();
@@ -54,36 +61,40 @@ export const LLC: FC = () => {
 		},
 		{
 			name: "Total Loan Amount",
+			sortFunction: sortLLCTotalLoan,
 			selector: () => "--",
 			sortable: true,
 		},
 		{
 			name: "Investor Equity",
+			sortFunction: sortLLCInvestorEquity,
 			selector: () => "--",
 			sortable: true,
 		},
 		{
 			name: "Rate",
 			selector: () => "--",
-			sortable: true,
+			sortable: false,
 		},
 		{
 			name: "Regular Payment",
+			sortFunction: sortLLCRegular,
 			selector: () => "--",
 			sortable: true,
 		},
 		{
 			name: "Origin Date",
 			selector: () => "--",
-			sortable: true,
+			sortable: false,
 		},
 		{
 			name: "Maturity Date",
 			selector: () => "--",
-			sortable: true,
+			sortable: false,
 		},
 		{
 			name: `${currentMonthName} (Current)`,
+			sortFunction: sortLLCRegular,
 			selector: () => "--",
 			sortable: true,
 			conditionalCellStyles: [

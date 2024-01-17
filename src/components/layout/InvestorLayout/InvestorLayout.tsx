@@ -62,7 +62,6 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 		const investment = getOpportunityQuery?.data?.investments.find(
 			(data) => data.investor.user?.id === userInfo.id
 		);
-		console.log(investment?.status);
 		setOpportunityStatus(investment?.status);
 	}, [getOpportunityQuery.isFetching]);
 
@@ -357,7 +356,8 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 				minHeight="90vh"
 			>
 				<>
-					{opportunityStatus === "PENDING" && (
+					{opportunityStatus === "PENDING" &&
+					getOpportunityQuery?.data?.isOpen ? (
 						<div
 							className=" flex absolute  items-center justify-end gap-2"
 							style={{ right: "65px", top: "24px", zIndex: 1 }}
@@ -387,6 +387,18 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 											status: "REJECTED",
 										});
 									}}
+								/>
+							</div>
+						</div>
+					) : (
+						<div
+							className=" flex absolute  items-center justify-end gap-2"
+							style={{ right: "65px", top: "24px", zIndex: 1 }}
+						>
+							<div className="cursor-pointer">
+								<Button
+									buttonText="Closed"
+									className=" rounded-3xl bg-red-200 text-red-500"
 								/>
 							</div>
 						</div>

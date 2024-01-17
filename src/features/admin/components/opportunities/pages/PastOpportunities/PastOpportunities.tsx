@@ -104,6 +104,7 @@ export const PastOpportunities: FC = () => {
 										data={getOpportunityQuery.data}
 										getFilename={getFilename}
 										isLoading={getOpportunityQuery.isLoading}
+										onSuccess={() => getOpportunityQuery.refetch()}
 									/>
 								</div>
 								<div className="lg:col-span-3 col-span-1">

@@ -106,7 +106,7 @@ export const AllDefaultReport: FC = () => {
 		const insuranceCsv = reportLoan.loans;
 
 		const headerCsv = [
-			"Borrower LLC",
+			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
 			"Asset Type",
@@ -130,7 +130,7 @@ export const AllDefaultReport: FC = () => {
 		const insuranceCsv = reportLoan.loans;
 
 		const headerCsv = [
-			"Borrower LLC",
+			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
 			"Asset Type",
@@ -152,7 +152,7 @@ export const AllDefaultReport: FC = () => {
 
 	const columnsModal = [
 		{
-			name: "Borrower LLC",
+			name: "Borrower Entity",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,

@@ -1,4 +1,4 @@
-import { type FC, useEffect } from "react";
+import { type FC, useEffect, useState } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/forms/Input";
@@ -33,6 +33,9 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 
 	const setSuccessMessage = useStore((state) => state.setSuccessMessage);
 	const clearSuccessMessage = useStore((state) => state.clearSuccessMessage);
+	const [accountData, setAccountData] = useState<string>(
+		data?.loan?.borrower?.accountType || ""
+	);
 
 	const updateBorrowerInfoMutation = useMutation(
 		(borrowerData: IBorrowerInformation) => {
@@ -154,8 +157,8 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 					<div className="flex w-full gap-4">
 						<div className="w-full">
 							<Input
-								label="Borrower LLC"
-								placeholder="Enter Borrower LLC"
+								label="Borrower Entity"
+								placeholder="Enter Borrower Entity"
 								register={register(borrowerInformationFields?.llc || "")}
 								error={
 									errors?.[borrowerInformationFields?.llc || ""] &&
@@ -279,9 +282,13 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 						className="flex flex-col gap-2"
 						label="Account Type"
 						placeholder="Select Account Type"
-						value={data?.loan?.borrower?.accountType || ""}
+						value={accountData}
 						options={ACCOUNT_OPTIONS}
+						onChange={(event): void => {
+							setAccountData(event.target.value as string);
+						}}
 					/>
+
 					<div className="absolute" style={{ top: "25px", right: "65px" }}>
 						<Button
 							iconColor="black"

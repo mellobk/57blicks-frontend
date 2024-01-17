@@ -19,7 +19,13 @@ import { formatDate, moneyFormat, percentageFormat } from "@/utils/formats";
 
 import PayablesAdmin from "../PayablesAdmin";
 import type { DkcLenders } from "../../../servicing/types/api";
-import { sortMaturityDate, sortOriginateDate } from "@/utils/common-functions";
+import {
+	sortMaturityDate,
+	sortOriginateDate,
+	sortRateLoan,
+	sortRegularLoan,
+	statusTotalLoan,
+} from "@/utils/common-functions";
 
 interface Props {
 	actualTab: string;
@@ -108,17 +114,20 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Total Loan Amount",
+			sortFunction: statusTotalLoan,
 			selector: (row: FundingBreakdown) =>
 				moneyFormat(Number(row.loan.totalLoanAmount)),
 			sortable: true,
 		},
 		{
 			name: "Rate",
+			sortFunction: sortRateLoan,
 			selector: (row: FundingBreakdown) => percentageFormat(Number(row.rate)),
 			sortable: true,
 		},
 		{
 			name: "Regular Payment",
+			sortFunction: sortRegularLoan,
 			selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
 			sortable: true,
 		},
@@ -138,6 +147,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: `${currentMonthName} (Current)`,
+			sortFunction: sortRegularLoan,
 			selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
 			sortable: true,
 			conditionalCellStyles: [

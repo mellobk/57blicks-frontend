@@ -24,15 +24,27 @@ interface Props {
 	data?: Opportunity;
 	getFilename: (referenceId: number) => string;
 	isLoading: boolean;
+	onSuccess?: () => void;
 }
 
-export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
+export const Details: FC<Props> = ({
+	data,
+	getFilename,
+	isLoading,
+	onSuccess,
+}) => {
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+	const [openCloseConfirmationModal, setOpenClosConfirmationModal] =
+		useState(false);
 	const anchorRef = useRef<HTMLAnchorElement | null>(null);
 
 	const deleteOpportunityMutation = useMutation((opportunityId: string) =>
 		OpportunitiesService.deleteOpportunity(opportunityId)
+	);
+
+	const updateOpportunityMutation = useMutation((opportunityId: string) =>
+		OpportunitiesService.putOpportunity(opportunityId, { isOpen: false })
 	);
 
 	const columns: Array<TableColumn<Investment>> = [
@@ -49,7 +61,13 @@ export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
 		},
 		{
 			cell: (row) => (
-				<div className="bg-red-500/[.16] px-3 py-1.5 rounded-3xl font-inter text-[10px] text-red-500 leading-[12px] tracking-[-0.5px] font-semibold">
+				<div
+					className={`${
+						row.status === "ACCEPTED"
+							? "bg-green-500/[.16] text-green-500"
+							: "bg-red-500/[.16] text-red-500"
+					} px-2 py-1.5 rounded-3xl font-inter text-[10px]  leading-[12px] tracking-[-0.5px] font-semibold`}
+				>
 					{row.status}
 				</div>
 			),
@@ -68,6 +86,14 @@ export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
 	}, [deleteOpportunityMutation.isSuccess]);
 
 	useEffect(() => {
+		if (updateOpportunityMutation.isSuccess) {
+			setOpenClosConfirmationModal(false);
+			updateOpportunityMutation.reset();
+			onSuccess && onSuccess();
+		}
+	}, [updateOpportunityMutation.isSuccess]);
+
+	useEffect(() => {
 		if (deleteOpportunityMutation.isError) {
 			deleteOpportunityMutation.reset();
 		}
@@ -79,7 +105,18 @@ export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
 		data && (
 			<>
 				<div className="flex flex-row justify-between">
-					<Title text="Opportunity Details" />
+					<div className="flex gap-2 items-center">
+						<Title text="Opportunity Details" />
+						<div
+							className={`${
+								data.isOpen
+									? "bg-green-500/[.16] text-green-500"
+									: "bg-red-500/[.16] text-red-500"
+							} px-2 py-1.5 rounded-3xl font-inter text-[13px]  leading-[12px] tracking-[-0.5px] font-semibold`}
+						>
+							{data.isOpen ? "Open" : "Close"}
+						</div>
+					</div>
 					<div className="flex flex-row gap-2">
 						<IconButton
 							bgColor="bg-green-500/[.12]"
@@ -121,6 +158,15 @@ export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
 							}}
 							width="16"
 						/>
+						<IconButton
+							bgColor="bg-red-500/[.12]"
+							color="#FF0033"
+							name="lock"
+							onClick={() => {
+								setOpenClosConfirmationModal(true);
+							}}
+							width="20"
+						/>
 					</div>
 				</div>
 				<div className="flex flex-col gap-3 divide-y divide-gray-200">
@@ -152,6 +198,21 @@ export const Details: FC<Props> = ({ data, getFilename, isLoading }) => {
 					}}
 					title="Delete Opportunity"
 					visible={openConfirmationModal}
+				/>
+
+				<ConfirmationModal
+					action="close"
+					buttonText="Close"
+					handelConfirmation={() => {
+						updateOpportunityMutation.mutate(data.id);
+					}}
+					loading={updateOpportunityMutation.isLoading}
+					model="opportunity"
+					onHide={() => {
+						setOpenClosConfirmationModal(false);
+					}}
+					title="Close Opportunity"
+					visible={openCloseConfirmationModal}
 				/>
 			</>
 		)

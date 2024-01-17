@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import type { FundingBreakdown } from "./../types/fields/funding-breakdown";
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
@@ -9,7 +12,6 @@ import type {
 	User,
 } from "@/features/admin/components/manage-user/types/api";
 
-import type { FundingBreakdown } from "@/features/admin/components/servicing/types/api";
 import type { Permissions } from "../features/admin/components/manage-user/types/api";
 import { RoleType } from "@/types/api/permissions-type";
 import moment from "moment";
@@ -17,6 +19,95 @@ import moment from "moment";
 export const statusSort = (rowA: Investor, rowB: Investor) => {
 	const a = rowA.user?.isActive || "";
 	const b = rowB.user?.isActive || "";
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
+
+export const statusTotalLoan = (
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+) => {
+	const a = Number.parseFloat(rowA.loan.totalLoanAmount || "0");
+	const b = Number.parseFloat(rowB.loan.totalLoanAmount || "0");
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
+
+export const sortInterestRateLoan = (
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+) => {
+	const a = Number.parseFloat(rowA.loan.interestRate || "0");
+	const b = Number.parseFloat(rowB.loan.interestRate || "0");
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
+
+export const sortRateLoan = (
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+) => {
+	const a = Number.parseFloat(rowA.rate || "0");
+	const b = Number.parseFloat(rowB.rate || "0");
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
+
+export const sortRegularPaymentLoan = (
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+) => {
+	const a = Number.parseFloat(rowA.loan.regular || "0") || "";
+	const b = Number.parseFloat(rowB.loan.regular || "0") || "";
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
+export const sortRegularLoan = (
+	rowA: FundingBreakdown,
+	rowB: FundingBreakdown
+) => {
+	const a = Number.parseFloat(rowA.regular || "0") || "";
+	const b = Number.parseFloat(rowB.regular || "0") || "";
 
 	if (a > b) {
 		return 1;
@@ -278,4 +369,97 @@ export const getIsSamePreviousMonthYear = (originationDate: string): number => {
 		return -1;
 	}
 	return 1;
+};
+export const sortLLCTotalLoan = (rowA: any, rowB: any) => {
+	const rowATotal = rowA?.participationBreakdowns?.reduce(
+		(accumulator: number, data: { loan: any; totalLoanAmount: string }) =>
+			accumulator + Number.parseFloat(data.loan.totalLoanAmount),
+		0
+	);
+
+	const rowBTotal = rowB?.participationBreakdowns?.reduce(
+		(
+			accumulator: number,
+			data: {
+				loan: any;
+				totalLoanAmount: string;
+			}
+		) => accumulator + Number.parseFloat(data.loan.totalLoanAmount),
+		0
+	);
+
+	if (rowATotal > rowBTotal) {
+		return 1;
+	}
+
+	if (rowBTotal > rowATotal) {
+		return -1;
+	}
+
+	return 0;
+};
+
+export const sortLLCInvestorEquity = (rowA: any, rowB: any) => {
+	const rowATotal = rowA?.participationBreakdowns?.reduce(
+		(accumulator: number, data: { loan: any; totalLoanAmount: string }) =>
+			accumulator + Number(data.loan.totalLoanAmount) * 0.99,
+		0
+	);
+
+	const rowBTotal = rowB?.participationBreakdowns?.reduce(
+		(
+			accumulator: number,
+			data: {
+				loan: any;
+				totalLoanAmount: string;
+			}
+		) => accumulator + Number(data.loan.totalLoanAmount) * 0.99,
+		0
+	);
+
+	if (rowATotal > rowBTotal) {
+		return 1;
+	}
+
+	if (rowBTotal > rowATotal) {
+		return -1;
+	}
+
+	return 0;
+};
+
+export const sortLLCRegular = (rowA: any, rowB: any) => {
+	const rowATotal = rowA?.participationBreakdowns?.reduce(
+		(
+			accumulator: number,
+			data: {
+				regular: any;
+				loan: any;
+				totalLoanAmount: string;
+			}
+		) => accumulator + Number(data.regular),
+		0
+	);
+
+	const rowBTotal = rowB?.participationBreakdowns?.reduce(
+		(
+			accumulator: number,
+			data: {
+				regular: any;
+				loan: any;
+				totalLoanAmount: string;
+			}
+		) => accumulator + Number(data.regular),
+		0
+	);
+
+	if (rowATotal > rowBTotal) {
+		return 1;
+	}
+
+	if (rowBTotal > rowATotal) {
+		return -1;
+	}
+
+	return 0;
 };

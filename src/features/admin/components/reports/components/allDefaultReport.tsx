@@ -75,7 +75,7 @@ export const AllDefaultReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower LLC",
+			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
 			"Lender",
@@ -106,7 +106,7 @@ export const AllDefaultReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower LLC",
+			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
 			"Lender",
@@ -135,7 +135,7 @@ export const AllDefaultReport: FC = () => {
 
 	const columns = [
 		{
-			name: "Borrower LLC",
+			name: "Borrower Entity",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
@@ -155,7 +155,7 @@ export const AllDefaultReport: FC = () => {
 
 	const columnsModal = [
 		{
-			name: "Borrower LLC",
+			name: "Borrower Entity",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
