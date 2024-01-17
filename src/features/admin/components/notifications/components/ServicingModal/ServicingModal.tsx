@@ -246,18 +246,21 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 						</div>
 						<>
 							<div>
-								{tabTitle === "Borrower Information" && (
-									<div className="text-gray-1000 text-[14px] cursor-pointer ">
-										<Button
-											icon={<Icon name="openEye" color="#0085ff" width="20" />}
-											buttonText="View Only"
-											className=" rounded-3xl border-2 border-blue-200 bg-blue-70 text-blue-200"
-											onClick={() => {
-												setHandleEdit(!handleEdit);
-											}}
-										/>
-									</div>
-								)}
+								{tabTitle === "Borrower Information" &&
+									userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN && (
+										<div className="text-gray-1000 text-[14px] cursor-pointer ">
+											<Button
+												icon={
+													<Icon name="openEye" color="#0085ff" width="20" />
+												}
+												buttonText="View Only"
+												className=" rounded-3xl border-2 border-blue-200 bg-blue-70 text-blue-200"
+												onClick={() => {
+													setHandleEdit(!handleEdit);
+												}}
+											/>
+										</div>
+									)}
 							</div>
 							{userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN
 								? approvalQuery?.data?.status === "PENDING" &&
