@@ -16,15 +16,15 @@ import { MultipleCollateral } from "@/features/admin/components/create-loan/comp
 import { SelectLender } from "@/features/admin/components/create-loan/components/SelectLender/SelectLender";
 import { defaultValues } from "@/features/admin/components/create-loan/utils/values";
 import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
-import {
-	calculateRegular,
-	unFormatPhone,
-} from "@/utils/common-functions";
+import { unFormatPhone } from "@/utils/common-functions";
 import { userName } from "@/utils/constant";
 import { getLocalStorage } from "@/utils/local-storage";
 import type { Notification } from "@/features/admin/components/notifications/types/types";
 import Loading from "@/assets/icons/loading";
-import { validateProratedRowsCalculations } from "../../components/FundingBreakdown/utils/validate-penny";
+import {
+	validateProratedRowsCalculations,
+	validateRegularRowsCalculations,
+} from "../../components/FundingBreakdown/utils/validate-penny";
 
 export const CreateLoan: FC = () => {
 	const createLedgerQuery = useMutation(async (body: Notification) => {
@@ -88,7 +88,14 @@ export const CreateLoan: FC = () => {
 				data.interestRate,
 				[...data.participationBreakdown, ...data.fundingBreakdown]
 			),
-			regular: calculateRegular(breakdown.amount, breakdown.rate),
+			regular: validateRegularRowsCalculations(
+				breakdown.amount,
+				breakdown.rate,
+				breakdown.type,
+				data.totalLoanAmount,
+				data.interestRate,
+				[...data.participationBreakdown, ...data.fundingBreakdown]
+			),
 		}));
 
 		const participationBreakdown = data.participationBreakdown.map(
@@ -103,7 +110,14 @@ export const CreateLoan: FC = () => {
 					data.interestRate,
 					[...data.participationBreakdown, ...data.fundingBreakdown]
 				),
-				regular: calculateRegular(breakdown.amount, breakdown.rate),
+				regular: validateRegularRowsCalculations(
+					breakdown.amount,
+					breakdown.rate,
+					breakdown.type,
+					data.totalLoanAmount,
+					data.interestRate,
+					[...data.participationBreakdown, ...data.fundingBreakdown]
+				),
 			})
 		);
 

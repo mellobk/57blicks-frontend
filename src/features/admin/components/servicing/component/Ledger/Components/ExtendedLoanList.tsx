@@ -12,7 +12,10 @@ const findDate = (extended: Array<LoanHistory>, date: Date): Date => {
 	let dateFound = "";
 
 	for (const element of extended) {
-		if (moment(element.maturityDate).isBefore(date)) {
+		if (
+			moment(element.maturityDate).isBefore(date) ||
+			moment(element.maturityDate).isSame(date)
+		) {
 			//if (element.maturityDate < date) {
 			dateFound = String(element.maturityDate);
 		}

@@ -78,8 +78,9 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 
 	const refetchLedgers = (): void => {
 		setLedgers([]);
-		void queryHistorical.refetch();
+
 		void refetch();
+		void queryHistorical.refetch();
 	};
 
 	const deleteLedgerMutation = useMutation(
