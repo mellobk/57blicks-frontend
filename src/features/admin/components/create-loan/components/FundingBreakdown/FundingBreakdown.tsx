@@ -22,7 +22,10 @@ import { LENDERS } from "@/features/admin/components/create-loan/utils/selects";
 import { calculateProrated, calculateRegular } from "@/utils/common-functions";
 import { validateChangeParticipant } from "./utils/validate-change-participant";
 import { moneyFormat } from "@/utils/formats";
-import { validateProratedRowsCalculations } from "./utils/validate-penny";
+import {
+	validateProratedRowsCalculations,
+	validateRegularRowsCalculations,
+} from "./utils/validate-penny";
 
 interface Props {
 	control: Control<Loan>;
@@ -237,15 +240,15 @@ export const FundingBreakdown: FC<Props> = ({
 			cell: (row: FundingBreakdownType) => (
 				<Cell
 					format="money"
-					value={calculateRegular(row.amount, row.rate)}
-					// value={validateRegularRowsCalculations(   if happen error, regular calculation will be disabled
-					// 	row.amount,
-					// 	row.rate,
-					// 	row.type,
-					// 	totalLoanAmount,
-					// 	interestRate,
-					// 	[...participationBreakdown, ...fundingBreakdown]
-					// )}
+					//value={calculateRegular(row.amount, row.rate)}
+					value={validateRegularRowsCalculations(
+						row.amount,
+						row.rate,
+						row.type,
+						totalLoanAmount,
+						interestRate,
+						[...participationBreakdown, ...fundingBreakdown]
+					)}
 				/>
 			),
 			name: "Regular",

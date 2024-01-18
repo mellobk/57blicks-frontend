@@ -2,6 +2,7 @@ import { Cell } from "@/components/table/Cell";
 import type { ComponentType } from "react";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
+import { round } from "@/utils/common-functions";
 
 interface Props {
 	data: Array<FundingBreakdown | ParticipationBreakdown>;
@@ -16,7 +17,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 
 			accumulator.prorated += Number(prorated);
 			accumulator.rate += Number(rate);
-			accumulator.regular += Number(regular);
+			accumulator.regular += round(Number(regular), 2);
 
 			return accumulator;
 		},

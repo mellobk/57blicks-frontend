@@ -63,7 +63,10 @@ export const validateRegularRowsCalculations = (
 		let regularValues = 0;
 
 		fundingBreakdown.forEach((item) => {
-			regularValues += Number(calculateRegular(item.amount, item.rate));
+			regularValues += round(
+				Number(calculateRegular(item.amount, item.rate)),
+				2
+			);
 		});
 
 		const loanAmountRegular = Number(
@@ -73,9 +76,9 @@ export const validateRegularRowsCalculations = (
 		const difference = loanAmountRegular - regularValues;
 
 		if (difference > 0) {
-			currentRegular += difference;
+			currentRegular += round(difference, 4);
 		} else if (difference < 0) {
-			currentRegular -= difference;
+			currentRegular += round(difference, 4);
 		}
 	}
 
