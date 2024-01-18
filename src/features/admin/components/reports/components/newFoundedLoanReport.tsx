@@ -10,7 +10,7 @@ import { useState, type FC, useEffect } from "react";
 
 // install (please try to align the version of installed @nivo packages)
 // yarn add @nivo/pie
-import { formatDate, moneyFormat } from "@/utils/formats";
+import { moneyFormat } from "@/utils/formats";
 import { downloadCSV } from "@/utils/create-cvs";
 import { downloadXLSX } from "@/utils/create-xlsx";
 import type { Loan } from "../../servicing/types/api";
@@ -45,18 +45,27 @@ export const NewFoundedLoanReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower LLC",
+			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
 			"Asset Type",
+			"Loan Product",
+			"Lender",
+			"Rate",
 		];
 		const csvData = insuranceCsv?.map((data) => {
+			const lender = data?.fundingBreakDowns?.find(
+				(data: { lender: { name: string } }) =>
+					data?.lender?.name !== "DKC Servicing Fee Income"
+			);
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
+				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
 				data?.collaterals[0]?.assetType,
+				data?.type,
+				lender?.lender?.name,
+				data?.interestRate,
 			];
 		});
 
@@ -69,17 +78,28 @@ export const NewFoundedLoanReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
 		const headerCsv = [
-			"Borrower LLC",
+			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
 			"Asset Type",
+			"Loan Product",
+			"Lender",
+			"Rate",
 		];
 		const csvData = insuranceCsv?.map((data) => {
+			const lender = data?.fundingBreakDowns?.find(
+				(data: { lender: { name: string } }) =>
+					data?.lender?.name !== "DKC Servicing Fee Income"
+			);
+
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
+				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				data?.collaterals[0]?.assetType,
+				data?.type,
+				lender?.lender?.name,
+				data?.interestRate,
 			];
 		});
 
@@ -94,7 +114,7 @@ export const NewFoundedLoanReport: FC = () => {
 
 	const columnsModal = [
 		{
-			name: "Borrower LLC",
+			name: "Borrower Entity",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
@@ -207,7 +227,7 @@ export const NewFoundedLoanReport: FC = () => {
 				<div className="font-bold text-[13px] p-5  flex  justify-between  h-[10px] items-center">
 					<span>Average LTV</span>{" "}
 					<span>
-						{propertyInsuranceQuery?.data?.averageLTV?.toFixed(4) || "0"}
+						{propertyInsuranceQuery?.data?.averageLTV?.toFixed(0) || "0"}%
 					</span>
 				</div>
 			</div>

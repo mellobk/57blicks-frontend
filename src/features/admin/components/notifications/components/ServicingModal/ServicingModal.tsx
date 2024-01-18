@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable unicorn/prevent-abbreviations */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -14,6 +15,7 @@ import ManageNotificationService, {
 } from "../../api/notification";
 import { LoanInformation } from "../LoanInformation";
 import { BorrowerInformation } from "../BorrowerInformation";
+import { BorrowerInformation as BorrowerEdit } from "../../../servicing/component/BorrowerInformation";
 import { LedgerList } from "../Ledger";
 import { ModalActions } from "../ModalActions";
 import {
@@ -38,6 +40,7 @@ import { TextArea } from "@/components/forms/TextArea";
 import { LedgerTypeOfPayment } from "../../../servicing/component/Ledger/types";
 import { FundingBreakdown } from "../../../servicing/component/FundingBreakdown/FundingBreakdown";
 import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 
 interface ServicingModalProps {
 	openModal?: boolean;
@@ -106,6 +109,10 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 	const [openDeclineModal, setOpenDeclineModal] = useState<boolean>();
 	const [typeProcess, setTypeProcess] = useState<string>();
 	const [validApprove, setValidApprove] = useState<boolean>(true);
+
+	const handleRefreshBorrowerInfo = () => {
+		approvalQuery.mutate(id || "");
+	};
 
 	useEffect(() => {
 		if (updateLoanQuery.isSuccess) {
@@ -207,7 +214,11 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 				>
 					<div
 						className=" flex absolute  items-center justify-end"
-						style={{ right: "65px", top: "24px", zIndex: 1 }}
+						style={{
+							right: tabTitle === "Borrower Information" ? "135px" : "65px",
+							top: "24px",
+							zIndex: 1,
+						}}
 					>
 						<div>
 							{approvalQuery?.data?.status !== "PENDING" && (
@@ -234,8 +245,26 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 							)}
 						</div>
 						<>
+							<div>
+								{tabTitle === "Borrower Information" &&
+									userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN && (
+										<div className="text-gray-1000 text-[14px] cursor-pointer ">
+											<Button
+												icon={
+													<Icon name="openEye" color="#0085ff" width="20" />
+												}
+												buttonText="View Only"
+												className=" rounded-3xl border-2 border-blue-200 bg-blue-70 text-blue-200"
+												onClick={() => {
+													setHandleEdit(!handleEdit);
+												}}
+											/>
+										</div>
+									)}
+							</div>
 							{userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN
-								? approvalQuery?.data?.status === "PENDING" && (
+								? approvalQuery?.data?.status === "PENDING" &&
+								  tabTitle !== "Borrower Information" && (
 										<ModalActions
 											comment={
 												ledgerId ? null : (
@@ -339,13 +368,19 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 							setValidApprove={setValidApprove}
 						/>
 					)}
-					{tabTitle === "Borrower Information" && (
-						<BorrowerInformation
-							data={approvalQuery?.data}
-							handleRefreshData={handleRefreshData}
-							setValidApprove={setValidApprove}
-						/>
-					)}
+					{tabTitle === "Borrower Information" &&
+						(handleEdit ? (
+							<BorrowerEdit
+								data={{ loan: approvalQuery?.data as never } as any}
+								handleRefreshData={handleRefreshBorrowerInfo}
+							/>
+						) : (
+							<BorrowerInformation
+								data={approvalQuery?.data}
+								handleRefreshData={handleRefreshData}
+								setValidApprove={setValidApprove}
+							/>
+						))}
 					{tabTitle === "Ledger" && approvalQuery.data && (
 						<LedgerList
 							loan={approvalQuery.data as unknown as LoanLedger}

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type FC, useEffect, useState } from "react";
 import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -71,7 +73,7 @@ export const CreateLoan: FC = () => {
 		reset: resetMutation,
 		data,
 	} = useMutation((data: Loan) => {
-		return LoansService.createLoan(data);
+		return LoansService.createLoan(data as any);
 	});
 
 	const onSubmit: SubmitHandler<Loan> = (data: Loan): void => {

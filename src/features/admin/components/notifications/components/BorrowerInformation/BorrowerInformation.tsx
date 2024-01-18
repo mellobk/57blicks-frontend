@@ -24,7 +24,7 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 		>
 			<div className="w-[33.33%]  border-r border-gray-200 pr-4 opacity-40">
 				<div className="mb-20 flex gap-2 flex-col">
-					<LoanCard title="Borrower LLC" text={data?.borrower?.llc} />
+					<LoanCard title="Borrower Entity" text={data?.borrower?.llc} />
 
 					<LoanCard title="EIN/SSN" text={data?.borrower?.ssnEin} background />
 				</div>

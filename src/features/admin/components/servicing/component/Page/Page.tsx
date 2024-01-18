@@ -17,10 +17,13 @@ import {
 	getIsSameMonthYear,
 	getIsSamePreviousMonthYear,
 	sortInsuranceDate,
+	sortInterestRateLoan,
 	sortMaturityDate,
 	sortOriginateDate,
+	sortRegularPaymentLoan,
 	statusDefault,
 	statusTaxes,
+	statusTotalLoan,
 	validateDate,
 } from "@/utils/common-functions";
 import LendersService from "@/api/lenders.ts";
@@ -196,6 +199,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Total Loan",
+			sortFunction: statusTotalLoan,
 			selector: (row: FundingBreakdown) =>
 				moneyFormat(Number.parseInt(row?.loan?.totalLoanAmount)),
 			sortable: true,
@@ -205,7 +209,9 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Rate",
-			selector: (row: FundingBreakdown) => row?.loan.interestRate,
+			selector: (row: FundingBreakdown) =>
+				`${Number.parseInt(row?.loan.interestRate).toFixed(0)}%`,
+			sortFunction: sortInterestRateLoan,
 			omit: false,
 			sortable: true,
 			maxWidth: "100px",
@@ -213,6 +219,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		},
 		{
 			name: "Regular Payment",
+			sortFunction: sortRegularPaymentLoan,
 			selector: (row: FundingBreakdown) =>
 				moneyFormat(Number.parseInt(row?.loan?.regular || "0")),
 			omit: false,

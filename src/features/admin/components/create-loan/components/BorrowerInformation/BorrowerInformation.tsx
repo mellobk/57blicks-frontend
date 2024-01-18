@@ -18,9 +18,9 @@ export const BorrowerInformation: FC<Props> = ({ errors, register }) => (
 		<Input
 			data-testid="borrower-information-llc"
 			error={errors?.borrower?.llc?.message}
-			label="Borrower LLC"
+			label="Borrower Entity"
 			name="borrower.llc"
-			placeholder="Enter Borrower LLC"
+			placeholder="Enter Borrower Entity"
 			register={register("borrower.llc")}
 			wrapperClassName="mt-6"
 			required
