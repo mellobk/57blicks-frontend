@@ -28,7 +28,7 @@ import { Modal } from "@/components/ui/Modal";
 // you'll often use just a few of them.
 
 export const Int1998: FC = () => {
-	const [actualTabData, setActualTabData] = useState<string>("30");
+	const [actualTabData, _] = useState<string>("30");
 	const [openInsurance, setOpenInsurance] = useState(false);
 
 	const propertyInsuranceQuery = useQuery(

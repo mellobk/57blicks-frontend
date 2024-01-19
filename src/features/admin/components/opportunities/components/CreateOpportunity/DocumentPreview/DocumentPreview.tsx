@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { type FC, useEffect, useState } from "react";
+import type { FC } from "react";
 import { type Control, useWatch } from "react-hook-form";
 
 import {
@@ -70,7 +71,7 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 
 	console.log(localImage);
 
-	const removeBlankLines = (text: string) => text.replace(/^\s*[\r\n]/gm, "");
+	const removeBlankLines = (text: string) => text.replace(/^\s*[\n\r]/gm, "");
 
 	return (
 		<Document>
@@ -198,7 +199,9 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 								</View>
 							)}
 						</View>
-						<View style={styles.column}>{<Image src={localImage} />}</View>
+						<View style={styles.column}>
+							{<Image src={localImage as any} />}
+						</View>
 					</View>
 					{form.additionalInformation && (
 						<View style={styles.section}>

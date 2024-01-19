@@ -20,8 +20,6 @@ import Csv from "@/assets/images/png/Csv.png";
 import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
-import { Tabs } from "../../servicing/component/Tabs";
-import { newFoundedTabs } from "../../servicing/utils/tabs";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -30,7 +28,7 @@ import { newFoundedTabs } from "../../servicing/utils/tabs";
 // you'll often use just a few of them.
 
 export const Int1999: FC = () => {
-	const [actualTabData, setActualTabData] = useState<string>("30");
+	const [actualTabData, _] = useState<string>("30");
 	const [openInsurance, setOpenInsurance] = useState(false);
 
 	const propertyInsuranceQuery = useQuery(
