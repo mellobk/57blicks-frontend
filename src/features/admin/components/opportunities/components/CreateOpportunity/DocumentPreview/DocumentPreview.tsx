@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { type FC, useEffect, useState } from "react";
 import { type Control, useWatch } from "react-hook-form";
+
 import {
 	Document,
 	Image,
@@ -59,22 +64,13 @@ const styles = StyleSheet.create({
 });
 
 export const DocumentPreview: FC<Props> = ({ control }) => {
-	const [image, setImage] = useState<any>(null);
 	const form = useWatch({ control });
 
-	const removeBlankLines = (text: string) => text.replace(/^\s*[\r\n]/gm, "");
+	const localImage = JSON.parse(localStorage.getItem("image") || "");
 
-	useEffect(() => {
-		if (form.image?.[0]) {
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				setImage(reader.result);
-			};
-			reader.readAsDataURL(form.image?.[0]);
-		} else {
-			setImage(null);
-		}
-	}, [form.image]);
+	console.log(localImage);
+
+	const removeBlankLines = (text: string) => text.replace(/^\s*[\r\n]/gm, "");
 
 	return (
 		<Document>
@@ -202,7 +198,7 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 								</View>
 							)}
 						</View>
-						<View style={styles.column}>{image && <Image src={image} />}</View>
+						<View style={styles.column}>{<Image src={localImage} />}</View>
 					</View>
 					{form.additionalInformation && (
 						<View style={styles.section}>

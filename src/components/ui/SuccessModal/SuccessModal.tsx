@@ -9,6 +9,7 @@ interface Props {
 	openModal: boolean;
 	setOpenModal: (openModal: boolean) => void;
 	title: string;
+	width?: string;
 }
 
 export const SuccessModal: FC<Props> = ({
@@ -17,13 +18,14 @@ export const SuccessModal: FC<Props> = ({
 	openModal,
 	setOpenModal,
 	title,
+	width = "30vm",
 }) => {
 	const closeModal = () => {
 		setOpenModal(false);
 	};
 
 	return (
-		<Modal onHide={closeModal} title={title} visible={openModal} width="30vm">
+		<Modal onHide={closeModal} title={title} visible={openModal} width={width}>
 			<div className="flex flex-col justify-center items-center">
 				<Icon
 					data-testid="success-modal-icon"
@@ -32,7 +34,7 @@ export const SuccessModal: FC<Props> = ({
 					width="200"
 				/>
 				<div
-          data-testid="success-modal-description"
+					data-testid="success-modal-description"
 					className="mt-6 text-center font-inter text-base text-gray-600 leading-[19px] tracking-tighter"
 				>
 					{description}
