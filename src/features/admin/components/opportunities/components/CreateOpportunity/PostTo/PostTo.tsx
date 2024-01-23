@@ -109,16 +109,18 @@ export const PostTo: FC<Props> = ({
 	const onPost = async () => {
 		try {
 			const pdfDocument = pdf(<DocumentPreview control={control} />);
-			const blob = await pdfDocument.toBlob();
+			const blob = await pdfDocument?.toBlob();
 
-			uploadOpportunityMutation.mutate(blob, {
-				onSuccess: (data) => {
-					const formData = form;
-					formData.documentS3Path = data.s3Path;
+			if (blob) {
+				uploadOpportunityMutation.mutate(blob, {
+					onSuccess: (data) => {
+						const formData = form;
+						formData.documentS3Path = data.s3Path;
 
-					createOpportunityMutation.mutate(formData as Opportunity);
-				},
-			});
+						createOpportunityMutation.mutate(formData as Opportunity);
+					},
+				});
+			}
 		} catch (error) {
 			console.error("Error al generar PDF:", error);
 		}

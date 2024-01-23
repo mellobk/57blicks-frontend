@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type FC, useEffect, useState } from "react";
@@ -77,6 +78,20 @@ export const CreateOpportunity: FC = () => {
 
 	useEffect(() => {
 		setShowPreview(false);
+		if (form.image?.[0]) {
+			const file = form.image?.[0];
+
+			if (file) {
+				const reader = new FileReader();
+
+				reader.addEventListener("load", () => {
+					const base64String = reader.result;
+					localStorage.setItem("image", JSON.stringify(base64String));
+				});
+
+				reader.readAsDataURL(file);
+			}
+		}
 	}, [form]);
 
 	return (
@@ -143,7 +158,12 @@ export const CreateOpportunity: FC = () => {
 
 				<div className="lg:col-span-3 col-span-1 lg:pl-6">
 					{showPreview ? (
-						<div className="h-full" onClick={() => setShowPreview(false)}>
+						<div
+							className="h-full"
+							onClick={() => {
+								setShowPreview(false);
+							}}
+						>
 							<PDFViewer height="100%" width="100%" showToolbar={false}>
 								<DocumentPreview control={control} />
 							</PDFViewer>

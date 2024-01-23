@@ -22,19 +22,27 @@ import { Button } from "@/components/ui/Button/Button.tsx";
 import { Modal } from "@/components/ui/Modal/Modal.tsx";
 import OpportunitiesService from "@/api/opportunities.ts";
 import { DocumentPreview } from "@/features/investor/components/opportunities/components/DocumentPreview/DocumentPreview.tsx";
+import { SuccessModal } from "@/components/ui/SuccessModal/SuccessModal.tsx";
 
 type Props = {
 	children?: ReactNode;
 };
 
 export const InvestorLayout: FC<Props> = ({ children }) => {
+	const url = window.location.href;
+	const firstPart = url.split("/").slice(0, 3).join("/");
+
+	useEffect(() => {
+		console.log(firstPart);
+	}, [url]);
+
 	const getFilename = (referenceId: number): string => {
 		return `DKC_Opportunity_${referenceId}.pdf`;
 	};
 
-	/* 	const createLedgerQuery = useMutation(async (body: any) => {
+	const createLedgerQuery = useMutation(async (body: any) => {
 		return ManageNotificationService.createNotifications(body);
-	}); */
+	});
 
 	const navigate = useNavigate();
 	const userLoggedInfo = userStore((state) => state.setLoggedUserInfo);
@@ -48,6 +56,7 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 	const localUserName = getLocalStorage(userName);
 	const [openModalUser, setOpenModalUser] = useState<boolean>();
 	const [openModal, setOpenModal] = useState<boolean>();
+	const [openSuccessModal, setOpenSuccessModal] = useState<boolean>();
 	const [investorId, setInvestorId] = useState<string>();
 	const [opportunityId, setOpportunityId] = useState<string>();
 	const [opportunityStatus, setOpportunityStatus] = useState<string>();
@@ -154,6 +163,23 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 	useEffect(() => {
 		if (updateOpportunityQuery.isSuccess) {
 			setOpenModal(false);
+			setOpenSuccessModal(true);
+
+			createLedgerQuery.mutate({
+				title: "Opportunity accepted",
+				timestamp: new Date(),
+				content:
+					`The ${localUserName} accepted the opportunity ${getOpportunityQuery.data?.postTitle}. `.replace(
+						"New Loan Investment Opportunity -",
+						""
+					),
+				additionalData: "",
+				redirectPath: `${firstPart}/opportunities/past-opportunities?id=${getOpportunityQuery.data?.id}`,
+				userFullName: localUserName,
+				priority: "HIGH",
+				type: "LOAN",
+				roles: ["super-admin"],
+			});
 		}
 	}, [updateOpportunityQuery.isLoading]);
 
@@ -434,6 +460,16 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 					</div>
 				</>
 			</Modal>
+
+			<SuccessModal
+				width="20vw"
+				description="Your opportunity has been submitted. Soon, someone from the DKC team will contact you. Thank you for your interest in our service"
+				openModal={openSuccessModal ?? false}
+				setOpenModal={() => {
+					setOpenSuccessModal(false);
+				}}
+				title="Opportunity accepted"
+			/>
 		</div>
 	);
 };

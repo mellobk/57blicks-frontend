@@ -415,6 +415,10 @@ export const DashboardLayout: FC<Props> = ({
 											state={data.status}
 											date={data.createdAt as Date}
 											handleOnClick={() => {
+												if (data.notification?.redirectPath) {
+													window.location.href =
+														data.notification?.redirectPath;
+												}
 												const parseData = data.notification?.additionalData;
 												const jsonString = parseData?.replace(
 													/: ([\da-f\-]{36}),/g,
