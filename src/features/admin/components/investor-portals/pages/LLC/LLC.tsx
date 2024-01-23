@@ -31,7 +31,7 @@ export const LLC: FC = () => {
 		useState<FundingBreakdown | null>();
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
-	const currentMonthName = moment().format("MMMM");
+	const currentMonthName = moment().add(1, "months").format("MMMM");
 	const debouncedSearchTerm = useDebounce(searchValue, 1000);
 	const investorsQuery = useQuery(["investors-query"], () =>
 		InvestorsService.getInvestorsWithLoans(searchValue)

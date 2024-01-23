@@ -47,8 +47,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const [archived, setArchived] = useState<boolean>(false);
 	const [lenders, setLenders] = useState<Array<Lender>>([]);
 	const [tableData, setTableData] = useState<Array<DkcLenders>>([]);
-	const currentMonthName = moment().format("MMMM");
-	const previousMonthName = moment().subtract(1, "months").format("MMMM");
+	const currentMonthName = moment().add(1, "months").format("MMMM");
+	const previousMonthName = moment().format("MMMM");
 
 	const findDkcLender = () => {
 		const findLender = lenders?.find(

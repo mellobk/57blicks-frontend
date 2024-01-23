@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type React from "react";
 import {
 	createContext,
@@ -12,6 +15,7 @@ import type {
 	CognitoUserSession,
 } from "amazon-cognito-identity-js";
 import * as Cognito from "@/lib/cognito";
+import * as Auth from "@/lib/mfa-login";
 import { Toast } from "primereact/toast";
 import useStore from "@/stores/app-store";
 
@@ -23,6 +27,8 @@ interface AuthContextProps {
 		password: string,
 		code: string
 	) => Promise<CognitoUserSession>;
+	signInWithEmailMfa: (username: string, code: string) => Promise<boolean>;
+	sendMfaCode: (username: string, code: string) => Promise<boolean>;
 	signOut: () => void;
 }
 
@@ -40,6 +46,22 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const toast = useRef(null) || <div></div>;
 	const [user, setUser] = useState<CognitoUser | null>(null);
 	const [session, setSession] = useState<CognitoUserSession | null>(null);
+
+	const signInWithEmailMfa = async (
+		username: string,
+		password: string
+	): Promise<boolean> => {
+		const result = await Auth.signInWithEmailMfa(username, password);
+		return result.data;
+	};
+
+	const sendMfaCode = async (
+		username: string,
+		code: string
+	): Promise<boolean> => {
+		const result = await Auth.sendMfaCode(username, code);
+		return result.data;
+	};
 
 	const signInWithEmail = async (
 		username: string,
@@ -85,7 +107,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	return (
 		<>
 			<Toast ref={toast} />
-			<AuthContext.Provider value={{ user, session, signInWithEmail, signOut }}>
+			<AuthContext.Provider
+				value={{
+					user,
+					session,
+					signInWithEmail,
+					signOut,
+					signInWithEmailMfa,
+					sendMfaCode,
+				}}
+			>
 				{children}
 			</AuthContext.Provider>
 		</>
