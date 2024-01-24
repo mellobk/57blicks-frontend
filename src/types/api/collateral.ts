@@ -9,3 +9,7 @@ export interface Collateral {
 	assetType: string;
 	isActive: boolean;
 }
+
+export interface CollateralInsurance {
+	insuranceExpirationDate: Date;
+}

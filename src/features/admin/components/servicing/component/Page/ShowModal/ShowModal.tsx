@@ -150,7 +150,7 @@ export const ShowModal: FC<Props> = ({
 						handleOnCLose={handleOnCLose}
 						handleRefreshData={handleRefreshData}
 					/>
-					<LoanInformation data={data} />
+					<LoanInformation data={data} handleRefreshData={handleRefreshData} />
 				</>
 			)}
 			{actualTabData?.label === "Borrower" && (

@@ -10,9 +10,13 @@ import { LoanCollateralCard } from "../LoanCollateralCard";
 
 interface LoanInformationProps {
 	data?: FundingBreakdown;
+	handleRefreshData?: () => void;
 }
 
-export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
+export const LoanInformation: FC<LoanInformationProps> = ({
+	data,
+	handleRefreshData,
+}) => {
 	const [save, setSave] = useState(true);
 	const [submit, setSubmit] = useState(false);
 
@@ -110,7 +114,13 @@ export const LoanInformation: FC<LoanInformationProps> = ({ data }) => {
 
 			<div className="w-[33.33%]  flex gap-2 flex-col overflow-auto border-l border-gray-200 pl-3.5 ">
 				{data?.loan?.collaterals.map((data: Collateral) => {
-					return <LoanCollateralCard key={data.id} data={data} />;
+					return (
+						<LoanCollateralCard
+							key={data.id}
+							data={data}
+							handleRefreshData={handleRefreshData}
+						/>
+					);
 				})}
 			</div>
 
