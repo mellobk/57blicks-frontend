@@ -9,7 +9,6 @@ import { useState } from "react";
 
 import Csv from "@/assets/images/png/Csv.png";
 import Xlsx from "@/assets/images/png/Xlsx.png";
-import { Modal } from "@/components/ui/Modal";
 import DataTable from "react-data-table-component";
 import { ResponsivePieCanvas } from "@nivo/pie";
 
@@ -34,7 +33,7 @@ const ReportTable: FC<CreatePermissionProps> = ({
 	isLoading,
 	children,
 }) => {
-	const [openInsurance, setOpenInsurance] = useState(false);
+	const [_, setOpenInsurance] = useState(false);
 
 	return (
 		<>
@@ -124,19 +123,6 @@ const ReportTable: FC<CreatePermissionProps> = ({
 					</div>
 				)}
 			</div>
-			<Modal
-				visible={openInsurance}
-				onHide={() => {
-					setOpenInsurance(false);
-				}}
-				title="Default Tax Loans"
-			>
-				<DataTable
-					columns={columns}
-					data={dataTable || []}
-					progressPending={isLoading}
-				/>
-			</Modal>
 		</>
 	);
 };

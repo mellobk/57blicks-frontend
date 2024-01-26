@@ -193,6 +193,13 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 		}
 	}, [userLoggedQuery.data]);
 
+	useEffect(() => {
+		if (updateReadNotificationQuery.isSuccess) {
+			void userNotification.refetch();
+			updateReadNotificationQuery.reset();
+		}
+	}, [updateReadNotificationQuery]);
+
 	const markAllReadNotifications = () => {
 		updateReadNotificationQuery.mutate();
 	};

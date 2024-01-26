@@ -15,7 +15,7 @@ import ManageInvestorReportsService from "../api/reports";
 import userStore from "@/stores/user-store";
 import ReportTable from "@/features/admin/components/reports/components/ReportComponent/ReportComponent";
 import { PieCanvas } from "@/features/admin/components/reports/components/PieCanvas/PieCanvas";
-import { formatDate, moneyFormat } from "@/utils/formats";
+import { moneyFormat } from "@/utils/formats";
 import { downloadXLSX } from "@/utils/create-xlsx";
 import { downloadCSV } from "@/utils/create-cvs";
 import DataTable from "react-data-table-component";
@@ -38,7 +38,7 @@ export const AllDefaultReport: FC = () => {
 	const [chartAssetData, setAssetChartData] = useState([]);
 	const myData = useMutation(async () => {
 		return ManageInvestorReportsService.getInvestorsReportLoan(
-			userInfo.investor?.id || ""
+			userInfo?.id || ""
 		);
 	});
 
@@ -109,15 +109,20 @@ export const AllDefaultReport: FC = () => {
 			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
-			"Asset Type",
+			"Default Type",
+			"LTV",
+			"Phone #",
+			"Email",
 		];
-		const csvData = insuranceCsv?.map((value: any) => {
+		const csvData = insuranceCsv?.map((data: any) => {
 			return [
-				value.borrower?.llc,
-				value?.borrower?.user.mailingAddress,
-				moneyFormat(Number.parseInt(value?.totalLoanAmount)),
-				formatDate(value?.originationDate.toString()),
-				value?.collaterals[0]?.assetType,
+				data.borrower?.llc,
+				data?.borrower?.user.mailingAddress,
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				data?.defaultType,
+				data?.ltv,
+				data?.borrower?.user.phoneNumber,
+				data?.borrower?.user.email,
 			];
 		});
 
@@ -133,15 +138,20 @@ export const AllDefaultReport: FC = () => {
 			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
-			"Asset Type",
+			"Default Type",
+			"LTV",
+			"Phone #",
+			"Email",
 		];
-		const csvData = insuranceCsv?.map((value: any) => {
+		const csvData = insuranceCsv?.map((data: any) => {
 			return [
-				value.borrower?.llc,
-				value?.borrower?.user.mailingAddress,
-				moneyFormat(Number.parseInt(value?.totalLoanAmount)),
-				formatDate(value?.originationDate.toString()),
-				value?.collaterals[0]?.assetType,
+				data.borrower?.llc,
+				data?.borrower?.user.mailingAddress,
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				data?.defaultType,
+				data?.ltv,
+				data?.borrower?.user.phoneNumber,
+				data?.borrower?.user.email,
 			];
 		});
 
@@ -149,6 +159,32 @@ export const AllDefaultReport: FC = () => {
 
 		downloadXLSX(data, "allLoans.xlsx");
 	};
+
+	const columns = [
+		{
+			name: "Borrower Entity",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.borrower?.llc || "",
+			omit: false,
+		},
+		{
+			name: "Loan Amount",
+			selector: (row: Loan) =>
+				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
+			omit: false,
+		},
+		{
+			name: "Phone #",
+			selector: (row: Loan) => row?.borrower?.user.phoneNumber || "",
+			omit: false,
+		},
+		{
+			name: "Email",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.borrower?.user.email || "",
+			omit: false,
+		},
+	];
 
 	const columnsModal = [
 		{
@@ -169,21 +205,31 @@ export const AllDefaultReport: FC = () => {
 			omit: false,
 		},
 		{
-			name: "Origination Date",
-			selector: (row: Loan) => row?.originationDate,
+			name: "Default Type",
+			selector: (row: Loan) => row?.defaultType || "",
 			omit: false,
 		},
 		{
-			name: "Asset Type",
+			name: "LTV",
+			selector: (row: Loan) => Number.parseInt(row?.ltv).toFixed(0) || "0",
+			omit: false,
+		},
+		{
+			name: "Phone #",
+			selector: (row: Loan) => row?.borrower?.user.phoneNumber || "",
+			omit: false,
+		},
+		{
+			name: "Email",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
+			selector: (row: Loan): string => row?.borrower?.user.email || "",
 			omit: false,
 		},
 	];
 
 	return (
-		<div className="h-[25%] w-full flex gap-3 flex-wrap justify-center p-4">
-			<div className="h-[70%] w-[45%] mb-9">
+		<div className="h-[30%] w-full flex gap-3 flex-wrap justify-between p-4">
+			<div className="h-[70%] w-[49%] mb-10">
 				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 relative">
 					<div
 						className="font-bold text-[13px] z-0"
@@ -210,8 +256,19 @@ export const AllDefaultReport: FC = () => {
 					</div>
 				</div>
 				<PieCanvas data={chartData} />
+				<div
+					onClick={() => {
+						setOpenInsurance(true);
+					}}
+				>
+					<DataTable
+						columns={columns}
+						data={reportLoan?.loans || []}
+						progressPending={myData.isLoading}
+					/>
+				</div>
 			</div>
-			<div className="h-[70%] w-[45%]">
+			<div className="h-[70%] w-[49%]">
 				<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 					<div
 						className="font-bold text-[13px]"
@@ -235,60 +292,75 @@ export const AllDefaultReport: FC = () => {
 					</div>
 				</div>
 				<PieCanvas data={chartAssetData} />
+				<div
+					onClick={() => {
+						setOpenInsurance(true);
+					}}
+				>
+					<DataTable
+						columns={columns}
+						data={reportLoan?.loans || []}
+						progressPending={myData.isLoading}
+					/>
+				</div>
 			</div>
-			<div
-				className="w-[20%] h-[50%] flex"
-				onClick={() => {
-					setOpenInsurance(true);
-				}}
-			>
-				<ReportTable title="Number of Loans">
-					<div>{reportLoan?.numbersOfLoans || 0}</div>
-				</ReportTable>
-			</div>
-			<div
-				className="w-[30%] h-[50%] flex"
-				onClick={() => {
-					setOpenInsurance(true);
-				}}
-			>
-				<ReportTable title="Average Loan Amount">
-					<div>{reportLoan?.averageLoanAmount || 0}</div>
-				</ReportTable>
-			</div>
-			<div
-				className="w-[20%] h-[50%] flex"
-				onClick={() => {
-					setOpenInsurance(true);
-				}}
-			>
-				<ReportTable title="Interest Average">
-					<div>{reportLoan?.interestData || 0}</div>
-				</ReportTable>
-			</div>
-			<div
-				className="w-[20%] h-[50%] flex"
-				onClick={() => {
-					setOpenInsurance(true);
-				}}
-			>
-				<ReportTable title="Roll Rate">
-					<div>{reportLoan?.rollRate || 0}</div>
-				</ReportTable>
-			</div>
+			<div className="w-full flex flex-wrap mt-[120px] gap-10 justify-center">
+				<div
+					className="w-[20%] h-[50%] flex"
+					onClick={() => {
+						setOpenInsurance(true);
+					}}
+				>
+					<ReportTable title="Number of Loans">
+						<div>{reportLoan?.numbersOfLoans || 0}</div>
+					</ReportTable>
+				</div>
+				<div
+					className="w-[30%] h-[50%] flex"
+					onClick={() => {
+						setOpenInsurance(true);
+					}}
+				>
+					<ReportTable title="Average Loan Amount">
+						<div>
+							{moneyFormat(Number.parseInt(reportLoan?.averageLoanAmount || 0))}
+						</div>
+					</ReportTable>
+				</div>
+				<div
+					className="w-[20%] h-[50%] flex"
+					onClick={() => {
+						setOpenInsurance(true);
+					}}
+				>
+					<ReportTable title="Interest Average">
+						<div>{reportLoan?.interestData || 0}</div>
+					</ReportTable>
+				</div>
+				<div
+					className="w-[20%] h-[50%] flex"
+					onClick={() => {
+						setOpenInsurance(true);
+					}}
+				>
+					<ReportTable title="Roll Rate">
+						<div>{reportLoan?.rollRate || 0}</div>
+					</ReportTable>
+				</div>
 
-			<div className="w-[20%] h-[50%] flex">
-				<ReportTable title="My Investments">
-					<div className="w-[80%] flex items-center justify-center gap-3">
-						<span className=" text-[35px]">
-							{reportLoan?.investorInvestments?.myInvestment || 0}
-						</span>{" "}
-						<span className="text-[20px] text-gray-40">/</span>
-						<span className="text-[20px] text-gray-40">{` ${
-							reportLoan?.investorInvestments?.totalInvestment || 0
-						}`}</span>
-					</div>
-				</ReportTable>
+				<div className="w-[20%] h-[50%] flex">
+					<ReportTable title="My Investments">
+						<div className="w-[80%] flex items-center justify-center gap-3">
+							<span className=" text-[35px]">
+								{reportLoan?.investorInvestments?.myInvestment || 0}
+							</span>{" "}
+							<span className="text-[20px] text-gray-40">/</span>
+							<span className="text-[20px] text-gray-40">{` ${
+								reportLoan?.investorInvestments?.totalInvestment || 0
+							}`}</span>
+						</div>
+					</ReportTable>
+				</div>
 			</div>
 
 			<Modal
@@ -297,7 +369,7 @@ export const AllDefaultReport: FC = () => {
 					setOpenInsurance(false);
 				}}
 				width="90vw"
-				title="Default Loans"
+				title="Loans"
 			>
 				<DataTable
 					columns={columnsModal as any}

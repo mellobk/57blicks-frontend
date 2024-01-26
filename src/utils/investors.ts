@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
@@ -32,7 +33,7 @@ export const getLoanColumnsInvestor = () => {
 		name: "Borrower",
 		selector: (row: ColumInvestorPayable) => row.borrower,
 		sortable: true,
-		width: "120px",
+		width: "150px",
 	});
 
 	for (const month of months) {
@@ -141,7 +142,7 @@ export const fillDataLoansPayables = (
 	const data: Array<ColumInvestorPayable> = [];
 	loan?.forEach((item) => {
 		data.push({
-			borrower: item.borrower?.user.firstName || "",
+			borrower: item.borrower?.llc || "",
 			loanId: item.id || "",
 			january: 0,
 			february: 0,
