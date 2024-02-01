@@ -24,8 +24,8 @@ import { InterestCollectionReport } from "../components/InterestCollectionReport
 import { Tabs } from "../../servicing/component/Tabs";
 import { loansTabs } from "../../servicing/utils/tabs";
 import { ExtendedLoanReport } from "../components/extendedFoundedLoanReport";
-import { Int1999 } from "../components/int1999-";
-import { Int1998 } from "../components/int1998-";
+/* import { Int1999 } from "../components/int1999-";
+import { Int1998 } from "../components/int1998-"; */
 export const Reports: FC = () => {
 	const navigate = useNavigate();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
