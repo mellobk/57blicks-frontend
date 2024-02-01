@@ -270,8 +270,11 @@ export const NewFoundedLoanReport: FC = () => {
 						setActualTabData(value);
 					}}
 				/>
-				<div className="flex gap-2 ml-2" onClick={downloadReport}>
-					<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
+				<div className="flex gap-2 ml-2">
+					<div
+						className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl"
+						onClick={downloadReport}
+					>
 						<img src={Csv} alt="DKC Csv" />
 					</div>
 

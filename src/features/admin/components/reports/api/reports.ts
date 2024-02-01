@@ -131,12 +131,12 @@ const getLoanPaidAverageDays = async () => {
 	return response.data;
 };
 
-const getAllDefaultInterestLoan = async () => {
+const getAllDefaultInterestLoan = async (value: string) => {
 	const response = await authApiClient.get<{
 		totalCredit: string;
 		totalDebit: string;
 		loans: any;
-	}>(allDefaultInterestLoan());
+	}>(allDefaultInterestLoan(value));
 	return response.data;
 };
 

@@ -22,6 +22,8 @@ import Csv from "@/assets/images/png/Csv.png";
 import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
+import { Tabs } from "../../servicing/component/Tabs";
+import { newInterestTabs } from "../../servicing/utils/tabs";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -34,10 +36,11 @@ export const InterestCollectionReport: FC = () => {
 	const [chartData, setChartData] = useState([]);
 	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
 	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
+	const [actualTabData, setActualTabData] = useState<string>("month");
 	const propertyInsuranceQuery = useQuery(
 		["all-interest-loans"],
 		() => {
-			return ManageReportsService.getAllDefaultInterestLoan();
+			return ManageReportsService.getAllDefaultInterestLoan(actualTabData);
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -108,6 +111,10 @@ export const InterestCollectionReport: FC = () => {
 			setLastRowModal(lastRow);
 		}
 	}, [propertyInsuranceQuery.data]);
+
+	useEffect(() => {
+		void propertyInsuranceQuery.refetch();
+	}, [actualTabData]);
 
 	const downloadReport = (): void => {
 		const insuranceCsv = propertyInsuranceQuery.data?.loans;
@@ -228,13 +235,20 @@ export const InterestCollectionReport: FC = () => {
 		<div className="h-[60%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 				<div
-					className="font-bold text-[13px]"
+					className="font-bold text-[13px] w-[300px]"
 					onClick={() => {
 						setOpenInsurance(true);
 					}}
 				>
 					Interest Collection Report
 				</div>
+				<Tabs
+					tabs={newInterestTabs}
+					actualTab={actualTabData}
+					onClick={(value): void => {
+						setActualTabData(value);
+					}}
+				/>
 				<div className="flex gap-2 ml-2" onClick={downloadReport}>
 					<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 						<img src={Csv} alt="DKC Csv" />

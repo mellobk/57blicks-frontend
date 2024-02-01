@@ -51,6 +51,11 @@ export const newFoundedTabs = [
 	{ label: "90", value: "90", routeTo: "90" },
 ];
 
+export const newInterestTabs = [
+	{ label: "Month", value: "Month", routeTo: "Month" },
+	{ label: "YTD", value: "YTD", routeTo: "YTD" },
+];
+
 export const userTabs = [
 	{ label: "Activity", routeTo: "manage-users/admins" },
 	{ label: "Permission", routeTo: "manage-users/admins" },
