@@ -36,6 +36,8 @@ export const AllDefaultReport: FC = () => {
 	const [reportLoan, setReportLoan] = useState<any>();
 	const [chartData, setChartData] = useState([]);
 	const [chartAssetData, setAssetChartData] = useState([]);
+	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
+	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
 	const myData = useMutation(async () => {
 		return ManageInvestorReportsService.getInvestorsReportLoan(
 			userInfo?.id || ""
@@ -81,18 +83,51 @@ export const AllDefaultReport: FC = () => {
 			});
 			setAssetChartData(dataAsset as any);
 
-			/* 		const object: Record<string, any> = {};
+			if (reportLoan?.loans) {
+				const insuranceCsv = reportLoan?.loans;
 
+				const totalLoansAmount = insuranceCsv.reduce(
+					(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
+						accumulator + Number.parseFloat(dataInterest.totalLoanAmount),
+					0
+				);
 
-			const data = keyAssetValues.map((value) => {
-				return {
-					id: `${value} `,
-					label: `${value} `,
-					value: object[value as string],
-					color: "hsl(110, 70%, 50%)",
-				};
-			});
-			setChartData(data as any); */
+				const lastRow = [
+					"",
+					"",
+					moneyFormat(Number.parseInt(totalLoansAmount)),
+					"",
+					"",
+					"",
+				];
+				setModalColumnsData([
+					...insuranceCsv,
+					{
+						totalLoanAmount: totalLoansAmount.toString(),
+						ltv: 0,
+						collaterals: [
+							{
+								address: "",
+								taxUrl: "",
+								insuranceExpirationDate: "2023-12-11",
+							},
+						],
+						borrower: {
+							llc: "",
+							user: {
+								email: "",
+								phoneNumber: "",
+								mailingAddress: "",
+								isActive: true,
+							},
+						},
+						totalDebits: "0",
+						creditAverage: "201249.32",
+						debitAverage: "250.00",
+					},
+				]);
+				setLastRowModal(lastRow);
+			}
 		}
 	}, [myData.data]);
 
@@ -126,7 +161,7 @@ export const AllDefaultReport: FC = () => {
 			];
 		});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
 		downloadCSV(data, "allLoans.csv");
 	};
@@ -155,7 +190,7 @@ export const AllDefaultReport: FC = () => {
 			];
 		});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
 		downloadXLSX(data, "allLoans.xlsx");
 	};
@@ -192,6 +227,7 @@ export const AllDefaultReport: FC = () => {
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
+			maxWidth: "250px",
 		},
 		{
 			name: "Property Address",
@@ -203,21 +239,26 @@ export const AllDefaultReport: FC = () => {
 			selector: (row: Loan) =>
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
+			maxWidth: "130px",
 		},
 		{
 			name: "Default Type",
 			selector: (row: Loan) => row?.defaultType || "",
 			omit: false,
+			maxWidth: "130px",
 		},
 		{
 			name: "LTV",
-			selector: (row: Loan) => Number.parseInt(row?.ltv).toFixed(0) || "0",
+			selector: (row: Loan) =>
+				(row?.ltv && Number.parseInt(row?.ltv).toFixed(0)) || "0",
 			omit: false,
+			maxWidth: "130px",
 		},
 		{
 			name: "Phone #",
 			selector: (row: Loan) => row?.borrower?.user.phoneNumber || "",
 			omit: false,
+			maxWidth: "130px",
 		},
 		{
 			name: "Email",
@@ -373,7 +414,7 @@ export const AllDefaultReport: FC = () => {
 			>
 				<DataTable
 					columns={columnsModal as any}
-					data={reportLoan?.loans || []}
+					data={modalColumnsData || []}
 					progressPending={myData.isLoading}
 				/>
 			</Modal>
