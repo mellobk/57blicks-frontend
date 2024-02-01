@@ -44,16 +44,15 @@ export const AverageDaysPaidLoans: FC = () => {
 		"Insurance Expiration Date",
 	];
 
-	const [actualRollTabData, setActualRollTabData] = useState<string>("all");
+	const [actualRollTabData, setActualRollTabData] = useState<string>("alls");
 	const [chartData, setChartData] = useState([]);
 	const [chartAssetData, setAssetChartData] = useState([]);
 	const [assetKeys, setAssetKey] = useState<Array<string>>([]);
 	const [productKeys, setProductKeys] = useState<Array<string>>([]);
 	const [excelDataLoanAsset, setExcelDataLoanAsset] = useState<Array<any>>([]);
 	const [excelDataLoans, setExcelDataLoans] = useState<Array<any>>([]);
-	const [excelDataLoanProduct, setExcelDataLoanProduct] = useState<Array<any>>(
-		[]
-	);
+
+	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
 
 	const consultantQuery = useQuery(
 		["average-paid-days-loans"],
@@ -62,6 +61,29 @@ export const AverageDaysPaidLoans: FC = () => {
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
+
+	useEffect(() => {
+		if (consultantQuery.data && consultantQuery.data?.data) {
+			const insuranceCsv = consultantQuery.data?.data;
+
+			const totalLoansAmount = insuranceCsv.reduce(
+				(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
+					accumulator + Number.parseFloat(dataInterest.totalLoanAmount),
+				0
+			);
+
+			const lastRow = [
+				"",
+				"",
+				moneyFormat(Number.parseInt(totalLoansAmount.toString())),
+				"",
+				"",
+				"",
+				"",
+			];
+			setLastRowModal(lastRow);
+		}
+	}, [consultantQuery.data]);
 
 	useEffect(() => {
 		if (consultantQuery.data) {
@@ -94,20 +116,6 @@ export const AverageDaysPaidLoans: FC = () => {
 				};
 			});
 
-			/* 			const data = [
-				{
-					id: `Paid - ${getData.paid.percentage}%`,
-					label: `Paid - ${getData.paid.percentage}%`,
-					value: getData.paid.quantity,
-					color: "hsl(110, 70%, 50%)",
-				},
-				{
-					id: `Unpaid - ${getData.unPaid.percentage}%`,
-					label: `Unpaid -${getData.unPaid.percentage}%`,
-					value: getData.unPaid.quantity,
-					color: "hsl(187, 70%, 50%)",
-				},
-			]; */
 			setChartData(data as any);
 		}
 	}, [consultantQuery.data]);
@@ -168,7 +176,7 @@ export const AverageDaysPaidLoans: FC = () => {
 						),
 					];
 				});
-				return [[data], ...(productData || [])];
+				return [[data], ...(productData || []), lastRowModal];
 			});
 
 			const arrayExcel: Array<Array<any>> = [];
@@ -200,15 +208,13 @@ export const AverageDaysPaidLoans: FC = () => {
 						),
 					];
 				});
-				return [[data], ...(productData || [])];
+				return [[data], ...(productData || []), lastRowModal];
 			});
 
 			const arrayExcel: Array<Array<any>> = [];
 			csvData.map((data) => {
 				return arrayExcel.push(...data);
 			});
-
-			setExcelDataLoanProduct(arrayExcel);
 		}
 	}, [productKeys]);
 
@@ -216,18 +222,23 @@ export const AverageDaysPaidLoans: FC = () => {
 		if (consultantQuery.data) {
 			const insuranceCsv = consultantQuery.data.dataByAsset;
 
-			const csvData = assetKeys?.map((data) => {
-				console.log(assetKeys, insuranceCsv);
+			const csvData = productKeys?.map((data) => {
 				const productData = insuranceCsv[data]?.map((value: Loan) => {
 					return [
-						value.borrower?.llc,
+						`${value.borrower?.user.firstName} ${value.borrower?.user.lastName}`,
 						value?.borrower?.user.mailingAddress,
+						value?.borrower?.user.phoneNumber,
+						value?.borrower?.user.email,
+						value?.collaterals[0]?.address,
 						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
 						formatDate(value?.originationDate.toString()),
-						value?.collaterals[0]?.assetType,
+						formatDate(value?.maturityDate.toString()),
+						formatDate(
+							value.collaterals[0]?.insuranceExpirationDate.toString() || ""
+						),
 					];
 				});
-				return [[data], ...(productData || [])];
+				return [[data], ...(productData || []), lastRowModal];
 			});
 
 			const arrayExcel: Array<Array<any>> = [];
@@ -264,37 +275,37 @@ export const AverageDaysPaidLoans: FC = () => {
 	}, [consultantQuery.data]);
 
 	const downloadLoanAssetReport = (): void => {
-		const data = [headerCsv, ...(excelDataLoanAsset ?? [])];
+		const data = [headerCsv, ...(excelDataLoanAsset ?? []), lastRowModal];
 
 		downloadCSV(data, "AverageRollRateByAsset.csv");
 	};
 
 	const downloadXlsxLoanAssetReport = (): void => {
-		const data = [headerCsv, ...(excelDataLoanAsset ?? [])];
+		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
 		downloadXLSX(data, "AverageRollRateByAsset.xlsx");
 	};
 
 	const downloadLoanProductReport = (): void => {
-		const data = [headerCsv, ...(excelDataLoanProduct ?? [])];
+		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
 		downloadCSV(data, "AverageRollRateByProduct.csv");
 	};
 
 	const downloadXlsxLoanProductReport = (): void => {
-		const data = [headerCsv, ...(excelDataLoanProduct ?? [])];
+		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
 		downloadXLSX(data, "AverageRollRateByProduct.xlsx");
 	};
 
 	const downloadLoansReport = (): void => {
-		const data = [headerCsv, ...(excelDataLoans ?? [])];
+		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
 		downloadCSV(data, "AverageRollRateForAllLoans.csv");
 	};
 
 	const downloadXlsxLoansReport = (): void => {
-		const data = [headerCsv, ...(excelDataLoans ?? [])];
+		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
 		downloadXLSX(data, "AverageRollRateForAllLoans.xlsx");
 	};
@@ -310,7 +321,7 @@ export const AverageDaysPaidLoans: FC = () => {
 					}}
 				/>
 			</div>
-			{actualRollTabData === "all" && (
+			{actualRollTabData === "alls" && (
 				<div className="flex flex-col items-center   w-[100%]   bg-white ">
 					<div className="w-full h-[20vw] flex ">
 						<ReportTable
@@ -325,7 +336,7 @@ export const AverageDaysPaidLoans: FC = () => {
 					</div>
 				</div>
 			)}
-			{actualRollTabData === "asset type" && (
+			{actualRollTabData === "asset types" && (
 				<div className="flex flex-col items-center   w-[100%]   bg-white ">
 					<div className="h-[20vw] w-full">
 						<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
@@ -352,7 +363,7 @@ export const AverageDaysPaidLoans: FC = () => {
 					</div>
 				</div>
 			)}
-			{actualRollTabData === "product" && (
+			{actualRollTabData === "products" && (
 				<div className="flex flex-col items-center   w-[100%]   bg-white ">
 					<div className="h-[20vw] w-full pb-5">
 						<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">

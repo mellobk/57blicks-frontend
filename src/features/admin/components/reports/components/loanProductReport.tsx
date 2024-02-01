@@ -36,11 +36,17 @@ export const LoanProductReport: FC = () => {
 		"Borrower Entity",
 		"Property Address",
 		"Loan Amount",
+		"Payoff Date",
 		"Asset Type",
+		"Loan Product",
+		"Rate",
 	];
+
 	const [chartData, setChartData] = useState([]);
 	const [keys, setKey] = useState<Array<string>>([]);
 	const [_, setExcelData] = useState<Array<any>>([]);
+	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
+	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
 	const consultantQuery = useQuery(
 		["all-products-loans"],
 		() => {
@@ -49,6 +55,72 @@ export const LoanProductReport: FC = () => {
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
+	useEffect(() => {
+		if (consultantQuery.data && consultantQuery.data?.loans) {
+			const insuranceCsv = consultantQuery.data?.loans;
+
+			const totalLoansAmount = insuranceCsv.reduce(
+				(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
+					accumulator + Number.parseFloat(dataInterest.totalLoanAmount),
+				0
+			);
+
+			const lastRow = [
+				"",
+				"",
+				moneyFormat(Number.parseInt(totalLoansAmount.toString())),
+				"",
+				"",
+				"",
+				"",
+			];
+
+			setModalColumnsData([
+				...insuranceCsv,
+				{
+					ltv: "",
+					originationDate: "",
+					endDate: "",
+					totalLoanAmount: totalLoansAmount.toString(),
+
+					collaterals: [
+						{
+							address: "",
+							taxUrl: "",
+							insuranceExpirationDate: "2023-12-11",
+						},
+					],
+					fundingBreakDowns: [
+						{
+							lender: {
+								name: "",
+								isSpecialCase: true,
+							},
+						},
+						{
+							lender: {
+								name: "",
+								isSpecialCase: false,
+							},
+						},
+					],
+					borrower: {
+						llc: "",
+						user: {
+							email: "",
+							phoneNumber: "",
+							mailingAddress: "",
+							isActive: true,
+						},
+					},
+					totalDebits: "0",
+					creditAverage: "201249.32",
+					debitAverage: "250.00",
+				},
+			]);
+			setLastRowModal(lastRow);
+		}
+	}, [consultantQuery.data]);
 	const columnsModal = [
 		{
 			name: "Borrower Entity",
@@ -69,13 +141,27 @@ export const LoanProductReport: FC = () => {
 		},
 		{
 			name: "Origination Date",
-			selector: (row: Loan) => row?.originationDate,
+			selector: (row: Loan) =>
+				row?.originationDate &&
+				formatDate(row?.originationDate?.toString() || ""),
 			omit: false,
 		},
 		{
 			name: "Asset Type",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
+			omit: false,
+		},
+		{
+			name: "Loan Product",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.type || "",
+			omit: false,
+		},
+		{
+			name: "Rate",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.interestRate || "",
 			omit: false,
 		},
 	];
@@ -124,13 +210,15 @@ export const LoanProductReport: FC = () => {
 				const productData = insuranceCsv[data]?.map((value: Loan) => {
 					return [
 						value.borrower?.llc,
-						value?.borrower?.user.mailingAddress,
+						value?.collaterals[0]?.address,
 						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
-						formatDate(value?.originationDate.toString()),
+						formatDate(value?.originationDate?.toString() || ""),
 						value?.collaterals[0]?.assetType,
+						value?.type,
+						value?.interestRate,
 					];
 				});
-				return [[data], ...productData];
+				return [[data], ...productData, lastRowModal];
 			});
 
 			const arrayExcel: Array<Array<any>> = [];
@@ -147,14 +235,16 @@ export const LoanProductReport: FC = () => {
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
+				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
+				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
+				data?.type,
+				data?.interestRate,
 			];
 		});
 
-		const data = [headerCsv, ...csvData];
+		const data = [headerCsv, ...csvData, lastRowModal];
 		downloadCSV(data, "LoansByProduct.csv");
 	};
 
@@ -164,13 +254,15 @@ export const LoanProductReport: FC = () => {
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
+				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
+				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
+				data?.type,
+				data?.interestRate,
 			];
 		});
-		const data = [headerCsv, ...csvData];
+		const data = [headerCsv, ...csvData, lastRowModal];
 		downloadXLSX(data, "LoansByProduct.xlsx");
 	};
 
@@ -259,7 +351,7 @@ export const LoanProductReport: FC = () => {
 			>
 				<DataTable
 					columns={columnsModal as any}
-					data={consultantQuery.data?.loans || []}
+					data={modalColumnsData || []}
 					progressPending={consultantQuery.isLoading}
 				/>
 			</Modal>

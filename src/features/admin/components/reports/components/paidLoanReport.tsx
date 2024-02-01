@@ -33,7 +33,8 @@ import { paidLoansTabs } from "../../servicing/utils/tabs";
 export const PaidLoanReport: FC = () => {
 	const [actualTabData, setActualTabData] = useState<string>("30");
 	const [openInsurance, setOpenInsurance] = useState(false);
-	/* 	const [chartData, setChartData] = useState([]); */
+	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
+	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
 	const propertyInsuranceQuery = useQuery(
 		["all-paid-loans"],
 		() => {
@@ -42,26 +43,75 @@ export const PaidLoanReport: FC = () => {
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
-	/* 	useEffect(() => {
-		if (propertyInsuranceQuery.data) {
-			const getData = propertyInsuranceQuery.data;
-			const data = [
-				{
-					id: `Paid - ${getData.paid.percentage}%`,
-					label: `Paid - ${getData.paid.percentage}%`,
-					value: getData.paid.quantity,
-					color: "hsl(110, 70%, 50%)",
-				},
-				{
-					id: `Unpaid - ${getData.unPaid.percentage}%`,
-					label: `Unpaid -${getData.unPaid.percentage}%`,
-					value: getData.unPaid.quantity,
-					color: "hsl(187, 70%, 50%)",
-				},
+	useEffect(() => {
+		if (
+			propertyInsuranceQuery.data &&
+			propertyInsuranceQuery.data?.defaultLoans
+		) {
+			const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
+
+			const totalLoansAmount = insuranceCsv.reduce(
+				(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
+					accumulator + Number.parseFloat(dataInterest.totalLoanAmount),
+				0
+			);
+
+			const lastRow = [
+				"",
+				"",
+				moneyFormat(Number.parseInt(totalLoansAmount.toString())),
+				"",
+				"",
+				"",
+				"",
 			];
-			setChartData(data as any);
+
+			setModalColumnsData([
+				...insuranceCsv,
+				{
+					ltv: "",
+					originationDate: "",
+					endDate: "",
+					totalLoanAmount: totalLoansAmount.toString(),
+
+					collaterals: [
+						{
+							address: "",
+							taxUrl: "",
+							insuranceExpirationDate: "2023-12-11",
+						},
+					],
+					fundingBreakDowns: [
+						{
+							lender: {
+								name: "",
+								isSpecialCase: true,
+							},
+						},
+						{
+							lender: {
+								name: "",
+								isSpecialCase: false,
+							},
+						},
+					],
+					borrower: {
+						llc: "",
+						user: {
+							email: "",
+							phoneNumber: "",
+							mailingAddress: "",
+							isActive: true,
+						},
+					},
+					totalDebits: "0",
+					creditAverage: "201249.32",
+					debitAverage: "250.00",
+				},
+			]);
+			setLastRowModal(lastRow);
 		}
-	}, [propertyInsuranceQuery.data]); */
+	}, [propertyInsuranceQuery.data]);
 
 	const downloadReport = (): void => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
@@ -70,19 +120,31 @@ export const PaidLoanReport: FC = () => {
 			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
+			"Payoff Date",
 			"Asset Type",
+			"Loan Product",
+			"Lender",
+			"Rate",
 		];
 		const csvData = insuranceCsv?.map((data) => {
+			const lender = data?.fundingBreakDowns?.find(
+				(data: { lender: { name: string } }) =>
+					data?.lender?.name !== "DKC Servicing Fee Income"
+			);
+
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
+				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
+				formatDate(data?.endDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
+				data?.type,
+				lender?.lender?.name,
+				data?.interestRate,
 			];
 		});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
 		downloadCSV(data, "LoansPaidOff.csv");
 	};
@@ -94,19 +156,31 @@ export const PaidLoanReport: FC = () => {
 			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
+			"Payoff Date",
 			"Asset Type",
+			"Loan Product",
+			"Lender",
+			"Rate",
 		];
 		const csvData = insuranceCsv?.map((data) => {
+			const lender = data?.fundingBreakDowns?.find(
+				(data: { lender: { name: string } }) =>
+					data?.lender?.name !== "DKC Servicing Fee Income"
+			);
+
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
+				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
+				formatDate(data?.endDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
+				data?.type,
+				lender?.lender?.name,
+				data?.interestRate,
 			];
 		});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
 		downloadXLSX(data, "LoansPaidOff.xlsx");
 	};
@@ -135,7 +209,8 @@ export const PaidLoanReport: FC = () => {
 		},
 		{
 			name: "Payoff Date",
-			selector: (row: Loan) => row?.endDate,
+			selector: (row: Loan) =>
+				row?.endDate && formatDate(row?.endDate?.toString() || ""),
 			omit: false,
 		},
 		{
@@ -233,7 +308,7 @@ export const PaidLoanReport: FC = () => {
 			>
 				<DataTable
 					columns={columnsModal as any}
-					data={propertyInsuranceQuery.data?.defaultLoans || []}
+					data={modalColumnsData || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>
 			</Modal>

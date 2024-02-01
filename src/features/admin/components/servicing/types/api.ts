@@ -121,6 +121,7 @@ export interface Collateral {
 }
 
 export interface Loan {
+	totalDebits: string;
 	prorated: any;
 	endDate: any;
 	fundingBreakDowns: any;

@@ -36,6 +36,7 @@ export const ExtendedLoanReport: FC = () => {
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const [transaction, setTransaction] = useState(false);
 	const [transactionId, setTransactionId] = useState();
+	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
 
 	const propertyInsuranceQuery = useQuery(
 		["all-extended-loans"],
@@ -44,6 +45,31 @@ export const ExtendedLoanReport: FC = () => {
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
+
+	useEffect(() => {
+		if (
+			propertyInsuranceQuery.data &&
+			propertyInsuranceQuery.data?.defaultLoans
+		) {
+			const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
+
+			const totalLoansAmount = insuranceCsv.reduce(
+				(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
+					accumulator + Number.parseFloat(dataInterest.totalLoanAmount),
+				0
+			);
+
+			const lastRow = [
+				"",
+				"",
+				"",
+				moneyFormat(Number.parseInt(totalLoansAmount.toString())),
+				"",
+				"",
+			];
+			setLastRowModal(lastRow);
+		}
+	}, [propertyInsuranceQuery.data]);
 
 	const downloadReport = (): void => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
@@ -72,7 +98,7 @@ export const ExtendedLoanReport: FC = () => {
 			];
 		});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
 		downloadCSV(data, "extendedLoansFounded.csv");
 	};

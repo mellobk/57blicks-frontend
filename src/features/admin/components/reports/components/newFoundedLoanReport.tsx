@@ -10,7 +10,7 @@ import { useState, type FC, useEffect } from "react";
 
 // install (please try to align the version of installed @nivo packages)
 // yarn add @nivo/pie
-import { moneyFormat } from "@/utils/formats";
+import { formatDate, moneyFormat } from "@/utils/formats";
 import { downloadCSV } from "@/utils/create-cvs";
 import { downloadXLSX } from "@/utils/create-xlsx";
 import type { Loan } from "../../servicing/types/api";
@@ -32,6 +32,8 @@ import { newFoundedTabs } from "../../servicing/utils/tabs";
 export const NewFoundedLoanReport: FC = () => {
 	const [actualTabData, setActualTabData] = useState<string>("30");
 	const [openInsurance, setOpenInsurance] = useState(false);
+	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
+	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
 
 	const propertyInsuranceQuery = useQuery(
 		["all-new-loans-founded"],
@@ -41,6 +43,75 @@ export const NewFoundedLoanReport: FC = () => {
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
+	useEffect(() => {
+		if (
+			propertyInsuranceQuery.data &&
+			propertyInsuranceQuery.data?.defaultLoans
+		) {
+			const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
+
+			const totalLoansAmount = insuranceCsv.reduce(
+				(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
+					accumulator + Number.parseFloat(dataInterest.totalLoanAmount),
+				0
+			);
+
+			const lastRow = [
+				"",
+				"",
+				moneyFormat(Number.parseInt(totalLoansAmount.toString())),
+				"",
+				"",
+				"",
+				"",
+			];
+
+			setModalColumnsData([
+				...insuranceCsv,
+				{
+					ltv: "",
+					originationDate: "",
+					totalLoanAmount: totalLoansAmount.toString(),
+
+					collaterals: [
+						{
+							address: "",
+							taxUrl: "",
+							insuranceExpirationDate: "2023-12-11",
+						},
+					],
+					fundingBreakDowns: [
+						{
+							lender: {
+								name: "",
+								isSpecialCase: true,
+							},
+						},
+						{
+							lender: {
+								name: "",
+								isSpecialCase: false,
+							},
+						},
+					],
+					borrower: {
+						llc: "",
+						user: {
+							email: "",
+							phoneNumber: "",
+							mailingAddress: "",
+							isActive: true,
+						},
+					},
+					totalDebits: "0",
+					creditAverage: "201249.32",
+					debitAverage: "250.00",
+				},
+			]);
+			setLastRowModal(lastRow);
+		}
+	}, [propertyInsuranceQuery.data]);
+
 	const downloadReport = (): void => {
 		const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
 
@@ -48,6 +119,7 @@ export const NewFoundedLoanReport: FC = () => {
 			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
+			"Origination Date",
 			"Asset Type",
 			"Loan Product",
 			"Lender",
@@ -62,6 +134,7 @@ export const NewFoundedLoanReport: FC = () => {
 				data.borrower?.llc,
 				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
 				data?.type,
 				lender?.lender?.name,
@@ -69,7 +142,7 @@ export const NewFoundedLoanReport: FC = () => {
 			];
 		});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
 		downloadCSV(data, "newLoansFounded.csv");
 	};
@@ -81,6 +154,7 @@ export const NewFoundedLoanReport: FC = () => {
 			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
+			"Origination Date",
 			"Asset Type",
 			"Loan Product",
 			"Lender",
@@ -96,6 +170,7 @@ export const NewFoundedLoanReport: FC = () => {
 				data.borrower?.llc,
 				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
 				data?.type,
 				lender?.lender?.name,
@@ -103,7 +178,7 @@ export const NewFoundedLoanReport: FC = () => {
 			];
 		});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
 		downloadXLSX(data, "newLoansFounded.xlsx");
 	};
@@ -132,7 +207,9 @@ export const NewFoundedLoanReport: FC = () => {
 		},
 		{
 			name: "Origination Date",
-			selector: (row: Loan) => row?.originationDate,
+			selector: (row: Loan) =>
+				row?.originationDate &&
+				formatDate(row?.originationDate?.toString() || ""),
 			omit: false,
 		},
 		{
@@ -145,6 +222,13 @@ export const NewFoundedLoanReport: FC = () => {
 			name: "Loan Product",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.type || "",
+			omit: false,
+		},
+		{
+			name: "LTV",
+			maxWidth: "50px",
+			selector: (row: Loan) =>
+				row?.ltv && `${Number.parseFloat(row?.ltv).toFixed(0) || "0"}%`,
 			omit: false,
 		},
 		{
@@ -247,7 +331,7 @@ export const NewFoundedLoanReport: FC = () => {
 			>
 				<DataTable
 					columns={columnsModal as any}
-					data={propertyInsuranceQuery.data?.defaultLoans || []}
+					data={modalColumnsData || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>
 			</Modal>

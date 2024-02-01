@@ -34,15 +34,15 @@ export const paidLoansTabs = [
 ];
 
 export const loansTabs = [
-	{ label: "Consultant", value: "consultant", routeTo: "consultant" },
-	{ label: "Asset Type", value: "asset type", routeTo: "asset type" },
-	{ label: "Product", value: "product", routeTo: "product" },
+	{ label: "Consultants", value: "consultants", routeTo: "consultants" },
+	{ label: "Asset Types", value: "asset types", routeTo: "asset types" },
+	{ label: "Products", value: "products", routeTo: "products" },
 ];
 
 export const loansRollTabs = [
-	{ label: "all", value: "all", routeTo: "all" },
-	{ label: "Asset Type", value: "asset type", routeTo: "asset type" },
-	{ label: "Product", value: "product", routeTo: "product" },
+	{ label: "alls", value: "alls", routeTo: "alls" },
+	{ label: "Asset Types", value: "asset types", routeTo: "asset types" },
+	{ label: "Products", value: "products", routeTo: "products" },
 ];
 
 export const newFoundedTabs = [

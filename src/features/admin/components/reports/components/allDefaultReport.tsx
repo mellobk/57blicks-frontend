@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
@@ -29,6 +30,8 @@ import { Modal } from "@/components/ui/Modal";
 export const AllDefaultReport: FC = () => {
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const [chartData, setChartData] = useState([]);
+	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
+	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
 	const propertyInsuranceQuery = useQuery(
 		["all-default-loans"],
 		() => {
@@ -42,31 +45,110 @@ export const AllDefaultReport: FC = () => {
 			const getData = propertyInsuranceQuery.data;
 			const data = [
 				{
-					id: `Insurance - ${getData.insurance.percentage}%`,
-					label: `Insurance - ${getData.insurance.percentage}%`,
+					id: `Insurance - ${Number.parseFloat(
+						getData.insurance.percentage.toString()
+					).toFixed(2)}%`,
+					label: `Insurance - ${Number.parseFloat(
+						getData.insurance.percentage.toString()
+					).toFixed(2)}%`,
 					value: getData.insurance.quantity,
 					color: "hsl(110, 70%, 50%)",
 				},
 				{
-					id: `Interest - ${getData.interest.percentage}%`,
-					label: `Interest -${getData.interest.percentage}%`,
+					id: `Interest - ${Number.parseFloat(
+						getData.interest.percentage.toString()
+					).toFixed(2)}%`,
+					label: `Interest - ${Number.parseFloat(
+						getData.interest.percentage.toString()
+					).toFixed(2)}%`,
 					value: getData.interest.quantity,
 					color: "hsl(187, 70%, 50%)",
 				},
 				{
-					id: `Tax - ${getData.tax.percentage}%`,
-					label: `Tax - ${getData.tax.percentage}%`,
+					id: `Tax - ${Number.parseFloat(
+						getData.tax.percentage.toString()
+					).toFixed(2)}%`,
+					label: `Tax - ${Number.parseFloat(
+						getData.tax.percentage.toString()
+					).toFixed(2)}%`,
 					value: getData.tax.quantity,
 					color: "hsl(303, 70%, 50%)",
 				},
 
 				{
-					id: `Unauthorized - ${getData.unauthorized.percentage}%`,
-					label: `Unauthorized - ${getData.unauthorized.percentage}%`,
+					id: `Unauthorized - ${Number.parseFloat(
+						getData.unauthorized.percentage.toString()
+					).toFixed(2)}%`,
+					label: `Unauthorized - ${Number.parseFloat(
+						getData.unauthorized.percentage.toString()
+					).toFixed(2)}%`,
 					value: getData.unauthorized.quantity,
 					color: "hsl(303, 70%, 50%)",
 				},
 			];
+
+			if (propertyInsuranceQuery.data?.defaultLoans) {
+				const insuranceCsv = propertyInsuranceQuery.data?.defaultLoans;
+
+				const totalLoansAmount = insuranceCsv.reduce(
+					(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
+						accumulator + Number.parseFloat(dataInterest.totalLoanAmount),
+					0
+				);
+
+				const lastRow = [
+					"",
+					"",
+					moneyFormat(Number.parseInt(totalLoansAmount.toString())),
+					"",
+					"",
+					"",
+					"",
+				];
+
+				setModalColumnsData([
+					...insuranceCsv,
+					{
+						ltv: "",
+						totalLoanAmount: totalLoansAmount.toString(),
+
+						collaterals: [
+							{
+								address: "",
+								taxUrl: "",
+								insuranceExpirationDate: "2023-12-11",
+							},
+						],
+						fundingBreakDowns: [
+							{
+								lender: {
+									name: "",
+									isSpecialCase: true,
+								},
+							},
+							{
+								lender: {
+									name: "",
+									isSpecialCase: false,
+								},
+							},
+						],
+						borrower: {
+							llc: "",
+							user: {
+								email: "",
+								phoneNumber: "",
+								mailingAddress: "",
+								isActive: true,
+							},
+						},
+						totalDebits: "0",
+						creditAverage: "201249.32",
+						debitAverage: "250.00",
+					},
+				]);
+				setLastRowModal(lastRow);
+			}
 			setChartData(data as any);
 		}
 	}, [propertyInsuranceQuery.data]);
@@ -97,7 +179,7 @@ export const AllDefaultReport: FC = () => {
 			];
 		});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
 		downloadCSV(data, "allDefaultLoans.csv");
 	};
@@ -128,7 +210,7 @@ export const AllDefaultReport: FC = () => {
 			];
 		});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
 		downloadXLSX(data, "allDefaultLoans.xlsx");
 	};
@@ -159,6 +241,7 @@ export const AllDefaultReport: FC = () => {
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
+			maxWidth: "250px",
 		},
 		{
 			name: "Property Address",
@@ -167,27 +250,33 @@ export const AllDefaultReport: FC = () => {
 		},
 		{
 			name: "Loan Amount",
+			maxWidth: "150px",
 			selector: (row: Loan) =>
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
 		},
 		{
 			name: "Lender",
+			maxWidth: "200px",
 			selector: (row: Loan) => row?.fundingBreakDowns[1]?.lender.name || "",
 			omit: false,
 		},
 		{
 			name: "Default Type",
 			selector: (row: Loan) => row?.defaultType || "",
+			maxWidth: "120px",
 			omit: false,
 		},
 		{
 			name: "LTV",
-			selector: (row: Loan) => row?.ltv || "",
+			maxWidth: "50px",
+			selector: (row: Loan) =>
+				row?.ltv && `${Number.parseFloat(row?.ltv).toFixed(0) || "0"}%`,
 			omit: false,
 		},
 		{
 			name: "Phone #",
+			maxWidth: "140px",
 			selector: (row: Loan) => row?.borrower?.user.phoneNumber || "",
 			omit: false,
 		},
@@ -282,7 +371,7 @@ export const AllDefaultReport: FC = () => {
 			>
 				<DataTable
 					columns={columnsModal}
-					data={propertyInsuranceQuery.data?.defaultLoans || []}
+					data={modalColumnsData || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>
 			</Modal>

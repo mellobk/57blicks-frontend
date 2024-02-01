@@ -1,3 +1,5 @@
+/* eslint-disable no-constant-binary-expression */
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
@@ -30,6 +32,8 @@ import { Modal } from "@/components/ui/Modal";
 export const InterestCollectionReport: FC = () => {
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const [chartData, setChartData] = useState([]);
+	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
+	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
 	const propertyInsuranceQuery = useQuery(
 		["all-interest-loans"],
 		() => {
@@ -45,17 +49,63 @@ export const InterestCollectionReport: FC = () => {
 				{
 					id: `Interest billed`,
 					label: `interest billed `,
-					value: getData.totalCredit,
+					value: Number.parseFloat(getData.totalCredit).toFixed(2),
 					color: "hsl(110, 70%, 50%)",
 				},
 				{
 					id: `Interest Collected `,
 					label: `Interest Collected `,
-					value: getData.totalDebit,
+					value: Number.parseFloat(getData.totalDebit).toFixed(2),
 					color: "hsl(187, 70%, 50%)",
 				},
 			];
 			setChartData(data as any);
+		}
+
+		if (propertyInsuranceQuery.data?.loans) {
+			const insuranceCsv = propertyInsuranceQuery.data?.loans;
+
+			const totalLoansAmount = insuranceCsv.reduce(
+				(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
+					accumulator + Number.parseFloat(dataInterest.totalLoanAmount),
+				0
+			);
+
+			const lastRow = [
+				"",
+				"",
+				moneyFormat(Number.parseInt(totalLoansAmount)),
+				"",
+				"",
+				"",
+			];
+			setModalColumnsData([
+				...insuranceCsv,
+				{
+					totalLoanAmount: totalLoansAmount.toString(),
+
+					collaterals: [
+						{
+							address: "",
+							taxUrl: "",
+							insuranceExpirationDate: "2023-12-11",
+						},
+					],
+					borrower: {
+						llc: "",
+						user: {
+							email: "",
+							phoneNumber: "",
+							mailingAddress: "",
+							isActive: true,
+						},
+					},
+					totalDebits: "0",
+					creditAverage: "201249.32",
+					debitAverage: "250.00",
+				},
+			]);
+			setLastRowModal(lastRow);
 		}
 	}, [propertyInsuranceQuery.data]);
 
@@ -63,11 +113,12 @@ export const InterestCollectionReport: FC = () => {
 		const insuranceCsv = propertyInsuranceQuery.data?.loans;
 
 		const headerCsv = [
-			"Borrower Entity",
+			"Borrower Entity ",
 			"Property Address",
 			"Loan Amount",
-			"phone number",
-			"email",
+			"Phone Number",
+			"Email",
+			"Due Amount",
 		];
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
@@ -76,10 +127,11 @@ export const InterestCollectionReport: FC = () => {
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				data?.borrower?.user.phoneNumber,
 				data?.borrower?.user.email,
+				moneyFormat(Number.parseInt(data?.totalDebits)),
 			];
 		});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
 		downloadCSV(data, "InterestCollectionReport.csv");
 	};
@@ -91,8 +143,9 @@ export const InterestCollectionReport: FC = () => {
 			"Borrower Entity ",
 			"Property Address",
 			"Loan Amount",
-			"phone number",
-			"email",
+			"Phone Number",
+			"Email",
+			"Due Amount",
 		];
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
@@ -101,10 +154,11 @@ export const InterestCollectionReport: FC = () => {
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				data?.borrower?.user.phoneNumber,
 				data?.borrower?.user.email,
+				moneyFormat(Number.parseInt(data?.totalDebits)),
 			];
 		});
 
-		const data = [headerCsv, ...(csvData ?? [])];
+		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
 		downloadXLSX(data, "InterestCollectionReport.xlsx");
 	};
@@ -118,7 +172,7 @@ export const InterestCollectionReport: FC = () => {
 		},
 		{
 			name: "Property Address",
-			selector: (row: Loan): string => row.collaterals[0]?.address || "",
+			selector: (row: Loan): string => row?.collaterals[0]?.address || "",
 			omit: false,
 		},
 		{
@@ -135,20 +189,23 @@ export const InterestCollectionReport: FC = () => {
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
+			maxWidth: "250px",
 		},
 		{
 			name: "Property Address",
-			selector: (row: Loan): string => row.collaterals[0]?.address || "",
+			selector: (row: Loan): string => row?.collaterals[0]?.address || "",
 			omit: false,
 		},
 		{
 			name: "Loan Amount",
+			maxWidth: "130px",
 			selector: (row: Loan) =>
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
 		},
 		{
-			name: "phone number",
+			name: "Phone Number",
+			maxWidth: "130px",
 			selector: (row: Loan) => row?.borrower?.user.phoneNumber,
 			omit: false,
 		},
@@ -156,6 +213,13 @@ export const InterestCollectionReport: FC = () => {
 			name: "Email",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.user.email || "",
+			omit: false,
+		},
+		{
+			name: "Due Amount",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string =>
+				moneyFormat(Number.parseInt(row?.totalDebits)) || "",
 			omit: false,
 		},
 	];
@@ -243,7 +307,7 @@ export const InterestCollectionReport: FC = () => {
 			>
 				<DataTable
 					columns={columnsModal as any}
-					data={propertyInsuranceQuery.data?.loans || []}
+					data={modalColumnsData || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>
 			</Modal>

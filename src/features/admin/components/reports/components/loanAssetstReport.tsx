@@ -37,12 +37,17 @@ export const AssetLoanReport: FC = () => {
 		"Borrower Entity",
 		"Property Address",
 		"Loan Amount",
+		"Payoff Date",
 		"Asset Type",
+		"Loan Product",
+		"Rate",
 	];
 
 	const [chartData, setChartData] = useState([]);
 	const [keys, setKey] = useState<Array<string>>([]);
 	const [_, setExcelData] = useState<Array<any>>([]);
+	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
+	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
 	const getLoanAssets = useQuery(
 		["all-assets-loans"],
 		() => {
@@ -50,6 +55,73 @@ export const AssetLoanReport: FC = () => {
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
+
+	useEffect(() => {
+		if (getLoanAssets.data && getLoanAssets.data?.loans) {
+			const insuranceCsv = getLoanAssets.data?.loans;
+
+			const totalLoansAmount = insuranceCsv.reduce(
+				(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
+					accumulator + Number.parseFloat(dataInterest.totalLoanAmount),
+				0
+			);
+
+			const lastRow = [
+				"",
+				"",
+				moneyFormat(Number.parseInt(totalLoansAmount.toString())),
+				"",
+				"",
+				"",
+				"",
+			];
+
+			setModalColumnsData([
+				...insuranceCsv,
+				{
+					ltv: "",
+					originationDate: "",
+					endDate: "",
+					totalLoanAmount: totalLoansAmount.toString(),
+
+					collaterals: [
+						{
+							address: "",
+							taxUrl: "",
+							insuranceExpirationDate: "2023-12-11",
+						},
+					],
+					fundingBreakDowns: [
+						{
+							lender: {
+								name: "",
+								isSpecialCase: true,
+							},
+						},
+						{
+							lender: {
+								name: "",
+								isSpecialCase: false,
+							},
+						},
+					],
+					borrower: {
+						llc: "",
+						user: {
+							email: "",
+							phoneNumber: "",
+							mailingAddress: "",
+							isActive: true,
+						},
+					},
+					totalDebits: "0",
+					creditAverage: "201249.32",
+					debitAverage: "250.00",
+				},
+			]);
+			setLastRowModal(lastRow);
+		}
+	}, [getLoanAssets.data]);
 
 	const columnsModal = [
 		{
@@ -71,13 +143,27 @@ export const AssetLoanReport: FC = () => {
 		},
 		{
 			name: "Origination Date",
-			selector: (row: Loan) => row?.originationDate,
+			selector: (row: Loan) =>
+				row?.originationDate &&
+				formatDate(row?.originationDate?.toString() || ""),
 			omit: false,
 		},
 		{
 			name: "Asset Type",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
+			omit: false,
+		},
+		{
+			name: "Loan Product",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.type || "",
+			omit: false,
+		},
+		{
+			name: "Rate",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string => row?.interestRate || "",
 			omit: false,
 		},
 	];
@@ -128,13 +214,15 @@ export const AssetLoanReport: FC = () => {
 				const productData = insuranceCsv[data]?.map((value: Loan) => {
 					return [
 						value.borrower?.llc,
-						value?.borrower?.user.mailingAddress,
+						value?.collaterals[0]?.address,
 						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
-						formatDate(value?.originationDate.toString()),
+						formatDate(value?.originationDate?.toString() || ""),
 						value?.collaterals[0]?.assetType,
+						value?.type,
+						value?.interestRate,
 					];
 				});
-				return [[data], ...productData];
+				return [[data], ...productData, lastRowModal];
 			});
 
 			const arrayExcel: Array<Array<any>> = [];
@@ -152,13 +240,15 @@ export const AssetLoanReport: FC = () => {
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
+				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
+				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
+				data?.type,
+				data?.interestRate,
 			];
 		});
-		const data = [headerCsv, ...csvData];
+		const data = [headerCsv, ...csvData, lastRowModal];
 		downloadCSV(data, "LoansByAsset.csv");
 	};
 
@@ -168,13 +258,15 @@ export const AssetLoanReport: FC = () => {
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
+				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				formatDate(data?.originationDate.toString()),
+				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
+				data?.type,
+				data?.interestRate,
 			];
 		});
-		const data = [headerCsv, ...csvData];
+		const data = [headerCsv, ...csvData, lastRowModal];
 
 		downloadXLSX(data, "LoansByAsset.xlsx");
 	};
@@ -263,7 +355,7 @@ export const AssetLoanReport: FC = () => {
 			>
 				<DataTable
 					columns={columnsModal as any}
-					data={getLoanAssets.data?.loans || []}
+					data={modalColumnsData || []}
 					progressPending={getLoanAssets.isLoading}
 				/>
 			</Modal>
