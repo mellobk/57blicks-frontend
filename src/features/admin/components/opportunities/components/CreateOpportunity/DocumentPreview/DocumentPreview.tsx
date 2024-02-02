@@ -26,7 +26,11 @@ interface Props {
 
 const styles = StyleSheet.create({
 	body: {
+		display: "flex",
 		marginHorizontal: 30,
+		flexGrow: 1,
+		gap: "10px",
+		padding: "15px 0",
 	},
 	column: {
 		width: "50%",
@@ -74,17 +78,17 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 	const removeBlankLines = (text: string) => text.replace(/^\s*[\n\r]/gm, "");
 
 	return (
-		<Document>
+		<Document style={styles.body}>
 			<Page size="A4" style={styles.page}>
-				<View style={styles.header}>
-					<Image src={LogoNavy} style={styles.logo} />
-					<Text style={form.postTitle ? styles.longTitle : styles.title}>
-						New Loan Investment Opportunity{" "}
-						{form.postTitle ? ` - ${form.postTitle}` : ""}
-					</Text>
-				</View>
-
 				<View style={styles.body}>
+					<View style={styles.header}>
+						<Image src={LogoNavy} style={styles.logo} />
+						<Text style={form.postTitle ? styles.longTitle : styles.title}>
+							New Loan Investment Opportunity{" "}
+							{form.postTitle ? ` - ${form.postTitle}` : ""}
+						</Text>
+					</View>
+
 					{(form.investmentCollateral || form.investmentBorrower) && (
 						<View style={styles.section}>
 							{form.investmentCollateral && (

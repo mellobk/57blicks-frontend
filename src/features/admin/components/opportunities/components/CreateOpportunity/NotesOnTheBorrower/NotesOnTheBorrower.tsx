@@ -22,7 +22,6 @@ export const NotesOnTheBorrower: FC<Props> = ({
 		<Input
 			error={errors?.investmentBorrower?.message}
 			label="Borrower Name"
-			maxLength={75}
 			placeholder="Enter Borrower Name"
 			register={register("investmentBorrower")}
 			wrapperClassName="mt-6"
@@ -40,7 +39,6 @@ export const NotesOnTheBorrower: FC<Props> = ({
 		<Input
 			error={errors?.investmentBorrowerBackground?.message}
 			label="Borrower Background"
-			maxLength={50}
 			placeholder="Enter Borrower Background"
 			register={register("investmentBorrowerBackground")}
 			wrapperClassName="mt-6"
