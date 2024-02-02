@@ -26,12 +26,6 @@ type LoginFormProps = {
 	handleSuccessLogin?: (data: LoginData) => void;
 };
 
-const hideEmail = (emailParts: string) => {
-	return `${emailParts[0]?.replace(
-		emailParts[0]?.slice(0, Math.max(0, emailParts[0].length - 4)),
-		"*******"
-	)}@${emailParts[1]}`;
-};
 export const LoginForm: FC<LoginFormProps> = () => {
 	const navigate = useNavigate();
 	const [loginData, setLoginData] = useState<LoginData>({
