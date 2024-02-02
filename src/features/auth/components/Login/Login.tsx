@@ -78,7 +78,13 @@ export const LoginForm: FC<LoginFormProps> = () => {
 	const backRoute = () => {
 		setValidUser(null);
 	};
-
+	const localEmail = loginData?.email || "";
+	const emailParts = localEmail?.split("@");
+	const hiddenEmail = `${emailParts[0]?.replace(
+		emailParts[0]?.slice(0, Math.max(0, emailParts[0].length - 4)),
+		"*******"
+	)}@${emailParts[1]}`;
+	console.log(hiddenEmail);
 	return (
 		<>
 			{validUser === true ? (
@@ -88,7 +94,7 @@ export const LoginForm: FC<LoginFormProps> = () => {
 						title="Confirm MFA"
 						subTitle="We’ve sent a 6 digit code to your registered phone number."
 						buttonText="Login"
-						labelData={hideEmail(loginData?.email || "")}
+						labelData={hiddenEmail}
 						backRoute={backRoute}
 					/>
 				</>

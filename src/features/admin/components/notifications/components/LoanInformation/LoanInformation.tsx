@@ -2,7 +2,11 @@ import type {
 	Collateral,
 	Loan,
 } from "@/features/admin/components/servicing/types/api";
-import { LEAD_SOURCES, LOAN_TYPES } from "../../../create-loan/utils/selects";
+import {
+	ASSET_TYPES,
+	LEAD_SOURCES,
+	LOAN_TYPES,
+} from "../../../create-loan/utils/selects";
 import { formatDate, moneyFormat } from "@/utils/formats";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -524,10 +528,13 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 							)}
 
 							{edit ? (
-								<Input
+								<Select
+									className="flex flex-col gap-2"
 									label="Asset Type"
+									placeholder="Select Asset Type"
 									value={data?.assetType}
-									onChange={(data) => {
+									options={ASSET_TYPES}
+									onChange={(data): void => {
 										setCollateralData(data.target.value, index, "assetType");
 									}}
 									required
