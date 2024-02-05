@@ -103,7 +103,7 @@ export const InterestCollectionReport: FC = () => {
 							isActive: true,
 						},
 					},
-					totalDebits: "0",
+					totalDebits: "",
 					creditAverage: "201249.32",
 					debitAverage: "250.00",
 				},
@@ -226,7 +226,8 @@ export const InterestCollectionReport: FC = () => {
 			name: "Due Amount",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string =>
-				moneyFormat(Number.parseInt(row?.totalDebits)) || "",
+				(row?.totalDebits && moneyFormat(Number.parseInt(row?.totalDebits))) ||
+				"",
 			omit: false,
 		},
 	];

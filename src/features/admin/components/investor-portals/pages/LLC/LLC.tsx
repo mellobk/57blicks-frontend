@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable unicorn/filename-case */
@@ -24,7 +26,6 @@ import {
 	sortLLCRegular,
 	sortLLCTotalLoan,
 } from "@/utils/common-functions";
-
 export const LLC: FC = () => {
 	const [selectedLoan, setSelectedLoan] = useState<Loan | null>();
 	const [selectedParticipation, setSelectedParticipation] =
@@ -198,7 +199,7 @@ export const LLC: FC = () => {
 				>
 					<Table
 						className="h-full p-0 m-0 rounded-t-2xl overflow-y-auto"
-						columns={columns}
+						columns={columns as any}
 						data={investorsQuery.data || []}
 						expandableRows
 						expandableRowDisabled={(row: Loan) =>
