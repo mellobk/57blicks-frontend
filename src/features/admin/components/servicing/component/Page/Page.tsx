@@ -183,15 +183,25 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			maxWidth: "300px",
 			minWidth: "300px",
 			selector: (row: FundingBreakdown) =>
-				row?.loan.borrower?.llc ||
-				`${row?.loan.borrower?.user.firstName} ${row?.loan.borrower?.user.lastName}`,
+				(
+					<div className=" w-[290px] break-words whitespace-normal p-2">
+						{row?.loan.borrower?.llc || ""}
+					</div>
+				) || (
+					<div className=" w-[290px] break-words whitespace-normal p-2">
+						{`${row?.loan.borrower?.user.firstName} ${row?.loan.borrower?.user.lastName}`}
+					</div>
+				),
 			omit: false,
 			sortable: true,
 		},
 		{
 			name: "Collateral Address",
-			selector: (row: FundingBreakdown) =>
-				row?.loan?.collaterals[0]?.address || "",
+			selector: (row: FundingBreakdown) => (
+				<div className=" w-[290px] break-words whitespace-normal p-2">
+					{row?.loan?.collaterals[0]?.address || ""}
+				</div>
+			),
 			sortable: true,
 			omit: false,
 			maxWidth: "300px",

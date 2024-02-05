@@ -196,7 +196,11 @@ export const NewFoundedLoanReport: FC = () => {
 		},
 		{
 			name: "Property Address",
-			selector: (row: Loan): string => row.collaterals[0]?.address || "",
+			selector: (row: Loan) => (
+				<div className=" w-[290px] break-words whitespace-normal p-2">
+					{row?.collaterals[0]?.address || ""}
+				</div>
+			),
 			omit: false,
 		},
 		{
