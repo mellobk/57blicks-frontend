@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
@@ -199,7 +201,7 @@ const PropertyUnauthorized = () => {
 					}}
 				>
 					<DataTable
-						columns={columns}
+						columns={columns as any}
 						data={propertyInsuranceQuery.data?.defaultLoans.slice(0, 3) || []}
 						progressPending={propertyInsuranceQuery.isLoading}
 					/>
@@ -213,7 +215,7 @@ const PropertyUnauthorized = () => {
 				title="Default - Unauthorized "
 			>
 				<DataTable
-					columns={columnsModal}
+					columns={columnsModal as any}
 					data={propertyInsuranceQuery.data?.defaultLoans || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>

@@ -365,7 +365,7 @@ export const AllDefaultReport: FC = () => {
 				}}
 			>
 				<DataTable
-					columns={columns}
+					columns={columns as any}
 					data={propertyInsuranceQuery.data?.defaultLoans.slice(0, 3) || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>
