@@ -106,4 +106,5 @@ export interface Lenders {
 	name: string;
 	isSpecialCase: boolean;
 	fundingBreakdowns: Array<FundingBreakdown>;
+	lenderName?: string;
 }

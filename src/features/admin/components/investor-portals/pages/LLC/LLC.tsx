@@ -26,10 +26,12 @@ import {
 	sortLLCRegular,
 	sortLLCTotalLoan,
 } from "@/utils/common-functions";
+import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 export const LLC: FC = () => {
 	const [selectedLoan, setSelectedLoan] = useState<Loan | null>();
-	const [selectedParticipation, setSelectedParticipation] =
-		useState<FundingBreakdown | null>();
+	const [selectedParticipation, setSelectedParticipation] = useState<
+		FundingBreakdown | ParticipationBreakdown | null
+	>();
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const currentMonthName = moment().add(1, "months").format("MMMM");
@@ -37,6 +39,7 @@ export const LLC: FC = () => {
 	const investorsQuery = useQuery(["investors-query"], () =>
 		InvestorsService.getInvestorsWithLoans(searchValue)
 	);
+	console.log("🚀 ~ investorsQuery:", investorsQuery.data);
 
 	useEffect(() => {
 		void investorsQuery.refetch();
@@ -115,7 +118,10 @@ export const LLC: FC = () => {
 		setSelectedParticipation(null);
 	};
 
-	const selectParticipation = (participation: FundingBreakdown) => {
+	const selectParticipation = (
+		participation: FundingBreakdown | ParticipationBreakdown
+	) => {
+		console.log("🚀 ~ selectParticipation ~ participation:", participation);
 		setSelectedLoan(null);
 		setSelectedParticipation(participation);
 	};
@@ -203,7 +209,8 @@ export const LLC: FC = () => {
 						data={investorsQuery.data || []}
 						expandableRows
 						expandableRowDisabled={(row: Loan) =>
-							!row.participationBreakdowns?.length
+							!row.participationBreakdowns?.length &&
+							!row.lender?.fundingBreakdowns?.length
 						}
 						expandableRowsComponent={ExpandedComponent}
 						expandableRowsComponentProps={{
