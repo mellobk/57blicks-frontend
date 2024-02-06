@@ -222,6 +222,14 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			`ledgers.${index}.${name}` as never,
 			dateWithFormat(value.toISOString(), "MMDDYYYY") as never
 		);
+
+		const newDate = new Date(value);
+		newDate.setMonth(newDate.getMonth() - 1);
+
+		setValue(
+			`ledgers.${index}.month` as never,
+			moment(newDate).format("YYYY-MM-DD") as never
+		);
 	};
 
 	const handleSetMonth = (name: string, value: Date, index: number): void => {

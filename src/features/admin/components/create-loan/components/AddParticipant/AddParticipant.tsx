@@ -50,13 +50,17 @@ export const AddParticipant: FC<Props> = ({
 		);
 
 		if (participant) {
+			const lenderName = nameFormat(
+				`${
+					participant.user?.entityName ?? participant.user?.firstName
+				} ${participant.user?.lastName}`
+			);
+
 			const newFundingBreakdown: FundingBreakdown = {
 				constructionHoldback: data.constructionHoldback || "0",
 				amount: data.amount || "0",
 				investorId: participant.id,
-				lenderName: nameFormat(
-					`${participant.user?.firstName} ${participant.user?.lastName}`
-				),
+				lenderName,
 				prorated: "0",
 				rate: "",
 				regular: "0",
@@ -66,7 +70,7 @@ export const AddParticipant: FC<Props> = ({
 				constructionHoldback: "0",
 				amount: data.amount || "0",
 				investorId: participant.id,
-				lenderName: "Y/S",
+				lenderName: `Y/S ${lenderName} `,
 				prorated: "0",
 				rate: "",
 				regular: "0",
@@ -97,7 +101,9 @@ export const AddParticipant: FC<Props> = ({
 					name="participant"
 					options={investorsQuery?.data?.map(({ id, user }) => ({
 						code: id,
-						name: nameFormat(`${user?.firstName} ${user?.lastName}`),
+						name: nameFormat(
+							`${user?.entityName ?? user?.firstName} ${user?.lastName}`
+						),
 					}))}
 					placeholder="Select Participant"
 					required

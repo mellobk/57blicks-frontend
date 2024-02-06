@@ -57,7 +57,6 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	lastScrollAdd,
 	handleSetValue,
 	handleSetDate,
-	handleSetMonth,
 	handleEdit,
 	register,
 	handleRemove,
@@ -160,8 +159,8 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					)}
 				</div>
 			</div>
-			<div className={`${columnWidth.month} text-primary-200  pl-4`}>
-				{dataLedgers?.editable ? (
+			<div className={`${columnWidth.month} text-primary-200  pl-4 pt-2`}>
+				{/* {dataLedgers?.editable ? (
 					<>
 						<DatePicker
 							placeholder="M, YYYY"
@@ -181,9 +180,13 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							}}
 						/>
 					</>
-				) : (
-					<>{dataLedgers && moment(dataLedgers.month).format("MMM, YYYY")}</>
-				)}
+				) : ( */}
+				<>
+					{dataLedgers &&
+						dataLedgers.ledgerDate &&
+						moment(dataLedgers.month).format("MMM, YYYY")}
+				</>
+				{/* )} */}
 			</div>
 			<div className={`${columnWidth.memo} text-primary-200  pl-4`}>
 				{dataLedgers?.editable ? (

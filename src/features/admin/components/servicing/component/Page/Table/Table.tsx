@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import type { FC, ReactElement } from "react";
+import {
+	getIsSameMonthYear,
+	getIsSamePreviousMonthYear,
+} from "@/utils/common-functions";
 import { useEffect, useState } from "react";
 
 import BorrowerNotifications from "../../BorrowerNotifications";
@@ -12,7 +16,6 @@ import { Icon } from "@/components/ui/Icon";
 import { Input } from "@/components/forms/Input";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
-import { getIsSameMonthYear } from "@/utils/common-functions";
 import { moneyFormat } from "@/utils/formats";
 import { useDebounce } from "@/hooks/debounce";
 
@@ -122,12 +125,30 @@ export const Table: FC<Props> = ({
 			return Number.parseFloat(regular || "");
 		});
 
+		const totalPreviousAmount = data?.map((data: FundingBreakdown) => {
+			const dataDate = getIsSamePreviousMonthYear(
+				data.loan.originationDate as unknown as string
+			);
+			let value = "0";
+			if (dataDate === 0) {
+				value = data.loan.prorated || "0";
+			} else if (dataDate === -1) {
+				value = data.loan.regular || "0";
+			}
+			return Number.parseFloat(value || "");
+		});
+
 		const total = totalLoanAmount?.reduce(
 			(accumulator, currentValue) => accumulator + currentValue,
 			0
 		);
 
 		const totalRegular = totalRegularAmount?.reduce(
+			(accumulator, currentValue) => accumulator + currentValue,
+			0
+		);
+
+		const totalPrevious = totalPreviousAmount?.reduce(
 			(accumulator, currentValue) => accumulator + currentValue,
 			0
 		);
@@ -148,7 +169,7 @@ export const Table: FC<Props> = ({
 			{ label: "", width: "150px" },
 			{ label: "", width: "150px" },
 			{ label: "", width: "120px" },
-			{ label: "", width: "120px" },
+			{ label: moneyFormat(totalPrevious), width: "120px" },
 			{ label: moneyFormat(totalRegular), width: "150px" },
 		];
 
