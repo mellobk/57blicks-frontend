@@ -1,3 +1,5 @@
+/* eslint-disable no-constant-binary-expression */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Cell } from "@/components/table/Cell";
 import { useState, type ComponentType, useEffect } from "react";
 import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
@@ -10,10 +12,13 @@ import LoansService from "@/api/loans";
 import { Modal } from "@/components/ui/Modal";
 import { FundingBreakdown as FundingComponent } from "../../../../servicing/component/FundingBreakdown/FundingBreakdown";
 import { Icon } from "@/components/ui/Icon";
+import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 
 interface Props extends ExpanderComponentProps<Investor> {
 	selectedParticipation?: FundingBreakdown;
-	selectParticipation?: (row: FundingBreakdown) => void;
+	selectParticipation?: (
+		row: FundingBreakdown | ParticipationBreakdown
+	) => void;
 }
 
 export const ExpandedComponent: ComponentType<Props> = ({
@@ -21,7 +26,13 @@ export const ExpandedComponent: ComponentType<Props> = ({
 	selectedParticipation,
 	selectParticipation,
 }) => {
-	const totals = getFooterData(data.participationBreakdowns || []);
+	const totals = getFooterData(
+		[
+			...(data.lender?.fundingBreakdowns as unknown as Array<FundingBreakdown>),
+		] ??
+			data.participationBreakdowns ??
+			[]
+	);
 
 	const [openDecline, setOpenDecline] = useState<boolean>();
 	const [idLoan, setIdLoan] = useState<string>("");
@@ -36,10 +47,10 @@ export const ExpandedComponent: ComponentType<Props> = ({
 
 	return (
 		<>
-			{data.participationBreakdowns?.map((participant) => (
+			{data.participationBreakdowns?.map((participant, index) => (
 				<div className="relative">
 					<div
-						key={participant.id}
+						key={participant.id + index}
 						className={`flex flex-row h-12 ${
 							selectedParticipation?.id === participant.id
 								? "bg-blue-200/[15%]"
@@ -63,6 +74,81 @@ export const ExpandedComponent: ComponentType<Props> = ({
 								value={`LLC  ${participant.loan.collaterals?.[0]?.address || ""}
 
               `}
+								bold
+							/>
+							<Cell
+								format="money"
+								value={participant.loan?.totalLoanAmount || ""}
+								bold
+							/>
+							<Cell
+								format="money"
+								value={Number(participant.loan.totalLoanAmount) * 0.99}
+								bold
+							/>
+							<Cell format="percentage" value={participant.rate} bold />
+							<Cell format="money" value={participant.regular} bold />
+							<Cell
+								format="text"
+								value={participant.loan.originationDate?.toString() || ""}
+								bold
+							/>
+							<Cell
+								format="text"
+								value={participant.loan.maturityDate?.toString() || ""}
+								bold
+							/>
+							<Cell
+								className={
+									selectedParticipation?.id === participant.id
+										? "bg-blue-200/[24%] text-blue-200 border-2 border-blue-200"
+										: "bg-gold-500/[12%] text-gold-500"
+								}
+								format="money"
+								value={`${
+									moment(participant.loan.originationDate)
+										.toDate()
+										.getMonth() === new Date().getMonth()
+										? Number(participant.prorated)
+										: Number(participant.regular || 0)
+								}`}
+								bold
+							/>
+						</div>
+					</div>
+				</div>
+			))}
+
+			{data.lender?.fundingBreakdowns?.map((participant) => (
+				<div className="relative">
+					<div
+						key={participant.id}
+						className={`flex flex-row h-12 ${
+							selectedParticipation?.id === participant.id
+								? "bg-blue-200/[15%]"
+								: "bg-white"
+						} relative z-0`}
+						onClick={() => {
+							console.log("🚀 ~ participant:", participant);
+							selectParticipation?.(participant as ParticipationBreakdown);
+						}}
+					>
+						<div className="w-12" />
+						<div className="grid grid-cols-8 w-full items-center relative z-0">
+							<div
+								className="cursor-pointer absolute left-[-30px] "
+								onClick={() => {
+									setOpenDecline(true);
+									setIdLoan(participant.loan.id || "");
+								}}
+							>
+								<Icon name="chart" width="20" color="black" />
+							</div>
+							<Cell
+								format="text"
+								value={`LLC  ${
+									participant.loan.collaterals?.[0]?.address || ""
+								}`}
 								bold
 							/>
 							<Cell

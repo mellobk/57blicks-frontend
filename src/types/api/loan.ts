@@ -1,6 +1,7 @@
 import type { Borrower } from "@/types/api/borrower";
 import type { Collateral } from "@/types/api/collateral";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
+import { Lenders } from "@/features/admin/components/investor-portals/types/api";
 import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 import type { User } from "@/types/api/user";
 
@@ -27,6 +28,7 @@ export interface Loan {
 	fundingBreakdowns: Array<FundingBreakdown>;
 	fundingBreakDowns: Array<FundingBreakdown>;
 	participationBreakdowns: Array<ParticipationBreakdown>;
+	lender?: Lenders;
 	user: User;
 	prorated?: string;
 	regular?: string;

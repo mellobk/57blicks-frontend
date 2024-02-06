@@ -45,10 +45,11 @@ const getPayablesByInvestor = async (
 const getPayablesByAdmin = async (
 	year: number,
 	participationId?: string,
-	loanId?: string
+	loanId?: string,
+	type?: string
 ): Promise<Array<Payable>> => {
 	const response = await authApiClient.get<Array<Payable>>(
-		`/investors/payables-for-admin?year=${year}&participationId=${participationId}&loanId=${loanId}`
+		`/investors/payables-for-admin?year=${year}&participationId=${participationId}&loanId=${loanId}&type=${type}`
 	);
 	return response.data;
 };

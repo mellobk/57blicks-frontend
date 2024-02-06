@@ -10,6 +10,7 @@ import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import InvestorsService from "@/api/investors";
 import Loading from "@/assets/icons/loading";
 import type { Loan } from "@/types/api/loan";
+import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 import { Table } from "@/components/ui/Table";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -17,7 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 interface PayablesInvestorProps {
 	year: number;
 	loan: Loan;
-	participation?: FundingBreakdown;
+	participation?: FundingBreakdown | ParticipationBreakdown;
 }
 
 const PayablesAdmin: FC<PayablesInvestorProps> = ({
@@ -26,9 +27,13 @@ const PayablesAdmin: FC<PayablesInvestorProps> = ({
 	participation,
 }) => {
 	const investorsQuery = useQuery(["payables-by-investors"], () =>
-		InvestorsService.getPayablesByAdmin(year, participation?.id || "", loan.id)
+		InvestorsService.getPayablesByAdmin(
+			year,
+			participation?.id || "",
+			loan.id,
+			participation?.type || ""
+		)
 	);
-	console.log("🚀 ~ file: index.tsx:31 ~ investorsQuery:", investorsQuery.data);
 
 	useEffect(() => {
 		investorsQuery.refetch();
