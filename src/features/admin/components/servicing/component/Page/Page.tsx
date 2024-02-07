@@ -349,7 +349,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			omit: false,
 		}, */
 		{
-			name: `${previousMonthName}`,
+			name: `${previousMonthName} (Current)`,
 			maxWidth: "150px",
 			minWidth: "150px",
 			sortable: true,
@@ -378,7 +378,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			],
 		},
 		{
-			name: `${currentMonthName} (Current)`,
+			name: `${currentMonthName} `,
 			maxWidth: "150px",
 			minWidth: "150px",
 			sortable: true,
