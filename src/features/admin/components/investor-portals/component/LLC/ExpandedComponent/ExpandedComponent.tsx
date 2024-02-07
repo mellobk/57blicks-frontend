@@ -5,7 +5,7 @@ import { useState, type ComponentType, useEffect } from "react";
 import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import type { Investor } from "@/types/api/investor";
-import { getFooterData } from "@/utils/investors.ts";
+import { type FooterDataInvestor, getFooterData } from "@/utils/investors.ts";
 import moment from "moment";
 import { useMutation } from "@tanstack/react-query";
 import LoansService from "@/api/loans";
@@ -21,18 +21,21 @@ interface Props extends ExpanderComponentProps<Investor> {
 	) => void;
 }
 
+// import type { FundingBreakdown } from "@/types/api/funding-breakdown";
+// import type { Loan } from "@/types/api/loan";
+// import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
+
 export const ExpandedComponent: ComponentType<Props> = ({
 	data,
 	selectedParticipation,
 	selectParticipation,
 }) => {
-	const totals = getFooterData(
-		[
-			...(data.lender?.fundingBreakdowns as unknown as Array<FundingBreakdown>),
-		] ??
-			data.participationBreakdowns ??
-			[]
-	);
+	const fundingBreakdowns = data.lender?.fundingBreakdowns ?? [];
+	const participationBreakdowns = data.participationBreakdowns ?? [];
+	const totals = getFooterData([
+		...participationBreakdowns,
+		...fundingBreakdowns,
+	] as Array<FooterDataInvestor>);
 
 	const [openDecline, setOpenDecline] = useState<boolean>();
 	const [idLoan, setIdLoan] = useState<string>("");

@@ -1,5 +1,5 @@
-import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import type { Lenders } from "@/features/admin/components/investor-portals/types/api";
+import type { ParticipationBreakdown } from "./participation-breakdown";
 import type { User } from "@/types/api/user";
 
 export interface Investor {
@@ -16,6 +16,6 @@ export interface Investor {
 	accountNumber?: string;
 	accountType?: string;
 	user?: User;
-	participationBreakdowns?: Array<FundingBreakdown>;
+	participationBreakdowns?: Array<ParticipationBreakdown>;
 	lender?: Lenders;
 }

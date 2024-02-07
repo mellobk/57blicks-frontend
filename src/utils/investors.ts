@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
+import type { Investor } from "@/types/api/investor";
 import type { Loan } from "@/types/api/loan";
-import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 import type { Payable } from "@/features/admin/components/servicing/component/Payable/types";
 import moment from "moment/moment";
 import { moneyFormat } from "@/utils/formats";
@@ -110,9 +110,22 @@ export const getLoanColumns = () => {
 	return loanColumns;
 };
 
-export const getFooterData = (
-	data: Array<FundingBreakdown | ParticipationBreakdown>
-) => {
+export interface FooterDataInvestor {
+	id: string;
+	createdAt: Date;
+	updatedAt: Date;
+	deletedAt?: Date;
+	lenderName: string;
+	amount: string;
+	rate: string;
+	prorated: string;
+	regular: string;
+	investor: Investor;
+	loan: Loan;
+	type: "Investor" | "YieldSpread" | "Lender" | "Servicing";
+}
+
+export const getFooterData = (data: Array<FooterDataInvestor>) => {
 	return data.reduce(
 		(accumulator, { loan, rate, regular, prorated }) => {
 			accumulator.rate += Number(rate);

@@ -1,15 +1,15 @@
-import { type ComponentType } from "react";
+import type { ComponentType } from "react";
 
 import { Cell } from "@/components/table/Cell";
-import { FundingBreakdown } from "@/types/api/funding-breakdown";
-import { getFooterData } from "@/utils/investors";
+import type { FundingBreakdown } from "@/types/api/funding-breakdown";
+import { type FooterDataInvestor, getFooterData } from "@/utils/investors";
 
 interface Props {
-	data: FundingBreakdown[];
+	data: Array<FundingBreakdown>;
 }
 
 export const Footer: ComponentType<Props> = ({ data }) => {
-	const totals = getFooterData(data);
+	const totals = getFooterData(data as unknown as Array<FooterDataInvestor>);
 
 	return (
 		<div className="flex flex-row h-12 bg-gray-200 rounded-b-2xl">
