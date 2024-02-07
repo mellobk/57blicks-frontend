@@ -343,7 +343,15 @@ export const PostTo: FC<Props> = ({
 														/>
 														<div className="ml-1 font-inter text-gray-1000 text-[13px] leading-4 tracking-[-0.65]">
 															{nameFormat(
-																`${investor.user?.firstName} ${investor.user?.lastName}`
+																`${
+																	investor.user?.entityName &&
+																	investor.user?.entityName !== ""
+																		? investor.user?.entityName
+																		: investor.user?.firstName +
+																		  " " +
+																		  investor.user?.lastName
+																}
+																 `
 															)}
 														</div>
 													</div>

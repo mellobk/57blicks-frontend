@@ -52,8 +52,10 @@ export const AddParticipant: FC<Props> = ({
 		if (participant) {
 			const lenderName = nameFormat(
 				`${
-					participant.user?.entityName ?? participant.user?.firstName
-				} ${participant.user?.lastName}`
+					participant.user?.entityName && participant.user?.entityName !== ""
+						? participant.user?.entityName
+						: participant.user?.firstName + " " + participant.user?.lastName
+				} `
 			);
 
 			const newFundingBreakdown: FundingBreakdown = {
@@ -102,7 +104,14 @@ export const AddParticipant: FC<Props> = ({
 					options={investorsQuery?.data?.map(({ id, user }) => ({
 						code: id,
 						name: nameFormat(
-							`${user?.entityName ?? user?.firstName} ${user?.lastName}`
+							`
+              ${
+								user?.entityName && user?.entityName !== ""
+									? user?.entityName
+									: user?.firstName + " " + user?.lastName
+							}
+
+              `
 						),
 					}))}
 					placeholder="Select Participant"
