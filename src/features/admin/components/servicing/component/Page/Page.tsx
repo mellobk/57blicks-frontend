@@ -145,7 +145,9 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 
 	useEffect(() => {
 		if (getDkcLenderQuery.isSuccess) {
-			setTableData(getDkcLenderQuery?.data?.fundingBreakdowns || []);
+			const data = getDkcLenderQuery?.data?.fundingBreakdowns || [];
+
+			setTableData([...data]);
 			getDkcLenderQuery.reset();
 		}
 	}, [getDkcLenderQuery]);
