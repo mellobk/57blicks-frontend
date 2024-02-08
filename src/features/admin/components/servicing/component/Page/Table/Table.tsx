@@ -158,19 +158,23 @@ export const Table: FC<Props> = ({
 			width: string;
 			justify?: string;
 		}> = [
-			{ label: `Total: ${totalRow}`, width: "600px", justify: "center" },
-			{ label: moneyFormat(total), width: "150px" },
+			{ label: `Total: ${totalRow}`, width: "650px", justify: "center" },
+			{ label: moneyFormat(total), width: "170px" },
 			{ label: "", width: "100px" },
 			{
 				label: "" + moneyFormat(totalRegular),
 				width: "200px",
 			},
-			{ label: "", width: "150px" },
-			{ label: "", width: "150px" },
-			{ label: "", width: "150px" },
-			{ label: "", width: "120px" },
-			{ label: moneyFormat(totalPrevious), width: "120px" },
-			{ label: moneyFormat(totalRegular), width: "150px" },
+			{ label: "", width: "0px" },
+			{ label: "", width: "0px" },
+			{ label: "", width: "0px" },
+			{ label: "", width: "0px" },
+			{ label: "", width: "0px" },
+			{ label: "", width: "0px" },
+			{ label: "", width: "0px" },
+			{ label: "", width: "470px" },
+			{ label: moneyFormat(totalPrevious), width: "170px" },
+			{ label: moneyFormat(totalRegular), width: "170px" },
 		];
 
 		return footerTabData;
@@ -307,18 +311,17 @@ export const Table: FC<Props> = ({
 					className="h-[100%] w-full rounded-3xl bg-white flex flex-col justify-between "
 					style={{ overflow: "overlay" }}
 				>
-					<div className="rounded-3xl h-[100%] overflow-auto">
-						<DataTable
-							responsive={false}
-							columns={stateColumns}
-							data={data || []}
-							className="h-[50vh]"
-							fixedHeader
-							progressPending={loading}
-							conditionalRowStyles={conditionalRowStyles}
-							onRowClicked={onRowClicked}
-						/>
-					</div>
+					<DataTable
+						responsive={false}
+						columns={stateColumns}
+						data={data || []}
+						className="h-[50vh]"
+						fixedHeader
+						progressPending={loading}
+						conditionalRowStyles={conditionalRowStyles}
+						onRowClicked={onRowClicked}
+					/>
+
 					<FooterTable tabs={createFooter(data as Array<FundingBreakdown>)} />
 				</div>
 			</div>

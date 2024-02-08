@@ -6,7 +6,7 @@ export interface FooterTableProps {
 
 export const FooterTable: FC<FooterTableProps> = ({ tabs }) => {
 	return (
-		<div className="flex bg-gray-200 h-[40px] w-full text-black text-[13px] rounded-b-2xl">
+		<div className="flex bg-gray-200 h-[40px] w-[2040px] text-black text-[13px] rounded-b-2xl">
 			{tabs?.map((tab, key) => {
 				return (
 					<div

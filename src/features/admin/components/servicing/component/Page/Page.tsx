@@ -145,7 +145,9 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 
 	useEffect(() => {
 		if (getDkcLenderQuery.isSuccess) {
-			setTableData(getDkcLenderQuery?.data?.fundingBreakdowns || []);
+			const data = getDkcLenderQuery?.data?.fundingBreakdowns || [];
+
+			setTableData([...data]);
 			getDkcLenderQuery.reset();
 		}
 	}, [getDkcLenderQuery]);
@@ -349,7 +351,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			omit: false,
 		}, */
 		{
-			name: `${previousMonthName}`,
+			name: `${previousMonthName} (Current)`,
 			maxWidth: "150px",
 			minWidth: "150px",
 			sortable: true,
@@ -378,7 +380,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			],
 		},
 		{
-			name: `${currentMonthName} (Current)`,
+			name: `${currentMonthName} `,
 			maxWidth: "150px",
 			minWidth: "150px",
 			sortable: true,
