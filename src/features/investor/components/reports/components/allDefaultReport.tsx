@@ -129,7 +129,7 @@ export const AllDefaultReport: FC = () => {
 				setLastRowModal(lastRow);
 			}
 		}
-	}, [myData.data]);
+	}, [reportLoan]);
 
 	useEffect(() => {
 		if (userInfo.investor?.id) {
@@ -254,7 +254,7 @@ export const AllDefaultReport: FC = () => {
 		{
 			name: "LTV",
 			selector: (row: Loan) =>
-				(row?.ltv && Number.parseInt(row?.ltv).toFixed(0)) || "0",
+				(row?.ltv && row?.ltv && Number.parseInt(row?.ltv).toFixed(0)) || "",
 			omit: false,
 			maxWidth: "130px",
 		},
