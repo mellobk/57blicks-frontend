@@ -75,10 +75,13 @@ export const AverageDaysPaidLoans: FC = () => {
 			const lastRow = [
 				"",
 				"",
-				moneyFormat(Number.parseInt(totalLoansAmount.toString())),
 				"",
 				"",
 				"",
+				moneyFormat(Number.parseInt(totalLoansAmount.toString())).replaceAll(
+					",",
+					"."
+				),
 				"",
 			];
 			setLastRowModal(lastRow);
@@ -164,11 +167,14 @@ export const AverageDaysPaidLoans: FC = () => {
 				const productData = insuranceCsv[data]?.map((value: Loan) => {
 					return [
 						`${value.borrower?.user.firstName} ${value.borrower?.user.lastName}`,
-						value?.borrower?.user.mailingAddress,
+						value?.borrower?.user.mailingAddress?.replaceAll(",", " "),
 						value?.borrower?.user.phoneNumber,
 						value?.borrower?.user.email,
-						value?.collaterals[0]?.address,
-						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
+						value?.collaterals[0]?.address.replaceAll(",", " "),
+						moneyFormat(Number.parseInt(value?.totalLoanAmount)).replaceAll(
+							",",
+							"."
+						),
 						formatDate(value?.originationDate.toString()),
 						formatDate(value?.maturityDate.toString()),
 						formatDate(
@@ -257,11 +263,14 @@ export const AverageDaysPaidLoans: FC = () => {
 			const csvData = insuranceCsv?.map((data: any) => {
 				return [
 					`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
-					data?.borrower?.user.mailingAddress,
+					data?.borrower?.user.mailingAddress?.replaceAll(",", " "),
 					data?.borrower?.user.phoneNumber,
 					data?.borrower?.user.email,
-					data?.collaterals[0]?.address,
-					moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+					data?.collaterals[0]?.address?.replaceAll(",", " "),
+					moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
+						",",
+						"."
+					),
 					formatDate(data?.originationDate.toString()),
 					formatDate(data?.maturityDate.toString()),
 					formatDate(
@@ -275,7 +284,7 @@ export const AverageDaysPaidLoans: FC = () => {
 	}, [consultantQuery.data]);
 
 	const downloadLoanAssetReport = (): void => {
-		const data = [headerCsv, ...(excelDataLoanAsset ?? []), lastRowModal];
+		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
 		downloadCSV(data, "AverageRollRateByAsset.csv");
 	};

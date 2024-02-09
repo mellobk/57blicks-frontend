@@ -51,6 +51,7 @@ export const AllDefaultReport: FC = () => {
 		if (myData.isSuccess) {
 			setReportLoan(myData.data as any);
 
+			console.log(myData.data);
 			const getData =
 				(myData?.data?.loanProduct as unknown as Array<any>) || [];
 			const keyProductValues = Object.keys(getData);
@@ -95,7 +96,7 @@ export const AllDefaultReport: FC = () => {
 				const lastRow = [
 					"",
 					"",
-					moneyFormat(Number.parseInt(totalLoansAmount)),
+					moneyFormat(Number.parseInt(totalLoansAmount)).replaceAll(",", "."),
 					"",
 					"",
 					"",
@@ -129,7 +130,7 @@ export const AllDefaultReport: FC = () => {
 				setLastRowModal(lastRow);
 			}
 		}
-	}, [reportLoan]);
+	}, [myData.data]);
 
 	useEffect(() => {
 		if (userInfo.investor?.id) {
@@ -152,8 +153,11 @@ export const AllDefaultReport: FC = () => {
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				data?.borrower?.user.mailingAddress?.replaceAll(",", " "),
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
+					",",
+					"."
+				),
 				data?.defaultType,
 				data?.ltv,
 				data?.borrower?.user.phoneNumber,

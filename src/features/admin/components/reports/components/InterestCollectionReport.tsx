@@ -74,18 +74,30 @@ export const InterestCollectionReport: FC = () => {
 				0
 			);
 
+			const totalLoansDue = insuranceCsv.reduce(
+				(
+					accumulator: number,
+					dataInterest: {
+						totalDebits: string;
+						totalLoanAmount: string;
+					}
+				) => accumulator + Number.parseFloat(dataInterest.totalDebits),
+				0
+			);
+
 			const lastRow = [
 				"",
 				"",
-				moneyFormat(Number.parseInt(totalLoansAmount)),
+				moneyFormat(Number.parseInt(totalLoansAmount)).replaceAll(",", "."),
 				"",
 				"",
-				"",
+				moneyFormat(Number.parseInt(totalLoansDue)).replaceAll(",", "."),
 			];
 			setModalColumnsData([
 				...insuranceCsv,
 				{
 					totalLoanAmount: totalLoansAmount.toString(),
+					totalDebits: totalLoansDue.toString(),
 
 					collaterals: [
 						{
@@ -103,7 +115,6 @@ export const InterestCollectionReport: FC = () => {
 							isActive: true,
 						},
 					},
-					totalDebits: "",
 					creditAverage: "201249.32",
 					debitAverage: "250.00",
 				},
@@ -129,14 +140,19 @@ export const InterestCollectionReport: FC = () => {
 		];
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
-				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				data.borrower?.llc.replace(",", " "),
+				data?.borrower?.user.mailingAddress.replace(",", " "),
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
+					",",
+					"."
+				),
 				data?.borrower?.user.phoneNumber,
 				data?.borrower?.user.email,
-				moneyFormat(Number.parseInt(data?.totalDebits)),
+				moneyFormat(Number.parseInt(data?.totalDebits)).replaceAll(",", "."),
 			];
 		});
+
+		console.log(csvData);
 
 		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 

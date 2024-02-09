@@ -59,7 +59,10 @@ export const PaidLoanReport: FC = () => {
 			const lastRow = [
 				"",
 				"",
-				moneyFormat(Number.parseInt(totalLoansAmount.toString())),
+				moneyFormat(Number.parseInt(totalLoansAmount.toString())).replaceAll(
+					",",
+					"."
+				),
 				"",
 				"",
 				"",
@@ -134,8 +137,11 @@ export const PaidLoanReport: FC = () => {
 
 			return [
 				data.borrower?.llc,
-				data?.collaterals[0]?.address,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				data?.collaterals[0]?.address.replaceAll(",", " "),
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
+					",",
+					"."
+				),
 				formatDate(data?.endDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
 				data?.type,

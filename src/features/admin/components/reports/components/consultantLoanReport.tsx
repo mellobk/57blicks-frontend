@@ -58,7 +58,10 @@ export const ConsultantLoanReport: FC = () => {
 			const lastRow = [
 				"",
 				"",
-				moneyFormat(Number.parseInt(totalLoansAmount.toString())),
+				moneyFormat(Number.parseInt(totalLoansAmount.toString())).replaceAll(
+					",",
+					"."
+				),
 				"",
 				"",
 				"",
@@ -227,8 +230,11 @@ export const ConsultantLoanReport: FC = () => {
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
 				data.borrower?.llc,
-				data?.collaterals[0]?.address,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				data?.collaterals[0]?.address.replaceAll(",", " "),
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
+					",",
+					"."
+				),
 				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
 				data?.type,

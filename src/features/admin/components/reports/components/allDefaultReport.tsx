@@ -99,7 +99,10 @@ export const AllDefaultReport: FC = () => {
 				const lastRow = [
 					"",
 					"",
-					moneyFormat(Number.parseInt(totalLoansAmount.toString())),
+					moneyFormat(Number.parseInt(totalLoansAmount.toString())).replaceAll(
+						",",
+						"."
+					),
 					"",
 					"",
 					"",
@@ -170,7 +173,10 @@ export const AllDefaultReport: FC = () => {
 			return [
 				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
+					",",
+					"."
+				),
 				data?.fundingBreakDowns[1]?.lender.name,
 				data?.defaultType,
 				data?.ltv,

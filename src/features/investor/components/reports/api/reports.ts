@@ -7,6 +7,7 @@ import { authApiClient } from "@/utils/api-client";
 
 const getInvestorsReportLoan = async (id: string) => {
 	const response = await authApiClient.get<{
+		loans: any;
 		numbersOfLoans: number;
 		averageLoanAmount: number;
 		rollRate: number;

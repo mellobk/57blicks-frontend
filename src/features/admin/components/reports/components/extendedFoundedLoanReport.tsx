@@ -10,7 +10,7 @@ import { useState, type FC, useEffect } from "react";
 
 // install (please try to align the version of installed @nivo packages)
 // yarn add @nivo/pie
-import { moneyFormat } from "@/utils/formats";
+import { formatDate, moneyFormat } from "@/utils/formats";
 import { downloadCSV } from "@/utils/create-cvs";
 import { downloadXLSX } from "@/utils/create-xlsx";
 import type { Loan } from "../../servicing/types/api";
@@ -63,7 +63,10 @@ export const ExtendedLoanReport: FC = () => {
 				"",
 				"",
 				"",
-				moneyFormat(Number.parseInt(totalLoansAmount.toString())),
+				moneyFormat(Number.parseInt(totalLoansAmount.toString())).replaceAll(
+					",",
+					"."
+				),
 				"",
 				"",
 			];
@@ -90,10 +93,13 @@ export const ExtendedLoanReport: FC = () => {
 
 			return [
 				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
-				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				data?.borrower?.user.mailingAddress.replaceAll(",", " "),
 				lender?.lender?.name || "",
-				data?.maturityDate,
+				moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
+					",",
+					"."
+				),
+				formatDate(data?.maturityDate?.toString() || ""),
 				data?.status === "PAID" ? "YES" : "NO",
 			];
 		});
