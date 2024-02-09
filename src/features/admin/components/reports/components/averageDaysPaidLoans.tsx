@@ -49,7 +49,6 @@ export const AverageDaysPaidLoans: FC = () => {
 	const [chartAssetData, setAssetChartData] = useState([]);
 	const [assetKeys, setAssetKey] = useState<Array<string>>([]);
 	const [productKeys, setProductKeys] = useState<Array<string>>([]);
-	const [excelDataLoanAsset, setExcelDataLoanAsset] = useState<Array<any>>([]);
 	const [excelDataLoans, setExcelDataLoans] = useState<Array<any>>([]);
 
 	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
@@ -189,8 +188,6 @@ export const AverageDaysPaidLoans: FC = () => {
 			csvData.map((data) => {
 				return arrayExcel.push(...data);
 			});
-
-			setExcelDataLoanAsset(arrayExcel);
 		}
 	}, [assetKeys]);
 
@@ -251,8 +248,6 @@ export const AverageDaysPaidLoans: FC = () => {
 			csvData.map((data) => {
 				return arrayExcel.push(...data);
 			});
-
-			setExcelDataLoanAsset(arrayExcel);
 		}
 	}, [productKeys]);
 
