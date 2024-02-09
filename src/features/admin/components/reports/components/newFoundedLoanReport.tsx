@@ -144,7 +144,7 @@ export const NewFoundedLoanReport: FC = () => {
 				data?.collaterals[0]?.assetType,
 				data?.type,
 				lender?.lender?.name,
-				data?.interestRate,
+				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 			];
 		});
 
@@ -180,7 +180,7 @@ export const NewFoundedLoanReport: FC = () => {
 				data?.collaterals[0]?.assetType,
 				data?.type,
 				lender?.lender?.name,
-				data?.interestRate,
+				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 			];
 		});
 
@@ -257,7 +257,9 @@ export const NewFoundedLoanReport: FC = () => {
 		{
 			name: "Rate",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.interestRate || "",
+			selector: (row: Loan): string =>
+				row?.interestRate &&
+				`${Number.parseFloat(row?.interestRate).toFixed(0)}%`,
 			omit: false,
 		},
 	];

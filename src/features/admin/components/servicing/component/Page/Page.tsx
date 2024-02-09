@@ -222,6 +222,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			name: "Rate",
 			selector: (row: FundingBreakdown) =>
+				row?.loan.interestRate &&
 				`${Number.parseInt(row?.loan.interestRate).toFixed(0)}%`,
 			sortFunction: sortInterestRateLoan,
 			omit: false,

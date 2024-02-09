@@ -146,7 +146,7 @@ export const PaidLoanReport: FC = () => {
 				data?.collaterals[0]?.assetType,
 				data?.type,
 				lender?.lender?.name,
-				data?.interestRate,
+				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 			];
 		});
 
@@ -182,7 +182,7 @@ export const PaidLoanReport: FC = () => {
 				data?.collaterals[0]?.assetType,
 				data?.type,
 				lender?.lender?.name,
-				data?.interestRate,
+				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 			];
 		});
 

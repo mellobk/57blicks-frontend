@@ -197,7 +197,9 @@ export const ConsultantLoanReport: FC = () => {
 		{
 			name: "Rate",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.interestRate || "",
+			selector: (row: Loan): string =>
+				row?.interestRate &&
+				`${Number.parseFloat(row?.interestRate).toFixed(0)}%`,
 			omit: false,
 		},
 	];

@@ -168,7 +168,9 @@ export const LoanProductReport: FC = () => {
 		{
 			name: "Rate",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.interestRate || "",
+			selector: (row: Loan): string =>
+				row?.interestRate &&
+				`${Number.parseFloat(row?.interestRate).toFixed(0)}%`,
 			omit: false,
 		},
 	];
@@ -222,7 +224,7 @@ export const LoanProductReport: FC = () => {
 						formatDate(value?.originationDate?.toString() || ""),
 						value?.collaterals[0]?.assetType,
 						value?.type,
-						value?.interestRate,
+						`${Number.parseFloat(value?.interestRate).toFixed(0)}%`,
 					];
 				});
 				return [[data], ...productData, lastRowModal];
@@ -250,7 +252,7 @@ export const LoanProductReport: FC = () => {
 				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
 				data?.type,
-				data?.interestRate,
+				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 			];
 		});
 
@@ -269,7 +271,7 @@ export const LoanProductReport: FC = () => {
 				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
 				data?.type,
-				data?.interestRate,
+				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 			];
 		});
 		const data = [headerCsv, ...csvData, lastRowModal];
