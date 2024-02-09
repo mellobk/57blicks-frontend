@@ -128,7 +128,7 @@ export const ConsultantLoanReport: FC = () => {
 						formatDate(value?.originationDate?.toString() || ""),
 						value?.collaterals[0]?.assetType,
 						value?.type,
-						value?.interestRate,
+						`${Number.parseFloat(value?.interestRate).toFixed(0)}%`,
 					];
 				});
 				return [[data], ...productData];
@@ -240,12 +240,12 @@ export const ConsultantLoanReport: FC = () => {
 				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
 				data?.type,
-				data?.interestRate,
+				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 			];
 		});
 		const data = [headerCsv, ...csvData, lastRowModal];
 
-		downloadCSV(data, "LoansByConsultant.csv");
+		downloadCSV(data, "Loans By Consultant.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -259,12 +259,12 @@ export const ConsultantLoanReport: FC = () => {
 				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
 				data?.type,
-				data?.interestRate,
+				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 			];
 		});
 		const data = [headerCsv, ...csvData, lastRowModal];
 
-		downloadXLSX(data, "LoansByConsultant.xlsx");
+		void downloadXLSX(data, "Loans By Consultant.xlsx");
 	};
 
 	return (

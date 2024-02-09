@@ -106,7 +106,7 @@ export const ExtendedLoanReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
-		downloadCSV(data, "extendedLoansFounded.csv");
+		downloadCSV(data, "Extended Loans Funded.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -138,7 +138,7 @@ export const ExtendedLoanReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadXLSX(data, "extendedLoansFounded.xlsx");
+		downloadXLSX(data, "Extended Loans Funded.xlsx");
 	};
 
 	useEffect(() => {

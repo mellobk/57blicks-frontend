@@ -227,7 +227,7 @@ export const AssetLoanReport: FC = () => {
 						formatDate(value?.originationDate?.toString() || ""),
 						value?.collaterals[0]?.assetType,
 						value?.type,
-						value?.interestRate,
+						`${Number.parseFloat(value?.interestRate).toFixed(0)}%`,
 					];
 				});
 				return [[data], ...productData, lastRowModal];
@@ -256,11 +256,11 @@ export const AssetLoanReport: FC = () => {
 				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
 				data?.type,
-				data?.interestRate,
+				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 			];
 		});
 		const data = [headerCsv, ...csvData, lastRowModal];
-		downloadCSV(data, "LoansByAsset.csv");
+		downloadCSV(data, "Loans By Asset.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -274,12 +274,12 @@ export const AssetLoanReport: FC = () => {
 				formatDate(data?.originationDate?.toString() || ""),
 				data?.collaterals[0]?.assetType,
 				data?.type,
-				data?.interestRate,
+				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 			];
 		});
 		const data = [headerCsv, ...csvData, lastRowModal];
 
-		downloadXLSX(data, "LoansByAsset.xlsx");
+		void downloadXLSX(data, "Loans By Asset.xlsx");
 	};
 
 	return (

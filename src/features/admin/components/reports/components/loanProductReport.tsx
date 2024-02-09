@@ -257,7 +257,7 @@ export const LoanProductReport: FC = () => {
 		});
 
 		const data = [headerCsv, ...csvData, lastRowModal];
-		downloadCSV(data, "LoansByProduct.csv");
+		downloadCSV(data, "Loans By Product.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -275,7 +275,7 @@ export const LoanProductReport: FC = () => {
 			];
 		});
 		const data = [headerCsv, ...csvData, lastRowModal];
-		downloadXLSX(data, "LoansByProduct.xlsx");
+		void downloadXLSX(data, "Loans By Product.xlsx");
 	};
 
 	return (

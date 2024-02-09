@@ -152,7 +152,7 @@ export const PaidLoanReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
-		downloadCSV(data, "LoansPaidOff.csv");
+		downloadCSV(data, "Loans Paid Off.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -188,7 +188,7 @@ export const PaidLoanReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
-		downloadXLSX(data, "LoansPaidOff.xlsx");
+		void downloadXLSX(data, "Loans Paid Off.xlsx");
 	};
 
 	useEffect(() => {

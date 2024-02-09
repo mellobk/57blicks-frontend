@@ -92,7 +92,7 @@ const PropertyInsurance = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadXLSX(data, "insurancesLoans.xlsx");
+		void downloadXLSX(data, "insurancesLoans.xlsx");
 	};
 
 	const columns = [

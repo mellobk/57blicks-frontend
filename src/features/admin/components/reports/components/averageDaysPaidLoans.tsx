@@ -281,37 +281,37 @@ export const AverageDaysPaidLoans: FC = () => {
 	const downloadLoanAssetReport = (): void => {
 		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
-		downloadCSV(data, "AverageRollRateByAsset.csv");
+		downloadCSV(data, "Average Roll Rate By Asset.csv");
 	};
 
 	const downloadXlsxLoanAssetReport = (): void => {
 		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
-		downloadXLSX(data, "AverageRollRateByAsset.xlsx");
+		void downloadXLSX(data, "Average Roll Rate By Asset.xlsx");
 	};
 
 	const downloadLoanProductReport = (): void => {
 		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
-		downloadCSV(data, "AverageRollRateByProduct.csv");
+		downloadCSV(data, "Average Roll Rate By Product.csv");
 	};
 
 	const downloadXlsxLoanProductReport = (): void => {
 		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
-		downloadXLSX(data, "AverageRollRateByProduct.xlsx");
+		void downloadXLSX(data, "Average Roll Rate By Product.xlsx");
 	};
 
 	const downloadLoansReport = (): void => {
 		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
-		downloadCSV(data, "AverageRollRateForAllLoans.csv");
+		downloadCSV(data, "Average Roll Rate For All Loans.csv");
 	};
 
 	const downloadXlsxLoansReport = (): void => {
 		const data = [headerCsv, ...(excelDataLoans ?? []), lastRowModal];
 
-		downloadXLSX(data, "AverageRollRateForAllLoans.xlsx");
+		void downloadXLSX(data, "Average Roll Rate For All Loans.xlsx");
 	};
 
 	return (
