@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
@@ -32,6 +33,7 @@ import LoansService from "@/api/loans";
 import { LoanStatusType } from "@/types/api/notifications";
 import moment from "moment";
 import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
+import { BigLoader } from "@/components/ui/Loading";
 
 interface Props {
 	actualTab: string;
@@ -43,6 +45,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const idParameter = idQueryParameter.get("id");
 	const tabParameter = idQueryParameter.get("tab");
 	const [modalData, setModalData] = useState<FundingBreakdown | null>(null);
+	const [loading, setLoading] = useState<boolean>(false);
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [archived, setArchived] = useState<boolean>(false);
 	const [lenders, setLenders] = useState<Array<Lender>>([]);
@@ -137,6 +140,11 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			getDkcLenderQuery.mutate();
 			updateLoanQuery.reset();
 		}
+		if (updateLoanQuery.isLoading) {
+			setLoading(true);
+		} else {
+			setLoading(false);
+		}
 	}, [updateLoanQuery]);
 
 	useEffect(() => {
@@ -150,11 +158,22 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			setTableData([...data]);
 			getDkcLenderQuery.reset();
 		}
+
+		if (getDkcLenderQuery.isLoading) {
+			setLoading(true);
+		} else {
+			setLoading(false);
+		}
 	}, [getDkcLenderQuery]);
 
 	useEffect(() => {
 		if (dkcLendersQuery?.data) {
 			setLenders(dkcLendersQuery?.data || []);
+		}
+		if (dkcLendersQuery.isFetching) {
+			setLoading(true);
+		} else {
+			setLoading(false);
 		}
 	}, [dkcLendersQuery.isFetching]);
 
@@ -412,6 +431,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 
 	return (
 		<div className="flex flex-col items-center  gap-3 h-full w-full rounded-3xl">
+			{loading && <BigLoader />}
 			<Table
 				setArchived={(): void => {
 					setArchived(!archived);
@@ -423,6 +443,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				widthSearch="60px"
 				onRowClicked={setModalData}
 				conditionalRowStyles={conditionalRowStyles}
+				handleTax={handleTax}
+				handleDefault={handleDefault}
 			>
 				<>
 					<div className="relative w-[115px]">

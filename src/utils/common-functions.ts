@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import type { FundingBreakdown } from "./../types/fields/funding-breakdown";
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
@@ -12,6 +9,9 @@ import type {
 	User,
 } from "@/features/admin/components/manage-user/types/api";
 
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import type { FundingBreakdown } from "./../types/fields/funding-breakdown";
 import type { Permissions } from "../features/admin/components/manage-user/types/api";
 import { RoleType } from "@/types/api/permissions-type";
 import moment from "moment";
@@ -229,6 +229,7 @@ export const findIndex = (data: Array<User>, id: string): number => {
 
 export const validateDate = (date: string): boolean => {
 	const dateObject = new Date(date);
+
 	const now = new Date();
 
 	dateObject.setHours(0, 0, 0, 0);
@@ -239,6 +240,19 @@ export const validateDate = (date: string): boolean => {
 
 	return dateInMillie < nowInMillie;
 };
+
+/**
+ * Validates if a given date string is in the future compared to the current date and time.
+ * @param dateString - The date string to validate, in a format recognized by moment.js.
+ * @returns {boolean} - True if the date is in the future, false otherwise.
+ */
+export function isDateInFuture(dateString: string): boolean {
+	const now = moment();
+
+	const inputDate = moment(dateString, "DD-MM-YYYY");
+
+	return inputDate.isAfter(now);
+}
 
 export const calculateRegular = (amount: string, rate: string) => {
 	return ((Number(amount) * (Number(rate) / 100)) / 12)?.toFixed(4) || "0";

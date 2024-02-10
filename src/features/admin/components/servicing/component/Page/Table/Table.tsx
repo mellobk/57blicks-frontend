@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import type { FC, ReactElement } from "react";
@@ -9,14 +11,12 @@ import { useEffect, useState } from "react";
 
 import BorrowerNotifications from "../../BorrowerNotifications";
 import { Button } from "@/components/ui/Button";
-import DataTable from "react-data-table-component";
-import { FooterTable } from "@/components/ui/FooterTabs/FooterTabs";
+import CustomTableComponent from "./CustomTableComponent";
 import type { FundingBreakdown } from "../../../types/api";
 import { Icon } from "@/components/ui/Icon";
 import { Input } from "@/components/forms/Input";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
-import { moneyFormat } from "@/utils/formats";
 import { useDebounce } from "@/hooks/debounce";
 
 interface Column {
@@ -40,7 +40,9 @@ interface Props {
 	onClickButton?: () => void;
 	widthSearch?: string;
 	loading?: boolean;
-	onRowClicked?: (row: FundingBreakdown) => void;
+	onRowClicked: (row: FundingBreakdown) => void;
+	handleTax: (id: string, data: boolean) => void;
+	handleDefault: (id: string, data: string) => void;
 }
 
 export const Table: FC<Props> = ({
@@ -51,13 +53,13 @@ export const Table: FC<Props> = ({
 	handleSearchValue,
 	handleCheckValue,
 	checkedValue = true,
-	conditionalRowStyles,
 	onClickButton,
 	setArchived,
 	archivedValue,
 	widthSearch = "158px",
-	loading,
 	onRowClicked,
+	handleTax,
+	handleDefault,
 }) => {
 	const [visible, setVisible] = useState(false);
 	const [stateColumns, setStateColumns] = useState<Array<Column>>(columns);
@@ -106,7 +108,81 @@ export const Table: FC<Props> = ({
 		setStateColumns(newColumns);
 	};
 
-	const createFooter = (data: Array<FundingBreakdown>) => {
+	// const createFooter = (data: Array<FundingBreakdown>) => {
+	// 	const totalRow = data?.length || 0;
+	// 	const totalLoanAmount = data?.map((data: FundingBreakdown) => {
+	// 		return Number.parseFloat(data.loan.totalLoanAmount || "");
+	// 	});
+	// 	const totalRegularAmount = data?.map((data: FundingBreakdown) => {
+	// 		let regular = getIsSameMonthYear(
+	// 			data.loan.originationDate as unknown as string
+	// 		)
+	// 			? data.loan.prorated
+	// 			: data.loan.regular;
+
+	// 		if (data.loan.status === "DEFAULT") {
+	// 			regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
+	// 		}
+
+	// 		return Number.parseFloat(regular || "");
+	// 	});
+
+	// 	const totalPreviousAmount = data?.map((data: FundingBreakdown) => {
+	// 		const dataDate = getIsSamePreviousMonthYear(
+	// 			data.loan.originationDate as unknown as string
+	// 		);
+	// 		let value = "0";
+	// 		if (dataDate === 0) {
+	// 			value = data.loan.prorated || "0";
+	// 		} else if (dataDate === -1) {
+	// 			value = data.loan.regular || "0";
+	// 		}
+	// 		return Number.parseFloat(value || "");
+	// 	});
+
+	// 	const total = totalLoanAmount?.reduce(
+	// 		(accumulator, currentValue) => accumulator + currentValue,
+	// 		0
+	// 	);
+
+	// 	const totalRegular = totalRegularAmount?.reduce(
+	// 		(accumulator, currentValue) => accumulator + currentValue,
+	// 		0
+	// 	);
+
+	// 	const totalPrevious = totalPreviousAmount?.reduce(
+	// 		(accumulator, currentValue) => accumulator + currentValue,
+	// 		0
+	// 	);
+
+	// 	const footerTabData: Array<{
+	// 		label: string;
+	// 		width: string;
+	// 		justify?: string;
+	// 	}> = [
+	// 		{ label: `Total: ${totalRow}`, width: "650px", justify: "center" },
+	// 		{ label: moneyFormat(total), width: "170px" },
+	// 		{ label: "", width: "100px" },
+	// 		{
+	// 			label: "" + moneyFormat(totalRegular),
+	// 			width: "200px",
+	// 		},
+	// 		{ label: "", width: "0px" },
+	// 		{ label: "", width: "0px" },
+	// 		{ label: "", width: "0px" },
+	// 		{ label: "", width: "0px" },
+	// 		{ label: "", width: "0px" },
+	// 		{ label: "", width: "0px" },
+	// 		{ label: "", width: "0px" },
+	// 		{ label: "", width: "470px" },
+	// 		{ label: moneyFormat(totalPrevious), width: "170px" },
+	// 		{ label: moneyFormat(totalRegular), width: "170px" },
+	// 	];
+
+	// 	return footerTabData;
+	// };
+
+	const createFooterNew = (data: Array<FundingBreakdown>) => {
 		const totalRow = data?.length || 0;
 		const totalLoanAmount = data?.map((data: FundingBreakdown) => {
 			return Number.parseFloat(data.loan.totalLoanAmount || "");
@@ -153,29 +229,35 @@ export const Table: FC<Props> = ({
 			0
 		);
 
-		const footerTabData: Array<{
-			label: string;
-			width: string;
-			justify?: string;
-		}> = [
-			{ label: `Total: ${totalRow}`, width: "650px", justify: "center" },
-			{ label: moneyFormat(total), width: "170px" },
-			{ label: "", width: "100px" },
-			{
-				label: "" + moneyFormat(totalRegular),
-				width: "200px",
-			},
-			{ label: "", width: "0px" },
-			{ label: "", width: "0px" },
-			{ label: "", width: "0px" },
-			{ label: "", width: "0px" },
-			{ label: "", width: "0px" },
-			{ label: "", width: "0px" },
-			{ label: "", width: "0px" },
-			{ label: "", width: "470px" },
-			{ label: moneyFormat(totalPrevious), width: "170px" },
-			{ label: moneyFormat(totalRegular), width: "170px" },
-		];
+		const footerTabData = {
+			total: total,
+			totalRegular: totalRegular,
+			totalPrevious: totalPrevious,
+			totalRow: totalRow,
+		};
+		// const footerTabData: Array<{
+		// 	label: string;
+		// 	width: string;
+		// 	justify?: string;
+		// }> = [
+		// 	{ label: `Total: ${totalRow}`, width: "650px", justify: "center" },
+		// 	{ label: moneyFormat(total), width: "170px" },
+		// 	{ label: "", width: "100px" },
+		// 	{
+		// 		label: "" + moneyFormat(totalRegular),
+		// 		width: "200px",
+		// 	},
+		// 	{ label: "", width: "0px" },
+		// 	{ label: "", width: "0px" },
+		// 	{ label: "", width: "0px" },
+		// 	{ label: "", width: "0px" },
+		// 	{ label: "", width: "0px" },
+		// 	{ label: "", width: "0px" },
+		// 	{ label: "", width: "0px" },
+		// 	{ label: "", width: "470px" },
+		// 	{ label: moneyFormat(totalPrevious), width: "170px" },
+		// 	{ label: moneyFormat(totalRegular), width: "170px" },
+		// ];
 
 		return footerTabData;
 	};
@@ -306,23 +388,38 @@ export const Table: FC<Props> = ({
 					)}
 				</div>
 			</div>
-			<div className="h-full w-full">
-				<div
-					className="h-[100%] w-full rounded-3xl bg-white flex flex-col justify-between "
-					style={{ overflow: "overlay" }}
-				>
-					<DataTable
+			<div
+				className="w-full rounded-3xl bg-white h-full"
+				style={{
+					overflow: "overlay",
+
+					top: "-20px",
+				}}
+			>
+				<div>
+					{data.length > 0 && (
+						<CustomTableComponent
+							data={data || []}
+							handleTax={handleTax}
+							handleDefault={handleDefault}
+							onRowClicked={onRowClicked}
+							totals={createFooterNew(data as Array<FundingBreakdown>)}
+						/>
+					)}
+
+					{/* <DataTable
 						responsive={false}
 						columns={stateColumns}
+						key={"table-responsive"}
 						data={data || []}
-						className="h-[50vh]"
 						fixedHeader
 						progressPending={loading}
 						conditionalRowStyles={conditionalRowStyles}
 						onRowClicked={onRowClicked}
+						pagination
+						paginationPerPage={5000}
 					/>
-
-					<FooterTable tabs={createFooter(data as Array<FundingBreakdown>)} />
+					<FooterTable tabs={createFooter(data as Array<FundingBreakdown>)} /> */}
 				</div>
 			</div>
 			<Modal

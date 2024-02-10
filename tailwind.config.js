@@ -110,6 +110,7 @@ export default {
 					DEFAULT: "#675AF9",
 				},
 				orange: {
+					400: "#de6903",
 					500: "#F48218",
 					600: "#f7ece0",
 					DEFAULT: "#F48218",
