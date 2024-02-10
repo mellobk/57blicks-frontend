@@ -6,13 +6,17 @@ import type { ExpanderComponentProps } from "react-data-table-component/dist/src
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import type { Investor } from "@/types/api/investor";
 import { type FooterDataInvestor, getFooterData } from "@/utils/investors.ts";
-import moment from "moment";
 import { useMutation } from "@tanstack/react-query";
 import LoansService from "@/api/loans";
 import { Modal } from "@/components/ui/Modal";
 import { FundingBreakdown as FundingComponent } from "../../../../servicing/component/FundingBreakdown/FundingBreakdown";
 import { Icon } from "@/components/ui/Icon";
 import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
+import {
+	getIsSameMonthYear,
+	getIsSamePreviousMonthYear,
+} from "@/utils/common-functions";
+import { moneyFormat } from "@/utils/formats";
 
 interface Props extends ExpanderComponentProps<Investor> {
 	selectedParticipation?: FundingBreakdown;
@@ -48,6 +52,41 @@ export const ExpandedComponent: ComponentType<Props> = ({
 		}
 	}, [idLoan]);
 
+	const currentValue = (
+		originationDate: string,
+		prorated: string,
+		regular: string,
+		status: string,
+		amount: string
+	) => {
+		let data = getIsSameMonthYear(originationDate as unknown as string)
+			? prorated
+			: regular;
+
+		if (status === "DEFAULT") {
+			data = String((Number(amount) * 18) / 100 / 12);
+		}
+		return moneyFormat(Number.parseFloat(data || "0"));
+	};
+
+	const previousValue = (
+		originationDate: string,
+		prorated: string,
+		regular: string
+	) => {
+		const data = getIsSamePreviousMonthYear(
+			originationDate as unknown as string
+		);
+		let value = "0";
+		if (data === 0) {
+			value = prorated || "0";
+		} else if (data === -1) {
+			value = regular || "0";
+		}
+
+		return moneyFormat(Number.parseFloat(value));
+	};
+
 	return (
 		<>
 			{data.participationBreakdowns?.map((participant, index) => (
@@ -62,7 +101,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 						onClick={() => selectParticipation?.(participant)}
 					>
 						<div className="w-12" />
-						<div className="grid grid-cols-8 w-full items-center relative z-0">
+						<div className="grid grid-cols-9 w-full items-center relative z-0">
 							<div
 								className="cursor-pointer absolute left-[-30px] "
 								onClick={() => {
@@ -84,11 +123,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 								value={participant.loan?.totalLoanAmount || ""}
 								bold
 							/>
-							<Cell
-								format="money"
-								value={Number(participant.loan.totalLoanAmount) * 0.99}
-								bold
-							/>
+							<Cell format="money" value={Number(participant.amount)} bold />
 							<Cell format="percentage" value={participant.rate} bold />
 							<Cell format="money" value={participant.regular} bold />
 							<Cell
@@ -107,14 +142,28 @@ export const ExpandedComponent: ComponentType<Props> = ({
 										? "bg-blue-200/[24%] text-blue-200 border-2 border-blue-200"
 										: "bg-gold-500/[12%] text-gold-500"
 								}
-								format="money"
-								value={`${
-									moment(participant.loan.originationDate)
-										.toDate()
-										.getMonth() === new Date().getMonth()
-										? Number(participant.prorated)
-										: Number(participant.regular || 0)
-								}`}
+								format="text"
+								value={`${previousValue(
+									participant.loan.originationDate as unknown as string,
+									participant.prorated,
+									participant.regular
+								)}`}
+								bold
+							/>
+							<Cell
+								className={
+									selectedParticipation?.id === participant.id
+										? "bg-blue-200/[24%] text-blue-200 border-2 border-blue-200"
+										: "bg-gold-500/[12%] text-gold-500"
+								}
+								format="text"
+								value={`${currentValue(
+									participant.loan.originationDate as unknown as string,
+									participant.prorated,
+									participant.regular,
+									participant.loan.status,
+									participant.amount
+								)}`}
 								bold
 							/>
 						</div>
@@ -137,7 +186,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 						}}
 					>
 						<div className="w-12" />
-						<div className="grid grid-cols-8 w-full items-center relative z-0">
+						<div className="grid grid-cols-9 w-full items-center relative z-0">
 							<div
 								className="cursor-pointer absolute left-[-30px] "
 								onClick={() => {
@@ -159,13 +208,19 @@ export const ExpandedComponent: ComponentType<Props> = ({
 								value={participant.loan?.totalLoanAmount || ""}
 								bold
 							/>
+							<Cell format="money" value={Number(participant.amount)} bold />
+							<Cell format="percentage" value={participant.rate} bold />
 							<Cell
-								format="money"
-								value={Number(participant.loan.totalLoanAmount) * 0.99}
+								format="text"
+								value={`${currentValue(
+									participant.loan.originationDate as unknown as string,
+									participant.prorated,
+									participant.regular,
+									participant.loan.status,
+									participant.amount
+								)}`}
 								bold
 							/>
-							<Cell format="percentage" value={participant.rate} bold />
-							<Cell format="money" value={participant.regular} bold />
 							<Cell
 								format="text"
 								value={participant.loan.originationDate?.toString() || ""}
@@ -177,19 +232,29 @@ export const ExpandedComponent: ComponentType<Props> = ({
 								bold
 							/>
 							<Cell
+								className="bg-gold-500/[12%] text-gold-500"
+								format="text"
+								value={`${previousValue(
+									participant.loan.originationDate as unknown as string,
+									participant.prorated,
+									participant.regular
+								)}`}
+								bold
+							/>
+							<Cell
 								className={
 									selectedParticipation?.id === participant.id
 										? "bg-blue-200/[24%] text-blue-200 border-2 border-blue-200"
 										: "bg-gold-500/[12%] text-gold-500"
 								}
-								format="money"
-								value={`${
-									moment(participant.loan.originationDate)
-										.toDate()
-										.getMonth() === new Date().getMonth()
-										? Number(participant.prorated)
-										: Number(participant.regular || 0)
-								}`}
+								format="text"
+								value={`${currentValue(
+									participant.loan.originationDate as unknown as string,
+									participant.prorated,
+									participant.regular,
+									participant.loan.status,
+									participant.amount
+								)}`}
 								bold
 							/>
 						</div>
@@ -199,14 +264,20 @@ export const ExpandedComponent: ComponentType<Props> = ({
 
 			<div className="flex flex-row h-12 bg-gray-200">
 				<div className="w-12" />
-				<div className="grid grid-cols-8 w-full items-center">
+				<div className="grid grid-cols-9 w-full items-center">
 					<Cell format="text" value="Subtotal" bold />
 					<Cell format="money" value={totals.totalLoanAmount} bold />
-					<Cell format="money" value={totals.totalLoanAmount * 0.99} bold />
+					<Cell format="money" value={totals.amount} bold />
 					<Cell format="percentage" value={totals.rate} bold />
 					<Cell format="money" value={totals.regular} bold />
 					<Cell format="text" value="--" bold />
 					<Cell format="text" value="--" bold />
+					<Cell
+						className="bg-gold-500/[12%] text-gold-500"
+						format="money"
+						value={totals.previous}
+						bold
+					/>
 					<Cell
 						className="bg-gold-500/[12%] text-gold-500"
 						format="money"

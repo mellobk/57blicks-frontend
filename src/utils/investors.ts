@@ -5,6 +5,7 @@ import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import type { Investor } from "@/types/api/investor";
 import type { Loan } from "@/types/api/loan";
 import type { Payable } from "@/features/admin/components/servicing/component/Payable/types";
+import { getIsSamePreviousMonthYear } from "./common-functions";
 import moment from "moment/moment";
 import { moneyFormat } from "@/utils/formats";
 export interface ColumInvestorPayable {
@@ -127,23 +128,38 @@ export interface FooterDataInvestor {
 
 export const getFooterData = (data: Array<FooterDataInvestor>) => {
 	return data.reduce(
-		(accumulator, { loan, rate, regular, prorated }) => {
+		(accumulator, { loan, rate, regular, prorated, amount }) => {
 			accumulator.rate += Number(rate);
 			accumulator.regular += Number(regular);
 			accumulator.totalLoanAmount += Number(loan.totalLoanAmount);
+			accumulator.amount += Number(amount);
+
 			accumulator.current += Number(
 				moment(loan.originationDate).toDate().getMonth() ===
 					new Date().getMonth()
 					? Number(prorated)
 					: Number(regular || 0)
 			);
+			const data = getIsSamePreviousMonthYear(
+				loan.originationDate as unknown as string
+			);
+			let value = 0;
+			if (data === 0) {
+				value = Number(prorated) || 0;
+			} else if (data === -1) {
+				value = Number(regular) || 0;
+			}
+			accumulator.previous += Number(value);
+
 			return accumulator;
 		},
 		{
 			rate: 0,
 			regular: 0,
 			totalLoanAmount: 0,
+			amount: 0,
 			current: 0,
+			previous: 0,
 		}
 	);
 };

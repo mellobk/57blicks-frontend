@@ -35,6 +35,7 @@ export const LLC: FC = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
 	const currentMonthName = moment().add(1, "months").format("MMMM");
+	const previousMonthName = moment().format("MMMM");
 	const debouncedSearchTerm = useDebounce(searchValue, 1000);
 	const investorsQuery = useQuery(["investors-query"], () =>
 		InvestorsService.getInvestorsWithLoans(searchValue)
@@ -97,7 +98,22 @@ export const LLC: FC = () => {
 			sortable: false,
 		},
 		{
-			name: `${currentMonthName} (Current)`,
+			name: `${previousMonthName} (Current)`,
+			sortFunction: sortLLCRegular,
+			selector: () => "--",
+			sortable: true,
+			conditionalCellStyles: [
+				{
+					when: (row: Loan) => !!row,
+					style: {
+						background: "#C79E631F",
+						color: "#C79E63",
+					},
+				},
+			],
+		},
+		{
+			name: `${currentMonthName} `,
 			sortFunction: sortLLCRegular,
 			selector: () => "--",
 			sortable: true,
