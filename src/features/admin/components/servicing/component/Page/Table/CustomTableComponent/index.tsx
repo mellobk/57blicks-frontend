@@ -248,32 +248,32 @@ const CustomTableComponent: FC<CustomTableComponentProps> = ({
 	const footerGroup = (
 		<ColumnGroup>
 			<Row>
-				<Column footer="Total:" footerStyle={{ textAlign: "right" }} />
+				<Column footer="Total:" footerStyle={{ textAlign: "left" }} />
 				<Column footer={`${totals.totalRow}`} />
 				<Column
 					footer={`${moneyFormat(totals.total)}`}
 					style={{
-						textAlign: "right",
+						textAlign: "left",
 					}}
 				/>
 				<Column footer={""} />
 				<Column
 					footer={`${moneyFormat(totals.totalRegular)}`}
 					style={{
-						textAlign: "right",
+						textAlign: "left",
 					}}
 				/>
 				<Column footer={""} colSpan={5} />
 				<Column
 					footer={`${moneyFormat(totals.totalPrevious)}`}
 					style={{
-						textAlign: "right",
+						textAlign: "left",
 					}}
 				/>
 				<Column
 					footer={`${moneyFormat(totals.totalRegular)}`}
 					style={{
-						textAlign: "right",
+						textAlign: "left",
 					}}
 				/>
 			</Row>
@@ -335,7 +335,7 @@ const CustomTableComponent: FC<CustomTableComponentProps> = ({
 						header="Total Loan"
 						body={templateTotalLoan}
 						style={{
-							textAlign: "right",
+							textAlign: "left",
 							width: "150px",
 						}}
 						sortable
@@ -355,7 +355,7 @@ const CustomTableComponent: FC<CustomTableComponentProps> = ({
 						body={templateRegularPayment}
 						sortable
 						style={{
-							textAlign: "right",
+							textAlign: "left",
 							width: "150px",
 						}}
 					/>
@@ -403,7 +403,7 @@ const CustomTableComponent: FC<CustomTableComponentProps> = ({
 						style={{
 							width: "150px",
 							color: "#C79E63",
-							textAlign: "right",
+							textAlign: "left",
 							backgroundColor: "#C79E631F",
 						}}
 					/>
@@ -415,7 +415,7 @@ const CustomTableComponent: FC<CustomTableComponentProps> = ({
 						style={{
 							minWidth: "150px",
 							color: "#C79E63",
-							textAlign: "right",
+							textAlign: "left",
 							backgroundColor: "#C79E631F",
 						}}
 					/>

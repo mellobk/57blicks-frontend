@@ -167,7 +167,7 @@ export const AllDefaultReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
-		downloadCSV(data, "allLoans.csv");
+		downloadCSV(data, "All Loans.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
@@ -196,7 +196,7 @@ export const AllDefaultReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
-		downloadXLSX(data, "allLoans.xlsx");
+		void downloadXLSX(data, "All Loans.xlsx");
 	};
 
 	const columns = [
