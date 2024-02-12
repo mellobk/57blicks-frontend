@@ -50,8 +50,6 @@ export const AllDefaultReport: FC = () => {
 
 		if (myData.isSuccess) {
 			setReportLoan(myData.data as any);
-
-			console.log(myData.data);
 			const getData =
 				(myData?.data?.loanProduct as unknown as Array<any>) || [];
 			const keyProductValues = Object.keys(getData);
@@ -130,7 +128,7 @@ export const AllDefaultReport: FC = () => {
 				setLastRowModal(lastRow);
 			}
 		}
-	}, [myData.data]);
+	}, [reportLoan?.loans, myData.data]);
 
 	useEffect(() => {
 		if (userInfo.investor?.id) {
@@ -145,10 +143,9 @@ export const AllDefaultReport: FC = () => {
 			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
-			"Default Type",
+			"Asset Type",
+			"Loan product type",
 			"LTV",
-			"Phone #",
-			"Email",
 		];
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
@@ -158,10 +155,9 @@ export const AllDefaultReport: FC = () => {
 					",",
 					"."
 				),
-				data?.defaultType,
+				data?.collaterals[0]?.assetType,
+				data?.type,
 				data?.ltv,
-				data?.borrower?.user.phoneNumber,
-				data?.borrower?.user.email,
 			];
 		});
 
@@ -177,20 +173,18 @@ export const AllDefaultReport: FC = () => {
 			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
-			"Default Type",
+			"Asset Type",
+			"Loan product type",
 			"LTV",
-			"Phone #",
-			"Email",
 		];
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
 				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
-				data?.defaultType,
+				data?.collaterals[0]?.assetType,
+				data?.type,
 				data?.ltv,
-				data?.borrower?.user.phoneNumber,
-				data?.borrower?.user.email,
 			];
 		});
 
@@ -210,17 +204,6 @@ export const AllDefaultReport: FC = () => {
 			name: "Loan Amount",
 			selector: (row: Loan) =>
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
-			omit: false,
-		},
-		{
-			name: "Phone #",
-			selector: (row: Loan) => row?.borrower?.user.phoneNumber || "",
-			omit: false,
-		},
-		{
-			name: "Email",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.borrower?.user.email || "",
 			omit: false,
 		},
 	];
@@ -250,10 +233,16 @@ export const AllDefaultReport: FC = () => {
 			maxWidth: "130px",
 		},
 		{
-			name: "Default Type",
-			selector: (row: Loan) => row?.defaultType || "",
+			name: "Asset Type",
+			selector: (row: Loan) => row?.collaterals[0]?.assetType || "",
 			omit: false,
 			maxWidth: "130px",
+		},
+		{
+			name: "Loan product type",
+			selector: (row: Loan) => row?.type || "",
+			omit: false,
+			maxWidth: "160px",
 		},
 		{
 			name: "LTV",
@@ -261,18 +250,6 @@ export const AllDefaultReport: FC = () => {
 				(row?.ltv && row?.ltv && Number.parseInt(row?.ltv).toFixed(0)) || "",
 			omit: false,
 			maxWidth: "130px",
-		},
-		{
-			name: "Phone #",
-			selector: (row: Loan) => row?.borrower?.user.phoneNumber || "",
-			omit: false,
-			maxWidth: "130px",
-		},
-		{
-			name: "Email",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.borrower?.user.email || "",
-			omit: false,
 		},
 	];
 
@@ -288,14 +265,15 @@ export const AllDefaultReport: FC = () => {
 					>
 						Loans by Product
 					</div>
-					<div
-						className="flex gap-2 ml-2 z-10 cursor-pointer"
-						onClick={downloadReport}
-					>
-						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
-							<img src={Csv} alt="DKC Csv" />
+					<div className="flex gap-2">
+						<div
+							className="flex gap-2 ml-2 z-10 cursor-pointer"
+							onClick={downloadReport}
+						>
+							<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
+								<img src={Csv} alt="DKC Csv" />
+							</div>
 						</div>
-
 						<div
 							className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
 							onClick={downloadXlsxReport}
@@ -327,11 +305,15 @@ export const AllDefaultReport: FC = () => {
 					>
 						Loans by Asset Type
 					</div>
-					<div className="flex gap-2 ml-2" onClick={downloadReport}>
-						<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
-							<img src={Csv} alt="DKC Csv" />
+					<div className="flex gap-2">
+						<div
+							className="flex gap-2 ml-2 z-10 cursor-pointer"
+							onClick={downloadReport}
+						>
+							<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
+								<img src={Csv} alt="DKC Csv" />
+							</div>
 						</div>
-
 						<div
 							className="w-[35px] h-[35px] bg-green-1100 flex items-center justify-center rounded-xl"
 							onClick={downloadXlsxReport}

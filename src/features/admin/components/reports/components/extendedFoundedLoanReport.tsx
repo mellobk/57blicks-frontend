@@ -92,7 +92,7 @@ export const ExtendedLoanReport: FC = () => {
 			);
 
 			return [
-				data.borrower?.llc,
+				data.borrower?.llc.replaceAll(",", " "),
 				data?.borrower?.user.mailingAddress.replaceAll(",", " "),
 				lender?.lender?.name || "",
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
@@ -138,7 +138,7 @@ export const ExtendedLoanReport: FC = () => {
 
 		const data = [headerCsv, ...(csvData ?? [])];
 
-		downloadXLSX(data, "Extended Loans Funded.xlsx");
+		void downloadXLSX(data, "Extended Loans Funded.xlsx");
 	};
 
 	useEffect(() => {

@@ -32,10 +32,6 @@ export const OpportunitySchema = z.object({
 		.string()
 		.nonempty(errorMessages.required)
 		.max(75, errorMessages.maxLength),
-	investmentBorrowerBackground: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(50, errorMessages.maxLength),
 	investmentCollateral: z
 		.string()
 		.nonempty(errorMessages.required)

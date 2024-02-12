@@ -41,8 +41,11 @@ const PropertyInsurance = () => {
 		];
 		const csvData = insuranceCsv?.map((data) => {
 			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
-				data?.borrower?.user.mailingAddress,
+				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`.replaceAll(
+					",",
+					" "
+				),
+				data?.borrower?.user.mailingAddress.replaceAll(",", " "),
 				data?.borrower?.user.phoneNumber,
 				data?.borrower?.user.email,
 				data?.collaterals[0]?.address,

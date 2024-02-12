@@ -171,8 +171,8 @@ export const AllDefaultReport: FC = () => {
 		];
 		const csvData = insuranceCsv?.map((data) => {
 			return [
-				data.borrower?.llc,
-				data?.borrower?.user.mailingAddress,
+				data.borrower?.llc.replaceAll(",", " "),
+				data?.borrower?.user.mailingAddress.replaceAll(",", " "),
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
 					",",
 					"."

@@ -134,7 +134,7 @@ export const NewFoundedLoanReport: FC = () => {
 					data?.lender?.name !== "DKC Servicing Fee Income"
 			);
 			return [
-				data.borrower?.llc,
+				data.borrower?.llc.replaceAll(",", " "),
 				data?.collaterals[0]?.address.replaceAll(",", " "),
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
 					",",

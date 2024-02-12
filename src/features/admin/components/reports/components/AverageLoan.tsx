@@ -31,8 +31,11 @@ const AverageLoan = () => {
 		];
 		const csvData = insuranceCsv?.map((data) => {
 			return [
-				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
-				data?.collaterals[0]?.address,
+				`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`.replaceAll(
+					",",
+					" "
+				),
+				data?.collaterals[0]?.address.replaceAll(",", " "),
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate.toString()),
 				formatDate(data?.maturityDate.toString()),

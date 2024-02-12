@@ -17,7 +17,6 @@ import type { Loan } from "@/types/api/loan";
 import PayablesInvestor from "./PayablesInvestor";
 import { Table } from "@/components/ui/Table";
 import YearPicker from "@/components/ui/YearPicker";
-import { collateralsToString } from "@/utils/collateral-to-string";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -35,9 +34,14 @@ export const Portfolio: FC = () => {
 
 	const columns = [
 		{
-			name: "Investor",
-			selector: (row: Loan) =>
-				`LLC / ${collateralsToString(row.collaterals) || ""}`,
+			name: "Borrower",
+			maxWidth: "350px",
+			selector: (row: Loan) => (
+				<div className=" w-[250px] break-words whitespace-normal p-2">
+					{`${row.borrower?.llc} - ${row.borrower?.user.firstName} ${row.borrower?.user.lastName} - ${row.borrower?.user.mailingAddress}`}
+				</div>
+			),
+
 			sortable: true,
 		},
 		{
@@ -180,7 +184,7 @@ export const Portfolio: FC = () => {
 				>
 					<Table
 						className="h-full p-0 m-0 rounded-t-2xl overflow-y-auto"
-						columns={columns}
+						columns={columns as any}
 						data={investorsQuery?.data || []}
 						progressPending={investorsQuery.isFetching}
 						fixedHeader

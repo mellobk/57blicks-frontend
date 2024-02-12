@@ -243,7 +243,7 @@ export const LoanProductReport: FC = () => {
 
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
-				data.borrower?.llc,
+				data.borrower?.llc.replaceAll(",", " "),
 				data?.collaterals[0]?.address.replaceAll(",", " "),
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
 					",",

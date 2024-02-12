@@ -257,7 +257,10 @@ export const AverageDaysPaidLoans: FC = () => {
 
 			const csvData = insuranceCsv?.map((data: any) => {
 				return [
-					`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`,
+					`${data.borrower?.user.firstName} ${data.borrower?.user.lastName}`.replaceAll(
+						",",
+						" "
+					),
 					data?.borrower?.user.mailingAddress?.replaceAll(",", " "),
 					data?.borrower?.user.phoneNumber,
 					data?.borrower?.user.email,
