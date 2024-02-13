@@ -38,7 +38,7 @@ export const Portfolio: FC = () => {
 			maxWidth: "350px",
 			selector: (row: Loan) => (
 				<div className=" w-[250px] break-words whitespace-normal p-2">
-					{`${row.borrower?.llc} - ${row.borrower?.user.firstName} ${row.borrower?.user.lastName} - ${row.borrower?.user.mailingAddress}`}
+					{`${row.borrower?.llc} / ${row.borrower?.user.firstName} ${row.borrower?.user.lastName} / ${row.borrower?.user.mailingAddress}`}
 				</div>
 			),
 
