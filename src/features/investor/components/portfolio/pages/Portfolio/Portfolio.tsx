@@ -34,7 +34,7 @@ export const Portfolio: FC = () => {
 
 	const columns = [
 		{
-			name: "Borrower",
+			name: "Loan",
 			maxWidth: "350px",
 			selector: (row: Loan) => (
 				<div className=" w-[250px] break-words whitespace-normal p-2">

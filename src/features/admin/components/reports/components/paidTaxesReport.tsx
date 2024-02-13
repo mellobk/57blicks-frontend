@@ -1,5 +1,3 @@
-/* eslint-disable no-constant-binary-expression */
-/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
@@ -11,6 +9,7 @@ import { useState, type FC, useEffect } from "react";
 
 // install (please try to align the version of installed @nivo packages)
 // yarn add @nivo/pie
+import { ResponsivePieCanvas } from "@nivo/pie";
 import { moneyFormat } from "@/utils/formats";
 import { downloadCSV } from "@/utils/create-cvs";
 import { downloadXLSX } from "@/utils/create-xlsx";
@@ -21,9 +20,6 @@ import Csv from "@/assets/images/png/Csv.png";
 import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
-import { Tabs } from "../../servicing/component/Tabs";
-import { newInterestTabs } from "../../servicing/utils/tabs";
-import LoanInterestPieChart from "./PieCanvas/pieChart";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -31,16 +27,15 @@ import LoanInterestPieChart from "./PieCanvas/pieChart";
 // website examples showcase many properties,
 // you'll often use just a few of them.
 
-export const InterestCollectionReport: FC = () => {
+export const PaidTaxesReport: FC = () => {
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const [chartData, setChartData] = useState([]);
 	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
 	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
-	const [actualTabData, setActualTabData] = useState<string>("month");
 	const propertyInsuranceQuery = useQuery(
-		["all-interest-loans"],
+		["paid-Taxes-Loans"],
 		() => {
-			return ManageReportsService.getAllDefaultInterestLoan(actualTabData);
+			return ManageReportsService.getTaxesLoan();
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -48,123 +43,104 @@ export const InterestCollectionReport: FC = () => {
 	useEffect(() => {
 		if (propertyInsuranceQuery.data) {
 			const getData = propertyInsuranceQuery.data;
-			/* 	const data = [
+			const data = [
 				{
-					id: `Interest billed`,
-					label: `interest billed `,
-					value: Number.parseFloat(getData.totalCredit).toFixed(2),
+					id: `Paid`,
+					label: `Paid`,
+					value: getData.paidTaxesLoans.length,
 					color: "hsl(110, 70%, 50%)",
 				},
 				{
-					id: `Interest Collected `,
-					label: `Interest Collected `,
-					value: Number.parseFloat(getData.totalDebit).toFixed(2),
+					id: `UnPaid`,
+					label: `UnPaid`,
+					value: getData.unPaidTaxesLoans.length,
 					color: "hsl(187, 70%, 50%)",
 				},
-			]; */
-
-			const creditInterestTotal = getData.loans.reduce(
-				(
-					accumulator: number,
-					loans: { totalInterestCredit: { toString: () => string } }
-				) =>
-					accumulator + Number.parseFloat(loans.totalInterestCredit.toString()),
-				0
-			);
-
-			const debitInterestTotal = getData.loans.reduce(
-				(
-					accumulator: number,
-					loans: { totalInterestDebit: { toString: () => string } }
-				) =>
-					accumulator + Number.parseFloat(loans.totalInterestDebit.toString()),
-				0
-			);
-
-			const loans: Array<any> = [
-				{
-					id: "Outstanding Interest",
-					totalLoanAmount: creditInterestTotal - debitInterestTotal,
-				},
-				// Add more loans as needed
 			];
-			setChartData(loans as any);
-		}
 
-		if (propertyInsuranceQuery.data?.loans) {
-			const insuranceCsv = propertyInsuranceQuery.data?.loans;
+			if (propertyInsuranceQuery.data?.allTaxesLoans) {
+				const insuranceCsv = propertyInsuranceQuery.data?.allTaxesLoans;
 
-			const totalLoansAmount = insuranceCsv.reduce(
-				(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
-					accumulator + Number.parseFloat(dataInterest.totalLoanAmount),
-				0
-			);
+				const totalLoansAmount = insuranceCsv.reduce(
+					(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
+						accumulator + Number.parseFloat(dataInterest.totalLoanAmount),
+					0
+				);
 
-			const totalLoansDue = insuranceCsv.reduce(
-				(
-					accumulator: number,
-					dataInterest: {
-						totalDebits: string;
-						totalLoanAmount: string;
-					}
-				) => accumulator + Number.parseFloat(dataInterest.totalDebits),
-				0
-			);
+				const lastRow = [
+					"",
+					"",
+					moneyFormat(Number.parseInt(totalLoansAmount.toString())).replaceAll(
+						",",
+						"."
+					),
+					"",
+					"",
+					"",
+					"",
+				];
 
-			const lastRow = [
-				"",
-				"",
-				moneyFormat(Number.parseInt(totalLoansAmount)).replaceAll(",", "."),
-				"",
-				"",
-				moneyFormat(Number.parseInt(totalLoansDue)).replaceAll(",", "."),
-			];
-			setModalColumnsData([
-				...insuranceCsv,
-				{
-					totalLoanAmount: totalLoansAmount.toString(),
-					totalDebits: totalLoansDue.toString(),
+				setModalColumnsData([
+					...insuranceCsv,
+					{
+						ltv: "",
+						totalLoanAmount: totalLoansAmount.toString(),
 
-					collaterals: [
-						{
-							address: "",
-							taxUrl: "",
-							insuranceExpirationDate: "2023-12-11",
+						collaterals: [
+							{
+								address: "",
+								taxUrl: "",
+								insuranceExpirationDate: "2023-12-11",
+							},
+						],
+						fundingBreakDowns: [
+							{
+								lender: {
+									name: "",
+									isSpecialCase: true,
+								},
+							},
+							{
+								lender: {
+									name: "",
+									isSpecialCase: false,
+								},
+							},
+						],
+						borrower: {
+							llc: "",
+							user: {
+								email: "",
+								phoneNumber: "",
+								mailingAddress: "",
+								isActive: true,
+							},
 						},
-					],
-					borrower: {
-						llc: "",
-						user: {
-							email: "",
-							phoneNumber: "",
-							mailingAddress: "",
-							isActive: true,
-						},
+						totalDebits: "0",
+						creditAverage: "201249.32",
+						debitAverage: "250.00",
 					},
-					creditAverage: "201249.32",
-					debitAverage: "250.00",
-				},
-			]);
-			setLastRowModal(lastRow);
+				]);
+				setLastRowModal(lastRow);
+			}
+			setChartData(data as any);
 		}
 	}, [propertyInsuranceQuery.data]);
 
-	useEffect(() => {
-		void propertyInsuranceQuery.refetch();
-	}, [actualTabData]);
-
 	const downloadReport = (): void => {
-		const insuranceCsv = propertyInsuranceQuery.data?.loans;
+		const insuranceCsv = propertyInsuranceQuery.data?.allTaxesLoans;
 
 		const headerCsv = [
-			"Borrower Entity ",
+			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
-			"Phone Number",
+			"Lender",
+			"LTV",
+			"Phone #",
 			"Email",
-			"Due Amount",
+			"Paid",
 		];
-		const csvData = insuranceCsv?.map((data: any) => {
+		const csvData = insuranceCsv?.map((data) => {
 			return [
 				data.borrower?.llc.replaceAll(",", " "),
 				data?.borrower?.user.mailingAddress.replaceAll(",", " "),
@@ -172,49 +148,53 @@ export const InterestCollectionReport: FC = () => {
 					",",
 					"."
 				),
+				data?.fundingBreakDowns[1]?.lender.name,
+				data?.ltv,
 				data?.borrower?.user.phoneNumber,
 				data?.borrower?.user.email,
-				moneyFormat(Number.parseInt(data?.totalDebits)).replaceAll(",", "."),
+				data?.taxesPaid ? "Yes" : "No",
 			];
 		});
 
-		console.log(csvData);
-
 		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
-		downloadCSV(data, "InterestCollectionReport.csv");
+		downloadCSV(data, "Tax Delinquency.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
-		const insuranceCsv = propertyInsuranceQuery.data?.loans;
+		const insuranceCsv = propertyInsuranceQuery.data?.allTaxesLoans;
 
 		const headerCsv = [
-			"Borrower Entity ",
+			"Borrower Entity",
 			"Property Address",
 			"Loan Amount",
-			"Phone Number",
+			"Lender",
+			"LTV",
+			"Phone #",
 			"Email",
-			"Due Amount",
+			"Paid",
 		];
-		const csvData = insuranceCsv?.map((data: any) => {
+		const csvData = insuranceCsv?.map((data) => {
 			return [
 				data.borrower?.llc,
 				data?.borrower?.user.mailingAddress,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
+				data?.fundingBreakDowns[1]?.lender?.name,
+				data?.ltv,
 				data?.borrower?.user.phoneNumber,
 				data?.borrower?.user.email,
-				moneyFormat(Number.parseInt(data?.totalDebits)),
+				data?.taxesPaid ? "Yes" : "No",
 			];
 		});
 
 		const data = [headerCsv, ...(csvData ?? []), lastRowModal];
 
-		void downloadXLSX(data, "InterestCollectionReport.xlsx");
+		void downloadXLSX(data, "Tax Delinquency.xlsx");
 	};
 
 	const columns = [
 		{
-			name: "Name",
+			name: "Borrower Entity",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
@@ -226,6 +206,7 @@ export const InterestCollectionReport: FC = () => {
 					{row?.collaterals[0]?.address || ""}
 				</div>
 			),
+			maxWidth: "300px",
 			omit: false,
 		},
 		{
@@ -234,19 +215,11 @@ export const InterestCollectionReport: FC = () => {
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
 		},
-		{
-			name: "Due Amount",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string =>
-				(row?.totalDebits && moneyFormat(Number.parseInt(row?.totalDebits))) ||
-				"",
-			omit: false,
-		},
 	];
 
 	const columnsModal = [
 		{
-			name: "Name",
+			name: "Borrower Entity",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
@@ -259,19 +232,33 @@ export const InterestCollectionReport: FC = () => {
 					{row?.collaterals[0]?.address || ""}
 				</div>
 			),
+			maxWidth: "300px",
 			omit: false,
 		},
 		{
 			name: "Loan Amount",
-			maxWidth: "130px",
+			maxWidth: "150px",
 			selector: (row: Loan) =>
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
 		},
 		{
-			name: "Phone Number",
-			maxWidth: "130px",
-			selector: (row: Loan) => row?.borrower?.user.phoneNumber,
+			name: "Lender",
+			maxWidth: "200px",
+			selector: (row: Loan) => row?.fundingBreakDowns[1]?.lender.name || "",
+			omit: false,
+		},
+		{
+			name: "LTV",
+			maxWidth: "50px",
+			selector: (row: Loan) =>
+				row?.ltv && `${Number.parseFloat(row?.ltv).toFixed(0) || "0"}%`,
+			omit: false,
+		},
+		{
+			name: "Phone #",
+			maxWidth: "140px",
+			selector: (row: Loan) => row?.borrower?.user.phoneNumber || "",
 			omit: false,
 		},
 		{
@@ -281,11 +268,9 @@ export const InterestCollectionReport: FC = () => {
 			omit: false,
 		},
 		{
-			name: "Due Amount",
+			name: "Paid",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string =>
-				(row?.totalDebits && moneyFormat(Number.parseInt(row?.totalDebits))) ||
-				"",
+			selector: (row: Loan): string => (row?.taxesPaid ? "Yes" : "No"),
 			omit: false,
 		},
 	];
@@ -294,20 +279,13 @@ export const InterestCollectionReport: FC = () => {
 		<div className="h-[60%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 				<div
-					className="font-bold text-[13px] w-[300px]"
+					className="font-bold text-[13px]"
 					onClick={() => {
 						setOpenInsurance(true);
 					}}
 				>
-					Interest Collection Report
+					Tax Delinquency Report
 				</div>
-				<Tabs
-					tabs={newInterestTabs}
-					actualTab={actualTabData}
-					onClick={(value): void => {
-						setActualTabData(value);
-					}}
-				/>
 				<div className="flex gap-2 ml-2" onClick={downloadReport}>
 					<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 						<img src={Csv} alt="DKC Csv" />
@@ -321,19 +299,43 @@ export const InterestCollectionReport: FC = () => {
 					</div>
 				</div>
 			</div>
-			<div
-				style={{
-					display: "flex",
-					justifyContent: "center",
-					padding: "35px 10px",
+			<ResponsivePieCanvas
+				data={chartData}
+				margin={{ top: 40, right: 200, bottom: 40, left: 80 }}
+				innerRadius={0.5}
+				padAngle={0.7}
+				cornerRadius={3}
+				activeOuterRadiusOffset={8}
+				colors={{ scheme: "paired" }}
+				borderColor={{
+					from: "color",
+					modifiers: [["opacity", 0.6]],
 				}}
-			>
-				<div style={{ height: "300px" }}>
-					{propertyInsuranceQuery.data?.loans && (
-						<LoanInterestPieChart loans={chartData} />
-					)}
-				</div>
-			</div>
+				arcLinkLabelsSkipAngle={10}
+				arcLinkLabelsTextColor="#333333"
+				arcLinkLabelsThickness={2}
+				arcLinkLabelsColor={{ from: "color" }}
+				arcLabelsSkipAngle={10}
+				arcLabelsTextColor="white"
+				legends={[
+					{
+						anchor: "right",
+						direction: "column",
+						justify: false,
+						translateX: 140,
+						translateY: 0,
+						itemsSpacing: 2,
+						itemWidth: 60,
+						itemHeight: 14,
+						itemTextColor: "#999",
+						itemDirection: "left-to-right",
+						itemOpacity: 1,
+						symbolSize: 14,
+						symbolShape: "circle",
+					},
+				]}
+			/>
+
 			<div
 				onClick={() => {
 					setOpenInsurance(true);
@@ -341,20 +343,21 @@ export const InterestCollectionReport: FC = () => {
 			>
 				<DataTable
 					columns={columns as any}
-					data={propertyInsuranceQuery.data?.loans.slice(0, 3) || []}
+					data={propertyInsuranceQuery.data?.allTaxesLoans.slice(0, 3) || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>
 			</div>
+
 			<Modal
 				visible={openInsurance}
 				onHide={() => {
 					setOpenInsurance(false);
 				}}
-				title="Interest Collection Report"
 				width="90vw"
+				title="Tax Delinquency"
 			>
 				<DataTable
-					columns={columnsModal as any}
+					columns={columnsModal}
 					data={modalColumnsData || []}
 					progressPending={propertyInsuranceQuery.isLoading}
 				/>

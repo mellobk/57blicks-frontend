@@ -53,6 +53,9 @@ export const defaultInterestLoan = (): string => {
 export const allDefaultLoan = (): string => {
 	return `/loans/default/all`;
 };
+export const taxesLoan = (): string => {
+	return `/loans/default/taxes`;
+};
 
 export const allDefaultInterestLoan = (value: string): string => {
 	return `/loans/default/loan-ledger?date=${value}`;

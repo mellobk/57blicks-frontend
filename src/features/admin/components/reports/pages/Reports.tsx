@@ -24,6 +24,7 @@ import { InterestCollectionReport } from "../components/InterestCollectionReport
 import { Tabs } from "../../servicing/component/Tabs";
 import { loansTabs } from "../../servicing/utils/tabs";
 import { ExtendedLoanReport } from "../components/extendedFoundedLoanReport";
+import { PaidTaxesReport } from "../components/paidTaxesReport";
 /* import { Int1999 } from "../components/int1999-";
 import { Int1998 } from "../components/int1998-"; */
 export const Reports: FC = () => {
@@ -50,6 +51,10 @@ export const Reports: FC = () => {
 			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
 				<AllDefaultReport />
 			</div>
+			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
+				<PaidTaxesReport />
+			</div>
+
 			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
 				<NewFoundedLoanReport />
 				<hr className="h-[2px]  w-full mt-5"></hr>
@@ -97,15 +102,12 @@ export const Reports: FC = () => {
 					</div>
 				)}
 			</div>
-
 			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
 				<AverageDaysPaidLoans />
 			</div>
-
 			<div className="flex flex-col items-center  w-[49%]   bg-white  border-8 rounded-2xl shadow-md">
 				<ExtendedLoanReport />
 			</div>
-
 			{/* 			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
 				<Int1998 />
 				<hr className="h-[2px]  w-full mt-1"></hr>

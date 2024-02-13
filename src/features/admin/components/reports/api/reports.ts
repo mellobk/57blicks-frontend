@@ -18,6 +18,7 @@ import {
 	loanProduct,
 	newLoansFounded,
 	paidOffLoan,
+	taxesLoan,
 } from "./backend-end-points";
 
 import { authApiClient } from "@/utils/api-client";
@@ -62,6 +63,15 @@ const getAllDefaultLoan = async () => {
 		unauthorized: { quantity: number; percentage: number };
 		defaultLoans: Array<Loan>;
 	}>(allDefaultLoan());
+	return response.data;
+};
+
+const getTaxesLoan = async () => {
+	const response = await authApiClient.get<{
+		paidTaxesLoans: Array<Loan> | [];
+		unPaidTaxesLoans: Array<Loan> | [];
+		allTaxesLoans: Array<Loan> | [];
+	}>(taxesLoan());
 	return response.data;
 };
 
@@ -155,6 +165,7 @@ const ManageReportsService = {
 	getNewLoansFounded,
 	getExtendedFounded,
 	getAllDefaultInterestLoan,
+	getTaxesLoan,
 };
 
 export default ManageReportsService;
