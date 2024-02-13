@@ -71,11 +71,13 @@ const styles = StyleSheet.create({
 export const DocumentPreview: FC<Props> = ({ control }) => {
 	const form = useWatch({ control });
 
-	const localImage = JSON.parse(localStorage.getItem("image") || "");
+	const localImage =
+		localStorage.getItem("image") === "not image"
+			? ""
+			: JSON?.parse(localStorage.getItem("image") || "");
 
-	console.log(localImage);
-
-	const removeBlankLines = (text: string) => text.replace(/^\s*[\n\r]/gm, "");
+	const removeBlankLines = (text: string) =>
+		text.replaceAll(/^\s*[\n\r]/gm, "");
 
 	return (
 		<Document style={styles.body}>
@@ -203,9 +205,11 @@ export const DocumentPreview: FC<Props> = ({ control }) => {
 								</View>
 							)}
 						</View>
-						<View style={styles.column}>
-							{<Image src={localImage as any} />}
-						</View>
+						{localImage !== "" && (
+							<View style={styles.column}>
+								<Image src={localImage as any} />
+							</View>
+						)}
 					</View>
 					{form.additionalInformation && (
 						<View style={styles.section}>

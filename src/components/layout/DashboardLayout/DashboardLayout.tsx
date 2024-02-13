@@ -62,6 +62,10 @@ export const DashboardLayout: FC<Props> = ({
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
+	useEffect(() => {
+		sendToLocalStorage("image", "not image");
+	}, []);
+
 	const userNotification = useQuery(
 		["user-notification-query"],
 		() => {

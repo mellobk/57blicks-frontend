@@ -36,11 +36,15 @@ export const Portfolio: FC = () => {
 		{
 			name: "Loan",
 			maxWidth: "350px",
-			selector: (row: Loan) => (
-				<div className=" w-[250px] break-words whitespace-normal p-2">
-					{`${row.borrower?.llc} / ${row.borrower?.user.firstName} ${row.borrower?.user.lastName} / ${row.borrower?.user.mailingAddress}`}
-				</div>
-			),
+			selector: (row: Loan) => {
+				const fullName = `${row.borrower?.user.firstName} ${row.borrower?.user.lastName}`;
+				return (
+					<div className=" w-[250px] break-words whitespace-normal p-2">
+						{`${row.borrower?.llc || fullName}  / ${row.borrower?.user
+							.mailingAddress}`}
+					</div>
+				);
+			},
 
 			sortable: true,
 		},

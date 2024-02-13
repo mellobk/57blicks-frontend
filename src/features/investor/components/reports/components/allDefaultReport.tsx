@@ -230,19 +230,19 @@ export const AllDefaultReport: FC = () => {
 			selector: (row: Loan) =>
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
-			maxWidth: "130px",
+			maxWidth: "300px",
 		},
 		{
 			name: "Asset Type",
 			selector: (row: Loan) => row?.collaterals[0]?.assetType || "",
 			omit: false,
-			maxWidth: "130px",
+			maxWidth: "200px",
 		},
 		{
 			name: "Loan product type",
 			selector: (row: Loan) => row?.type || "",
 			omit: false,
-			maxWidth: "160px",
+			maxWidth: "200px  ",
 		},
 		{
 			name: "LTV",

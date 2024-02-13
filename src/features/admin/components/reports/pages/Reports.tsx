@@ -50,22 +50,21 @@ export const Reports: FC = () => {
 				<InterestCollectionReport />
 			</div>
 			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
-				<AllDefaultReport />
-			</div>
-			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
 				<PropertyInsurance />
 			</div>
-
-			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
-				<PaidTaxesReport />
-			</div>
-
 			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
 				<NewFoundedLoanReport />
 				<hr className="h-[2px]  w-full mt-5"></hr>
 				<PaidLoanReport />
 				{/* 		<hr className="h-[2px] bg-black w-full"></hr> */}
 			</div>
+			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
+				<AllDefaultReport />
+			</div>
+			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
+				<PaidTaxesReport />
+			</div>
+
 			{/* 			<div className="flex  w-[30%] p-2">
 					<PropertyInsurance />
 				</div>

@@ -106,8 +106,9 @@ export const InterestCollectionReport: FC = () => {
 					dataInterest: {
 						totalDebits: string;
 						totalLoanAmount: string;
+						totalInterest: string;
 					}
-				) => accumulator + Number.parseFloat(dataInterest.totalDebits),
+				) => accumulator + Number.parseInt(dataInterest?.totalInterest),
 				0
 			);
 
@@ -119,11 +120,12 @@ export const InterestCollectionReport: FC = () => {
 				"",
 				moneyFormat(Number.parseInt(totalLoansDue)).replaceAll(",", "."),
 			];
+
 			setModalColumnsData([
 				...insuranceCsv,
 				{
 					totalLoanAmount: totalLoansAmount.toString(),
-					totalDebits: totalLoansDue.toString(),
+					totalInterest: totalLoansDue,
 
 					collaterals: [
 						{
@@ -162,7 +164,7 @@ export const InterestCollectionReport: FC = () => {
 			"Loan Amount",
 			"Phone Number",
 			"Email",
-			"Due Amount",
+			"Due Interest",
 		];
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
@@ -174,7 +176,7 @@ export const InterestCollectionReport: FC = () => {
 				),
 				data?.borrower?.user.phoneNumber,
 				data?.borrower?.user.email,
-				moneyFormat(Number.parseInt(data?.totalDebits)).replaceAll(",", "."),
+				moneyFormat(Number.parseInt(data?.totalInterest)).replaceAll(",", "."),
 			];
 		});
 
@@ -194,7 +196,7 @@ export const InterestCollectionReport: FC = () => {
 			"Loan Amount",
 			"Phone Number",
 			"Email",
-			"Due Amount",
+			"Due Interest",
 		];
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
@@ -203,7 +205,7 @@ export const InterestCollectionReport: FC = () => {
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				data?.borrower?.user.phoneNumber,
 				data?.borrower?.user.email,
-				moneyFormat(Number.parseInt(data?.totalDebits)),
+				moneyFormat(Number.parseInt(data?.totalInterest)),
 			];
 		});
 
@@ -235,11 +237,11 @@ export const InterestCollectionReport: FC = () => {
 			omit: false,
 		},
 		{
-			name: "Due Amount",
+			name: "Due Interest",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string =>
-				(row?.totalDebits && moneyFormat(Number.parseInt(row?.totalDebits))) ||
-				"",
+			selector: (row: Loan): string => {
+				return moneyFormat(Number.parseInt(row?.totalInterest));
+			},
 			omit: false,
 		},
 	];
@@ -263,14 +265,14 @@ export const InterestCollectionReport: FC = () => {
 		},
 		{
 			name: "Loan Amount",
-			maxWidth: "130px",
+			maxWidth: "200px",
 			selector: (row: Loan) =>
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
 		},
 		{
 			name: "Phone Number",
-			maxWidth: "130px",
+			maxWidth: "200px",
 			selector: (row: Loan) => row?.borrower?.user.phoneNumber,
 			omit: false,
 		},
@@ -281,11 +283,11 @@ export const InterestCollectionReport: FC = () => {
 			omit: false,
 		},
 		{
-			name: "Due Amount",
+			name: "Due Interest",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string =>
-				(row?.totalDebits && moneyFormat(Number.parseInt(row?.totalDebits))) ||
-				"",
+			selector: (row: Loan): string => {
+				return moneyFormat(Number.parseInt(row?.totalInterest));
+			},
 			omit: false,
 		},
 	];
