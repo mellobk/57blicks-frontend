@@ -2,8 +2,8 @@ export const updateLedger = (id: string): string => {
 	return `/ledgers/${id}`;
 };
 
-export const defaultInsuranceLoan = (): string => {
-	return `/loans/default/insurances`;
+export const defaultInsuranceLoan = (days: string): string => {
+	return `/loans/default/insurances?days=${days}`;
 };
 
 export const paidOffLoan = (days: string): string => {

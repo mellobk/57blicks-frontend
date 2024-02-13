@@ -23,11 +23,11 @@ import {
 
 import { authApiClient } from "@/utils/api-client";
 
-const getDefaultInsuranceLoan = async () => {
+const getDefaultInsuranceLoan = async (days: string) => {
 	const response = await authApiClient.get<{
 		loansQuantity: number;
 		defaultLoans: Array<Loan>;
-	}>(defaultInsuranceLoan());
+	}>(defaultInsuranceLoan(days));
 	return response.data;
 };
 

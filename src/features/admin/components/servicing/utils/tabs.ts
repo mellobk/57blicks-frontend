@@ -51,6 +51,13 @@ export const newFoundedTabs = [
 	{ label: "90", value: "90", routeTo: "90" },
 ];
 
+export const insuranceTabs = [
+	{ label: "Expired", value: "expired", routeTo: "expired" },
+	{ label: "30", value: "30", routeTo: "30" },
+	{ label: "60", value: "60", routeTo: "60" },
+	{ label: "90", value: "90", routeTo: "90" },
+];
+
 export const newInterestTabs = [
 	{ label: "Month", value: "Month", routeTo: "Month" },
 	{ label: "YTD", value: "YTD", routeTo: "YTD" },

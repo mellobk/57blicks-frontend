@@ -3,9 +3,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, type FC, useState, type SetStateAction } from "react";
-/* import PropertyInsurance from "../components/PropertyInsurance";
+/*
 import PropertyTax from "../components/PropertyTax";
 import PropertyInterest from "../components/PropertyInterest"; */
+import PropertyInsurance from "../components/PropertyInsurance";
 import { AllDefaultReport } from "../components/allDefaultReport";
 import { emptyObject, findPermission } from "@/utils/common-functions";
 import { useNavigate } from "@tanstack/router";
@@ -51,6 +52,10 @@ export const Reports: FC = () => {
 			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
 				<AllDefaultReport />
 			</div>
+			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
+				<PropertyInsurance />
+			</div>
+
 			<div className="flex flex-col items-center  w-[49%]   bg-white border-8 rounded-2xl shadow-md">
 				<PaidTaxesReport />
 			</div>

@@ -16,7 +16,7 @@ const LoanInterestPieChart: React.FC<LoanInterestPieChartProps> = ({
 	loans,
 }) => {
 	const chartData = {
-		labels: loans.map((loan) => `Loan ${loan.id}`),
+		labels: loans.map((loan) => `${loan.id}`),
 		datasets: [
 			{
 				label: "Loan Interest",
