@@ -203,9 +203,10 @@ export const ExpandedComponent: ComponentType<Props> = ({
 							</div>
 							<Cell
 								format="text"
-								value={`LLC  ${
-									participant.loan.collaterals?.[0]?.address || ""
-								}`}
+								value={`${
+									participant.loan?.borrower?.llc ||
+									`${participant.loan?.borrower?.user?.firstName} ${participant.loan?.borrower?.user?.lastName}`
+								}  / ${participant.loan?.borrower?.user.mailingAddress}`}
 								bold
 							/>
 							<Cell
