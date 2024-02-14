@@ -93,7 +93,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 				<div className="relative">
 					<div
 						key={participant.id + index}
-						className={`flex flex-row h-12 ${
+						className={`  flex flex-row h-12 ${
 							selectedParticipation?.id === participant.id
 								? "bg-blue-200/[15%]"
 								: "bg-white"
@@ -101,7 +101,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 						onClick={() => selectParticipation?.(participant)}
 					>
 						<div className="w-12" />
-						<div className="grid grid-cols-9 w-full items-center relative z-0">
+						<div className="flex w-full items-center relative z-0 ">
 							<div
 								className="cursor-pointer absolute left-[-30px] "
 								onClick={() => {
@@ -180,7 +180,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 				<div className="relative">
 					<div
 						key={participant.id}
-						className={`flex flex-row h-12 ${
+						className={`flex flex-row h-12 mt-[10px] mb-[10px] ${
 							selectedParticipation?.id === participant.id
 								? "bg-blue-200/[15%]"
 								: "bg-white"
@@ -190,8 +190,8 @@ export const ExpandedComponent: ComponentType<Props> = ({
 							selectParticipation?.(participant as ParticipationBreakdown);
 						}}
 					>
-						<div className="w-12" />
-						<div className="grid grid-cols-9 w-full items-center relative z-0">
+						<div className="w-12 " />
+						<div className="flex w-full items-center relative z-0  ">
 							<div
 								className="cursor-pointer absolute left-[-30px] "
 								onClick={() => {
@@ -203,6 +203,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 							</div>
 							<Cell
 								format="text"
+								className=""
 								value={`${
 									participant.loan?.borrower?.llc ||
 									`${participant.loan?.borrower?.user?.firstName} ${participant.loan?.borrower?.user?.lastName}`

@@ -90,6 +90,7 @@ export const DueToDraws: FC<Props> = ({ data, openModal, setOpenModal }) => {
 				expandableRowGroups
 				expandedRows={expandedRows}
 				onRowToggle={(event) => {
+					console.log(event);
 					setExpandedRows(event.data as Array<IConstructionHoldbackOverview>);
 				}}
 				rowGroupHeaderTemplate={headerTemplate}
