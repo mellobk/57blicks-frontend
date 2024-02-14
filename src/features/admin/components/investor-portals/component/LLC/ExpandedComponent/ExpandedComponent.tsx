@@ -16,7 +16,7 @@ import {
 	getIsSameMonthYear,
 	getIsSamePreviousMonthYear,
 } from "@/utils/common-functions";
-import { moneyFormat } from "@/utils/formats";
+import { formatDate, moneyFormat } from "@/utils/formats";
 
 interface Props extends ExpanderComponentProps<Investor> {
 	selectedParticipation?: FundingBreakdown;
@@ -129,12 +129,16 @@ export const ExpandedComponent: ComponentType<Props> = ({
 							<Cell format="money" value={participant.regular} bold />
 							<Cell
 								format="text"
-								value={participant.loan.originationDate?.toString() || ""}
+								value={formatDate(
+									participant.loan.originationDate?.toString() || ""
+								)}
 								bold
 							/>
 							<Cell
 								format="text"
-								value={participant.loan.maturityDate?.toString() || ""}
+								value={formatDate(
+									participant.loan.maturityDate?.toString() || ""
+								)}
 								bold
 							/>
 							<Cell
