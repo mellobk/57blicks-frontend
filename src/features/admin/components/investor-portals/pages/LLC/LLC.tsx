@@ -61,7 +61,11 @@ export const LLC: FC = () => {
 	const columns = [
 		{
 			name: "Investor",
-			selector: (row: Loan) => `${row?.user?.firstName} ${row?.user?.lastName}`,
+			selector: (row: Loan) =>
+				`${
+					row?.user?.entityName ||
+					`${row?.user?.firstName} ${row?.user?.lastName}`
+				}`,
 			sortable: true,
 		},
 		{
