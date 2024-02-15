@@ -140,7 +140,10 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 				createLedgerQuery.mutate({
 					title: "Rejected Loan",
 					timestamp: new Date(),
-					content: `Super admin ${localUserName} Reject ${editLoan.name}! needs action.`,
+					content: `Super admin ${localUserName} Reject ${
+						editLoan?.borrower?.llc ||
+						`${editLoan?.borrower?.user?.firstName} ${editLoan?.borrower?.user?.lastName}`
+					}  ${editLoan.name}! needs action.`,
 					additionalData: JSON.stringify(dataNotification),
 					userFullName: localUserName,
 					priority: "HIGH",

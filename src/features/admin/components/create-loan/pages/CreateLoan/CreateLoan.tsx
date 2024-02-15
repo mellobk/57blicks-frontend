@@ -164,7 +164,10 @@ export const CreateLoan: FC = () => {
 			createLedgerQuery.mutate({
 				title: "Approve Loan",
 				timestamp: new Date(),
-				content: `Pending Loan Approval!  from ${localUserName} needs action.`,
+				content: `Pending ${
+					data?.borrower?.llc ||
+					`${data?.borrower?.user?.firstName} ${data?.borrower?.user?.lastName}`
+				} Loan Approval!  from ${localUserName} needs action.`,
 				additionalData: JSON.stringify(dataNotification),
 				userFullName: localUserName,
 				priority: "HIGH",
