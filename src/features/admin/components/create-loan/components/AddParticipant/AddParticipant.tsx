@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type {
 	FundingBreakdown,
 	Loan,
@@ -6,13 +8,14 @@ import { useForm, useWatch } from "react-hook-form";
 
 import { Button } from "@/components/ui/Button";
 import { Dropdown } from "@/components/forms/Dropdown";
-import type { FC } from "react";
+import { useEffect, type FC, useState } from "react";
 import { FormatInput } from "@/components/forms/FormatInput";
 import InvestorsService from "@/api/investors";
 import { Modal } from "@/components/ui/Modal";
 import type { UseFieldArrayAppend } from "react-hook-form";
 import { nameFormat } from "@/utils/formats";
 import { useQuery } from "@tanstack/react-query";
+import type { Investor } from "@/types/api/investor";
 
 interface Props {
 	append: UseFieldArrayAppend<Loan, "participationBreakdown">;
@@ -39,6 +42,32 @@ export const AddParticipant: FC<Props> = ({
 		{ enabled: openModal }
 	);
 	const { control, handleSubmit, reset } = useForm<Participant>();
+	const [userData, setUserData] = useState<Array<Investor>>([]);
+
+	useEffect(() => {
+		if (investorsQuery.data) {
+			const filterData = investorsQuery.data.sort((a, b) => {
+				// Assuming 'name' is the property by which you want to sort
+				const nameA =
+					a.user?.entityName ||
+					`${a.user?.firstName} ${a.user?.lastName}`.toUpperCase(); // ignore upper and lowercase
+				const nameB =
+					b.user?.entityName ||
+					`${b.user?.firstName} ${b.user?.lastName}`.toUpperCase(); // ignore upper and lowercase
+				if (nameA < nameB) {
+					return -1; //nameA comes first
+				}
+				if (nameA > nameB) {
+					return 1; // nameB comes first
+				}
+
+				// names must be equal
+				return 0;
+			});
+
+			setUserData(filterData as any);
+		}
+	}, [investorsQuery.data]);
 
 	const [participant] = useWatch({
 		control,
@@ -101,7 +130,7 @@ export const AddParticipant: FC<Props> = ({
 					className="mt-6"
 					label="Participant"
 					name="participant"
-					options={investorsQuery?.data?.map(({ id, user }) => ({
+					options={userData?.map(({ id, user }) => ({
 						code: id,
 						name: nameFormat(
 							`

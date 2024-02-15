@@ -28,7 +28,10 @@ export const FundingBreakdown: FC<Props> = ({ data }) => {
 					name =
 						row.type === "YieldSpread"
 							? "Y/S"
-							: `${row.investor?.user?.firstName} ${row.investor?.user?.lastName}`;
+							: `${
+									row.investor?.user?.entityName ||
+									`${row.investor?.user?.firstName} ${row.investor?.user?.lastName}`
+							  }`;
 					return name;
 				}
 
