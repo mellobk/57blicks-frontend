@@ -23,7 +23,8 @@ const DeleteLedger: FC<DeleteLedgerProps> = ({
 	setOpenConfirmation,
 }) => {
 	if (
-		(dataLedgers?.typeOfPayment === LedgerTypeOfPayment.INTEREST ||
+		((dataLedgers?.typeOfPayment === LedgerTypeOfPayment.INTEREST &&
+			dataLedgers?.credit > 0) ||
 			dataLedgers?.typeOfPayment === LedgerTypeOfPayment.PRINCIPAL) &&
 		/*|| dataLedgers?.typeOfPayment === LedgerTypeOfPayment.LATE_FEE*/ dataLedgers?.editable ===
 			false &&
