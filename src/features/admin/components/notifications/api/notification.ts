@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Loan, Notification } from "../types/types";
@@ -60,9 +62,9 @@ const createNotifications = async (body: Notification) => {
 	return response.data;
 };
 
-const getUserNotification = async () => {
+const getUserNotification = async (type: string) => {
 	const response = await authApiClient.get<UserNotification>(
-		userNotification()
+		userNotification(type)
 	);
 	return response.data;
 };

@@ -1,3 +1,6 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-implied-eval */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -26,6 +29,8 @@ import UserService from "../../../api/user.ts";
 import { findPermission } from "@/utils/common-functions.ts";
 import { PermissionType } from "@/types/api/permissions-type";
 import { getRefreshToken } from "@/lib/cognito.ts";
+import { Select } from "@/components/forms/Select/Select.tsx";
+import { NOTIFICATION_OPTIONS } from "@/features/admin/components/manage-user/utils/constant.ts";
 
 type Props = {
 	children?: ReactNode;
@@ -47,6 +52,8 @@ export const DashboardLayout: FC<Props> = ({
 	const [openNotificationTitle, setNotificationTitle] = useState<string>();
 	const [openModalUser, setOpenModalUser] = useState<boolean>();
 	const [openModalLoan, setOpenModalLoan] = useState<boolean>();
+	const [notificationsType, setNotificationsType] =
+		useState<string>("notifications");
 	const [openModalGeneralSearch, setOpenModalGeneralSearch] =
 		useState<boolean>(false);
 	const [openModalNotification, setOpenModalNotification] = useState<boolean>();
@@ -69,7 +76,7 @@ export const DashboardLayout: FC<Props> = ({
 	const userNotification = useQuery(
 		["user-notification-query"],
 		() => {
-			return ManageNotificationService.getUserNotification();
+			return ManageNotificationService.getUserNotification(notificationsType);
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -129,6 +136,10 @@ export const DashboardLayout: FC<Props> = ({
 	}, [updateReadNotificationQuery]);
 
 	useEffect(() => {
+		void userNotification.refetch();
+	}, [notificationsType]);
+
+	useEffect(() => {
 		if (userLoggedQuery.data) {
 			sendToLocalStorage(
 				userName,
@@ -174,6 +185,7 @@ export const DashboardLayout: FC<Props> = ({
 	};
 
 	const markAllReadNotifications = () => {
+		console.log("data");
 		updateReadNotificationQuery.mutate();
 	};
 
@@ -391,7 +403,18 @@ export const DashboardLayout: FC<Props> = ({
 						}}
 					>
 						<div className="border-b border-gray-200 pb-2 flex gap-2 items-center justify-between">
-							<div className="text-[18px]">Notifications</div>{" "}
+							<div className="text-[18px]">
+								<Select
+									className="flex flex-col gap-2"
+									label=""
+									placeholder="Select Account Type"
+									value={notificationsType}
+									options={NOTIFICATION_OPTIONS}
+									onChange={(event): void => {
+										setNotificationsType(event.target.value);
+									}}
+								/>
+							</div>{" "}
 							<div className="flex justify-center items-center gap-3">
 								<Button
 									buttonText="Mark all as read"

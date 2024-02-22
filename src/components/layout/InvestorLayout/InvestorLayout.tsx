@@ -91,7 +91,7 @@ export const InvestorLayout: FC<Props> = ({ children }) => {
 	const userNotification = useQuery(
 		["user-notification-query"],
 		() => {
-			return ManageNotificationService.getUserNotification();
+			return ManageNotificationService.getUserNotification("notifications");
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);

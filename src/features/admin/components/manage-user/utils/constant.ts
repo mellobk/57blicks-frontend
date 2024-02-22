@@ -4,3 +4,8 @@ export const ACCOUNT_OPTIONS = [
 	{ name: "Business Checking", code: "Business Checking" },
 	{ name: "Business Savings", code: "Business Savings" },
 ];
+
+export const NOTIFICATION_OPTIONS = [
+	{ name: "Notifications", code: "notifications" },
+	{ name: "Pending", code: "Pending" },
+];

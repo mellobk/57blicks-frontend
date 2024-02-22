@@ -17,8 +17,8 @@ export const updateInvestmentStatus = (
 	return `/investments/status/${investorId}/${opportunityId}`;
 };
 
-export const userNotification = (): string => {
-	return `/user-notifications?page=1&take=20`;
+export const userNotification = (type: string): string => {
+	return `/user-notifications?page=1&take=40&type=${type}`;
 };
 
 export const readAllNotification = (): string => {
