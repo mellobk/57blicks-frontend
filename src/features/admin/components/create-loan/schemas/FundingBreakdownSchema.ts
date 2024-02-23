@@ -3,15 +3,9 @@ import { errorMessages } from "@/utils/error-messages";
 
 export const FundingBreakdownSchema = z.object({
 	amount: z.string().nonempty(errorMessages.required),
-	constructionHoldback: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(15, errorMessages.maxLength),
+	constructionHoldback: z.string().nonempty(errorMessages.required),
 	investorId: z.string().max(100, errorMessages.maxLength).optional(),
-	lenderName: z
-		.string()
-		.nonempty(errorMessages.required)
-		.max(100, errorMessages.maxLength),
+	lenderName: z.string().nonempty(errorMessages.required),
 	prorated: z
 		.string()
 		.nonempty(errorMessages.required)
