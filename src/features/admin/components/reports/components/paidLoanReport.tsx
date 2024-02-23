@@ -23,6 +23,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
 import { Tabs } from "../../servicing/component/Tabs";
 import { paidLoansTabs } from "../../servicing/utils/tabs";
+import { getPreviousThreeMonths } from "@/utils/common-functions";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -31,14 +32,20 @@ import { paidLoansTabs } from "../../servicing/utils/tabs";
 // you'll often use just a few of them.
 
 export const PaidLoanReport: FC = () => {
-	const [actualTabData, setActualTabData] = useState<string>("30");
+	const reportsMonths = getPreviousThreeMonths();
+	const [actualTabData, setActualTabData] = useState<string>(
+		reportsMonths[2]?.label.toLowerCase() || ""
+	);
+	const findDate = reportsMonths.find(
+		(data) => data?.label?.toLowerCase() === actualTabData
+	);
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
 	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
 	const propertyInsuranceQuery = useQuery(
 		["all-paid-loans"],
 		() => {
-			return ManageReportsService.getPaidOffLoans(actualTabData);
+			return ManageReportsService.getPaidOffLoans(findDate?.value || "YTD");
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -264,7 +271,7 @@ export const PaidLoanReport: FC = () => {
 					Loans Paid off
 				</div>
 				<Tabs
-					tabs={paidLoansTabs}
+					tabs={[...getPreviousThreeMonths(), { label: "YTD", value: "YTD" }]}
 					actualTab={actualTabData}
 					onClick={(value): void => {
 						setActualTabData(value);

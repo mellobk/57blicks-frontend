@@ -1,4 +1,9 @@
-import { type FC, useEffect } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { type FC, useEffect, useState } from "react";
 import {
 	type Control,
 	type FieldErrors,
@@ -19,6 +24,11 @@ import {
 } from "@/features/admin/components/create-loan/utils/selects";
 import moment from "moment";
 import { inputClassName } from "@/utils/class-names";
+import { Icon } from "@/components/ui/Icon";
+import { Modal } from "@/components/ui/Modal";
+import { CreateLoanConsultant } from "../CreateLoanConsultant/CreateLoanConsultant";
+import { useQuery } from "@tanstack/react-query";
+import ManageLoanConsultantService from "../../../servicing/api/loan-consultant";
 
 interface Props {
 	control: Control<Loan>;
@@ -33,6 +43,35 @@ export const LoanInformation: FC<Props> = ({
 	register,
 	setValue,
 }) => {
+	const [getAllConsultants, setGetAllConsultants] = useState<
+		Array<{
+			code: string;
+			id: number;
+			name: string;
+		}>
+	>();
+
+	const loanConsultantQuery = useQuery(
+		["all-loan-consultants-loan"],
+		() => {
+			return ManageLoanConsultantService.getAllLoansConsultants();
+		},
+		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
+	);
+
+	useEffect(() => {
+		const consultantsOptions: any = loanConsultantQuery?.data
+			?.data as unknown as Array<{ name: string }>;
+
+		setGetAllConsultants(
+			consultantsOptions?.map((data: { name: any }) => {
+				return { code: data.name, name: data.name };
+			})
+		);
+	}, [loanConsultantQuery.isFetching]);
+
+	const [openCreateLoanConsultant, setOpenCreateLoanConsultant] =
+		useState<boolean>(false);
 	const [totalLoanAmount, constructionHoldback] = useWatch({
 		control,
 		name: ["totalLoanAmount", "constructionHoldback"],
@@ -48,6 +87,27 @@ export const LoanInformation: FC<Props> = ({
 			)
 		);
 	}, [totalLoanAmount, constructionHoldback]);
+
+	useEffect(() => {
+		if (getAllConsultants) {
+			const filterData = getAllConsultants.sort((a, b) => {
+				// Assuming 'name' is the property by which you want to sort
+				const nameA = a.code.toLowerCase(); // ignore upper and lowercase
+				const nameB = b.code.toLowerCase(); // ignore upper and lowercase
+				if (nameA < nameB) {
+					return -1; //nameA comes first
+				}
+				if (nameA > nameB) {
+					return 1; // nameB comes first
+				}
+
+				// names must be equal
+				return 0;
+			});
+
+			setGetAllConsultants(filterData as any);
+		}
+	}, [getAllConsultants]);
 
 	return (
 		<div>
@@ -237,15 +297,39 @@ export const LoanInformation: FC<Props> = ({
 				required
 			/>
 			<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
-				<Input
-					data-testid="loan-information-loan-consultant"
-					error={errors?.loanConsultant?.message}
-					label="Loan Consultant"
-					placeholder="Enter Loan Consultant"
-					register={register("loanConsultant")}
-					wrapperClassName="mt-6"
-					required
-				/>
+				<div style={{ display: "flex", alignItems: "end", gap: "5px" }}>
+					<Dropdown
+						data-testid="loan-information-lead-source"
+						control={control}
+						error={errors?.loanConsultant?.message}
+						className="mt-6 w-full"
+						label="Loan Consultant"
+						name="loanConsultant"
+						options={getAllConsultants}
+						required
+					/>
+					<div
+						style={{
+							background: "transparent",
+							width: "25px",
+							height: "25px",
+							borderRadius: "60px",
+							display: "flex",
+							justifyContent: "center",
+							alignItems: "center",
+							marginBottom: "8px",
+							cursor: "pointer",
+						}}
+					>
+						<div
+							onClick={() => {
+								setOpenCreateLoanConsultant(true);
+							}}
+						>
+							<Icon name="plus" width="15" />
+						</div>
+					</div>
+				</div>
 				<FormatInput
 					data-testid="loan-information-ltv"
 					control={control}
@@ -267,6 +351,18 @@ export const LoanInformation: FC<Props> = ({
 				options={LEAD_SOURCES}
 				required
 			/>
+
+			<Modal
+				visible={openCreateLoanConsultant}
+				onHide={() => {
+					setOpenCreateLoanConsultant(false);
+					void loanConsultantQuery.refetch();
+				}}
+				title="Create Loan Consultant"
+				width="450px"
+			>
+				<CreateLoanConsultant />
+			</Modal>
 		</div>
 	);
 };
