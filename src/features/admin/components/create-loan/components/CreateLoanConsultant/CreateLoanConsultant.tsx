@@ -109,7 +109,7 @@ export const CreateLoanConsultant: FC<AddInvestorProps> = ({
 					/>
 				</div>
 			</div>
-			<div className="h-[450px]  overflow-scroll flex justify-center items-center flex-col">
+			<div className="h-[450px]  overflow-scroll flex  items-center flex-col">
 				{loanConsultantQuery.isLoading ? (
 					<Icon name="loading" width="50" color="black" />
 				) : (
