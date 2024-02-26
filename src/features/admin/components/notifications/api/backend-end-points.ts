@@ -18,7 +18,9 @@ export const updateInvestmentStatus = (
 };
 
 export const userNotification = (type: string): string => {
-	return `/user-notifications?page=1&take=40&type=${type}`;
+	return `/user-notifications?page=1&take=${
+		type === "Pending" ? "100000000" : "60"
+	}&type=${type}`;
 };
 
 export const readAllNotification = (): string => {
