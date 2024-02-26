@@ -398,7 +398,7 @@ export const DashboardLayout: FC<Props> = ({
 							top: "60px",
 							padding: "15px",
 							zIndex: "100",
-							maxHeight: "80%",
+							maxHeight: "65%",
 							overflow: "overlay",
 						}}
 					>
