@@ -1,3 +1,4 @@
+/* eslint-disable no-sparse-arrays */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -149,7 +150,8 @@ export const AllDefaultReport: FC = () => {
 		];
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
-				data.borrower?.llc,
+				data.borrower?.llc.replaceAll(",", " "),
+				,
 				data?.borrower?.user.mailingAddress?.replaceAll(",", " "),
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)).replaceAll(
 					",",
