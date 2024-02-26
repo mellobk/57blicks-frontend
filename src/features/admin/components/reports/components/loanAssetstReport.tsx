@@ -221,7 +221,7 @@ export const AssetLoanReport: FC = () => {
 			const csvData = keys?.map((data) => {
 				const productData = insuranceCsv[data]?.map((value: Loan) => {
 					return [
-						value.borrower?.llc,
+						value.borrower?.llc.replaceAll(",", " "),
 						value?.collaterals[0]?.address,
 						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
 						formatDate(value?.originationDate?.toString() || ""),
