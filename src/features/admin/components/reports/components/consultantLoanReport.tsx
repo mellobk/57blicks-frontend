@@ -204,6 +204,7 @@ export const ConsultantLoanReport: FC = () => {
 		"Asset Type",
 		"Loan Product",
 		"Rate",
+		"LTV",
 	];
 
 	const columnsModal = [
@@ -255,6 +256,14 @@ export const ConsultantLoanReport: FC = () => {
 				`${Number.parseFloat(row?.interestRate).toFixed(0)}%`,
 			omit: false,
 		},
+		{
+			name: "LTV",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string =>
+				row?.ltv &&
+				`  ${Number.parseFloat(row?.ltv.toString() || "").toFixed(0)}%`,
+			omit: false,
+		},
 	];
 
 	useEffect(() => {
@@ -296,6 +305,7 @@ export const ConsultantLoanReport: FC = () => {
 				data?.collaterals[0]?.assetType,
 				data?.type,
 				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
+				`${Number.parseFloat(data?.ltv.toString() || "").toFixed(0)}%`,
 			];
 		});
 		const data = [headerCsv, ...csvData, lastRowModal];
@@ -315,6 +325,7 @@ export const ConsultantLoanReport: FC = () => {
 				data?.collaterals[0]?.assetType,
 				data?.type,
 				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
+				`${Number.parseFloat(data?.ltv.toString() || "").toFixed(0)}%`,
 			];
 		});
 		const data = [headerCsv, ...csvData, lastRowModal];
