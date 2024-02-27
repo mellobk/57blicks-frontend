@@ -18,16 +18,16 @@ export const extendedFounded = (days: string): string => {
 	return `/loans/default/extended?days=${days}`;
 };
 
-export const loanConsult = (): string => {
-	return `/loans/default/consultant`;
+export const loanConsult = (days: string): string => {
+	return `/loans/default/consultant?days=${days}`;
 };
 
-export const loanProduct = (): string => {
-	return `/loans/default/product`;
+export const loanProduct = (days: string): string => {
+	return `/loans/default/product?days=${days}`;
 };
 
-export const loanAssets = (): string => {
-	return `/loans/default/assets`;
+export const loanAssets = (days: string): string => {
+	return `/loans/default/assets?days=${days}`;
 };
 
 export const loanAverage = (): string => {

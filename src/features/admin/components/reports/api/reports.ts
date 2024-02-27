@@ -110,18 +110,18 @@ const getPaidOffLoans = async (days: string) => {
 	return response.data;
 };
 
-const getLoanConsultant = async () => {
-	const response = await authApiClient.get<any>(loanConsult());
+const getLoanConsultant = async (days: string) => {
+	const response = await authApiClient.get<any>(loanConsult(days));
 	return response.data;
 };
 
-const getLoanProduct = async () => {
-	const response = await authApiClient.get<any>(loanProduct());
+const getLoanProduct = async (days: string) => {
+	const response = await authApiClient.get<any>(loanProduct(days));
 	return response.data;
 };
 
-const getLoanAssets = async () => {
-	const response = await authApiClient.get<any>(loanAssets());
+const getLoanAssets = async (days: string) => {
+	const response = await authApiClient.get<any>(loanAssets(days));
 	return response.data;
 };
 

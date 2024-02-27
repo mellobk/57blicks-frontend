@@ -23,6 +23,9 @@ import { ResponsivePieCanvas } from "@nivo/pie";
 import type { Loan } from "@/types/api/loan";
 import { Modal } from "@/components/ui/Modal";
 import DataTable from "react-data-table-component";
+import { consultantsTabs } from "../../servicing/utils/tabs";
+import { Tabs } from "../../servicing/component/Tabs";
+import { Select } from "@/components/forms/Select";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -31,23 +34,37 @@ import DataTable from "react-data-table-component";
 // you'll often use just a few of them.
 
 export const ConsultantLoanReport: FC = () => {
+	const [actualTabData, setActualTabData] = useState<string>(
+		"current month to date"
+	);
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const [chartData, setChartData] = useState([]);
 	const [keys, setKey] = useState<Array<string>>([]);
+	const [accountData, setAccountData] = useState<string>("all");
 	const [_, setExcelData] = useState<Array<any>>([]);
 	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
 	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
+	const [userData, setUserData] = useState<Array<any>>([]);
+	const [optionsConsultants, setOptionsConsultants] = useState<Array<any>>([]);
 	const consultantQuery = useQuery(
 		["all-consultant-loans"],
 		() => {
-			return ManageReportsService.getLoanConsultant();
+			return ManageReportsService.getLoanConsultant(
+				consultantsTabs.find(
+					(data) => data.label.toLocaleLowerCase() === actualTabData
+				)?.value || ""
+			);
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
 	useEffect(() => {
+		void consultantQuery.refetch();
+	}, [actualTabData]);
+
+	useEffect(() => {
 		if (consultantQuery.data && consultantQuery.data?.loans) {
-			const insuranceCsv = consultantQuery.data?.loans;
+			const insuranceCsv = userData;
 
 			const totalLoansAmount = insuranceCsv.reduce(
 				(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
@@ -113,24 +130,38 @@ export const ConsultantLoanReport: FC = () => {
 			]);
 			setLastRowModal(lastRow);
 		}
-	}, [consultantQuery.data]);
+	}, [consultantQuery.data, userData]);
+
+	useEffect(() => {
+		if (accountData === "all") {
+			setUserData(consultantQuery?.data?.loans || []);
+		} else {
+			console.log(accountData);
+			const filterQuery = consultantQuery.data.loans.filter(
+				(data: { loanConsultant: string }) =>
+					data.loanConsultant === accountData
+			);
+			setUserData(filterQuery);
+		}
+	}, [accountData]);
 
 	useEffect(() => {
 		if (consultantQuery.data) {
 			const insuranceCsv = consultantQuery.data.data;
 
 			const csvData = keys?.map((data) => {
-				const productData = insuranceCsv[data]?.map((value: Loan) => {
-					return [
-						value.borrower?.llc,
-						value?.collaterals[0]?.address,
-						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
-						formatDate(value?.originationDate?.toString() || ""),
-						value?.collaterals[0]?.assetType,
-						value?.type,
-						`${Number.parseFloat(value?.interestRate).toFixed(0)}%`,
-					];
-				});
+				const productData =
+					insuranceCsv[data]?.map((value: Loan) => {
+						return [
+							value.borrower?.llc,
+							value?.collaterals[0]?.address,
+							moneyFormat(Number.parseInt(value?.totalLoanAmount)),
+							formatDate(value?.originationDate?.toString() || ""),
+							value?.collaterals[0]?.assetType,
+							value?.type,
+							`${Number.parseFloat(value?.interestRate).toFixed(0)}%`,
+						];
+					}) || [];
 				return [[data], ...productData];
 			});
 
@@ -139,7 +170,29 @@ export const ConsultantLoanReport: FC = () => {
 				return arrayExcel.push(...data);
 			});
 
+			const options = consultantQuery.data.loans.map(
+				(data: { loanConsultant: any }) => {
+					return {
+						code: data?.loanConsultant || "",
+						name: data?.loanConsultant || "",
+					};
+				}
+			);
+
+			const unique = options.filter(
+				(item: { code_: any; name: any }, index: any, self: Array<any>) =>
+					index ===
+					self.findIndex((t) => t.code_ === item.code_ && t.name === item.name)
+			);
+
+			unique.sort((a: { name: string }, b: { name: any }) =>
+				a.name.localeCompare(b.name)
+			);
+
+			setOptionsConsultants([{ code: "all", name: "all" }, ...unique]);
+
 			setExcelData(arrayExcel);
+			setUserData(consultantQuery.data.loans);
 		}
 	}, [consultantQuery.data]);
 
@@ -206,28 +259,30 @@ export const ConsultantLoanReport: FC = () => {
 
 	useEffect(() => {
 		if (consultantQuery.data) {
-			const getData = consultantQuery?.data.data as unknown as Array<any>;
-
+			const getData =
+				accountData === "all"
+					? consultantQuery?.data.data
+					: {
+							[accountData]: consultantQuery?.data.data[accountData],
+					  };
 			const keys = Object.keys(getData);
-			/* 	const valuesArray = keys.map((key) => getData[key]); */
-
 			setKey(keys);
 
-			const data = keys.map((value) => {
+			const data = keys.map((value: string) => {
 				return {
-					id: `${value} `,
-					label: `${value} `,
-					value: getData[value as any]?.length || [],
+					id: `${value}`,
+					label: `${value}`,
+					value: getData[value]?.length || [],
 					color: "hsl(110, 70%, 50%)",
 				};
 			});
 
 			setChartData(data as any);
 		}
-	}, [consultantQuery.data]);
+	}, [consultantQuery.data, accountData]);
 
 	const downloadReport = (): void => {
-		const insuranceCsv = consultantQuery.data.loans;
+		const insuranceCsv = userData;
 
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
@@ -249,7 +304,7 @@ export const ConsultantLoanReport: FC = () => {
 	};
 
 	const downloadXlsxReport = (): void => {
-		const insuranceCsv = consultantQuery.data.loans;
+		const insuranceCsv = userData;
 
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
@@ -271,6 +326,14 @@ export const ConsultantLoanReport: FC = () => {
 		<div className="h-[60%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 				<div className="font-bold text-[13px]">Loans by Consultant</div>
+				<Tabs
+					tabs={consultantsTabs}
+					actualTab={actualTabData}
+					onClick={(value: any): any => {
+						setActualTabData(value);
+						setAccountData("all");
+					}}
+				/>
 				<div className="flex gap-2 ml-2" onClick={downloadReport}>
 					<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 						<img src={Csv} alt="DKC Csv" />
@@ -283,6 +346,18 @@ export const ConsultantLoanReport: FC = () => {
 						<img src={Xlsx} alt="DKC Xlsx" />
 					</div>
 				</div>
+			</div>
+			<div className="w-[20%] ml-2 mt-2">
+				<Select
+					className="flex flex-col gap-2"
+					label=""
+					placeholder="Select Loan Consultant"
+					value={accountData}
+					options={optionsConsultants}
+					onChange={(event): void => {
+						setAccountData(event.target.value as string);
+					}}
+				/>
 			</div>
 			<ResponsivePieCanvas
 				data={chartData}
