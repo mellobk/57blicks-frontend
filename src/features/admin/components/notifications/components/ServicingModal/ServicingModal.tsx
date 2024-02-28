@@ -224,31 +224,83 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 						}}
 					>
 						<div>
-							{approvalQuery?.data?.status !== "PENDING" && (
-								<>
-									{approvalQuery?.data?.status === "APPROVED" ? (
-										<div className="cursor-pointer">
-											<Button
-												buttonText="Approved"
-												disabled={!validApprove}
-												className=" rounded-3xl bg-green-900 text-green-500"
-											/>
-										</div>
-									) : (
-										userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN && (
+							{approvalQuery?.data?.status !== "PENDING" &&
+								typeData !== "Ledger" && (
+									<>
+										{approvalQuery?.data?.status === "APPROVED" ? (
 											<div className="cursor-pointer">
 												<Button
-													buttonText="Declined"
-													className=" rounded-3xl bg-red-200 text-red-500"
+													buttonText="Approved"
+													disabled={!validApprove}
+													className=" rounded-3xl bg-green-900 text-green-500"
 												/>
 											</div>
-										)
-									)}
-								</>
-							)}
+										) : (
+											userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN && (
+												<div className="cursor-pointer">
+													<Button
+														buttonText="Declined"
+														className=" rounded-3xl bg-red-200 text-red-500"
+													/>
+												</div>
+											)
+										)}
+									</>
+								)}
 						</div>
 						<>
 							<div>
+								{typeData === "Ledger" && (
+									<ModalActions
+										viewOnly={false}
+										status={status}
+										validApprove={validApprove}
+										openApproved={openApprovedModal}
+										openDecline={openDeclineModal}
+										handleViewOnly={(): void => {
+											setHandleEdit(!handleEdit);
+										}}
+										onOpenApproved={(): void => {
+											setOpenApprovedModal(!openApprovedModal);
+										}}
+										onOpenDecline={(): void => {
+											setOpenDeclineModal(!openDeclineModal);
+										}}
+										type={type}
+										onSuccess={(): void => {
+											if (ledgerId) {
+												updateFundingBreakDownQuery.mutate(
+													loanUpdated as unknown as LoanLedger
+												);
+
+												updateLedgerQuery.mutate({
+													id: ledgerId,
+													approvalState: ApprovalLedgerStateType.APPROVED,
+													typeOfPayment: LedgerTypeOfPayment.PRINCIPAL,
+													loan: loanUpdated,
+												} as unknown as UpdateLedgerProps);
+											}
+
+											setTypeProcess("approve");
+										}}
+										onDecline={(): void => {
+											if (ledgerId) {
+												updateLedgerQuery.mutate({
+													id: ledgerId,
+													approvalState: ApprovalLedgerStateType.REJECTED,
+												} as unknown as UpdateLedgerProps);
+											} else {
+												updateLoanQuery.mutate({
+													id: id,
+													comment: comment,
+													status: LoanStatusType.REJECTED,
+												});
+											}
+
+											setTypeProcess("decline");
+										}}
+									/>
+								)}
 								{tabTitle === "Borrower Information" &&
 									userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN && (
 										<div className="text-gray-1000 text-[14px] cursor-pointer ">
