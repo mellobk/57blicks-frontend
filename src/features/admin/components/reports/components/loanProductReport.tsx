@@ -199,8 +199,7 @@ export const LoanProductReport: FC = () => {
 		"Borrower Entity",
 		"Property Address",
 		"Loan Amount",
-		"Payoff Date",
-		"Asset Type",
+		"Origination Date",
 		"Loan Product",
 		"Rate",
 		"LTV",
@@ -233,12 +232,6 @@ export const LoanProductReport: FC = () => {
 			selector: (row: Loan) =>
 				row?.originationDate &&
 				formatDate(row?.originationDate?.toString() || ""),
-			omit: false,
-		},
-		{
-			name: "Asset Type",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
 			omit: false,
 		},
 		{
@@ -301,7 +294,6 @@ export const LoanProductReport: FC = () => {
 					"."
 				),
 				formatDate(data?.originationDate?.toString() || ""),
-				data?.collaterals[0]?.assetType,
 				data?.type,
 				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 				`${Number.parseFloat(data?.ltv.toString() || "").toFixed(0)}%`,
@@ -321,7 +313,6 @@ export const LoanProductReport: FC = () => {
 				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate?.toString() || ""),
-				data?.collaterals[0]?.assetType,
 				data?.type,
 				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 				`${Number.parseFloat(data?.ltv.toString() || "").toFixed(0)}%`,

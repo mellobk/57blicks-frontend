@@ -200,9 +200,8 @@ export const ConsultantLoanReport: FC = () => {
 		"Borrower Entity",
 		"Property Address",
 		"Loan Amount",
-		"Payoff Date",
-		"Asset Type",
-		"Loan Product",
+		"Origination Date",
+		"Loan Consultant",
 		"Rate",
 		"LTV",
 	];
@@ -237,15 +236,9 @@ export const ConsultantLoanReport: FC = () => {
 			omit: false,
 		},
 		{
-			name: "Asset Type",
+			name: "Loan Consultant",
 			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
-			omit: false,
-		},
-		{
-			name: "Loan Product",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.type || "",
+			selector: (row: Loan): string => row?.loanConsultant || "",
 			omit: false,
 		},
 		{
@@ -302,8 +295,7 @@ export const ConsultantLoanReport: FC = () => {
 					"."
 				),
 				formatDate(data?.originationDate?.toString() || ""),
-				data?.collaterals[0]?.assetType,
-				data?.type,
+				data?.loanConsultant,
 				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 				`${Number.parseFloat(data?.ltv.toString() || "").toFixed(0)}%`,
 			];
@@ -322,8 +314,7 @@ export const ConsultantLoanReport: FC = () => {
 				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate?.toString() || ""),
-				data?.collaterals[0]?.assetType,
-				data?.type,
+				data?.loanConsultant,
 				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
 				`${Number.parseFloat(data?.ltv.toString() || "").toFixed(0)}%`,
 			];
