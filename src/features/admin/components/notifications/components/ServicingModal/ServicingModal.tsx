@@ -250,57 +250,58 @@ export const ServicingModal: FC<ServicingModalProps> = ({
 						</div>
 						<>
 							<div>
-								{typeData === "Ledger" && (
-									<ModalActions
-										viewOnly={false}
-										status={status}
-										validApprove={validApprove}
-										openApproved={openApprovedModal}
-										openDecline={openDeclineModal}
-										handleViewOnly={(): void => {
-											setHandleEdit(!handleEdit);
-										}}
-										onOpenApproved={(): void => {
-											setOpenApprovedModal(!openApprovedModal);
-										}}
-										onOpenDecline={(): void => {
-											setOpenDeclineModal(!openDeclineModal);
-										}}
-										type={type}
-										onSuccess={(): void => {
-											if (ledgerId) {
-												updateFundingBreakDownQuery.mutate(
-													loanUpdated as unknown as LoanLedger
-												);
+								{typeData === "Ledger" &&
+									userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN && (
+										<ModalActions
+											viewOnly={false}
+											status={status}
+											validApprove={validApprove}
+											openApproved={openApprovedModal}
+											openDecline={openDeclineModal}
+											handleViewOnly={(): void => {
+												setHandleEdit(!handleEdit);
+											}}
+											onOpenApproved={(): void => {
+												setOpenApprovedModal(!openApprovedModal);
+											}}
+											onOpenDecline={(): void => {
+												setOpenDeclineModal(!openDeclineModal);
+											}}
+											type={type}
+											onSuccess={(): void => {
+												if (ledgerId) {
+													updateFundingBreakDownQuery.mutate(
+														loanUpdated as unknown as LoanLedger
+													);
 
-												updateLedgerQuery.mutate({
-													id: ledgerId,
-													approvalState: ApprovalLedgerStateType.APPROVED,
-													typeOfPayment: LedgerTypeOfPayment.PRINCIPAL,
-													loan: loanUpdated,
-												} as unknown as UpdateLedgerProps);
-											}
+													updateLedgerQuery.mutate({
+														id: ledgerId,
+														approvalState: ApprovalLedgerStateType.APPROVED,
+														typeOfPayment: LedgerTypeOfPayment.PRINCIPAL,
+														loan: loanUpdated,
+													} as unknown as UpdateLedgerProps);
+												}
 
-											setTypeProcess("approve");
-										}}
-										onDecline={(): void => {
-											if (ledgerId) {
-												updateLedgerQuery.mutate({
-													id: ledgerId,
-													approvalState: ApprovalLedgerStateType.REJECTED,
-												} as unknown as UpdateLedgerProps);
-											} else {
-												updateLoanQuery.mutate({
-													id: id,
-													comment: comment,
-													status: LoanStatusType.REJECTED,
-												});
-											}
+												setTypeProcess("approve");
+											}}
+											onDecline={(): void => {
+												if (ledgerId) {
+													updateLedgerQuery.mutate({
+														id: ledgerId,
+														approvalState: ApprovalLedgerStateType.REJECTED,
+													} as unknown as UpdateLedgerProps);
+												} else {
+													updateLoanQuery.mutate({
+														id: id,
+														comment: comment,
+														status: LoanStatusType.REJECTED,
+													});
+												}
 
-											setTypeProcess("decline");
-										}}
-									/>
-								)}
+												setTypeProcess("decline");
+											}}
+										/>
+									)}
 								{tabTitle === "Borrower Information" &&
 									userLoggedInfo?.role?.name === RoleType.SUPER_ADMIN && (
 										<div className="text-gray-1000 text-[14px] cursor-pointer ">

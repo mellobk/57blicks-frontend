@@ -72,7 +72,7 @@ const collateralAddressTemplate = (rowData: any) => {
 const templateTotalLoan = (rowData: any) => {
 	return (
 		<div className="left-0">
-			{moneyFormat(Number.parseInt(rowData.totalLoan))}
+			{moneyFormat(Number.parseInt(rowData.data.loan.principal || ""))}
 		</div>
 	);
 };
@@ -168,6 +168,8 @@ const getNextValue = (rowData: any) => {
 	if (rowData.loan.status === "DEFAULT") {
 		data = String((Number(rowData.loan.totalLoanAmount) * 18) / 100 / 12);
 	}
+
+	if (rowData.loan.endDate) data = "0";
 	return Number.parseFloat(data || "0");
 };
 

@@ -18,9 +18,10 @@ const orderLedgers = (): void => {};
 
 interface LedgerListProps {
 	loan: Loan;
+	handleRefreshData?: () => void;
 }
 
-const LedgerList: FC<LedgerListProps> = ({ loan }) => {
+const LedgerList: FC<LedgerListProps> = ({ loan, handleRefreshData }) => {
 	const [ledgers, setLedgers] = useState<Array<Ledgers>>([]);
 	const [extended, setExtended] = useState<Array<LoanHistory>>([]);
 
@@ -112,6 +113,7 @@ const LedgerList: FC<LedgerListProps> = ({ loan }) => {
 						extended={extended}
 						ledgersData={ledgers}
 						refetchLedgers={refetchLedgers}
+						handleRefreshData={handleRefreshData}
 						handleDeleteLedger={handleDeleteLedger}
 						orderLedgers={orderLedgers}
 					/>

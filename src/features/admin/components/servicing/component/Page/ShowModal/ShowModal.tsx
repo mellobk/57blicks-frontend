@@ -160,7 +160,7 @@ export const ShowModal: FC<Props> = ({
 				/>
 			)}
 			{actualTabData?.label === "Receivable" && data && (
-				<LedgerList loan={data.loan} />
+				<LedgerList loan={data.loan} handleRefreshData={handleRefreshData} />
 			)}
 			{actualTabData?.label === "Payable" && data && (
 				<Payable loan={data.loan} />
