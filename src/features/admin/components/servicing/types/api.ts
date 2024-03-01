@@ -121,6 +121,7 @@ export interface Collateral {
 }
 
 export interface Loan {
+	principal: any;
 	totalInterest: string;
 	totalInterestDebit: string;
 	totalInterestCredit: string;

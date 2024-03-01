@@ -18,6 +18,7 @@ import { Input } from "@/components/forms/Input";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { useDebounce } from "@/hooks/debounce";
+import moment from "moment";
 
 interface Column {
 	name?: string;
@@ -185,7 +186,7 @@ export const Table: FC<Props> = ({
 	const createFooterNew = (data: Array<FundingBreakdown>) => {
 		const totalRow = data?.length || 0;
 		const totalLoanAmount = data?.map((data: FundingBreakdown) => {
-			return Number.parseFloat(data.loan.totalLoanAmount || "");
+			return Number.parseFloat(data.loan.principal || "");
 		});
 		const totalRegularAmount = data?.map((data: FundingBreakdown) => {
 			let regular = getIsSameMonthYear(
@@ -198,6 +199,7 @@ export const Table: FC<Props> = ({
 				regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
 			}
 
+			if (data.loan.endDate) regular = "0";
 			return Number.parseFloat(regular || "");
 		});
 
@@ -210,6 +212,15 @@ export const Table: FC<Props> = ({
 				value = data.loan.prorated || "0";
 			} else if (dataDate === -1) {
 				value = data.loan.regular || "0";
+			}
+
+			const dateNow = moment();
+			const endDate = moment(data.loan.endDate);
+
+			const diffMonths = endDate.diff(dateNow, "months");
+
+			if (Math.abs(diffMonths) >= 2) {
+				return Number.parseFloat("0");
 			}
 			return Number.parseFloat(value || "");
 		});

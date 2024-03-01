@@ -1,4 +1,4 @@
-import { type FC, useEffect, useState, MutableRefObject } from "react";
+import { type FC, useEffect, useState, type MutableRefObject } from "react";
 
 import {
 	ApprovalStateType,

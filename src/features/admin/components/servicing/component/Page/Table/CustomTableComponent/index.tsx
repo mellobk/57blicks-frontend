@@ -155,6 +155,15 @@ const getCurrentValue = (rowData: any) => {
 		value = rowData.loan.regular || "0";
 	}
 
+	const dateNow = moment();
+	const endDate = moment(rowData.loan.endDate);
+
+	const diffMonths = endDate.diff(dateNow, "months");
+
+	if (Math.abs(diffMonths) >= 2) {
+		return Number.parseFloat("0");
+	}
+
 	return Number.parseFloat(value);
 };
 
@@ -260,7 +269,7 @@ const CustomTableComponent: FC<CustomTableComponentProps> = ({
 				/>
 				<Column footer={""} />
 				<Column
-					footer={`${moneyFormat(totals.totalRegular)}`}
+					footer={``}
 					style={{
 						textAlign: "left",
 					}}
