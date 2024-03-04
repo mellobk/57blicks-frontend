@@ -99,7 +99,6 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 							(data: { type: string; investor: any }) =>
 								data.type === "Investor"
 						);
-						console.log(participants);
 
 						return (
 							<div className="flex justify-center items-center gap-2">
@@ -111,7 +110,9 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 										setLoansParticipants(participants);
 									}}
 								>
-									<Icon name="user" color="black" width="15" />
+									{participants.length > 0 && (
+										<Icon name="user" color="black" width="15" />
+									)}
 								</div>
 							</div>
 						);
