@@ -185,7 +185,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 					setOpenParticipantModal(false);
 				}}
 				width="90vw"
-				title="Default Loans"
+				title="Participants"
 			>
 				<DataTable
 					value={loanParticipants}
