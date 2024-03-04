@@ -202,6 +202,18 @@ export const Table: FC<Props> = ({
 			if (data.loan.endDate) regular = "0";
 			return Number.parseFloat(regular || "");
 		});
+		const totalRegularAmountLoan = data?.map((data: FundingBreakdown) => {
+			let regular = getIsSameMonthYear(
+				data.loan.originationDate as unknown as string
+			)
+				? data.loan.prorated
+				: data.loan.regular;
+
+			if (data.loan.status === "DEFAULT") {
+				regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
+			}
+			return Number.parseFloat(regular || "");
+		});
 
 		const totalPreviousAmount = data?.map((data: FundingBreakdown) => {
 			const dataDate = getIsSamePreviousMonthYear(
@@ -235,6 +247,11 @@ export const Table: FC<Props> = ({
 			0
 		);
 
+		const totalRegularAmountLoanData = totalRegularAmountLoan?.reduce(
+			(accumulator, currentValue) => accumulator + currentValue,
+			0
+		);
+
 		const totalPrevious = totalPreviousAmount?.reduce(
 			(accumulator, currentValue) => accumulator + currentValue,
 			0
@@ -242,6 +259,7 @@ export const Table: FC<Props> = ({
 
 		const footerTabData = {
 			total: total,
+			totalRegularLoan: totalRegularAmountLoanData,
 			totalRegular: totalRegular,
 			totalPrevious: totalPrevious,
 			totalRow: totalRow,

@@ -35,6 +35,11 @@ export const paidLoansTabs = [
 
 export const consultantsTabs = [
 	{
+		value: "all",
+		label: "All",
+		routeTo: "All",
+	},
+	{
 		value: "currentMonthToDate",
 		label: "Current month to date",
 		routeTo: "30",

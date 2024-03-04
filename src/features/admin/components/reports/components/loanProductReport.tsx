@@ -33,9 +33,7 @@ import { Select } from "@/components/forms/Select";
 // you'll often use just a few of them.
 
 export const LoanProductReport: FC = () => {
-	const [actualTabData, setActualTabData] = useState<string>(
-		"current month to date"
-	);
+	const [actualTabData, setActualTabData] = useState<string>("all");
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const [chartData, setChartData] = useState([]);
 	const [keys, setKey] = useState<Array<string>>([]);

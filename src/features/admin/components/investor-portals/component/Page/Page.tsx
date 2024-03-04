@@ -21,6 +21,7 @@ import { formatDate, moneyFormat, percentageFormat } from "@/utils/formats";
 import PayablesAdmin from "../PayablesAdmin";
 import type { DkcLenders } from "../../../servicing/types/api";
 import {
+	getIsSameMonthYear,
 	sortMaturityDate,
 	sortOriginateDate,
 	sortRateLoan,
@@ -43,6 +44,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const lenderData = investorPortalsStore((state) => state.lenders);
 	const [tableData, setTableData] = useState<Array<DkcLenders>>([]);
 	const currentMonthName = moment().format("MMMM");
+	const nextMonthName = moment().add(1, "months").format("MMMM");
 
 	const findDkcLender = () => {
 		const findLender = lenderData.find(
@@ -50,6 +52,23 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		);
 
 		return findLender?.id || "";
+	};
+
+	const currentValue = (
+		originationDate: string,
+		prorated: string,
+		regular: string,
+		status: string,
+		amount: string
+	) => {
+		let data = getIsSameMonthYear(originationDate as unknown as string)
+			? prorated
+			: regular;
+
+		if (status === "DEFAULT") {
+			data = String((Number(amount) * 18) / 100 / 12);
+		}
+		return moneyFormat(Number.parseFloat(data || "0"));
 	};
 
 	const lendersQuery = useQuery(
@@ -150,6 +169,37 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			name: `${currentMonthName} (Current)`,
 			sortFunction: sortRegularLoan,
 			selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
+			sortable: true,
+			conditionalCellStyles: [
+				{
+					when: (row: FundingBreakdown) => selectedRow?.id !== row.id,
+					style: {
+						background: "#C79E631F",
+						color: "#C79E63",
+					},
+				},
+				{
+					when: (row: FundingBreakdown) => selectedRow?.id === row.id,
+					style: {
+						background: "#0085FF3D",
+						color: "#0085FF",
+						borderColor: "#0085FF",
+						borderWidth: 2,
+					},
+				},
+			],
+		},
+		{
+			name: `${nextMonthName}`,
+			sortFunction: sortRegularLoan,
+			selector: (row: FundingBreakdown) =>
+				currentValue(
+					row.loan.originationDate as unknown as string,
+					row.prorated,
+					row.regular,
+					row.loan.status,
+					row.amount
+				),
 			sortable: true,
 			conditionalCellStyles: [
 				{

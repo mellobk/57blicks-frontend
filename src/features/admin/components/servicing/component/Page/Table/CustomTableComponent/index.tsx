@@ -30,6 +30,7 @@ interface CustomTableComponentProps {
 	onRowClicked: (row: FundingBreakdown) => void;
 	totals: {
 		total: number;
+		totalRegularLoan: number;
 		totalRegular: number;
 		totalPrevious: number;
 		totalRow: number;
@@ -82,7 +83,8 @@ const templateRate = (rowData: any) => {
 };
 
 const templateRegularPayment = (rowData: any) => {
-	return moneyFormat(Number.parseInt(rowData.regular || "0"));
+	console.log(rowData.regular);
+	return moneyFormat(Number.parseFloat(rowData.regular || "0"));
 };
 
 const templateOriginationDate = (rowData: any) => {
@@ -137,11 +139,11 @@ const templateInsuranceExpirationDate = (rowData: any) => {
 };
 
 const templateCurrentValue = (rowData: any) => {
-	return moneyFormat(Number.parseInt(rowData.currentValue || "0"));
+	return moneyFormat(Number.parseFloat(rowData.currentValue || "0"));
 };
 
 const templateNextValue = (rowData: any) => {
-	return moneyFormat(Number.parseInt(rowData.nextValue || "0"));
+	return moneyFormat(Number.parseFloat(rowData.nextValue || "0"));
 };
 
 const getCurrentValue = (rowData: any) => {
@@ -175,7 +177,7 @@ const getNextValue = (rowData: any) => {
 		: rowData.loan.regular;
 
 	if (rowData.loan.status === "DEFAULT") {
-		data = String((Number(rowData.loan.totalLoanAmount) * 18) / 100 / 12);
+		data = String((Number(rowData.loan.principal) * 18) / 100 / 12);
 	}
 
 	if (rowData.loan.endDate) data = "0";
@@ -269,7 +271,7 @@ const CustomTableComponent: FC<CustomTableComponentProps> = ({
 				/>
 				<Column footer={""} />
 				<Column
-					footer={``}
+					footer={`${moneyFormat(totals.totalRegularLoan)}`}
 					style={{
 						textAlign: "left",
 					}}
