@@ -1,4 +1,5 @@
-import { type FC, useState } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
+import { type FC, useState, useEffect } from "react";
 import { DueToDraws } from "@/features/admin/components/loan-overview/components/DueToDraws/DueToDraws";
 import { Subtitle } from "@/features/admin/components/loan-overview/components/Subtitle/Subtitle";
 import { Value } from "@/features/admin/components/loan-overview/components/Value/Value";
@@ -12,6 +13,21 @@ type Props = {
 export const Overviews: FC<Props> = ({ data }) => {
 	const [openDueToDrawsModal, setOpenDueToDrawsModal] =
 		useState<boolean>(false);
+
+	const [overviewInvestorData, setOverviewInvestorData] = useState(0);
+
+	useEffect(() => {
+		if (data.overviewByInvestors) {
+			const overData = data.overviewByInvestors.find(
+				(data) => data.name === "DKC Lending LLC"
+			);
+
+			overData &&
+				setOverviewInvestorData(
+					overData?.trustUnallocated + overData?.trustAllocated
+				);
+		}
+	}, [data]);
 
 	return (
 		<>
@@ -36,7 +52,7 @@ export const Overviews: FC<Props> = ({ data }) => {
 				/>
 			</div>
 			<div className="rounded-2xl bg-white">
-				<Value label="Trust Account Balance" value={data.trustAccountBalance} />
+				<Value label="Trust Account Balance" value={overviewInvestorData} />
 			</div>
 			<div className="rounded-2xl bg-white">
 				<Subtitle text="Interest Overview" />
