@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Cell } from "@/components/table/Cell";
@@ -12,11 +16,12 @@ import { Modal } from "@/components/ui/Modal";
 import { FundingBreakdown as FundingComponent } from "../../../../servicing/component/FundingBreakdown/FundingBreakdown";
 import { Icon } from "@/components/ui/Icon";
 import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
-import {
+/* import {
 	getIsSameMonthYear,
 	getIsSamePreviousMonthYear,
-} from "@/utils/common-functions";
+} from "@/utils/common-functions"; */
 import { formatDate, moneyFormat } from "@/utils/formats";
+import moment from "moment";
 
 interface Props extends ExpanderComponentProps<Investor> {
 	selectedParticipation?: FundingBreakdown;
@@ -34,6 +39,10 @@ export const ExpandedComponent: ComponentType<Props> = ({
 	selectedParticipation,
 	selectParticipation,
 }) => {
+	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
+	const currentDate = moment(); // Current date
+	const nextCurrentDate = moment(); // Current date
+	const nexMonthDate = nextCurrentDate.add(1, "month").month();
 	const fundingBreakdowns = data.lender?.fundingBreakdowns ?? [];
 	const participationBreakdowns = data.participationBreakdowns ?? [];
 	const totals = getFooterData([
@@ -52,7 +61,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 		}
 	}, [idLoan]);
 
-	const currentValue = (
+	/* 	const currentValue = (
 		originationDate: string,
 		prorated: string,
 		regular: string,
@@ -67,9 +76,61 @@ export const ExpandedComponent: ComponentType<Props> = ({
 			data = String((Number(amount) * 18) / 100 / 12);
 		}
 		return moneyFormat(Number.parseFloat(data || "0"));
+	}; */
+
+	const currentValuePayableInvestor = (participant: ParticipationBreakdown) => {
+		let data = "0";
+
+		const findMonth = participant?.loan?.payables?.find((data) => {
+			// Extract the month and year from the date string
+			const dataMonth = moment(data["month"], dateFormat);
+			// Check if year and month are the same as the current date
+			return (
+				dataMonth.year() === currentDate.year() &&
+				dataMonth.month() === currentDate.month()
+			);
+		});
+
+		data =
+			(findMonth &&
+				findMonth["payableDetails"].find(
+					(data) => data.type === "Lender" || data.type === "Investor"
+				).credit) ||
+			participant.prorated;
+
+		if (participant.loan.status === "DEFAULT") {
+			data = String((Number(participant.amount) * 18) / 100 / 12);
+		}
+		return moneyFormat(Number.parseFloat(data || "0"));
 	};
 
-	const previousValue = (
+	const nextValuePayableInvestor = (participant: ParticipationBreakdown) => {
+		let data = "0";
+
+		const findMonth = participant?.loan?.payables?.find((data) => {
+			// Extract the month and year from the date string
+			const dataMonth = moment(data["month"], dateFormat);
+			// Check if year and month are the same as the current date
+			return (
+				dataMonth.year() === currentDate.year() &&
+				dataMonth.month() === nexMonthDate
+			);
+		});
+
+		data =
+			(findMonth &&
+				findMonth["payableDetails"].find(
+					(data) => data.type === "Investor" || data.type === "Lender"
+				).credit) ||
+			participant.prorated;
+
+		if (participant.loan.status === "DEFAULT") {
+			data = String((Number(participant.amount) * 18) / 100 / 12);
+		}
+		return moneyFormat(Number.parseFloat(data || "0"));
+	};
+
+	/* 	const previousValue = (
 		originationDate: string,
 		prorated: string,
 		regular: string
@@ -85,7 +146,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 		}
 
 		return moneyFormat(Number.parseFloat(value));
-	};
+	}; */
 
 	return (
 		<>
@@ -121,7 +182,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 							/>
 							<Cell
 								format="money"
-								value={participant.loan?.totalLoanAmount || ""}
+								value={participant.loan?.principal || ""}
 								bold
 							/>
 							<Cell format="money" value={Number(participant.amount)} bold />
@@ -148,11 +209,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 										: "bg-gold-500/[12%] text-gold-500"
 								}
 								format="text"
-								value={`${previousValue(
-									participant.loan.originationDate as unknown as string,
-									participant.prorated,
-									participant.regular
-								)}`}
+								value={currentValuePayableInvestor(participant as any)}
 								bold
 							/>
 							<Cell
@@ -162,13 +219,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 										: "bg-gold-500/[12%] text-gold-500"
 								}
 								format="text"
-								value={`${currentValue(
-									participant.loan.originationDate as unknown as string,
-									participant.prorated,
-									participant.regular,
-									participant.loan.status,
-									participant.amount
-								)}`}
+								value={nextValuePayableInvestor(participant as any)}
 								bold
 							/>
 						</div>
@@ -212,22 +263,12 @@ export const ExpandedComponent: ComponentType<Props> = ({
 							/>
 							<Cell
 								format="money"
-								value={participant.loan?.totalLoanAmount || ""}
+								value={participant.loan?.principal || ""}
 								bold
 							/>
 							<Cell format="money" value={Number(participant.amount)} bold />
 							<Cell format="percentage" value={participant.rate} bold />
-							<Cell
-								format="text"
-								value={`${currentValue(
-									participant.loan.originationDate as unknown as string,
-									participant.prorated,
-									participant.regular,
-									participant.loan.status,
-									participant.amount
-								)}`}
-								bold
-							/>
+							<Cell format="text" value={participant.regular} bold />
 							<Cell
 								format="text"
 								value={participant.loan.originationDate?.toString() || ""}
@@ -241,11 +282,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 							<Cell
 								className="bg-gold-500/[12%] text-gold-500"
 								format="text"
-								value={`${previousValue(
-									participant.loan.originationDate as unknown as string,
-									participant.prorated,
-									participant.regular
-								)}`}
+								value={currentValuePayableInvestor(participant as any)}
 								bold
 							/>
 							<Cell
@@ -255,13 +292,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 										: "bg-gold-500/[12%] text-gold-500"
 								}
 								format="text"
-								value={`${currentValue(
-									participant.loan.originationDate as unknown as string,
-									participant.prorated,
-									participant.regular,
-									participant.loan.status,
-									participant.amount
-								)}`}
+								value={nextValuePayableInvestor(participant as any)}
 								bold
 							/>
 						</div>

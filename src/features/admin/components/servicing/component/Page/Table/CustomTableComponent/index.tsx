@@ -22,6 +22,10 @@ import moment from "moment";
 
 import { Toggle } from "@/components/ui/Toggle";
 import { LoanStatusType } from "@/types/api/notifications";
+import {
+	currentValuePayableInvestor,
+	nextValuePayableInvestor,
+} from "../Table";
 
 interface CustomTableComponentProps {
 	data: any;
@@ -139,11 +143,14 @@ const templateInsuranceExpirationDate = (rowData: any) => {
 };
 
 const templateCurrentValue = (rowData: any) => {
-	return moneyFormat(Number.parseFloat(rowData.currentValue || "0"));
+	return moneyFormat(currentValuePayableInvestor(rowData.data.loan));
 };
 
 const templateNextValue = (rowData: any) => {
-	return moneyFormat(Number.parseFloat(rowData.nextValue || "0"));
+	const value =
+		nextValuePayableInvestor(rowData.data.loan) ||
+		currentValuePayableInvestor(rowData.data.loan);
+	return moneyFormat(Number.parseFloat(value.toString()));
 };
 
 const getCurrentValue = (rowData: any) => {
@@ -424,7 +431,7 @@ const CustomTableComponent: FC<CustomTableComponentProps> = ({
 						field="nextValue"
 						header={`${currentMonthName}`}
 						sortable
-						body={templateNextValue}
+						body={templateNextValue || templateCurrentValue}
 						style={{
 							minWidth: "150px",
 							color: "#C79E63",

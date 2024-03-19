@@ -261,7 +261,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		);
 
 		const newDate = new Date(value);
-		newDate.setMonth(newDate.getMonth() - 1);
+		newDate.setMonth(newDate.getMonth());
 
 		setValue(
 			`ledgers.${index}.month` as never,

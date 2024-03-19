@@ -1,12 +1,14 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import type { FC, ReactElement } from "react";
-import {
+/* import {
 	getIsSameMonthYear,
 	getIsSamePreviousMonthYear,
-} from "@/utils/common-functions";
+} from "@/utils/common-functions"; */
 import { useEffect, useState } from "react";
 
 import BorrowerNotifications from "../../BorrowerNotifications";
@@ -19,6 +21,7 @@ import { Modal } from "@/components/ui/Modal/Modal";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { useDebounce } from "@/hooks/debounce";
 import moment from "moment";
+import type { Loan } from "@/types/api/loan";
 
 interface Column {
 	name?: string;
@@ -45,6 +48,57 @@ interface Props {
 	handleTax: (id: string, data: boolean) => void;
 	handleDefault: (id: string, data: string) => void;
 }
+
+const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
+const currentDate = moment(); // Current date
+const nextCurrentDate = moment(); // Current date
+const nexMonthDate = nextCurrentDate.add(1, "month").month();
+
+export const currentValuePayableInvestor = (loan: Loan) => {
+	let data = "0";
+	const findMonth = loan?.payables.find(
+		(data: { [x: string]: moment.MomentInput }) => {
+			// Extract the month and year from the date string
+			const dataMonth = moment(data["month"], dateFormat);
+			// Check if year and month are the same as the current date
+			return (
+				dataMonth.year() === currentDate.year() &&
+				dataMonth.month() === currentDate.month()
+			);
+		}
+	);
+
+	data = findMonth && findMonth["amount"];
+
+	if (loan?.status === "DEFAULT") {
+		data = String((Number(loan.principal) * 18) / 100 / 12);
+	}
+	return Number.parseFloat(data || "0");
+};
+
+export const nextValuePayableInvestor = (loan: Loan) => {
+	let data = "0";
+
+	const findMonth = loan?.payables.find(
+		(data: { [x: string]: moment.MomentInput }) => {
+			// Extract the month and year from the date string
+			const dataMonth = moment(data["month"], dateFormat);
+
+			// Check if year and month are the same as the current date
+			return (
+				dataMonth.year() === currentDate.year() &&
+				dataMonth.month() === nexMonthDate
+			);
+		}
+	);
+
+	data = findMonth && findMonth["amount"];
+
+	if (loan?.status === "DEFAULT") {
+		data = String((Number(loan.principal) * 18) / 100 / 12);
+	}
+	return Number.parseFloat(data || "0");
+};
 
 export const Table: FC<Props> = ({
 	columns = [],
@@ -189,25 +243,19 @@ export const Table: FC<Props> = ({
 			return Number.parseFloat(data.loan.principal || "");
 		});
 		const totalRegularAmount = data?.map((data: FundingBreakdown) => {
-			let regular = getIsSameMonthYear(
-				data.loan.originationDate as unknown as string
-			)
-				? data.loan.prorated
-				: data.loan.regular;
-
+			let regular =
+				nextValuePayableInvestor(data.loan as any) ||
+				currentValuePayableInvestor(data.loan as any) ||
+				"0";
+			console.log(regular);
 			if (data.loan.status === "DEFAULT") {
 				regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
 			}
 
-			if (data.loan.endDate) regular = "0";
-			return Number.parseFloat(regular || "");
+			return Number.parseFloat(regular.toString() as any);
 		});
 		const totalRegularAmountLoan = data?.map((data: FundingBreakdown) => {
-			let regular = getIsSameMonthYear(
-				data.loan.originationDate as unknown as string
-			)
-				? data.loan.prorated
-				: data.loan.regular;
+			let regular = data.loan.regular;
 
 			if (data.loan.status === "DEFAULT") {
 				regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
@@ -216,16 +264,8 @@ export const Table: FC<Props> = ({
 		});
 
 		const totalPreviousAmount = data?.map((data: FundingBreakdown) => {
-			const dataDate = getIsSamePreviousMonthYear(
-				data.loan.originationDate as unknown as string
-			);
 			let value = "0";
-			if (dataDate === 0) {
-				value = data.loan.prorated || "0";
-			} else if (dataDate === -1) {
-				value = data.loan.regular || "0";
-			}
-
+			value = currentValuePayableInvestor(data.loan as any).toString();
 			const dateNow = moment();
 			const endDate = moment(data.loan.endDate);
 

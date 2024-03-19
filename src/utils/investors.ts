@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -5,9 +7,10 @@ import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import type { Investor } from "@/types/api/investor";
 import type { Loan } from "@/types/api/loan";
 import type { Payable } from "@/features/admin/components/servicing/component/Payable/types";
-import { getIsSamePreviousMonthYear } from "./common-functions";
+/* import { getIsSamePreviousMonthYear } from "./common-functions"; */
 import moment from "moment/moment";
 import { moneyFormat } from "@/utils/formats";
+/* import { ParticipationBreakdown } from "@/types/api/participation-breakdown"; */
 export interface ColumInvestorPayable {
 	borrower: string;
 	loanId: string;
@@ -127,29 +130,80 @@ export interface FooterDataInvestor {
 }
 
 export const getFooterData = (data: Array<FooterDataInvestor>) => {
+	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
+	const currentDate = moment(); // Current date
+	const nextCurrentDate = moment(); // Current date
+	const nexMonthDate = nextCurrentDate.add(1, "month").month();
+	const currentValuePayableInvestor = (loan: Loan, prorated: string) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === currentDate.month()
+				);
+			}
+		);
+
+		data =
+			(findMonth &&
+				findMonth["payableDetails"].find(
+					(data: { type: string }) =>
+						data.type === "Lender" || data.type === "Investor"
+				).credit) ||
+			prorated;
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+		return Number.parseFloat(data || "0");
+	};
+
+	const nextValuePayableInvestor = (loan: Loan) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === nexMonthDate
+				);
+			}
+		);
+
+		data =
+			findMonth &&
+			findMonth["payableDetails"].find(
+				(data: { type: string }) =>
+					data.type === "Lender" || data.type === "Investor"
+			).credit;
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+		return Number.parseFloat(data || "0");
+	};
+
 	return data.reduce(
-		(accumulator, { loan, rate, regular, prorated, amount }) => {
+		(accumulator, { loan, rate, regular, amount, prorated }) => {
 			accumulator.rate += Number(rate);
 			accumulator.regular += Number(regular);
-			accumulator.totalLoanAmount += Number(loan.totalLoanAmount);
+			accumulator.totalLoanAmount += Number(loan.principal);
 			accumulator.amount += Number(amount);
 
 			accumulator.current += Number(
-				moment(loan.originationDate).toDate().getMonth() ===
-					new Date().getMonth()
-					? Number(prorated)
-					: Number(regular || 0)
+				nextValuePayableInvestor(loan) ||
+					currentValuePayableInvestor(loan, prorated)
 			);
-			const data = getIsSamePreviousMonthYear(
-				loan.originationDate as unknown as string
+
+			accumulator.previous += Number(
+				currentValuePayableInvestor(loan, prorated)
 			);
-			let value = 0;
-			if (data === 0) {
-				value = Number(prorated) || 0;
-			} else if (data === -1) {
-				value = Number(regular) || 0;
-			}
-			accumulator.previous += Number(value);
 
 			return accumulator;
 		},

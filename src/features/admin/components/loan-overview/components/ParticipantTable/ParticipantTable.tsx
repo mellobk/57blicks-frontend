@@ -100,8 +100,25 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				sortable
 				field="totalDrawnToDate"
 				header="Total Drawn to Date"
-				body={() => <div className="ml-14 w-full">--</div>}
+				body={(rowData) => {
+					const trustUnallocatedData = monetaryBodyTemplate(
+						rowData as IParticipantOverview,
+						"trustUnallocated"
+					);
+
+					return (
+						<div className=" w-full">
+							{moneyFormat(
+								Number.parseFloat(rowData.totalDrawnToDate) -
+									Number.parseFloat(
+										trustUnallocatedData.replace("$", "").replace(",", "")
+									)
+							)}
+						</div>
+					);
+				}}
 			/>
+
 			<Column
 				sortable
 				field="trustUnallocated"
@@ -120,19 +137,36 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				sortable
 				field="trustAllocated"
 				header="Trust Allocated"
-				body={() => <div className="ml-14 w-full">--</div>}
+				body={(rowData) => (
+					<div className="ml-14 w-full">
+						{moneyFormat(rowData.trustAllocated)}
+					</div>
+				)}
 			/>
 			<Column
 				sortable
 				field="dueToDraws"
 				header="Construction Holdback"
-				body={() => <div className="ml-14 w-full">--</div>}
+				body={(rowData) => (
+					<div className="ml-14 w-full">
+						{moneyFormat(rowData.trustAllocated)}
+					</div>
+				)}
 			/>
 			<Column
 				sortable
 				field="totalFunds"
 				header="Total Funds"
-				body={() => <div className="ml-14 w-full">--</div>}
+				body={(rowData) => {
+					return (
+						<div className=" w-full">
+							{moneyFormat(
+								Number.parseFloat(rowData.totalDrawnToDate) +
+									Number.parseFloat(rowData.trustAllocated)
+							)}
+						</div>
+					);
+				}}
 			/>
 		</DataTable>
 	);

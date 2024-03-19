@@ -71,7 +71,7 @@ export const Overviews: FC<Props> = ({ data }) => {
 				<Value label="Yield Spread" value={data.interestOverview.yieldSpread} />
 				<Value
 					label="Check and Balance"
-					value={round(data.interestOverview.checkAndBalance, 0)}
+					value={Math.abs(round(data.interestOverview.checkAndBalance, 0))}
 					checkAndBalance
 				/>
 			</div>

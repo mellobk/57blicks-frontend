@@ -2,6 +2,7 @@ import type { Lender } from "@/types/api/lender";
 import type { Loan } from "@/types/api/loan";
 
 export interface FundingBreakdown {
+	participationBreakdowns?: Array<FundingBreakdown>;
 	id: string;
 	createdAt: Date;
 	updatedAt: Date;

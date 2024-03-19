@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Borrower } from "@/types/api/borrower";
 import type { Collateral } from "@/types/api/collateral";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
@@ -26,6 +27,10 @@ export interface Loan {
 	taxedPaid?: boolean;
 	collaterals: Array<Collateral>;
 	ltv: string;
+	payables: Array<{
+		[x: string]: any;
+		payableDetails: Array<any>;
+	}>;
 	fundingBreakdowns: Array<FundingBreakdown>;
 	fundingBreakDowns: Array<FundingBreakdown>;
 	participationBreakdowns: Array<ParticipationBreakdown>;
