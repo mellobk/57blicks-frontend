@@ -22,6 +22,7 @@ import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { useDebounce } from "@/hooks/debounce";
 import moment from "moment";
 import type { Loan } from "@/types/api/loan";
+import { getIsSameMonthYear } from "@/utils/common-functions";
 
 interface Column {
 	name?: string;
@@ -247,7 +248,15 @@ export const Table: FC<Props> = ({
 				nextValuePayableInvestor(data.loan as any) ||
 				currentValuePayableInvestor(data.loan as any) ||
 				"0";
-			console.log(regular);
+
+			if (!regular || regular === "0") {
+				regular = getIsSameMonthYear(
+					data.loan.originationDate as unknown as string
+				)
+					? data.loan.prorated
+					: data.loan.regular;
+			}
+
 			if (data.loan.status === "DEFAULT") {
 				regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
 			}
@@ -266,6 +275,14 @@ export const Table: FC<Props> = ({
 		const totalPreviousAmount = data?.map((data: FundingBreakdown) => {
 			let value = "0";
 			value = currentValuePayableInvestor(data.loan as any).toString();
+
+			if (!value || value === "0") {
+				value = getIsSameMonthYear(
+					data.loan.originationDate as unknown as string
+				)
+					? data.loan.prorated
+					: data.loan.regular;
+			}
 			const dateNow = moment();
 			const endDate = moment(data.loan.endDate);
 
@@ -304,29 +321,6 @@ export const Table: FC<Props> = ({
 			totalPrevious: totalPrevious,
 			totalRow: totalRow,
 		};
-		// const footerTabData: Array<{
-		// 	label: string;
-		// 	width: string;
-		// 	justify?: string;
-		// }> = [
-		// 	{ label: `Total: ${totalRow}`, width: "650px", justify: "center" },
-		// 	{ label: moneyFormat(total), width: "170px" },
-		// 	{ label: "", width: "100px" },
-		// 	{
-		// 		label: "" + moneyFormat(totalRegular),
-		// 		width: "200px",
-		// 	},
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "470px" },
-		// 	{ label: moneyFormat(totalPrevious), width: "170px" },
-		// 	{ label: moneyFormat(totalRegular), width: "170px" },
-		// ];
 
 		return footerTabData;
 	};

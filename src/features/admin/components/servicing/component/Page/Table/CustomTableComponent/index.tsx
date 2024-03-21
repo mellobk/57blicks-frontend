@@ -87,7 +87,6 @@ const templateRate = (rowData: any) => {
 };
 
 const templateRegularPayment = (rowData: any) => {
-	console.log(rowData.regular);
 	return moneyFormat(Number.parseFloat(rowData.regular || "0"));
 };
 
@@ -143,13 +142,32 @@ const templateInsuranceExpirationDate = (rowData: any) => {
 };
 
 const templateCurrentValue = (rowData: any) => {
-	return moneyFormat(currentValuePayableInvestor(rowData.data.loan));
+	let value = 0;
+	value = currentValuePayableInvestor(rowData.data.loan);
+
+	if (!value || value === 0) {
+		value = getIsSameMonthYear(
+			rowData.data.loan.originationDate as unknown as string
+		)
+			? rowData.data.loan.prorated
+			: rowData.data.loan.regular;
+	}
+	return moneyFormat(value);
 };
 
 const templateNextValue = (rowData: any) => {
-	const value =
+	console.log(rowData);
+	let value =
 		nextValuePayableInvestor(rowData.data.loan) ||
 		currentValuePayableInvestor(rowData.data.loan);
+
+	if (!value || value === 0) {
+		value = getIsSameMonthYear(
+			rowData?.data.loan?.originationDate as unknown as string
+		)
+			? rowData.data.loan.prorated
+			: rowData.data.loan.regular;
+	}
 	return moneyFormat(Number.parseFloat(value.toString()));
 };
 
