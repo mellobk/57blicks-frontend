@@ -22,7 +22,6 @@ import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { useDebounce } from "@/hooks/debounce";
 import moment from "moment";
 import type { Loan } from "@/types/api/loan";
-import { getIsSameMonthYear } from "@/utils/common-functions";
 
 interface Column {
 	name?: string;
@@ -52,9 +51,7 @@ interface Props {
 
 const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
 const currentDate = moment(); // Current date
-const nextCurrentDate = moment(); // Current date
-const nexMonthDate = nextCurrentDate.add(1, "month").month();
-
+const beforeCurrentMonth = moment().subtract(1, "month").month();
 export const currentValuePayableInvestor = (loan: Loan) => {
 	let data = "0";
 	const findMonth = loan?.payables.find(
@@ -64,7 +61,7 @@ export const currentValuePayableInvestor = (loan: Loan) => {
 			// Check if year and month are the same as the current date
 			return (
 				dataMonth.year() === currentDate.year() &&
-				dataMonth.month() === currentDate.month()
+				dataMonth.month() === beforeCurrentMonth
 			);
 		}
 	);
@@ -88,7 +85,7 @@ export const nextValuePayableInvestor = (loan: Loan) => {
 			// Check if year and month are the same as the current date
 			return (
 				dataMonth.year() === currentDate.year() &&
-				dataMonth.month() === nexMonthDate
+				dataMonth.month() === currentDate.month()
 			);
 		}
 	);
@@ -245,23 +242,13 @@ export const Table: FC<Props> = ({
 		});
 		const totalRegularAmount = data?.map((data: FundingBreakdown) => {
 			let regular =
-				nextValuePayableInvestor(data.loan as any) ||
-				currentValuePayableInvestor(data.loan as any) ||
-				"0";
-
-			if (!regular || regular === "0") {
-				regular = getIsSameMonthYear(
-					data.loan.originationDate as unknown as string
-				)
-					? data.loan.prorated
-					: data.loan.regular;
-			}
+				nextValuePayableInvestor(data.loan as any) || data.loan.regular;
 
 			if (data.loan.status === "DEFAULT") {
 				regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
 			}
 
-			return Number.parseFloat(regular.toString() as any);
+			return Number.parseFloat(regular?.toString() as any);
 		});
 		const totalRegularAmountLoan = data?.map((data: FundingBreakdown) => {
 			let regular = data.loan.regular;
@@ -276,13 +263,10 @@ export const Table: FC<Props> = ({
 			let value = "0";
 			value = currentValuePayableInvestor(data.loan as any).toString();
 
-			if (!value || value === "0") {
-				value = getIsSameMonthYear(
-					data.loan.originationDate as unknown as string
-				)
-					? data.loan.prorated
-					: data.loan.regular;
+			if (value === "0") {
+				value = data?.loan?.regular || "0";
 			}
+
 			const dateNow = moment();
 			const endDate = moment(data.loan.endDate);
 

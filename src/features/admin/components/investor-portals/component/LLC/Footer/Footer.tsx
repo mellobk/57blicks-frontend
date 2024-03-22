@@ -50,7 +50,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 
 		data =
 			findMonth &&
-			findMonth["payableDetails"].find(
+			findMonth["payableDetails"]?.find(
 				(data: { type: string }) =>
 					data.type === "Lender" || data.type === "Investor"
 			).credit;
@@ -78,7 +78,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 
 		data =
 			findMonth &&
-			findMonth["payableDetails"].find(
+			findMonth["payableDetails"]?.find(
 				(data: { type: string }) =>
 					data.type === "Lender" || data.type === "Investor"
 			).credit;

@@ -21,13 +21,14 @@ import { formatDate, moneyFormat, percentageFormat } from "@/utils/formats";
 import PayablesAdmin from "../PayablesAdmin";
 import type { DkcLenders } from "../../../servicing/types/api";
 import {
-	getIsSameMonthYear,
+	sortLLCRegular,
 	sortMaturityDate,
 	sortOriginateDate,
 	sortRateLoan,
 	sortRegularLoan,
 	statusTotalLoan,
 } from "@/utils/common-functions";
+import type { Loan } from "../../types/api";
 
 interface Props {
 	actualTab: string;
@@ -43,8 +44,68 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const setLenderData = investorPortalsStore((state) => state.setLender);
 	const lenderData = investorPortalsStore((state) => state.lenders);
 	const [tableData, setTableData] = useState<Array<DkcLenders>>([]);
-	const currentMonthName = moment().format("MMMM");
-	const nextMonthName = moment().add(1, "months").format("MMMM");
+	const currentMonthName = moment().add(1, "months").format("MMMM");
+	const previousMonthName = moment().format("MMMM");
+	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
+	const currentDate = moment(); // Current date
+	const beforeCurrentMonth = moment().subtract(1, "month").month();
+
+	const currentValuePayableInvestor = (value: any) => {
+		let data = "0";
+
+		const findMonth = value.loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === beforeCurrentMonth
+				);
+			}
+		);
+
+		data =
+			(findMonth &&
+				findMonth["payableDetails"]?.find(
+					(data: { type: string }) =>
+						data.type === "Investor" || data.type === "Lender"
+				).credit) ||
+			value?.regular;
+
+		/* 		if (value.loan.status === "DEFAULT") {
+			data = String((Number(value.loan.principal) * 18) / 100 / 12);
+		} */
+		return Number.parseFloat(data || "0");
+	};
+
+	const nextValuePayableInvestor = (value: any) => {
+		let data = "0";
+		const findMonth = value.loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === currentDate.month()
+				);
+			}
+		);
+
+		data =
+			(findMonth &&
+				findMonth["payableDetails"]?.find(
+					(data: { type: string }) =>
+						data.type === "Investor" || data.type === "Lender"
+				).credit) ||
+			value?.regular;
+
+		if (value.loan.status === "DEFAULT") {
+			data = String((Number(value.loan.principal) * 18) / 100 / 12);
+		}
+		return Number.parseFloat(data || "0");
+	};
 
 	const findDkcLender = () => {
 		const findLender = lenderData.find(
@@ -52,23 +113,6 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		);
 
 		return findLender?.id || "";
-	};
-
-	const currentValue = (
-		originationDate: string,
-		prorated: string,
-		regular: string,
-		status: string,
-		amount: string
-	) => {
-		let data = getIsSameMonthYear(originationDate as unknown as string)
-			? prorated
-			: regular;
-
-		if (status === "DEFAULT") {
-			data = String((Number(amount) * 18) / 100 / 12);
-		}
-		return moneyFormat(Number.parseFloat(data || "0"));
 	};
 
 	const lendersQuery = useQuery(
@@ -136,7 +180,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			name: "Total Loan Amount",
 			sortFunction: statusTotalLoan,
 			selector: (row: FundingBreakdown) =>
-				moneyFormat(Number(row.loan.totalLoanAmount)),
+				moneyFormat(Number(row.loan.principal)),
 			sortable: true,
 		},
 		{
@@ -166,56 +210,37 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			sortFunction: sortMaturityDate,
 		},
 		{
-			name: `${currentMonthName} (Current)`,
-			sortFunction: sortRegularLoan,
-			selector: (row: FundingBreakdown) => moneyFormat(Number(row.regular)),
+			name: `${previousMonthName} (Current)`,
+			sortFunction: sortLLCRegular,
+			selector: (data: FundingBreakdown) => {
+				const totalAmount = currentValuePayableInvestor(data);
+				return <div>{moneyFormat(totalAmount)}</div>;
+			},
 			sortable: true,
 			conditionalCellStyles: [
 				{
-					when: (row: FundingBreakdown) => selectedRow?.id !== row.id,
+					when: (row: Loan) => !!row,
 					style: {
 						background: "#C79E631F",
 						color: "#C79E63",
-					},
-				},
-				{
-					when: (row: FundingBreakdown) => selectedRow?.id === row.id,
-					style: {
-						background: "#0085FF3D",
-						color: "#0085FF",
-						borderColor: "#0085FF",
-						borderWidth: 2,
 					},
 				},
 			],
 		},
 		{
-			name: `${nextMonthName}`,
-			sortFunction: sortRegularLoan,
-			selector: (row: FundingBreakdown) =>
-				currentValue(
-					row.loan.originationDate as unknown as string,
-					row.prorated,
-					row.regular,
-					row.loan.status,
-					row.amount
-				),
+			name: `${currentMonthName} `,
+			sortFunction: sortLLCRegular,
+			selector: (data: FundingBreakdown) => {
+				const totalAmount = nextValuePayableInvestor(data);
+				return <div>{moneyFormat(totalAmount)}</div>;
+			},
 			sortable: true,
 			conditionalCellStyles: [
 				{
-					when: (row: FundingBreakdown) => selectedRow?.id !== row.id,
+					when: (row: Loan) => !!row,
 					style: {
 						background: "#C79E631F",
 						color: "#C79E63",
-					},
-				},
-				{
-					when: (row: FundingBreakdown) => selectedRow?.id === row.id,
-					style: {
-						background: "#0085FF3D",
-						color: "#0085FF",
-						borderColor: "#0085FF",
-						borderWidth: 2,
 					},
 				},
 			],
@@ -302,7 +327,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				<div className="flex flex-col h-full bg-white rounded-2xl justify-between overflow-y-auto">
 					<Table
 						className="h-full p-0 m-0 rounded-t-2xl overflow-y-auto"
-						columns={columns}
+						columns={columns as any}
 						conditionalRowStyles={conditionalRowStyles}
 						data={tableData || []}
 						onRowClicked={setSelectedRow}

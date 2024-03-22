@@ -93,7 +93,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 
 		data =
 			(findMonth &&
-				findMonth["payableDetails"].find(
+				findMonth["payableDetails"]?.find(
 					(data) => data.type === "Lender" || data.type === "Investor"
 				).credit) ||
 			participant.prorated;
@@ -119,7 +119,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 
 		data =
 			(findMonth &&
-				findMonth["payableDetails"].find(
+				findMonth["payableDetails"]?.find(
 					(data) => data.type === "Investor" || data.type === "Lender"
 				).credit) ||
 			participant.prorated;

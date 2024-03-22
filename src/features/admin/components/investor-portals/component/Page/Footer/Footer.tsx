@@ -19,7 +19,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 					format="text"
 					value={`Total: ${data.length}`}
 					bold
-					className="w-[200%]"
+					className="w-[201%]"
 				/>
 				<Cell format="money" value={totals.totalLoanAmount} bold />
 				<Cell format="text" value={""} bold />

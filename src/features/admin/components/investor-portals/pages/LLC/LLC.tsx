@@ -46,8 +46,7 @@ export const LLC: FC = () => {
 
 	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
 	const currentDate = moment(); // Current date
-	const nextCurrentDate = moment(); // Current date
-	const nexMonthDate = nextCurrentDate.add(1, "month").month();
+	const beforeCurrentMonth = moment().subtract(1, "month").month();
 
 	const currentValuePayableInvestor = (value: any) => {
 		let data = "0";
@@ -59,14 +58,14 @@ export const LLC: FC = () => {
 				// Check if year and month are the same as the current date
 				return (
 					dataMonth.year() === currentDate.year() &&
-					dataMonth.month() === currentDate.month()
+					dataMonth.month() === beforeCurrentMonth
 				);
 			}
 		);
 
 		data =
 			(findMonth &&
-				findMonth["payableDetails"].find(
+				findMonth["payableDetails"]?.find(
 					(data: { type: string }) =>
 						data.type === "Investor" || data.type === "Lender"
 				).credit) ||
@@ -87,14 +86,14 @@ export const LLC: FC = () => {
 				// Check if year and month are the same as the current date
 				return (
 					dataMonth.year() === currentDate.year() &&
-					dataMonth.month() === nexMonthDate
+					dataMonth.month() === currentDate.month()
 				);
 			}
 		);
 
 		data =
 			(findMonth &&
-				findMonth["payableDetails"].find(
+				findMonth["payableDetails"]?.find(
 					(data: { type: string }) =>
 						data.type === "Investor" || data.type === "Lender"
 				).credit) ||

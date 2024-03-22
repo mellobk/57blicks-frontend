@@ -132,8 +132,7 @@ export interface FooterDataInvestor {
 export const getFooterData = (data: Array<FooterDataInvestor>) => {
 	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
 	const currentDate = moment(); // Current date
-	const nextCurrentDate = moment(); // Current date
-	const nexMonthDate = nextCurrentDate.add(1, "month").month();
+	const beforeCurrentMonth = moment().subtract(1, "month").month();
 	const currentValuePayableInvestor = (loan: Loan, prorated: string) => {
 		let data = "0";
 		const findMonth = loan?.payables?.find(
@@ -143,14 +142,14 @@ export const getFooterData = (data: Array<FooterDataInvestor>) => {
 				// Check if year and month are the same as the current date
 				return (
 					dataMonth.year() === currentDate.year() &&
-					dataMonth.month() === currentDate.month()
+					dataMonth.month() === beforeCurrentMonth
 				);
 			}
 		);
 
 		data =
 			(findMonth &&
-				findMonth["payableDetails"].find(
+				findMonth["payableDetails"]?.find(
 					(data: { type: string }) =>
 						data.type === "Lender" || data.type === "Investor"
 				).credit) ||
@@ -171,14 +170,14 @@ export const getFooterData = (data: Array<FooterDataInvestor>) => {
 				// Check if year and month are the same as the current date
 				return (
 					dataMonth.year() === currentDate.year() &&
-					dataMonth.month() === nexMonthDate
+					dataMonth.month() === currentDate.month()
 				);
 			}
 		);
 
 		data =
 			findMonth &&
-			findMonth["payableDetails"].find(
+			findMonth["payableDetails"]?.find(
 				(data: { type: string }) =>
 					data.type === "Lender" || data.type === "Investor"
 			).credit;
@@ -190,19 +189,16 @@ export const getFooterData = (data: Array<FooterDataInvestor>) => {
 	};
 
 	return data.reduce(
-		(accumulator, { loan, rate, regular, amount, prorated }) => {
+		(accumulator, { loan, rate, regular, amount }) => {
 			accumulator.rate += Number(rate);
 			accumulator.regular += Number(regular);
 			accumulator.totalLoanAmount += Number(loan.principal);
 			accumulator.amount += Number(amount);
 
-			accumulator.current += Number(
-				nextValuePayableInvestor(loan) ||
-					currentValuePayableInvestor(loan, prorated)
-			);
+			accumulator.current += Number(nextValuePayableInvestor(loan) || regular);
 
 			accumulator.previous += Number(
-				currentValuePayableInvestor(loan, prorated)
+				currentValuePayableInvestor(loan, regular)
 			);
 
 			return accumulator;

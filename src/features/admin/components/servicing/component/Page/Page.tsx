@@ -15,7 +15,6 @@ import { Toggle } from "@/components/ui/Toggle";
 import { ShowModal } from "@/features/admin/components/servicing/component/Page/ShowModal/ShowModal";
 import { formatDate, moneyFormat } from "@/utils/formats";
 import {
-	getIsSameMonthYear,
 	getIsSamePreviousMonthYear,
 	sortInsuranceDate,
 	sortInterestRateLoan,
@@ -406,11 +405,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			sortable: true,
 			selector: (row: ParticipationBreakdown) => {
 				console.log(row.loan.endDate);
-				let data = getIsSameMonthYear(
-					row.loan.originationDate as unknown as string
-				)
-					? row.loan.prorated
-					: row.loan.regular;
+				let data = "0";
 
 				if (row.loan.status === "DEFAULT") {
 					data = String((Number(row.loan.totalLoanAmount) * 18) / 100 / 12);

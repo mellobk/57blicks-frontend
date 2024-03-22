@@ -143,23 +143,16 @@ const templateInsuranceExpirationDate = (rowData: any) => {
 
 const templateCurrentValue = (rowData: any) => {
 	let value = 0;
-	value = currentValuePayableInvestor(rowData.data.loan);
+	value =
+		currentValuePayableInvestor(rowData.data.loan) || rowData.data.loan.regular;
 
-	if (!value || value === 0) {
-		value = getIsSameMonthYear(
-			rowData.data.loan.originationDate as unknown as string
-		)
-			? rowData.data.loan.prorated
-			: rowData.data.loan.regular;
-	}
 	return moneyFormat(value);
 };
 
 const templateNextValue = (rowData: any) => {
 	console.log(rowData);
 	let value =
-		nextValuePayableInvestor(rowData.data.loan) ||
-		currentValuePayableInvestor(rowData.data.loan);
+		nextValuePayableInvestor(rowData.data.loan) || rowData.data.loan.regular;
 
 	if (!value || value === 0) {
 		value = getIsSameMonthYear(
