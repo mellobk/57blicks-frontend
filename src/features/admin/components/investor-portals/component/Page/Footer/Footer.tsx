@@ -2,14 +2,19 @@ import type { ComponentType } from "react";
 
 import { Cell } from "@/components/table/Cell";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
-import { type FooterDataInvestor, getFooterData } from "@/utils/investors";
+import {
+	type FooterDataInvestor,
+	getFooterDataLender,
+} from "@/utils/investors";
 
 interface Props {
 	data: Array<FundingBreakdown>;
 }
 
 export const Footer: ComponentType<Props> = ({ data }) => {
-	const totals = getFooterData(data as unknown as Array<FooterDataInvestor>);
+	const totals = getFooterDataLender(
+		data as unknown as Array<FooterDataInvestor>
+	);
 
 	return (
 		<div className="flex flex-row min-h-12 h-12 bg-gray-200 rounded-b-2xl">

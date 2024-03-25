@@ -48,7 +48,37 @@ export const LLC: FC = () => {
 	const currentDate = moment(); // Current date
 	const beforeCurrentMonth = moment().subtract(1, "month").month();
 
-	const currentValuePayableInvestor = (value: any) => {
+	const currentValuePayableInvestor = (value: any, invertorId: string) => {
+		let data = "0";
+		const findMonth = value.loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === beforeCurrentMonth
+				);
+			}
+		);
+
+		data =
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return (
+						payableData.type === "Investor" &&
+						payableData?.investor?.id === invertorId
+					);
+				}
+			)?.credit || 0;
+
+		if (value.loan.status === "DEFAULT") {
+			data = String((Number(value.loan.principal) * 18) / 100 / 12);
+		}
+		return Number.parseFloat(data);
+	};
+
+	const currentValuePayableLender = (value: any) => {
 		let data = "0";
 
 		const findMonth = value.loan?.payables?.find(
@@ -64,20 +94,19 @@ export const LLC: FC = () => {
 		);
 
 		data =
-			(findMonth &&
-				findMonth["payableDetails"]?.find(
-					(data: { type: string }) =>
-						data.type === "Investor" || data.type === "Lender"
-				).credit) ||
-			value?.prorated;
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return payableData.type === "Lender";
+				}
+			)?.credit || "0";
 
 		if (value.loan.status === "DEFAULT") {
 			data = String((Number(value.loan.principal) * 18) / 100 / 12);
 		}
-		return Number.parseFloat(data || "0");
+		return Number.parseFloat(data) || 0;
 	};
 
-	const nextValuePayableInvestor = (value: any) => {
+	const nextValuePayableInvestor = (value: any, invertorId: string) => {
 		let data = "0";
 		const findMonth = value.loan?.payables?.find(
 			(data: { [x: string]: moment.MomentInput }) => {
@@ -92,17 +121,46 @@ export const LLC: FC = () => {
 		);
 
 		data =
-			(findMonth &&
-				findMonth["payableDetails"]?.find(
-					(data: { type: string }) =>
-						data.type === "Investor" || data.type === "Lender"
-				).credit) ||
-			value?.prorated;
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return (
+						payableData.type === "Investor" &&
+						payableData?.investor?.id === invertorId
+					);
+				}
+			)?.credit || "0";
 
 		if (value.loan.status === "DEFAULT") {
 			data = String((Number(value.loan.principal) * 18) / 100 / 12);
 		}
-		return Number.parseFloat(data || "0");
+		return Number.parseFloat(data);
+	};
+
+	const nextValuePayableLender = (value: any) => {
+		let data = "0";
+		const findMonth = value.loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === currentDate.month()
+				);
+			}
+		);
+
+		data =
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return payableData.type === "Lender";
+				}
+			)?.credit || "0";
+
+		if (value.loan.status === "DEFAULT") {
+			data = String((Number(value.loan.principal) * 18) / 100 / 12);
+		}
+		return Number.parseFloat(data);
 	};
 
 	useEffect(() => {
@@ -203,12 +261,28 @@ export const LLC: FC = () => {
 
 				const funding = [...participationBreakdownsArray, ...fundingBreakdowns];
 
-				const totalAmount = funding?.reduce(
-					(accumulator: number, dataInterest) =>
-						accumulator + Number(currentValuePayableInvestor(dataInterest)),
-					0
-				);
-				return <div>{moneyFormat(totalAmount)}</div>;
+				if (fundingBreakdowns.length > 0) {
+					const totalAmount = funding?.reduce(
+						(accumulator: number, dataInterest) =>
+							accumulator +
+							Number(
+								currentValuePayableLender(dataInterest) || dataInterest.regular
+							),
+						0
+					);
+					return <div>{moneyFormat(totalAmount)}</div>;
+				} else {
+					const totalAmount = funding?.reduce(
+						(accumulator: number, dataInterest) =>
+							accumulator +
+							Number(
+								currentValuePayableInvestor(dataInterest, data.id || "0") ||
+									dataInterest.regular
+							),
+						0
+					);
+					return <div>{moneyFormat(totalAmount)}</div>;
+				}
 			},
 			sortable: true,
 			conditionalCellStyles: [
@@ -230,16 +304,28 @@ export const LLC: FC = () => {
 
 				const funding = [...participationBreakdownsArray, ...fundingBreakdowns];
 
-				const totalAmount = funding?.reduce(
-					(accumulator: number, dataInterest) =>
-						accumulator +
-						Number(
-							nextValuePayableInvestor(dataInterest) ||
-								currentValuePayableInvestor(dataInterest)
-						),
-					0
-				);
-				return <div>{moneyFormat(totalAmount)}</div>;
+				if (fundingBreakdowns.length > 0) {
+					const totalAmount = funding?.reduce(
+						(accumulator: number, dataInterest) =>
+							accumulator +
+							Number(
+								nextValuePayableLender(dataInterest) || dataInterest.regular
+							),
+						0
+					);
+					return <div>{moneyFormat(totalAmount)}</div>;
+				} else {
+					const totalAmount = funding?.reduce(
+						(accumulator: number, dataInterest) =>
+							accumulator +
+							Number(
+								nextValuePayableInvestor(dataInterest, data.id || "0") ||
+									dataInterest.regular
+							),
+						0
+					);
+					return <div>{moneyFormat(totalAmount)}</div>;
+				}
 			},
 			sortable: true,
 			conditionalCellStyles: [

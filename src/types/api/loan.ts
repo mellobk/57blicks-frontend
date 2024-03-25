@@ -27,7 +27,7 @@ export interface Loan {
 	taxedPaid?: boolean;
 	collaterals: Array<Collateral>;
 	ltv: string;
-	payables: Array<{
+	payables?: Array<{
 		[x: string]: any;
 		payableDetails: Array<any>;
 	}>;

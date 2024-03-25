@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -129,11 +130,192 @@ export interface FooterDataInvestor {
 	type: "Investor" | "YieldSpread" | "Lender" | "Servicing";
 }
 
-export const getFooterData = (data: Array<FooterDataInvestor>) => {
+export const getFooterData = (
+	data: Array<FooterDataInvestor>,
+	id: string = "0"
+) => {
 	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
 	const currentDate = moment(); // Current date
 	const beforeCurrentMonth = moment().subtract(1, "month").month();
-	const currentValuePayableInvestor = (loan: Loan, prorated: string) => {
+	const currentValuePayableInvestor = (loan: Loan, invertorId: string) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === beforeCurrentMonth
+				);
+			}
+		);
+
+		data =
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return (
+						payableData.type === "Investor" &&
+						payableData?.investor?.id === invertorId
+					);
+				}
+			)?.credit || "0";
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+		return Number.parseFloat(data);
+	};
+
+	const nextValuePayableInvestor = (loan: Loan, invertorId: string) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === currentDate.month()
+				);
+			}
+		);
+
+		data =
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return (
+						payableData.type === "Investor" &&
+						payableData?.investor?.id === invertorId
+					);
+				}
+			)?.credit || "0";
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+
+		return Number.parseFloat(data);
+	};
+
+	return data.reduce(
+		(accumulator, { loan, rate, regular, amount }) => {
+			accumulator.rate += Number(rate);
+			accumulator.regular += Number(regular);
+			accumulator.totalLoanAmount += Number(loan.principal);
+			accumulator.amount += Number(amount);
+
+			accumulator.current += Number(
+				nextValuePayableInvestor(loan, id || "") || regular
+			);
+
+			accumulator.previous += Number(
+				currentValuePayableInvestor(loan, id || "") || regular
+			);
+
+			return accumulator;
+		},
+		{
+			rate: 0,
+			regular: 0,
+			totalLoanAmount: 0,
+			amount: 0,
+			current: 0,
+			previous: 0,
+		}
+	);
+};
+
+export const getFooterDataLender = (data: Array<FooterDataInvestor>) => {
+	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
+	const currentDate = moment(); // Current date
+	const beforeCurrentMonth = moment().subtract(1, "month").month();
+	const currentValuePayableInvestor = (loan: Loan) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === beforeCurrentMonth
+				);
+			}
+		);
+
+		data =
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return payableData.type === "Lender";
+				}
+			)?.credit || "0";
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+		return Number.parseFloat(data);
+	};
+
+	const nextValuePayableInvestor = (loan: Loan) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === currentDate.month()
+				);
+			}
+		);
+
+		data =
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return payableData.type === "Lender";
+				}
+			)?.credit || "0";
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+
+		return Number.parseFloat(data);
+	};
+
+	return data.reduce(
+		(accumulator, { loan, rate, regular, amount }) => {
+			accumulator.rate += Number(rate);
+			accumulator.regular += Number(regular);
+			accumulator.totalLoanAmount += Number(loan.principal);
+			accumulator.amount += Number(amount);
+
+			accumulator.current += Number(nextValuePayableInvestor(loan) || regular);
+
+			accumulator.previous += Number(
+				currentValuePayableInvestor(loan) || regular
+			);
+
+			return accumulator;
+		},
+		{
+			rate: 0,
+			regular: 0,
+			totalLoanAmount: 0,
+			amount: 0,
+			current: 0,
+			previous: 0,
+		}
+	);
+};
+
+export const getFooterDataLlc = (data: Array<FooterDataInvestor>) => {
+	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
+	const currentDate = moment(); // Current date
+	const beforeCurrentMonth = moment().subtract(1, "month").month();
+	const currentValuePayableInvestor = (loan: Loan) => {
 		let data = "0";
 		const findMonth = loan?.payables?.find(
 			(data: { [x: string]: moment.MomentInput }) => {
@@ -150,10 +332,9 @@ export const getFooterData = (data: Array<FooterDataInvestor>) => {
 		data =
 			(findMonth &&
 				findMonth["payableDetails"]?.find(
-					(data: { type: string }) =>
-						data.type === "Lender" || data.type === "Investor"
-				).credit) ||
-			prorated;
+					(data: { investor: any; type: string }) => data.type === "Lender"
+				)?.credit) ||
+			0;
 
 		if (loan.status === "DEFAULT") {
 			data = String((Number(loan.principal) * 18) / 100 / 12);
@@ -176,11 +357,11 @@ export const getFooterData = (data: Array<FooterDataInvestor>) => {
 		);
 
 		data =
-			findMonth &&
-			findMonth["payableDetails"]?.find(
-				(data: { type: string }) =>
-					data.type === "Lender" || data.type === "Investor"
-			).credit;
+			(findMonth &&
+				findMonth["payableDetails"]?.find(
+					(data: { investor: any; type: string }) => data.type === "Lender"
+				)?.credit) ||
+			0;
 
 		if (loan.status === "DEFAULT") {
 			data = String((Number(loan.principal) * 18) / 100 / 12);
@@ -198,7 +379,7 @@ export const getFooterData = (data: Array<FooterDataInvestor>) => {
 			accumulator.current += Number(nextValuePayableInvestor(loan) || regular);
 
 			accumulator.previous += Number(
-				currentValuePayableInvestor(loan, regular)
+				currentValuePayableInvestor(loan) || regular
 			);
 
 			return accumulator;

@@ -185,7 +185,6 @@ export const DashboardLayout: FC<Props> = ({
 	};
 
 	const markAllReadNotifications = () => {
-		console.log("data");
 		updateReadNotificationQuery.mutate();
 	};
 

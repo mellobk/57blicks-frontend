@@ -54,8 +54,9 @@ const currentDate = moment(); // Current date
 const beforeCurrentMonth = moment().subtract(1, "month").month();
 export const currentValuePayableInvestor = (loan: Loan) => {
 	let data = "0";
-	const findMonth = loan?.payables.find(
-		(data: { [x: string]: moment.MomentInput }) => {
+	const findMonth =
+		loan?.payables &&
+		loan?.payables.find((data: { [x: string]: moment.MomentInput }) => {
 			// Extract the month and year from the date string
 			const dataMonth = moment(data["month"], dateFormat);
 			// Check if year and month are the same as the current date
@@ -63,8 +64,7 @@ export const currentValuePayableInvestor = (loan: Loan) => {
 				dataMonth.year() === currentDate.year() &&
 				dataMonth.month() === beforeCurrentMonth
 			);
-		}
-	);
+		});
 
 	data = findMonth && findMonth["amount"];
 
@@ -77,8 +77,9 @@ export const currentValuePayableInvestor = (loan: Loan) => {
 export const nextValuePayableInvestor = (loan: Loan) => {
 	let data = "0";
 
-	const findMonth = loan?.payables.find(
-		(data: { [x: string]: moment.MomentInput }) => {
+	const findMonth =
+		loan?.payables &&
+		loan?.payables.find((data: { [x: string]: moment.MomentInput }) => {
 			// Extract the month and year from the date string
 			const dataMonth = moment(data["month"], dateFormat);
 
@@ -87,8 +88,7 @@ export const nextValuePayableInvestor = (loan: Loan) => {
 				dataMonth.year() === currentDate.year() &&
 				dataMonth.month() === currentDate.month()
 			);
-		}
-	);
+		});
 
 	data = findMonth && findMonth["amount"];
 

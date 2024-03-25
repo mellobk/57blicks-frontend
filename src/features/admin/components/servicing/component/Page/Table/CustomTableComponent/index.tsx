@@ -150,7 +150,6 @@ const templateCurrentValue = (rowData: any) => {
 };
 
 const templateNextValue = (rowData: any) => {
-	console.log(rowData);
 	let value =
 		nextValuePayableInvestor(rowData.data.loan) || rowData.data.loan.regular;
 

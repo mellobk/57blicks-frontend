@@ -66,12 +66,14 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		);
 
 		data =
-			(findMonth &&
-				findMonth["payableDetails"]?.find(
-					(data: { type: string }) =>
-						data.type === "Investor" || data.type === "Lender"
-				).credit) ||
-			value?.regular;
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return (
+						payableData.type === "Lender" &&
+						payableData?.investor?.id === value.id
+					);
+				}
+			)?.credit || value?.regular;
 
 		/* 		if (value.loan.status === "DEFAULT") {
 			data = String((Number(value.loan.principal) * 18) / 100 / 12);
@@ -94,12 +96,11 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		);
 
 		data =
-			(findMonth &&
-				findMonth["payableDetails"]?.find(
-					(data: { type: string }) =>
-						data.type === "Investor" || data.type === "Lender"
-				).credit) ||
-			value?.regular;
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return payableData.type === "Lender";
+				}
+			)?.credit || value?.regular;
 
 		if (value.loan.status === "DEFAULT") {
 			data = String((Number(value.loan.principal) * 18) / 100 / 12);

@@ -31,10 +31,97 @@ interface Props {
 export const Footer: ComponentType<Props> = ({ data }) => {
 	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
 	const currentDate = moment(); // Current date
-	const nextCurrentDate = moment(); // Current date
-	const nexMonthDate = nextCurrentDate.add(1, "month").month();
+	const beforeCurrentMonth = moment().subtract(1, "month").month();
 
-	const currentValuePayableInvestor = (loan: Loan) => {
+	const currentValuePayableInvestor = (loan: Loan, investorId: string) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === beforeCurrentMonth
+				);
+			}
+		);
+
+		data =
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return (
+						payableData.type === "Investor" &&
+						payableData?.investor?.id === investorId
+					);
+				}
+			)?.credit || 0;
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+
+		return Number.parseFloat(data);
+	};
+
+	const currentValuePayableLender = (loan: Loan) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === beforeCurrentMonth
+				);
+			}
+		);
+
+		data =
+			findMonth &&
+			findMonth["payableDetails"]?.find(
+				(data: { type: string }) => data.type === "Lender"
+			).credit;
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+
+		return Number.parseFloat(data);
+	};
+
+	const nextValuePayableInvestor = (loan: Loan, investorId: string) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === currentDate.month()
+				);
+			}
+		);
+		data =
+			findMonth?.payableDetails?.find(
+				(payableData: { investor: any; type: string }) => {
+					return (
+						payableData.type === "Investor" &&
+						payableData?.investor?.id === investorId
+					);
+				}
+			)?.credit || 0;
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+
+		return Number.parseFloat(data);
+	};
+
+	const nextValuePayableLender = (loan: Loan) => {
 		let data = "0";
 		const findMonth = loan?.payables?.find(
 			(data: { [x: string]: moment.MomentInput }) => {
@@ -51,62 +138,41 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 		data =
 			findMonth &&
 			findMonth["payableDetails"]?.find(
-				(data: { type: string }) =>
-					data.type === "Lender" || data.type === "Investor"
+				(data: { type: string }) => data.type === "Lender"
 			).credit;
 
 		if (loan.status === "DEFAULT") {
 			data = String((Number(loan.principal) * 18) / 100 / 12);
 		}
-		console.log(data);
-		return Number.parseFloat(data || "0");
-	};
 
-	const nextValuePayableInvestor = (loan: Loan) => {
-		let data = "0";
-		const findMonth = loan?.payables?.find(
-			(data: { [x: string]: moment.MomentInput }) => {
-				// Extract the month and year from the date string
-				const dataMonth = moment(data["month"], dateFormat);
-				// Check if year and month are the same as the current date
-				return (
-					dataMonth.year() === currentDate.year() &&
-					dataMonth.month() === nexMonthDate
-				);
-			}
-		);
-
-		data =
-			findMonth &&
-			findMonth["payableDetails"]?.find(
-				(data: { type: string }) =>
-					data.type === "Lender" || data.type === "Investor"
-			).credit;
-
-		if (loan.status === "DEFAULT") {
-			data = String((Number(loan.principal) * 18) / 100 / 12);
-		}
-		console.log(data);
-		return Number.parseFloat(data || "0");
+		return Number.parseFloat(data);
 	};
 	const totals = data.reduce(
-		(accumulator, { participationBreakdowns, lender }) => {
+		(accumulator, { participationBreakdowns, lender, id }) => {
 			const fundingBreakdowns = lender?.fundingBreakdowns ?? [];
 			const participationBreakdownsArray = participationBreakdowns ?? [];
 
 			[...participationBreakdownsArray, ...fundingBreakdowns]?.forEach(
-				({ rate, regular, loan, amount, prorated }) => {
+				({ rate, regular, loan, amount }) => {
 					accumulator.rate += Number(rate);
 					accumulator.regular += Number(regular);
 					accumulator.totalLoanAmount += Number(loan.principal);
 					accumulator.amount += Number(amount);
-					accumulator.previous += Number(
-						currentValuePayableInvestor(loan as any) || prorated
-					);
+
+					if (fundingBreakdowns.length > 0) {
+						accumulator.previous += Number(
+							currentValuePayableLender(loan as any) || regular
+						);
+						accumulator.current += Number(
+							nextValuePayableLender(loan as any) || regular
+						);
+					} else {
+						accumulator.previous += Number(
+							currentValuePayableInvestor(loan as any, id || "0") || regular
+						);
+					}
 					accumulator.current += Number(
-						nextValuePayableInvestor(loan as any) ||
-							currentValuePayableInvestor(loan as any) ||
-							prorated
+						nextValuePayableInvestor(loan as any, id || "0") || regular
 					);
 				}
 			);
@@ -124,6 +190,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 	);
 
 	return (
+		//all totals form llc
 		<div className="flex flex-row min-h-12 h-12 bg-gray-200 rounded-b-2xl">
 			<div className="w-12" />
 			<div className="grid grid-cols-9 w-full items-center">

@@ -9,7 +9,11 @@ import { useState, type ComponentType, useEffect } from "react";
 import type { ExpanderComponentProps } from "react-data-table-component/dist/src/DataTable/types";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
 import type { Investor } from "@/types/api/investor";
-import { type FooterDataInvestor, getFooterData } from "@/utils/investors.ts";
+import {
+	type FooterDataInvestor,
+	getFooterData,
+	getFooterDataLlc,
+} from "@/utils/investors.ts";
 import { useMutation } from "@tanstack/react-query";
 import LoansService from "@/api/loans";
 import { Modal } from "@/components/ui/Modal";
@@ -41,11 +45,18 @@ export const ExpandedComponent: ComponentType<Props> = ({
 }) => {
 	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
 	const currentDate = moment(); // Current date
-	const nextCurrentDate = moment(); // Current date
-	const nexMonthDate = nextCurrentDate.add(1, "month").month();
+	const beforeCurrentMonth = moment().subtract(1, "month").month();
 	const fundingBreakdowns = data.lender?.fundingBreakdowns ?? [];
 	const participationBreakdowns = data.participationBreakdowns ?? [];
-	const totals = getFooterData([
+	const totals = getFooterData(
+		[
+			...participationBreakdowns,
+			...fundingBreakdowns,
+		] as Array<FooterDataInvestor>,
+		data?.id || "0"
+	);
+
+	const totalsLlc = getFooterDataLlc([
 		...participationBreakdowns,
 		...fundingBreakdowns,
 	] as Array<FooterDataInvestor>);
@@ -78,7 +89,39 @@ export const ExpandedComponent: ComponentType<Props> = ({
 		return moneyFormat(Number.parseFloat(data || "0"));
 	}; */
 
-	const currentValuePayableInvestor = (participant: ParticipationBreakdown) => {
+	const currentValuePayableInvestorById = (
+		participant: ParticipationBreakdown,
+		investorId: string
+	) => {
+		let data = "0";
+
+		const findMonth = participant?.loan?.payables?.find((data) => {
+			// Extract the month and year from the date string
+			const dataMonth = moment(data["month"], dateFormat);
+			// Check if year and month are the same as the current date
+			return (
+				dataMonth.year() === currentDate.year() &&
+				dataMonth.month() === beforeCurrentMonth
+			);
+		});
+
+		data =
+			(findMonth &&
+				findMonth["payableDetails"]?.find(
+					(data) => data.type === "Investor" && data.investor.id === investorId
+				).credit) ||
+			participant.regular;
+
+		if (participant.loan.status === "DEFAULT") {
+			data = String((Number(participant.amount) * 18) / 100 / 12);
+		}
+		return moneyFormat(Number.parseFloat(data || "0"));
+	};
+
+	const nextValuePayableInvestorById = (
+		participant: ParticipationBreakdown,
+		investorId: string
+	) => {
 		let data = "0";
 
 		const findMonth = participant?.loan?.payables?.find((data) => {
@@ -94,9 +137,34 @@ export const ExpandedComponent: ComponentType<Props> = ({
 		data =
 			(findMonth &&
 				findMonth["payableDetails"]?.find(
-					(data) => data.type === "Lender" || data.type === "Investor"
+					(data) => data.type === "Investor" && data.investor.id === investorId
 				).credit) ||
-			participant.prorated;
+			participant.regular;
+
+		if (participant.loan.status === "DEFAULT") {
+			data = String((Number(participant.amount) * 18) / 100 / 12);
+		}
+		return moneyFormat(Number.parseFloat(data || "0"));
+	};
+
+	const currentValuePayableInvestor = (participant: ParticipationBreakdown) => {
+		let data = "0";
+
+		const findMonth = participant?.loan?.payables?.find((data) => {
+			// Extract the month and year from the date string
+			const dataMonth = moment(data["month"], dateFormat);
+			// Check if year and month are the same as the current date
+			return (
+				dataMonth.year() === currentDate.year() &&
+				dataMonth.month() === beforeCurrentMonth
+			);
+		});
+
+		data =
+			(findMonth &&
+				findMonth["payableDetails"]?.find((data) => data.type === "Lender")
+					.credit) ||
+			participant.regular;
 
 		if (participant.loan.status === "DEFAULT") {
 			data = String((Number(participant.amount) * 18) / 100 / 12);
@@ -113,16 +181,15 @@ export const ExpandedComponent: ComponentType<Props> = ({
 			// Check if year and month are the same as the current date
 			return (
 				dataMonth.year() === currentDate.year() &&
-				dataMonth.month() === nexMonthDate
+				dataMonth.month() === currentDate.month()
 			);
 		});
 
 		data =
 			(findMonth &&
-				findMonth["payableDetails"]?.find(
-					(data) => data.type === "Investor" || data.type === "Lender"
-				).credit) ||
-			participant.prorated;
+				findMonth["payableDetails"]?.find((data) => data.type === "Lender")
+					.credit) ||
+			participant.regular;
 
 		if (participant.loan.status === "DEFAULT") {
 			data = String((Number(participant.amount) * 18) / 100 / 12);
@@ -209,7 +276,10 @@ export const ExpandedComponent: ComponentType<Props> = ({
 										: "bg-gold-500/[12%] text-gold-500"
 								}
 								format="text"
-								value={currentValuePayableInvestor(participant as any)}
+								value={currentValuePayableInvestorById(
+									participant as any,
+									data.id
+								)}
 								bold
 							/>
 							<Cell
@@ -219,7 +289,10 @@ export const ExpandedComponent: ComponentType<Props> = ({
 										: "bg-gold-500/[12%] text-gold-500"
 								}
 								format="text"
-								value={nextValuePayableInvestor(participant as any)}
+								value={nextValuePayableInvestorById(
+									participant as any,
+									data.id
+								)}
 								bold
 							/>
 						</div>
@@ -237,7 +310,6 @@ export const ExpandedComponent: ComponentType<Props> = ({
 								: "bg-white"
 						} relative z-0`}
 						onClick={() => {
-							console.log("🚀 ~ participant:", participant);
 							selectParticipation?.(participant as ParticipationBreakdown);
 						}}
 					>
@@ -300,30 +372,57 @@ export const ExpandedComponent: ComponentType<Props> = ({
 				</div>
 			))}
 
-			<div className="flex flex-row h-12 bg-gray-200">
-				<div className="w-12" />
-				<div className="grid grid-cols-9 w-full items-center">
-					<Cell format="text" value="Subtotal" bold />
-					<Cell format="money" value={totals.totalLoanAmount} bold />
-					<Cell format="money" value={totals.amount} bold />
-					<Cell format="percentage" value={totals.rate} bold />
-					<Cell format="money" value={totals.regular} bold />
-					<Cell format="text" value="--" bold />
-					<Cell format="text" value="--" bold />
-					<Cell
-						className="bg-gold-500/[12%] text-gold-500"
-						format="money"
-						value={totals.previous}
-						bold
-					/>
-					<Cell
-						className="bg-gold-500/[12%] text-gold-500"
-						format="money"
-						value={totals.current}
-						bold
-					/>
+			{data.lender?.fundingBreakdowns.length ? (
+				<div className="flex flex-row h-12 bg-gray-200">
+					<div className="w-12" />
+					<div className="grid grid-cols-9 w-full items-center">
+						<Cell format="text" value="Subtotal" bold />
+						<Cell format="money" value={totalsLlc.totalLoanAmount} bold />
+						<Cell format="money" value={totalsLlc.amount} bold />
+						<Cell format="percentage" value={totalsLlc.rate} bold />
+						<Cell format="money" value={totalsLlc.regular} bold />
+						<Cell format="text" value="--" bold />
+						<Cell format="text" value="--" bold />
+						<Cell
+							className="bg-gold-500/[12%] text-gold-500"
+							format="money"
+							value={totalsLlc.previous}
+							bold
+						/>
+						<Cell
+							className="bg-gold-500/[12%] text-gold-500"
+							format="money"
+							value={totalsLlc.current}
+							bold
+						/>
+					</div>
 				</div>
-			</div>
+			) : (
+				<div className="flex flex-row h-12 bg-gray-200">
+					<div className="w-12" />
+					<div className="grid grid-cols-9 w-full items-center">
+						<Cell format="text" value="Subtotal" bold />
+						<Cell format="money" value={totals.totalLoanAmount} bold />
+						<Cell format="money" value={totals.amount} bold />
+						<Cell format="percentage" value={totals.rate} bold />
+						<Cell format="money" value={totals.regular} bold />
+						<Cell format="text" value="--" bold />
+						<Cell format="text" value="--" bold />
+						<Cell
+							className="bg-gold-500/[12%] text-gold-500"
+							format="money"
+							value={totals.previous}
+							bold
+						/>
+						<Cell
+							className="bg-gold-500/[12%] text-gold-500"
+							format="money"
+							value={totals.current}
+							bold
+						/>
+					</div>
+				</div>
+			)}
 			<Modal
 				visible={openDecline}
 				onHide={() => {
