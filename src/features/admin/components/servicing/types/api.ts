@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/array-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-use-before-define */
 export interface DkcServicing {
@@ -121,6 +122,7 @@ export interface Collateral {
 }
 
 export interface Loan {
+	participationBreakdowns?: any[];
 	principal: any;
 	totalInterest: string;
 	totalInterestDebit: string;
@@ -128,6 +130,7 @@ export interface Loan {
 	totalDebits: string;
 	prorated: any;
 	endDate: any;
+	fundingBreakdowns?: Array<FundingBreakdown>;
 	fundingBreakDowns: any;
 	id?: string;
 	name?: string;

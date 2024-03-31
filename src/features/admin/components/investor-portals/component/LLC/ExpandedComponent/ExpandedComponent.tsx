@@ -48,6 +48,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 	const beforeCurrentMonth = moment().subtract(1, "month").month();
 	const fundingBreakdowns = data.lender?.fundingBreakdowns ?? [];
 	const participationBreakdowns = data.participationBreakdowns ?? [];
+
 	const totals = getFooterData(
 		[
 			...participationBreakdowns,

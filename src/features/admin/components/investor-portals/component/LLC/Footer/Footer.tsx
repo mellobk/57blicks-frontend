@@ -33,7 +33,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 	const currentDate = moment(); // Current date
 	const beforeCurrentMonth = moment().subtract(1, "month").month();
 
-	const currentValuePayableInvestor = (loan: Loan, investorId: string) => {
+	const currentValuePayableInvestor = (loan: Loan) => {
 		let data = "0";
 		const findMonth = loan?.payables?.find(
 			(data: { [x: string]: moment.MomentInput }) => {
@@ -48,14 +48,16 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 		);
 
 		data =
-			findMonth?.payableDetails?.find(
-				(payableData: { investor: any; type: string }) => {
-					return (
-						payableData.type === "Investor" &&
-						payableData?.investor?.id === investorId
-					);
-				}
-			)?.credit || 0;
+			findMonth?.payableDetails
+				?.filter((payableData: { investor: any; type: string }) => {
+					return payableData.type === "Investor";
+				})
+				?.reduce(
+					(accumulator: number, dataInterest) =>
+						accumulator + Number.parseFloat(dataInterest.credit || "0"),
+					0
+				)
+				.toString() || "0";
 
 		if (loan.status === "DEFAULT") {
 			data = String((Number(loan.principal) * 18) / 100 / 12);
@@ -91,7 +93,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 		return Number.parseFloat(data);
 	};
 
-	const nextValuePayableInvestor = (loan: Loan, investorId: string) => {
+	const nextValuePayableInvestor = (loan: Loan) => {
 		let data = "0";
 		const findMonth = loan?.payables?.find(
 			(data: { [x: string]: moment.MomentInput }) => {
@@ -105,14 +107,16 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 			}
 		);
 		data =
-			findMonth?.payableDetails?.find(
-				(payableData: { investor: any; type: string }) => {
-					return (
-						payableData.type === "Investor" &&
-						payableData?.investor?.id === investorId
-					);
-				}
-			)?.credit || 0;
+			findMonth?.payableDetails
+				?.filter((payableData: { investor: any; type: string }) => {
+					return payableData.type === "Investor";
+				})
+				?.reduce(
+					(accumulator: number, dataInterest) =>
+						accumulator + Number.parseFloat(dataInterest.credit || "0"),
+					0
+				)
+				.toString() || "0";
 
 		if (loan.status === "DEFAULT") {
 			data = String((Number(loan.principal) * 18) / 100 / 12);
@@ -148,7 +152,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 		return Number.parseFloat(data);
 	};
 	const totals = data.reduce(
-		(accumulator, { participationBreakdowns, lender, id }) => {
+		(accumulator, { participationBreakdowns, lender }) => {
 			const fundingBreakdowns = lender?.fundingBreakdowns ?? [];
 			const participationBreakdownsArray = participationBreakdowns ?? [];
 
@@ -168,12 +172,12 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 						);
 					} else {
 						accumulator.previous += Number(
-							currentValuePayableInvestor(loan as any, id || "0") || regular
+							currentValuePayableInvestor(loan as any) || regular
+						);
+						accumulator.current += Number(
+							nextValuePayableInvestor(loan as any) || regular
 						);
 					}
-					accumulator.current += Number(
-						nextValuePayableInvestor(loan as any, id || "0") || regular
-					);
 				}
 			);
 

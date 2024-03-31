@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
@@ -7,8 +8,10 @@ import {
 	createNotificationData,
 	readAllNotification,
 	updateFundingBreakDown,
+	updateFundingBreakDownFundingUrl,
 	updateInvestmentStatus,
 	updateLedger,
+	updateParticipantBreakdownUrl,
 	updateUserNotificationData,
 	userNotification,
 } from "./backend-end-points";
@@ -77,6 +80,22 @@ const updateFundingBreakdown = async (loan: LoanLedger) => {
 	return response.data;
 };
 
+const updateFundingBreakdownFunding = async (funding: any) => {
+	const response = await authApiClient.put<any>(
+		updateFundingBreakDownFundingUrl(funding.id as string),
+		funding
+	);
+	return response.data;
+};
+
+const updateParticipantBreakdown = async (participant: any) => {
+	const response = await authApiClient.put<any>(
+		updateParticipantBreakdownUrl(participant.id as string),
+		participant
+	);
+	return response.data;
+};
+
 const ManageNotificationService = {
 	putLedger,
 	createNotifications,
@@ -85,6 +104,8 @@ const ManageNotificationService = {
 	putReadUserNotification,
 	updateFundingBreakdown,
 	putInvestmentStatus,
+	updateFundingBreakdownFunding,
+	updateParticipantBreakdown,
 };
 
 export default ManageNotificationService;

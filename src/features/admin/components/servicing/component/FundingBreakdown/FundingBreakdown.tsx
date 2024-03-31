@@ -23,8 +23,9 @@ export const FundingBreakdown: FC<Props> = ({ data }) => {
 			cell: (row): React.ReactNode => {
 				if ("lender" in row) {
 					return row.lender?.name;
-				} else if ("investor" in row) {
+				} else {
 					let name = "";
+
 					name =
 						row.type === "YieldSpread"
 							? "Y/S"
@@ -34,8 +35,6 @@ export const FundingBreakdown: FC<Props> = ({ data }) => {
 							  }`;
 					return name;
 				}
-
-				return "";
 			},
 			name: "Lender",
 			style: { padding: 0 },

@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type FC, useEffect, useState, type MutableRefObject } from "react";
 
 import {
@@ -22,6 +28,12 @@ import moment from "moment";
 import { columnWidth } from "./header/column-width";
 import DeleteLedger from "./DeleteLedger";
 import EditLedger from "./EditLedger";
+import { Modal } from "@/components/ui/Modal";
+import { Table } from "@/components/ui/Table";
+import type { TableColumn } from "react-data-table-component";
+import type { FundingBreakdown as FundingBreakdownType } from "@/types/api/funding-breakdown";
+import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
+import { Cell } from "@/components/table/Cell";
 interface LedgerAddProps {
 	field: FieldArrayWithId<Ledger>;
 	index: number;
@@ -29,6 +41,7 @@ interface LedgerAddProps {
 	control: Control<LedgerFormValues>;
 	data: LedgerFormValues;
 	loan: Loan;
+	setLlcPayment?: (data: any) => void;
 	handleSetValue: (
 		field: string,
 		value: string | number | boolean,
@@ -61,11 +74,120 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	register,
 	handleRemove,
 	handleOpenModal,
+	setLlcPayment,
 }) => {
 	const [dataLedgers, setDataLedgers] = useState<Ledger>();
 	const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
 	const [selectedIndex, setSelectedIndex] = useState<number>();
+
+	const [tableData, setTableData] = useState([]);
+	const [openInvestorsPayments, setOpenInvestorsPayments] =
+		useState<boolean>(false);
 	const [selectedId, setSelectedId] = useState<string>();
+	const PrincipalFlag =
+		loan?.participationBreakdowns &&
+		loan?.participationBreakdowns?.length > 0 &&
+		dataLedgers &&
+		dataLedgers.typeOfPaymentDescription === "Principal";
+
+	const handlePayments = (id: string, value: string) => {
+		const newTableData = tableData.map((data: any) => {
+			if (data.id === id) {
+				return {
+					...data,
+					paymentValue: value,
+					amountPrevious: data.amount,
+				};
+			}
+			return { ...data };
+		});
+
+		const amountData = newTableData
+			.filter(
+				(data) => data.type !== "Servicing" && data.type !== "YieldSpread"
+			)
+			.reduce(
+				(accumulator: number, payment) =>
+					accumulator + Number.parseFloat(payment.paymentValue || "0"),
+				0
+			);
+
+		handleSetValue(`debit`, amountData.toString(), index);
+
+		setTableData(newTableData as any);
+		if (setLlcPayment) {
+			setLlcPayment(newTableData as any);
+		}
+	};
+
+	useEffect(() => {
+		const data = [
+			...(loan?.fundingBreakdowns || []),
+			...(loan?.participationBreakdowns || []),
+		].map((data) => {
+			return { ...data, paymentValue: 0 };
+		});
+
+		setTableData(data as any);
+	}, []);
+
+	const columns: Array<
+		TableColumn<FundingBreakdownType | ParticipationBreakdown>
+	> = [
+		{
+			cell: (row): React.ReactNode => {
+				if ("lender" in row) {
+					return row.lender?.name;
+				} else {
+					let name = "";
+
+					name =
+						row.type === "YieldSpread"
+							? "Y/S"
+							: `${
+									row.investor?.user?.entityName ||
+									`${row.investor?.user?.firstName} ${row.investor?.user?.lastName}`
+							  }`;
+					return name;
+				}
+			},
+			name: "Lender",
+			style: { padding: 0 },
+		},
+		{
+			cell: (row) => <Cell format="money" value={row.amount} />,
+			name: "Amount",
+			style: { padding: 0 },
+		},
+
+		{
+			cell: (row) => (
+				<InputNumber
+					customValue={row.paymentValue || 0}
+					disabled={false}
+					defaultValue={row.paymentValue || 0}
+					handleChange={(value): void => {
+						handlePayments(row.id, value.toString());
+					}}
+				/>
+			),
+			name: "Payment",
+			style: { padding: 0 },
+		},
+		{
+			cell: (row) => (
+				<Cell
+					format="money"
+					value={
+						Number.parseFloat(row.amount) -
+						Number.parseFloat(row.paymentValue?.toString() || "0")
+					}
+				/>
+			),
+			name: "Total",
+			style: { padding: 0 },
+		},
+	];
 
 	useEffect(() => {
 		if (data) {
@@ -204,26 +326,40 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 			</div>
 			<div className={`${columnWidth.debit} text-primary-200  pl-4 text-right`}>
 				{dataLedgers?.editable ? (
-					<InputNumber
-						{...register(`ledger.${index}.debit` as never)}
-						placeholder="Debit"
-						defaultValue={dataLedgers ? dataLedgers.debit : 0}
-						error={
-							errors?.ledgers?.[index]?.debit
-								? errors?.ledgers?.[index]?.debit?.message
-								: ""
-						}
-						customValue={dataLedgers ? dataLedgers.debit : 0}
-						handleChange={(value): void => {
-							handleSetValue(`debit`, value.toString(), index);
-						}}
-					/>
+					<div className="relative">
+						<InputNumber
+							disabled={PrincipalFlag}
+							{...register(`ledger.${index}.debit` as never)}
+							placeholder="Debit"
+							defaultValue={dataLedgers ? dataLedgers.debit : 0}
+							error={
+								errors?.ledgers?.[index]?.debit
+									? errors?.ledgers?.[index]?.debit?.message
+									: ""
+							}
+							customValue={dataLedgers ? dataLedgers.debit : 0}
+							handleChange={(value): void => {
+								handleSetValue(`debit`, value.toString(), index);
+							}}
+						/>
+						{PrincipalFlag && (
+							<div
+								className="absolute right-[-22px] top-3 cursor-pointer"
+								onClick={() => {
+									setOpenInvestorsPayments(!openInvestorsPayments);
+								}}
+							>
+								<Icon name="debit" color="black" width="20" />
+							</div>
+						)}
+					</div>
 				) : (
 					dataLedgers &&
 					dataLedgers.debit &&
 					moneyFormat(dataLedgers.debit || 0)
 				)}
 			</div>
+
 			<div
 				className={`${columnWidth.credit} text-primary-200  pl-4 text-right `}
 			>
@@ -296,6 +432,24 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					title="Delete Ledger"
 					visible={openConfirmation}
 				/>
+
+				<Modal
+					visible={openInvestorsPayments}
+					title={"Principal investors payments"}
+					width="98%"
+					minHeight="95vh"
+					onHide={() => {
+						setOpenInvestorsPayments(!openInvestorsPayments);
+					}}
+				>
+					<div className="rounded-xl bg-white flex flex-col justify-between overflow-y-auto">
+						<Table
+							className="rounded-t-xl h-[100%]"
+							columns={columns}
+							data={tableData.filter((data: any) => data.type !== "Servicing")}
+						/>
+					</div>
+				</Modal>
 			</div>
 		</li>
 	);

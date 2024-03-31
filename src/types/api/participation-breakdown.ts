@@ -3,6 +3,7 @@ import type { Loan } from "@/types/api/loan.ts";
 
 export interface ParticipationBreakdown {
 	id: string;
+	paymentValue?: number;
 	createdAt: Date;
 	updatedAt: Date;
 	deletedAt?: Date;

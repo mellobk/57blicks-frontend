@@ -30,3 +30,11 @@ export const readAllNotification = (): string => {
 export const updateFundingBreakDown = (id: string): string => {
 	return `/loans/update-funding-breakdown/${id}`;
 };
+
+export const updateFundingBreakDownFundingUrl = (id: string): string => {
+	return `/funding-breakdowns/${id}`;
+};
+
+export const updateParticipantBreakdownUrl = (id: string): string => {
+	return `/participation-breakdowns/${id}`;
+};
