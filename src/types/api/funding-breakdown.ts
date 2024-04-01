@@ -5,6 +5,8 @@ export interface FundingBreakdown {
 	participationBreakdowns?: Array<FundingBreakdown>;
 	constructionHoldback?: number;
 	holdBackPaymentValue?: number;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	investor?: any;
 	paymentValue?: number;
 	id: string;
 	createdAt: Date;

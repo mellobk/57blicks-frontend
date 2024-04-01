@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Investor } from "@/types/api/investor";
 import type { Loan } from "@/types/api/loan.ts";
 

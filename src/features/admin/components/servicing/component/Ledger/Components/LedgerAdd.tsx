@@ -101,9 +101,17 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 		dataLedgers &&
 		dataLedgers.typeOfPaymentDescription === "Construction Holdback";
 
-	const handlePayments = (id: string, value: string) => {
+	const handlePayments = (id: string, value: string, investorId: string) => {
 		const newTableData = tableData.map((data: any) => {
 			if (data.id === id) {
+				return {
+					...data,
+					paymentValue: value,
+					amountPrevious: data.amount,
+				};
+			}
+
+			if (data?.investor?.id === investorId) {
 				return {
 					...data,
 					paymentValue: value,
@@ -191,7 +199,10 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 
 					name =
 						row.type === "YieldSpread"
-							? "Y/S"
+							? `Y/S ${
+									row.investor?.user?.entityName ||
+									`${row.investor?.user?.firstName} ${row.investor?.user?.lastName}`
+							  }`
 							: `${
 									row.investor?.user?.entityName ||
 									`${row.investor?.user?.firstName} ${row.investor?.user?.lastName}`
@@ -212,10 +223,10 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 			cell: (row) => (
 				<InputNumber
 					customValue={row.paymentValue || 0}
-					disabled={false}
+					disabled={row.type === "YieldSpread"}
 					defaultValue={row.paymentValue || 0}
 					handleChange={(value): void => {
-						handlePayments(row.id, value.toString());
+						handlePayments(row.id, value.toString(), row?.investor?.id);
 					}}
 				/>
 			),
