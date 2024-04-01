@@ -3,6 +3,8 @@ import type { Loan } from "@/types/api/loan";
 
 export interface FundingBreakdown {
 	participationBreakdowns?: Array<FundingBreakdown>;
+	constructionHoldback?: number;
+	holdBackPaymentValue?: number;
 	paymentValue?: number;
 	id: string;
 	createdAt: Date;

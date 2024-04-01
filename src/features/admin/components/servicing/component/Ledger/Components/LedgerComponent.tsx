@@ -70,6 +70,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	const scrollAdd = useRef<null | HTMLElement>(null);
 	const localUserName = getLocalStorage(userName);
 	const [tableData, setTableData] = useState([]);
+	const [tableDataHoldBack, setTableDataHoldBack] = useState([]);
 	const createLedgerQuery = useMutation(async (body: any) => {
 		return ManageNotificationService.createNotifications(body);
 	});
@@ -178,6 +179,39 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			.catch((error) => {
 				console.log("An error occurred:", error);
 			});
+	};
+
+	const handleUpdateHolBacks = () => {
+		const newTableData = tableDataHoldBack.map((data: any) => {
+			return { ...data, amountPrevious: data.amount };
+		});
+
+		const holdBackData = newTableData.map((data: any) => {
+			return {
+				...data,
+				constructionHoldback: (
+					Number.parseFloat(data.constructionHoldback) -
+					Number.parseFloat(data.holdBackPaymentValue)
+				).toString(),
+			};
+		});
+
+		Promise.all(
+			holdBackData
+				.filter(
+					(data: any) =>
+						data.type !== "Servicing" && data.type !== "YieldSpread"
+				)
+				.map((data) => {
+					if (data.type === "Servicing" || data.type === "Lender") {
+						updateFundingBreakdownQuery.mutate(data);
+					} else if (data.type === "Investor" || data.type === "YieldSpread") {
+						updateParticipantBreakdownQuery.mutate(data);
+					}
+				})
+		).catch((error) => {
+			console.log("An error occurred:", error);
+		});
 	};
 
 	useEffect(() => {
@@ -374,7 +408,6 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	useEffect(() => {}, [extended]);
 
 	useEffect(() => {
-		console.log(ledgersData);
 		if (createLedger.isSuccess && ledgersData) {
 			const dataLedger = ledgersData || [];
 
@@ -401,10 +434,18 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					0
 				);
 
-				updateLoanQuery.mutate({
-					id: loan?.id || " ",
-					constructionHoldback: (debits - credits).toString(),
-				});
+				if (
+					loan.fundingBreakdowns?.some(
+						(data) => data?.lender?.name === "DKC Lending LLC"
+					)
+				) {
+					handleUpdateHolBacks();
+				} else {
+					updateLoanQuery.mutate({
+						id: loan?.id || " ",
+						constructionHoldback: (debits - credits).toString(),
+					});
+				}
 			}
 		}
 	}, [createLedger.isLoading, ledgersData]);
@@ -492,6 +533,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 									data={allFields as unknown as LedgerFormValues}
 									loan={loan}
 									setLlcPayment={setTableData}
+									setLlcHoldbackPayment={setTableDataHoldBack}
 									handleOpenModal={handleOpenModal}
 									handleSetValue={handleSetValue}
 									handleSetDate={handleSetDate}

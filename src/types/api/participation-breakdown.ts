@@ -3,7 +3,9 @@ import type { Loan } from "@/types/api/loan.ts";
 
 export interface ParticipationBreakdown {
 	id: string;
+	constructionHoldback?: number;
 	paymentValue?: number;
+	holdBackPaymentValue?: number;
 	createdAt: Date;
 	updatedAt: Date;
 	deletedAt?: Date;

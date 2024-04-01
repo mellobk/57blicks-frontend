@@ -42,6 +42,7 @@ interface LedgerAddProps {
 	data: LedgerFormValues;
 	loan: Loan;
 	setLlcPayment?: (data: any) => void;
+	setLlcHoldbackPayment?: (data: any) => void;
 	handleSetValue: (
 		field: string,
 		value: string | number | boolean,
@@ -75,13 +76,17 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 	handleRemove,
 	handleOpenModal,
 	setLlcPayment,
+	setLlcHoldbackPayment,
 }) => {
 	const [dataLedgers, setDataLedgers] = useState<Ledger>();
 	const [openConfirmation, setOpenConfirmation] = useState<boolean>(false);
 	const [selectedIndex, setSelectedIndex] = useState<number>();
 
 	const [tableData, setTableData] = useState([]);
+	const [tableDataHoldBack, setTableDataHoldBack] = useState([]);
 	const [openInvestorsPayments, setOpenInvestorsPayments] =
+		useState<boolean>(false);
+	const [openHoldBackPayments, setOpenHoldBackPayments] =
 		useState<boolean>(false);
 	const [selectedId, setSelectedId] = useState<string>();
 	const PrincipalFlag =
@@ -89,6 +94,12 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 		loan?.participationBreakdowns?.length > 0 &&
 		dataLedgers &&
 		dataLedgers.typeOfPaymentDescription === "Principal";
+
+	const constructionHoldBackFlag =
+		loan?.participationBreakdowns &&
+		loan?.participationBreakdowns?.length > 0 &&
+		dataLedgers &&
+		dataLedgers.typeOfPaymentDescription === "Construction Holdback";
 
 	const handlePayments = (id: string, value: string) => {
 		const newTableData = tableData.map((data: any) => {
@@ -120,6 +131,35 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 		}
 	};
 
+	const handleHoldBackPayments = (id: string, value: string) => {
+		const newTableData = tableDataHoldBack.map((data: any) => {
+			if (data.id === id) {
+				return {
+					...data,
+					holdBackPaymentValue: value,
+				};
+			}
+			return { ...data };
+		});
+
+		const amountData = newTableData
+			.filter(
+				(data) => data.type !== "Servicing" && data.type !== "YieldSpread"
+			)
+			.reduce(
+				(accumulator: number, payment) =>
+					accumulator + Number.parseFloat(payment.holdBackPaymentValue || "0"),
+				0
+			);
+
+		handleSetValue(`debit`, amountData.toString(), index);
+
+		setTableDataHoldBack(newTableData as any);
+		if (setLlcHoldbackPayment) {
+			setLlcHoldbackPayment(newTableData as any);
+		}
+	};
+
 	useEffect(() => {
 		const data = [
 			...(loan?.fundingBreakdowns || []),
@@ -128,7 +168,15 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 			return { ...data, paymentValue: 0 };
 		});
 
+		const dataHoldBack = [
+			...(loan?.fundingBreakdowns || []),
+			...(loan?.participationBreakdowns || []),
+		].map((data) => {
+			return { ...data, holdBackPaymentValue: 0 };
+		});
+
 		setTableData(data as any);
+		setTableDataHoldBack(dataHoldBack as any);
 	}, []);
 
 	const columns: Array<
@@ -181,6 +229,66 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					value={
 						Number.parseFloat(row.amount) -
 						Number.parseFloat(row.paymentValue?.toString() || "0")
+					}
+				/>
+			),
+			name: "Total",
+			style: { padding: 0 },
+		},
+	];
+
+	const columnsConstructionHoldBack: Array<
+		TableColumn<FundingBreakdownType | ParticipationBreakdown>
+	> = [
+		{
+			cell: (row): React.ReactNode => {
+				if ("lender" in row) {
+					return row.lender?.name;
+				} else {
+					let name = "";
+
+					name =
+						row.type === "YieldSpread"
+							? "Y/S"
+							: `${
+									row.investor?.user?.entityName ||
+									`${row.investor?.user?.firstName} ${row.investor?.user?.lastName}`
+							  }`;
+					return name;
+				}
+			},
+			name: "Lender",
+			style: { padding: 0 },
+		},
+		{
+			cell: (row) => (
+				<Cell format="money" value={row?.constructionHoldback as any} />
+			),
+			name: "Amount",
+			style: { padding: 0 },
+		},
+
+		{
+			cell: (row) => (
+				<InputNumber
+					customValue={row.holdBackPaymentValue || 0}
+					disabled={false}
+					defaultValue={row.holdBackPaymentValue || 0}
+					handleChange={(value): void => {
+						handleHoldBackPayments(row.id, value.toString());
+					}}
+				/>
+			),
+			name: "Payment",
+			style: { padding: 0 },
+		},
+		{
+			cell: (row) => (
+				<Cell
+					format="money"
+					value={
+						Number.parseFloat(row.constructionHoldback?.toString() || "0") -
+						Number.parseFloat(row.holdBackPaymentValue?.toString() || "0")
 					}
 				/>
 			),
@@ -328,7 +436,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				{dataLedgers?.editable ? (
 					<div className="relative">
 						<InputNumber
-							disabled={PrincipalFlag}
+							disabled={PrincipalFlag || constructionHoldBackFlag}
 							{...register(`ledger.${index}.debit` as never)}
 							placeholder="Debit"
 							defaultValue={dataLedgers ? dataLedgers.debit : 0}
@@ -347,6 +455,16 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 								className="absolute right-[-22px] top-3 cursor-pointer"
 								onClick={() => {
 									setOpenInvestorsPayments(!openInvestorsPayments);
+								}}
+							>
+								<Icon name="debit" color="black" width="20" />
+							</div>
+						)}
+						{constructionHoldBackFlag && (
+							<div
+								className="absolute right-[-22px] top-3 cursor-pointer"
+								onClick={() => {
+									setOpenHoldBackPayments(!openHoldBackPayments);
 								}}
 							>
 								<Icon name="debit" color="black" width="20" />
@@ -437,7 +555,6 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					visible={openInvestorsPayments}
 					title={"Principal investors payments"}
 					width="98%"
-					minHeight="95vh"
 					onHide={() => {
 						setOpenInvestorsPayments(!openInvestorsPayments);
 					}}
@@ -447,6 +564,25 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							className="rounded-t-xl h-[100%]"
 							columns={columns}
 							data={tableData.filter((data: any) => data.type !== "Servicing")}
+						/>
+					</div>
+				</Modal>
+				<Modal
+					visible={openHoldBackPayments}
+					title={"Principal constructionsHoldBack payments"}
+					width="98%"
+					onHide={() => {
+						setOpenHoldBackPayments(!openHoldBackPayments);
+					}}
+				>
+					<div className="rounded-xl bg-white flex flex-col justify-between overflow-y-auto">
+						<Table
+							className="rounded-t-xl h-[100%]"
+							columns={columnsConstructionHoldBack}
+							data={tableDataHoldBack.filter(
+								(data: any) =>
+									data.type !== "Servicing" && data.type !== "YieldSpread"
+							)}
 						/>
 					</div>
 				</Modal>
