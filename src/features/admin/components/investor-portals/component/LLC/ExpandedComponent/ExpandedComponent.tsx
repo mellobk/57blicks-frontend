@@ -114,7 +114,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 			participant.regular;
 
 		if (participant.loan.status === "DEFAULT") {
-			data = String((Number(participant.amount) * 18) / 100 / 12);
+			data = /* String((Number(participant.amount) * 18) / 100 / 12) */ "0";
 		}
 		return moneyFormat(Number.parseFloat(data || "0"));
 	};
@@ -143,7 +143,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 			participant.regular;
 
 		if (participant.loan.status === "DEFAULT") {
-			data = String((Number(participant.amount) * 18) / 100 / 12);
+			data = /* String((Number(participant.amount) * 18) / 100 / 12) */ "0";
 		}
 		return moneyFormat(Number.parseFloat(data || "0"));
 	};
@@ -168,7 +168,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 			participant.regular;
 
 		if (participant.loan.status === "DEFAULT") {
-			data = String((Number(participant.amount) * 18) / 100 / 12);
+			data = /* String((Number(participant.amount) * 18) / 100 / 12) */ "0";
 		}
 		return moneyFormat(Number.parseFloat(data || "0"));
 	};
@@ -193,7 +193,7 @@ export const ExpandedComponent: ComponentType<Props> = ({
 			participant.regular;
 
 		if (participant.loan.status === "DEFAULT") {
-			data = String((Number(participant.amount) * 18) / 100 / 12);
+			data = /* String((Number(participant.amount) * 18) / 100 / 12) */ "0";
 		}
 		return moneyFormat(Number.parseFloat(data || "0"));
 	};

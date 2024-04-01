@@ -162,7 +162,7 @@ export const getFooterData = (
 			)?.credit || "0";
 
 		if (loan.status === "DEFAULT") {
-			data = String((Number(loan.principal) * 18) / 100 / 12);
+			data = /* String((Number(loan.principal) * 18) / 100 / 12) */ "0";
 		}
 		return Number.parseFloat(data);
 	};
@@ -192,7 +192,7 @@ export const getFooterData = (
 			)?.credit || "0";
 
 		if (loan.status === "DEFAULT") {
-			data = String((Number(loan.principal) * 18) / 100 / 12);
+			data = /* String((Number(loan.principal) * 18) / 100 / 12) */ "0";
 		}
 
 		return Number.parseFloat(data);
@@ -252,7 +252,7 @@ export const getFooterDataLender = (data: Array<FooterDataInvestor>) => {
 			)?.credit || "0";
 
 		if (loan.status === "DEFAULT") {
-			data = String((Number(loan.principal) * 18) / 100 / 12);
+			data = /* String((Number(loan.principal) * 18) / 100 / 12) */ "0";
 		}
 		return Number.parseFloat(data);
 	};
@@ -279,7 +279,7 @@ export const getFooterDataLender = (data: Array<FooterDataInvestor>) => {
 			)?.credit || "0";
 
 		if (loan.status === "DEFAULT") {
-			data = String((Number(loan.principal) * 18) / 100 / 12);
+			data = /* String((Number(loan.principal) * 18) / 100 / 12) */ "0";
 		}
 
 		return Number.parseFloat(data);
@@ -337,7 +337,7 @@ export const getFooterDataLlc = (data: Array<FooterDataInvestor>) => {
 			0;
 
 		if (loan.status === "DEFAULT") {
-			data = String((Number(loan.principal) * 18) / 100 / 12);
+			data = /* String((Number(loan.principal) * 18) / 100 / 12) */ "0";
 		}
 		return Number.parseFloat(data || "0");
 	};
@@ -364,7 +364,7 @@ export const getFooterDataLlc = (data: Array<FooterDataInvestor>) => {
 			0;
 
 		if (loan.status === "DEFAULT") {
-			data = String((Number(loan.principal) * 18) / 100 / 12);
+			data = /* String((Number(loan.principal) * 18) / 100 / 12) */ "0";
 		}
 		return Number.parseFloat(data || "0");
 	};

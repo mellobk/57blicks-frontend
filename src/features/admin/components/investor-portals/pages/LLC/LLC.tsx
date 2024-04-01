@@ -73,7 +73,7 @@ export const LLC: FC = () => {
 			)?.credit || 0;
 
 		if (value.loan.status === "DEFAULT") {
-			data = String((Number(value.loan.principal) * 18) / 100 / 12);
+			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 		}
 		return Number.parseFloat(data);
 	};
@@ -101,7 +101,7 @@ export const LLC: FC = () => {
 			)?.credit || "0";
 
 		if (value.loan.status === "DEFAULT") {
-			data = String((Number(value.loan.principal) * 18) / 100 / 12);
+			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 		}
 		return Number.parseFloat(data) || 0;
 	};
@@ -131,7 +131,7 @@ export const LLC: FC = () => {
 			)?.credit || "0";
 
 		if (value.loan.status === "DEFAULT") {
-			data = String((Number(value.loan.principal) * 18) / 100 / 12);
+			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 		}
 		return Number.parseFloat(data);
 	};
@@ -158,7 +158,7 @@ export const LLC: FC = () => {
 			)?.credit || "0";
 
 		if (value.loan.status === "DEFAULT") {
-			data = String((Number(value.loan.principal) * 18) / 100 / 12);
+			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 		}
 		return Number.parseFloat(data);
 	};

@@ -408,7 +408,8 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				let data = "0";
 
 				if (row.loan.status === "DEFAULT") {
-					data = String((Number(row.loan.totalLoanAmount) * 18) / 100 / 12);
+					data =
+						/* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 				}
 
 				if (row.loan.endDate) data = "0";

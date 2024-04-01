@@ -194,7 +194,7 @@ const getNextValue = (rowData: any) => {
 		: rowData.loan.regular;
 
 	if (rowData.loan.status === "DEFAULT") {
-		data = String((Number(rowData.loan.principal) * 18) / 100 / 12);
+		data = /* String((Number(rowData.loan.principal) * 18) / 100 / 12) */ "0";
 	}
 
 	if (rowData.loan.endDate) data = "0";

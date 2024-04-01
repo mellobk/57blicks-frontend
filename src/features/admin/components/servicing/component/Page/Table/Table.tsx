@@ -69,7 +69,7 @@ export const currentValuePayableInvestor = (loan: Loan) => {
 	data = findMonth && findMonth["amount"];
 
 	if (loan?.status === "DEFAULT") {
-		data = String((Number(loan.principal) * 18) / 100 / 12);
+		data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 	}
 	return Number.parseFloat(data || "0");
 };
@@ -93,7 +93,7 @@ export const nextValuePayableInvestor = (loan: Loan) => {
 	data = findMonth && findMonth["amount"];
 
 	if (loan?.status === "DEFAULT") {
-		data = String((Number(loan.principal) * 18) / 100 / 12);
+		data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 	}
 	return Number.parseFloat(data || "0");
 };
@@ -245,7 +245,8 @@ export const Table: FC<Props> = ({
 				nextValuePayableInvestor(data.loan as any) || data.loan.regular;
 
 			if (data.loan.status === "DEFAULT") {
-				regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
+				regular =
+					/* String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12) */ "0";
 			}
 
 			return Number.parseFloat(regular?.toString() as any);
@@ -254,7 +255,8 @@ export const Table: FC<Props> = ({
 			let regular = data.loan.regular;
 
 			if (data.loan.status === "DEFAULT") {
-				regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
+				regular =
+					/* String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12) */ "0";
 			}
 			return Number.parseFloat(regular || "");
 		});

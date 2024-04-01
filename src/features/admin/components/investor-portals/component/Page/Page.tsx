@@ -75,9 +75,9 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 				}
 			)?.credit || value?.regular;
 
-		/* 		if (value.loan.status === "DEFAULT") {
-			data = String((Number(value.loan.principal) * 18) / 100 / 12);
-		} */
+		if (value.loan.status === "DEFAULT") {
+			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
+		}
 		return Number.parseFloat(data || "0");
 	};
 
@@ -103,7 +103,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			)?.credit || value?.regular;
 
 		if (value.loan.status === "DEFAULT") {
-			data = String((Number(value.loan.principal) * 18) / 100 / 12);
+			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 		}
 		return Number.parseFloat(data || "0");
 	};
