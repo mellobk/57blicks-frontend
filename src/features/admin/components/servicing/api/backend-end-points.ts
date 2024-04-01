@@ -113,6 +113,10 @@ export const deleteLoanApi = (id: string): string => {
 	return `/loans/${id}`;
 };
 
+export const createLoanConsultant = (): string => {
+	return `/loan-consultants`;
+};
+
 export const loanHistoricalApi = (parameter: ApiParameters): string => {
 	return createApiUrl("loan-historicals", parameter);
 };

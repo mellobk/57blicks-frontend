@@ -214,7 +214,7 @@ export const statusDefaultType = (
 };
 
 export const unFormatPhone = (number: string): string => {
-	return number.replace(/[\s()-]/g, "");
+	return number.replaceAll(/[\s()-]/g, "");
 };
 
 export const removeCountryCode = (number: string): string => {
@@ -324,7 +324,7 @@ export const formatDateString = (isoString: string): string => {
 
 export const formatPhoneNumber = (phone: string): string => {
 	// Remove all non-numeric characters
-	let numbers = phone.replace(/\D/g, "");
+	let numbers = phone.replaceAll(/\D/g, "");
 
 	// Extract the last 10 digits (ignoring country code)
 	numbers = numbers.slice(-10);
@@ -476,4 +476,39 @@ export const sortLLCRegular = (rowA: any, rowB: any) => {
 	}
 
 	return 0;
+};
+
+export const getPreviousThreeMonths = (): Array<{
+	label: string;
+	value: string;
+}> => {
+	const months = [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec",
+	];
+	const currentDate = new Date();
+	const results: Array<{ label: string; value: string }> = [];
+
+	for (let index = 1; index <= 3; index++) {
+		currentDate.setMonth(currentDate.getMonth() - 1);
+		const monthIndex = currentDate.getMonth();
+		const month = months[monthIndex];
+		const year = currentDate.getFullYear();
+		const value = `${year}-${
+			monthIndex + 1 < 10 ? `0${monthIndex + 1}` : monthIndex + 1
+		}`;
+		results.push({ label: month as string, value });
+	}
+
+	return results.reverse();
 };

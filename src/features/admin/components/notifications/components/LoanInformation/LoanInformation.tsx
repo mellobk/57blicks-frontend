@@ -24,6 +24,12 @@ import { LoanLinkCard } from "../LoanLinkCard";
 import { Select } from "@/components/forms/Select";
 import { useForm } from "react-hook-form";
 import userStore from "@/stores/user-store";
+/* import { Icon } from "@/components/ui/Icon"; */
+import { Modal } from "@/components/ui/Modal";
+import { CreateLoanConsultant } from "../../../create-loan/components/CreateLoanConsultant/CreateLoanConsultant";
+import ManageLoanConsultantService from "../../../servicing/api/loan-consultant";
+import { useQuery } from "@tanstack/react-query";
+/* import { Dropdown } from "@/components/forms/Dropdown"; */
 
 interface LoanInformationProps {
 	data?: Loan | any;
@@ -36,6 +42,15 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 	edit,
 	setValidApprove,
 }) => {
+	const [openCreateLoanConsultant, setOpenCreateLoanConsultant] =
+		useState<boolean>(false);
+	const [getAllConsultants, setGetAllConsultants] = useState<
+		Array<{
+			code: string;
+			id: number;
+			name: string;
+		}>
+	>();
 	const userLoggedInfo = userStore((state) => state.loggedUserInfo);
 	const [type, setType] = useState<string>(data?.type || "");
 	const [loanData, setLoanData] = useState<Loan>(data || []);
@@ -46,10 +61,30 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 		userEditLoan(loanData as any);
 	}, [loanData]);
 
+	const loanConsultantQuery = useQuery(
+		["all-loan-consultants-loan"],
+		() => {
+			return ManageLoanConsultantService.getAllLoansConsultants();
+		},
+		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
+	);
+
+	useEffect(() => {
+		const consultantsOptions: any = loanConsultantQuery?.data
+			?.data as unknown as Array<{ name: string }>;
+
+		setGetAllConsultants(
+			consultantsOptions?.map((data: { name: any }) => {
+				return { code: data.name, name: data.name };
+			})
+		);
+	}, [loanConsultantQuery.isFetching]);
+
 	const {
 		register,
 		watch,
 		setValue,
+		/* 		control, */
 		formState: { errors },
 	} = useForm<any>();
 
@@ -72,6 +107,10 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 	const [accountData, setAccountData] = useState<string>(
 		loanData?.leadSource || ""
 	);
+
+	/* 	const [loanConsultantData, setLoanConsultantData] = useState<string>(
+		loanData?.loanConsultant || ""
+	); */
 
 	useEffect(() => {
 		if (watch("loanType")) {
@@ -158,6 +197,27 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 		watch("leadSource"),
 		watch("loanConsultant"),
 	]);
+
+	useEffect(() => {
+		if (getAllConsultants) {
+			const filterData = getAllConsultants.sort((a, b) => {
+				// Assuming 'name' is the property by which you want to sort
+				const nameA = a.code.toLowerCase(); // ignore upper and lowercase
+				const nameB = b.code.toLowerCase(); // ignore upper and lowercase
+				if (nameA < nameB) {
+					return -1; //nameA comes first
+				}
+				if (nameA > nameB) {
+					return 1; // nameB comes first
+				}
+
+				// names must be equal
+				return 0;
+			});
+
+			setGetAllConsultants(filterData as any);
+		}
+	}, [getAllConsultants]);
 
 	const setCollateralData = (data: string, index: number, type: string) => {
 		const newCollaterals = loanData.collaterals.map(
@@ -277,24 +337,69 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 							text={loanData?.prepaymentPenalty}
 						/>
 					)}
-					{edit ? (
-						<Input
-							type="text"
-							error={
-								errors?.["loanConsultant"] &&
-								(errors?.["loanConsultant"]?.message as string)
-							}
-							label="Loan Consultant "
-							register={register("loanConsultant")}
-							required
-						/>
-					) : (
-						<LoanCard
-							title="Loan Consultant "
-							text={loanData?.loanConsultant}
-							background
-						/>
-					)}
+					<div className="w-full">
+						{edit ? (
+							/* 	<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
+								<Select
+									register={register("loanConsultant")}
+									className="flex flex-col gap-2 w-full"
+									label="Loan Consultant"
+									placeholder="Select Loan Consultant"
+									value={loanConsultantData}
+									options={getAllConsultants}
+									onChange={(event): void => {
+										setLoanConsultantData(event.target.value as string);
+										setValue("loanConsultant", event.target.value);
+									}}
+								/>
+								<Input
+									data-testid="loan-information-loan-consultant"
+									error={errors?.["loanConsultant"]?.message}
+									label="Loan Consultant"
+									placeholder="Enter Loan Consultant"
+									register={register("loanConsultant")}
+									wrapperClassName="mt-6"
+									required
+								/>
+								<div
+									style={{
+										background: "transparent",
+										width: "25px",
+										height: "25px",
+										borderRadius: "60px",
+										display: "flex",
+										justifyContent: "center",
+										alignItems: "center",
+										marginBottom: "8px",
+										cursor: "pointer",
+									}}
+								>
+										<div
+										onClick={() => {
+											setOpenCreateLoanConsultant(true);
+										}}
+									>
+										<Icon name="plus" width="15" />
+									</div>
+								</div>
+							</div> */
+							<Input
+								data-testid="loan-information-loan-consultant"
+								error={errors?.["loanConsultant"]?.message}
+								label="Loan Consultant"
+								placeholder="Enter Loan Consultant"
+								register={register("loanConsultant")}
+								wrapperClassName="mt-6"
+								required
+							/>
+						) : (
+							<LoanCard
+								title="Loan Consultant "
+								text={loanData?.loanConsultant}
+								background
+							/>
+						)}
+					</div>
 					{edit ? (
 						<Select
 							register={register("leadSource")}
@@ -529,7 +634,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 
 							{edit ? (
 								<Select
-									className="flex flex-col gap-2"
+									className="flex flex-col gap-2 q"
 									label="Asset Type"
 									placeholder="Select Asset Type"
 									value={data?.assetType}
@@ -546,6 +651,18 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 					);
 				})}
 			</div>
+
+			<Modal
+				visible={openCreateLoanConsultant}
+				onHide={() => {
+					setOpenCreateLoanConsultant(false);
+					void loanConsultantQuery.refetch();
+				}}
+				title="Create Loan Consultant"
+				width="450px"
+			>
+				<CreateLoanConsultant />
+			</Modal>
 		</div>
 	);
 };

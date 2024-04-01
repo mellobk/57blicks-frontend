@@ -21,7 +21,7 @@ import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
 import { Tabs } from "../../servicing/component/Tabs";
-import { newFoundedTabs } from "../../servicing/utils/tabs";
+import { getPreviousThreeMonths } from "@/utils/common-functions";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -30,15 +30,22 @@ import { newFoundedTabs } from "../../servicing/utils/tabs";
 // you'll often use just a few of them.
 
 export const NewFoundedLoanReport: FC = () => {
-	const [actualTabData, setActualTabData] = useState<string>("30");
+	const reportsMonths = getPreviousThreeMonths();
+	const [actualTabData, setActualTabData] = useState<string>(
+		reportsMonths[2]?.label.toLowerCase() || ""
+	);
 	const [openInsurance, setOpenInsurance] = useState(false);
 	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
 	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
 
+	const findDate = reportsMonths.find(
+		(data) => data?.label?.toLowerCase() === actualTabData
+	);
+
 	const propertyInsuranceQuery = useQuery(
 		["all-new-loans-founded"],
 		() => {
-			return ManageReportsService.getNewLoansFounded(actualTabData);
+			return ManageReportsService.getNewLoansFounded(findDate?.value || "");
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -276,7 +283,7 @@ export const NewFoundedLoanReport: FC = () => {
 					New Loans Funded
 				</div>
 				<Tabs
-					tabs={newFoundedTabs}
+					tabs={getPreviousThreeMonths()}
 					actualTab={actualTabData}
 					onClick={(value): void => {
 						setActualTabData(value);
