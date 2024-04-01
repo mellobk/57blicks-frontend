@@ -339,14 +339,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 					)}
 					<div className="w-full">
 						{edit ? (
-							<div
-								style={{
-									display: "flex",
-									alignItems: "end",
-									gap: "5px",
-									width: "w-full",
-								}}
-							>
+							/* 	<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
 								<Select
 									register={register("loanConsultant")}
 									className="flex flex-col gap-2 w-full"
@@ -358,6 +351,15 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 										setLoanConsultantData(event.target.value as string);
 										setValue("loanConsultant", event.target.value);
 									}}
+								/>
+								<Input
+									data-testid="loan-information-loan-consultant"
+									error={errors?.["loanConsultant"]?.message}
+									label="Loan Consultant"
+									placeholder="Enter Loan Consultant"
+									register={register("loanConsultant")}
+									wrapperClassName="mt-6"
+									required
 								/>
 								<div
 									style={{
@@ -372,7 +374,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 										cursor: "pointer",
 									}}
 								>
-									<div
+										<div
 										onClick={() => {
 											setOpenCreateLoanConsultant(true);
 										}}
@@ -380,7 +382,16 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 										<Icon name="plus" width="15" />
 									</div>
 								</div>
-							</div>
+							</div> */
+							<Input
+								data-testid="loan-information-loan-consultant"
+								error={errors?.["loanConsultant"]?.message}
+								label="Loan Consultant"
+								placeholder="Enter Loan Consultant"
+								register={register("loanConsultant")}
+								wrapperClassName="mt-6"
+								required
+							/>
 						) : (
 							<LoanCard
 								title="Loan Consultant "

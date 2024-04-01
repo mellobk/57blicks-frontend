@@ -297,7 +297,16 @@ export const LoanInformation: FC<Props> = ({
 				required
 			/>
 			<div className="grid xl:grid-cols-2 grid-cols-1 xl:gap-6">
-				<div style={{ display: "flex", alignItems: "end", gap: "5px" }}>
+				<Input
+					data-testid="loan-information-loan-consultant"
+					error={errors?.loanConsultant?.message}
+					label="Loan Consultant"
+					placeholder="Enter Loan Consultant"
+					register={register("loanConsultant")}
+					wrapperClassName="mt-6"
+					required
+				/>
+				{/* 	<div style={{ display: "flex", alignItems: "end", gap: "5px" }}>
 					<Dropdown
 						data-testid="loan-information-lead-source"
 						control={control}
@@ -306,6 +315,15 @@ export const LoanInformation: FC<Props> = ({
 						label="Loan Consultant"
 						name="loanConsultant"
 						options={getAllConsultants}
+						required
+					/>
+					<Input
+						data-testid="loan-information-loan-consultant"
+						error={errors?.loanConsultant?.message}
+						label="Loan Consultant"
+						placeholder="Enter Loan Consultant"
+						register={register("loanConsultant")}
+						wrapperClassName="mt-6"
 						required
 					/>
 					<div
@@ -321,7 +339,7 @@ export const LoanInformation: FC<Props> = ({
 							cursor: "pointer",
 						}}
 					>
-						<div
+							<div
 							onClick={() => {
 								setOpenCreateLoanConsultant(true);
 							}}
@@ -329,7 +347,7 @@ export const LoanInformation: FC<Props> = ({
 							<Icon name="plus" width="15" />
 						</div>
 					</div>
-				</div>
+				</div> */}
 				<FormatInput
 					data-testid="loan-information-ltv"
 					control={control}
