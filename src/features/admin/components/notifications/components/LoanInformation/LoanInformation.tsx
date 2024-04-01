@@ -24,12 +24,12 @@ import { LoanLinkCard } from "../LoanLinkCard";
 import { Select } from "@/components/forms/Select";
 import { useForm } from "react-hook-form";
 import userStore from "@/stores/user-store";
-import { Icon } from "@/components/ui/Icon";
+/* import { Icon } from "@/components/ui/Icon"; */
 import { Modal } from "@/components/ui/Modal";
 import { CreateLoanConsultant } from "../../../create-loan/components/CreateLoanConsultant/CreateLoanConsultant";
 import ManageLoanConsultantService from "../../../servicing/api/loan-consultant";
 import { useQuery } from "@tanstack/react-query";
-import { Dropdown } from "@/components/forms/Dropdown";
+/* import { Dropdown } from "@/components/forms/Dropdown"; */
 
 interface LoanInformationProps {
 	data?: Loan | any;
@@ -84,7 +84,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 		register,
 		watch,
 		setValue,
-		control,
+		/* 		control, */
 		formState: { errors },
 	} = useForm<any>();
 
@@ -108,9 +108,9 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 		loanData?.leadSource || ""
 	);
 
-	const [loanConsultantData, setLoanConsultantData] = useState<string>(
+	/* 	const [loanConsultantData, setLoanConsultantData] = useState<string>(
 		loanData?.loanConsultant || ""
-	);
+	); */
 
 	useEffect(() => {
 		if (watch("loanType")) {

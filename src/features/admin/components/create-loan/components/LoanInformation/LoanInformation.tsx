@@ -24,7 +24,7 @@ import {
 } from "@/features/admin/components/create-loan/utils/selects";
 import moment from "moment";
 import { inputClassName } from "@/utils/class-names";
-import { Icon } from "@/components/ui/Icon";
+/* import { Icon } from "@/components/ui/Icon"; */
 import { Modal } from "@/components/ui/Modal";
 import { CreateLoanConsultant } from "../CreateLoanConsultant/CreateLoanConsultant";
 import { useQuery } from "@tanstack/react-query";

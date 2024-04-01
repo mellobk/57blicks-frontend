@@ -22,7 +22,7 @@ import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
 import { Tabs } from "../../servicing/component/Tabs";
-import { paidLoansTabs } from "../../servicing/utils/tabs";
+/* import { paidLoansTabs } from "../../servicing/utils/tabs"; */
 import { getPreviousThreeMonths } from "@/utils/common-functions";
 
 // make sure parent container have a defined height when using
