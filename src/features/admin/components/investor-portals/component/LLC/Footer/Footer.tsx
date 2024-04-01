@@ -1,14 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Cell } from "@/components/table/Cell";
 import type { ComponentType } from "react";
 import type { Loan } from "@/types/api/loan";
-import { getIsSamePreviousMonthYear } from "@/utils/common-functions";
+/* import { getIsSamePreviousMonthYear } from "@/utils/common-functions"; */
 import moment from "moment";
 
 interface Props {
 	data: Array<Loan>;
 }
 
-const previousValue = (
+/* const previousValue = (
 	originationDate: string,
 	prorated: string,
 	regular: string
@@ -22,32 +26,158 @@ const previousValue = (
 	}
 
 	return Number.parseFloat(value);
-};
+}; */
 
 export const Footer: ComponentType<Props> = ({ data }) => {
+	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
+	const currentDate = moment(); // Current date
+	const beforeCurrentMonth = moment().subtract(1, "month").month();
+
+	const currentValuePayableInvestor = (loan: Loan) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === beforeCurrentMonth
+				);
+			}
+		);
+
+		data =
+			findMonth?.payableDetails
+				?.filter((payableData: { investor: any; type: string }) => {
+					return payableData.type === "Investor";
+				})
+				?.reduce(
+					(accumulator: number, dataInterest) =>
+						accumulator + Number.parseFloat(dataInterest.credit || "0"),
+					0
+				)
+				.toString() || "0";
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+
+		return Number.parseFloat(data);
+	};
+
+	const currentValuePayableLender = (loan: Loan) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === beforeCurrentMonth
+				);
+			}
+		);
+
+		data =
+			findMonth &&
+			findMonth["payableDetails"]?.find(
+				(data: { type: string }) => data.type === "Lender"
+			).credit;
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+
+		return Number.parseFloat(data);
+	};
+
+	const nextValuePayableInvestor = (loan: Loan) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === currentDate.month()
+				);
+			}
+		);
+		data =
+			findMonth?.payableDetails
+				?.filter((payableData: { investor: any; type: string }) => {
+					return payableData.type === "Investor";
+				})
+				?.reduce(
+					(accumulator: number, dataInterest) =>
+						accumulator + Number.parseFloat(dataInterest.credit || "0"),
+					0
+				)
+				.toString() || "0";
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+
+		return Number.parseFloat(data);
+	};
+
+	const nextValuePayableLender = (loan: Loan) => {
+		let data = "0";
+		const findMonth = loan?.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === currentDate.month()
+				);
+			}
+		);
+
+		data =
+			findMonth &&
+			findMonth["payableDetails"]?.find(
+				(data: { type: string }) => data.type === "Lender"
+			).credit;
+
+		if (loan.status === "DEFAULT") {
+			data = String((Number(loan.principal) * 18) / 100 / 12);
+		}
+
+		return Number.parseFloat(data);
+	};
 	const totals = data.reduce(
 		(accumulator, { participationBreakdowns, lender }) => {
 			const fundingBreakdowns = lender?.fundingBreakdowns ?? [];
 			const participationBreakdownsArray = participationBreakdowns ?? [];
 
 			[...participationBreakdownsArray, ...fundingBreakdowns]?.forEach(
-				({ rate, regular, loan, prorated, amount }) => {
+				({ rate, regular, loan, amount }) => {
 					accumulator.rate += Number(rate);
 					accumulator.regular += Number(regular);
-					accumulator.totalLoanAmount += Number(loan.totalLoanAmount);
+					accumulator.totalLoanAmount += Number(loan.principal);
 					accumulator.amount += Number(amount);
-					accumulator.current += Number(
-						moment(loan.originationDate).toDate().getMonth() ===
-							new Date().getMonth()
-							? Number(prorated)
-							: Number(regular || 0)
-					);
 
-					accumulator.previous += previousValue(
-						loan.originationDate as unknown as string,
-						prorated,
-						regular
-					);
+					if (fundingBreakdowns.length > 0) {
+						accumulator.previous += Number(
+							currentValuePayableLender(loan as any) || regular
+						);
+						accumulator.current += Number(
+							nextValuePayableLender(loan as any) || regular
+						);
+					} else {
+						accumulator.previous += Number(
+							currentValuePayableInvestor(loan as any) || regular
+						);
+						accumulator.current += Number(
+							nextValuePayableInvestor(loan as any) || regular
+						);
+					}
 				}
 			);
 
@@ -64,6 +194,7 @@ export const Footer: ComponentType<Props> = ({ data }) => {
 	);
 
 	return (
+		//all totals form llc
 		<div className="flex flex-row min-h-12 h-12 bg-gray-200 rounded-b-2xl">
 			<div className="w-12" />
 			<div className="grid grid-cols-9 w-full items-center">

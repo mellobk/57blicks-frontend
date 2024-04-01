@@ -39,6 +39,7 @@ export type Ledgers = {
 };
 
 export type LedgerFormValues = {
+	participationBreakdowns?: Array<never>;
 	ledgers: Array<Ledgers>;
 	loanId?: string;
 };

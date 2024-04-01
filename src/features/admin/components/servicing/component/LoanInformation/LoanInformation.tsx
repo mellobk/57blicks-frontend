@@ -80,6 +80,7 @@ export const LoanInformation: FC<LoanInformationProps> = ({
 				>
 					{data?.loan && (
 						<ExtendLoan
+							handleRefreshData={handleRefreshData}
 							loan={data?.loan}
 							handleEdit={(): void => {
 								setSave(false);

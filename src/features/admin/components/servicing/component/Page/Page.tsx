@@ -15,7 +15,6 @@ import { Toggle } from "@/components/ui/Toggle";
 import { ShowModal } from "@/features/admin/components/servicing/component/Page/ShowModal/ShowModal";
 import { formatDate, moneyFormat } from "@/utils/formats";
 import {
-	getIsSameMonthYear,
 	getIsSamePreviousMonthYear,
 	sortInsuranceDate,
 	sortInterestRateLoan,
@@ -181,7 +180,7 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		{
 			when: (row: FundingBreakdown) => row?.loan.status === LoanStatusType.PAID,
 			style: {
-				opacity: 0.4,
+				opacity: 0.3,
 			},
 		},
 		{
@@ -405,15 +404,14 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			minWidth: "150px",
 			sortable: true,
 			selector: (row: ParticipationBreakdown) => {
-				let data = getIsSameMonthYear(
-					row.loan.originationDate as unknown as string
-				)
-					? row.loan.prorated
-					: row.loan.regular;
+				console.log(row.loan.endDate);
+				let data = "0";
 
 				if (row.loan.status === "DEFAULT") {
 					data = String((Number(row.loan.totalLoanAmount) * 18) / 100 / 12);
 				}
+
+				if (row.loan.endDate) data = "0";
 				return moneyFormat(Number.parseFloat(data || "0"));
 			},
 

@@ -185,7 +185,6 @@ export const DashboardLayout: FC<Props> = ({
 	};
 
 	const markAllReadNotifications = () => {
-		console.log("data");
 		updateReadNotificationQuery.mutate();
 	};
 
@@ -398,22 +397,26 @@ export const DashboardLayout: FC<Props> = ({
 							top: "60px",
 							padding: "15px",
 							zIndex: "100",
-							maxHeight: "80%",
+							maxHeight: "600px",
 							overflow: "overlay",
 						}}
 					>
 						<div className="border-b border-gray-200 pb-2 flex gap-2 items-center justify-between">
 							<div className="text-[18px]">
-								<Select
-									className="flex flex-col gap-2"
-									label=""
-									placeholder="Select Account Type"
-									value={notificationsType}
-									options={NOTIFICATION_OPTIONS}
-									onChange={(event): void => {
-										setNotificationsType(event.target.value);
-									}}
-								/>
+								{userInfo.role?.name === "admin" ? (
+									"Notifications"
+								) : (
+									<Select
+										className="flex flex-col gap-2"
+										label=""
+										placeholder="Select Account Type"
+										value={notificationsType}
+										options={NOTIFICATION_OPTIONS}
+										onChange={(event): void => {
+											setNotificationsType(event.target.value);
+										}}
+									/>
+								)}
 							</div>{" "}
 							<div className="flex justify-center items-center gap-3">
 								<Button

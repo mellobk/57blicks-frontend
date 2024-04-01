@@ -33,6 +33,27 @@ export const paidLoansTabs = [
 	{ label: "YTD", value: "", routeTo: "" },
 ];
 
+export const consultantsTabs = [
+	{
+		value: "all",
+		label: "All",
+		routeTo: "All",
+	},
+	{
+		value: "currentMonthToDate",
+		label: "Current month to date",
+		routeTo: "30",
+	},
+	{ value: "past30Days", label: "Past 30 days", routeTo: "30" },
+	{
+		value: "breakdownPerQuarter",
+		label: "Breakdown per Quarter",
+		routeTo: "30",
+	},
+	{ value: "YTD", label: "Year to Date", routeTo: "30" },
+	{ value: "yearOverYear", label: "Year over Year", routeTo: "30" },
+];
+
 export const loansTabs = [
 	{ label: "Consultants", value: "consultants", routeTo: "consultants" },
 	{ label: "Asset Types", value: "asset types", routeTo: "asset types" },

@@ -22,6 +22,9 @@ import { ResponsivePieCanvas } from "@nivo/pie";
 import type { Loan } from "@/types/api/loan";
 import { Modal } from "@/components/ui/Modal";
 import DataTable from "react-data-table-component";
+import { consultantsTabs } from "../../servicing/utils/tabs";
+import { Tabs } from "../../servicing/component/Tabs";
+import { Select } from "@/components/forms/Select";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -30,34 +33,35 @@ import DataTable from "react-data-table-component";
 // you'll often use just a few of them.
 
 export const LoanProductReport: FC = () => {
+	const [actualTabData, setActualTabData] = useState<string>("all");
 	const [openInsurance, setOpenInsurance] = useState(false);
-
-	const headerCsv = [
-		"Borrower Entity",
-		"Property Address",
-		"Loan Amount",
-		"Payoff Date",
-		"Asset Type",
-		"Loan Product",
-		"Rate",
-	];
-
 	const [chartData, setChartData] = useState([]);
 	const [keys, setKey] = useState<Array<string>>([]);
+	const [accountData, setAccountData] = useState<string>("all");
 	const [_, setExcelData] = useState<Array<any>>([]);
 	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
 	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
+	const [userData, setUserData] = useState<Array<any>>([]);
+	const [optionsConsultants, setOptionsConsultants] = useState<Array<any>>([]);
 	const consultantQuery = useQuery(
 		["all-products-loans"],
 		() => {
-			return ManageReportsService.getLoanProduct();
+			return ManageReportsService.getLoanProduct(
+				consultantsTabs.find(
+					(data) => data.label.toLocaleLowerCase() === actualTabData
+				)?.value || ""
+			);
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
 
 	useEffect(() => {
+		void consultantQuery.refetch();
+	}, [actualTabData]);
+
+	useEffect(() => {
 		if (consultantQuery.data && consultantQuery.data?.loans) {
-			const insuranceCsv = consultantQuery.data?.loans;
+			const insuranceCsv = userData;
 
 			const totalLoansAmount = insuranceCsv.reduce(
 				(accumulator: number, dataInterest: { totalLoanAmount: string }) =>
@@ -123,7 +127,82 @@ export const LoanProductReport: FC = () => {
 			]);
 			setLastRowModal(lastRow);
 		}
+	}, [consultantQuery.data, userData]);
+
+	useEffect(() => {
+		if (accountData === "all") {
+			setUserData(consultantQuery?.data?.loans || []);
+		} else {
+			console.log(accountData);
+			const filterQuery = consultantQuery.data.loans.filter(
+				(data: { type: string; loanConsultant: string }) =>
+					data.type === accountData
+			);
+			setUserData(filterQuery);
+		}
+	}, [accountData]);
+
+	useEffect(() => {
+		if (consultantQuery.data) {
+			const insuranceCsv = consultantQuery.data.data;
+
+			const csvData = keys?.map((data) => {
+				const productData =
+					insuranceCsv[data]?.map((value: Loan) => {
+						return [
+							value.borrower?.llc,
+							value?.collaterals[0]?.address,
+							moneyFormat(Number.parseInt(value?.totalLoanAmount)),
+							formatDate(value?.originationDate?.toString() || ""),
+							value?.collaterals[0]?.assetType,
+							value?.type,
+							`${Number.parseFloat(value?.interestRate).toFixed(0)}%`,
+						];
+					}) || [];
+				return [[data], ...productData];
+			});
+
+			const arrayExcel: Array<Array<any>> = [];
+			csvData.map((data) => {
+				return arrayExcel.push(...data);
+			});
+
+			const options = consultantQuery.data.loans.map(
+				(data: { type: string; loanConsultant: any }) => {
+					return {
+						code: data?.type || "",
+						name: data?.type || "",
+					};
+				}
+			);
+
+			const unique = options.filter(
+				(item: { code_: any; name: any }, index: any, self: Array<any>) =>
+					index ===
+					self.findIndex((t) => t.code_ === item.code_ && t.name === item.name)
+			);
+
+			unique.sort((a: { name: string }, b: { name: any }) =>
+				a.name.localeCompare(b.name)
+			);
+
+			setOptionsConsultants([{ code: "all", name: "all" }, ...unique]);
+
+			setExcelData(arrayExcel);
+			setUserData(consultantQuery.data.loans);
+		}
 	}, [consultantQuery.data]);
+
+	const headerCsv = [
+		"Borrower Entity",
+		"Property Address",
+		"Loan Amount",
+		"Origination Date",
+		"Loan Product",
+		"Rate",
+		"LTV",
+	];
+
 	const columnsModal = [
 		{
 			name: "Borrower Entity",
@@ -154,12 +233,6 @@ export const LoanProductReport: FC = () => {
 			omit: false,
 		},
 		{
-			name: "Asset Type",
-			//	cell: row => <CustomTitle row={row} />,
-			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
-			omit: false,
-		},
-		{
 			name: "Loan Product",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.type || "",
@@ -173,73 +246,42 @@ export const LoanProductReport: FC = () => {
 				`${Number.parseFloat(row?.interestRate).toFixed(0)}%`,
 			omit: false,
 		},
+		{
+			name: "LTV",
+			//	cell: row => <CustomTitle row={row} />,
+			selector: (row: Loan): string =>
+				row?.ltv &&
+				`  ${Number.parseFloat(row?.ltv.toString() || "").toFixed(0)}%`,
+			omit: false,
+		},
 	];
 
 	useEffect(() => {
 		if (consultantQuery.data) {
-			const getData = consultantQuery?.data.data as unknown as Array<any>;
-
+			const getData =
+				accountData === "all"
+					? consultantQuery?.data.data
+					: {
+							[accountData]: consultantQuery?.data.data[accountData],
+					  };
 			const keys = Object.keys(getData);
-			/* 	const valuesArray = keys.map((key) => getData[key]); */
-
 			setKey(keys);
 
-			const data = keys.map((value) => {
+			const data = keys.map((value: string) => {
 				return {
-					id: `${value} `,
-					label: `${value} `,
-					value: getData[value as any]?.length || [],
+					id: `${value}`,
+					label: `${value}`,
+					value: getData[value]?.length || [],
 					color: "hsl(110, 70%, 50%)",
 				};
 			});
 
-			/* 			const data = [
-				{
-					id: `Paid - ${getData.paid.percentage}%`,
-					label: `Paid - ${getData.paid.percentage}%`,
-					value: getData.paid.quantity,
-					color: "hsl(110, 70%, 50%)",
-				},
-				{
-					id: `Unpaid - ${getData.unPaid.percentage}%`,
-					label: `Unpaid -${getData.unPaid.percentage}%`,
-					value: getData.unPaid.quantity,
-					color: "hsl(187, 70%, 50%)",
-				},
-			]; */
 			setChartData(data as any);
 		}
-	}, [consultantQuery.data]);
-
-	useEffect(() => {
-		if (consultantQuery.data) {
-			const insuranceCsv = consultantQuery.data.data;
-
-			const csvData = keys?.map((data) => {
-				const productData = insuranceCsv[data]?.map((value: Loan) => {
-					return [
-						value.borrower?.llc,
-						value?.collaterals[0]?.address,
-						moneyFormat(Number.parseInt(value?.totalLoanAmount)),
-						formatDate(value?.originationDate?.toString() || ""),
-						value?.collaterals[0]?.assetType,
-						value?.type,
-						`${Number.parseFloat(value?.interestRate).toFixed(0)}%`,
-					];
-				});
-				return [[data], ...productData, lastRowModal];
-			});
-
-			const arrayExcel: Array<Array<any>> = [];
-			csvData.map((data) => {
-				return arrayExcel.push(...data);
-			});
-			setExcelData(arrayExcel);
-		}
-	}, [consultantQuery.data]);
+	}, [consultantQuery.data, accountData]);
 
 	const downloadReport = (): void => {
-		const insuranceCsv = consultantQuery.data.loans;
+		const insuranceCsv = userData;
 
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
@@ -250,38 +292,47 @@ export const LoanProductReport: FC = () => {
 					"."
 				),
 				formatDate(data?.originationDate?.toString() || ""),
-				data?.collaterals[0]?.assetType,
 				data?.type,
 				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
+				`${Number.parseFloat(data?.ltv.toString() || "").toFixed(0)}%`,
 			];
 		});
-
 		const data = [headerCsv, ...csvData, lastRowModal];
+
 		downloadCSV(data, "Loans By Product.csv");
 	};
 
 	const downloadXlsxReport = (): void => {
-		const insuranceCsv = consultantQuery.data.loans;
+		const insuranceCsv = userData;
 
 		const csvData = insuranceCsv?.map((data: any) => {
 			return [
-				data.borrower?.llc,
+				data.borrower?.llc.replaceAll(",", " "),
 				data?.collaterals[0]?.address,
 				moneyFormat(Number.parseInt(data?.totalLoanAmount)),
 				formatDate(data?.originationDate?.toString() || ""),
-				data?.collaterals[0]?.assetType,
 				data?.type,
 				`${Number.parseFloat(data?.interestRate).toFixed(0)}%`,
+				`${Number.parseFloat(data?.ltv.toString() || "").toFixed(0)}%`,
 			];
 		});
 		const data = [headerCsv, ...csvData, lastRowModal];
+
 		void downloadXLSX(data, "Loans By Product.xlsx");
 	};
 
 	return (
 		<div className="h-[60%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
-				<div className="font-bold text-[13px]">Loans by Product</div>
+				<div className="font-bold text-[13px]">Loans By Product</div>
+				<Tabs
+					tabs={consultantsTabs}
+					actualTab={actualTabData}
+					onClick={(value: any): any => {
+						setActualTabData(value);
+						setAccountData("all");
+					}}
+				/>
 				<div className="flex gap-2 ml-2" onClick={downloadReport}>
 					<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 						<img src={Csv} alt="DKC Csv" />
@@ -294,6 +345,18 @@ export const LoanProductReport: FC = () => {
 						<img src={Xlsx} alt="DKC Xlsx" />
 					</div>
 				</div>
+			</div>
+			<div className="w-[20%] ml-2 mt-2">
+				<Select
+					className="flex flex-col gap-2"
+					label=""
+					placeholder="Select Loan Consultant"
+					value={accountData}
+					options={optionsConsultants}
+					onChange={(event): void => {
+						setAccountData(event.target.value as string);
+					}}
+				/>
 			</div>
 			<ResponsivePieCanvas
 				data={chartData}
@@ -347,7 +410,7 @@ export const LoanProductReport: FC = () => {
 						{consultantQuery?.data?.averageInterest?.toFixed(4) || "0"}
 					</span>
 				</div>
-				<div className="font-bold text-[13px] p-5 bg-gray-200 flex  justify-between  h-[10px] items-center">
+				<div className="font-bold text-[13px] p-5 bg-gray-200 flex justify-between  h-[10px] items-center">
 					<span>Average LTV</span>{" "}
 					<span>{consultantQuery?.data?.averageLtv?.toFixed(0) || "0"}%</span>
 				</div>

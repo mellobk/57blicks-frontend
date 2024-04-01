@@ -22,6 +22,10 @@ import moment from "moment";
 
 import { Toggle } from "@/components/ui/Toggle";
 import { LoanStatusType } from "@/types/api/notifications";
+import {
+	currentValuePayableInvestor,
+	nextValuePayableInvestor,
+} from "../Table";
 
 interface CustomTableComponentProps {
 	data: any;
@@ -30,6 +34,7 @@ interface CustomTableComponentProps {
 	onRowClicked: (row: FundingBreakdown) => void;
 	totals: {
 		total: number;
+		totalRegularLoan: number;
 		totalRegular: number;
 		totalPrevious: number;
 		totalRow: number;
@@ -72,7 +77,7 @@ const collateralAddressTemplate = (rowData: any) => {
 const templateTotalLoan = (rowData: any) => {
 	return (
 		<div className="left-0">
-			{moneyFormat(Number.parseInt(rowData.totalLoan))}
+			{moneyFormat(Number.parseInt(rowData.data.loan.principal || ""))}
 		</div>
 	);
 };
@@ -82,7 +87,7 @@ const templateRate = (rowData: any) => {
 };
 
 const templateRegularPayment = (rowData: any) => {
-	return moneyFormat(Number.parseInt(rowData.regular || "0"));
+	return moneyFormat(Number.parseFloat(rowData.regular || "0"));
 };
 
 const templateOriginationDate = (rowData: any) => {
@@ -137,11 +142,25 @@ const templateInsuranceExpirationDate = (rowData: any) => {
 };
 
 const templateCurrentValue = (rowData: any) => {
-	return moneyFormat(Number.parseInt(rowData.currentValue || "0"));
+	let value = 0;
+	value =
+		currentValuePayableInvestor(rowData.data.loan) || rowData.data.loan.regular;
+
+	return moneyFormat(value);
 };
 
 const templateNextValue = (rowData: any) => {
-	return moneyFormat(Number.parseInt(rowData.nextValue || "0"));
+	let value =
+		nextValuePayableInvestor(rowData.data.loan) || rowData.data.loan.regular;
+
+	if (!value || value === 0) {
+		value = getIsSameMonthYear(
+			rowData?.data.loan?.originationDate as unknown as string
+		)
+			? rowData.data.loan.prorated
+			: rowData.data.loan.regular;
+	}
+	return moneyFormat(Number.parseFloat(value.toString()));
 };
 
 const getCurrentValue = (rowData: any) => {
@@ -155,6 +174,15 @@ const getCurrentValue = (rowData: any) => {
 		value = rowData.loan.regular || "0";
 	}
 
+	const dateNow = moment();
+	const endDate = moment(rowData.loan.endDate);
+
+	const diffMonths = endDate.diff(dateNow, "months");
+
+	if (Math.abs(diffMonths) >= 2) {
+		return Number.parseFloat("0");
+	}
+
 	return Number.parseFloat(value);
 };
 
@@ -166,8 +194,10 @@ const getNextValue = (rowData: any) => {
 		: rowData.loan.regular;
 
 	if (rowData.loan.status === "DEFAULT") {
-		data = String((Number(rowData.loan.totalLoanAmount) * 18) / 100 / 12);
+		data = String((Number(rowData.loan.principal) * 18) / 100 / 12);
 	}
+
+	if (rowData.loan.endDate) data = "0";
 	return Number.parseFloat(data || "0");
 };
 
@@ -258,7 +288,7 @@ const CustomTableComponent: FC<CustomTableComponentProps> = ({
 				/>
 				<Column footer={""} />
 				<Column
-					footer={`${moneyFormat(totals.totalRegular)}`}
+					footer={`${moneyFormat(totals.totalRegularLoan)}`}
 					style={{
 						textAlign: "left",
 					}}
@@ -411,7 +441,7 @@ const CustomTableComponent: FC<CustomTableComponentProps> = ({
 						field="nextValue"
 						header={`${currentMonthName}`}
 						sortable
-						body={templateNextValue}
+						body={templateNextValue || templateCurrentValue}
 						style={{
 							minWidth: "150px",
 							color: "#C79E63",

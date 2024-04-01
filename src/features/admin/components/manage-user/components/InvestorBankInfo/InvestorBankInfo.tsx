@@ -59,7 +59,6 @@ export const InvestorBankInfo: FC<InvestorBankInfoProps> = ({
 			handleSuccess(data);
 		}
 	};
-	console.log(data);
 
 	return (
 		<div className="flex  flex-col justify-between w-full h-full gap-5">

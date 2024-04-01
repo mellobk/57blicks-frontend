@@ -32,18 +32,21 @@ export const ModalActions: FC<ModalActionsProps> = ({
 	handleViewOnly,
 	comment,
 	validApprove = true,
+	viewOnly = true,
 }) => {
 	const typeData = type === NotificationType.LOAN ? " Loan" : "Ledger";
 	return (
 		<div className="flex gap-2 relative">
-			<div className="text-gray-1000 text-[14px] cursor-pointer ">
-				<Button
-					icon={<Icon name="openEye" color="#0085ff" width="20" />}
-					buttonText="View Only"
-					className=" rounded-3xl border-2 border-blue-200 bg-blue-70 text-blue-200"
-					onClick={handleViewOnly}
-				/>
-			</div>
+			{viewOnly && (
+				<div className="text-gray-1000 text-[14px] cursor-pointer ">
+					<Button
+						icon={<Icon name="openEye" color="#0085ff" width="20" />}
+						buttonText="View Only"
+						className=" rounded-3xl border-2 border-blue-200 bg-blue-70 text-blue-200"
+						onClick={handleViewOnly}
+					/>
+				</div>
+			)}
 
 			<>
 				<div className="cursor-pointer">

@@ -8,9 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 
 export const LoanOverview: FC = () => {
 	const { data, isLoading } = useQuery(["loanOverview"], getLoanOverview);
-
-	console.log(data);
-
 	if (isLoading)
 		return (
 			<div className="flex flex-col rounded-3xl bg-white gap-6 divide-y divide-gray-200 w-screen p-6 h-full overflow-y-auto">

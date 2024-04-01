@@ -12,8 +12,14 @@ interface ExtendLoanProps {
 	loan: Loan;
 	handleEdit: () => void;
 	submit: boolean;
+	handleRefreshData?: () => void;
 }
-const ExtendLoan: FC<ExtendLoanProps> = ({ loan, submit, handleEdit }) => {
+const ExtendLoan: FC<ExtendLoanProps> = ({
+	loan,
+	submit,
+	handleEdit,
+	handleRefreshData,
+}) => {
 	const [visible, setVisible] = useState(false);
 	const notify = useToast();
 	const [date, setDate] = useState<Date>();
@@ -35,7 +41,7 @@ const ExtendLoan: FC<ExtendLoanProps> = ({ loan, submit, handleEdit }) => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			//setVisible(false);
+			handleRefreshData && handleRefreshData();
 			notify("Loan extended successfully", "success");
 		}
 	}, [isSuccess]);

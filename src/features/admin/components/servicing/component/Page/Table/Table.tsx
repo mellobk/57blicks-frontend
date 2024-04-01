@@ -1,12 +1,14 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import type { FC, ReactElement } from "react";
-import {
+/* import {
 	getIsSameMonthYear,
 	getIsSamePreviousMonthYear,
-} from "@/utils/common-functions";
+} from "@/utils/common-functions"; */
 import { useEffect, useState } from "react";
 
 import BorrowerNotifications from "../../BorrowerNotifications";
@@ -18,6 +20,8 @@ import { Input } from "@/components/forms/Input";
 import { Modal } from "@/components/ui/Modal/Modal";
 import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { useDebounce } from "@/hooks/debounce";
+import moment from "moment";
+import type { Loan } from "@/types/api/loan";
 
 interface Column {
 	name?: string;
@@ -44,6 +48,55 @@ interface Props {
 	handleTax: (id: string, data: boolean) => void;
 	handleDefault: (id: string, data: string) => void;
 }
+
+const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
+const currentDate = moment(); // Current date
+const beforeCurrentMonth = moment().subtract(1, "month").month();
+export const currentValuePayableInvestor = (loan: Loan) => {
+	let data = "0";
+	const findMonth =
+		loan?.payables &&
+		loan?.payables.find((data: { [x: string]: moment.MomentInput }) => {
+			// Extract the month and year from the date string
+			const dataMonth = moment(data["month"], dateFormat);
+			// Check if year and month are the same as the current date
+			return (
+				dataMonth.year() === currentDate.year() &&
+				dataMonth.month() === beforeCurrentMonth
+			);
+		});
+
+	data = findMonth && findMonth["amount"];
+
+	if (loan?.status === "DEFAULT") {
+		data = String((Number(loan.principal) * 18) / 100 / 12);
+	}
+	return Number.parseFloat(data || "0");
+};
+
+export const nextValuePayableInvestor = (loan: Loan) => {
+	let data = "0";
+
+	const findMonth =
+		loan?.payables &&
+		loan?.payables.find((data: { [x: string]: moment.MomentInput }) => {
+			// Extract the month and year from the date string
+			const dataMonth = moment(data["month"], dateFormat);
+
+			// Check if year and month are the same as the current date
+			return (
+				dataMonth.year() === currentDate.year() &&
+				dataMonth.month() === currentDate.month()
+			);
+		});
+
+	data = findMonth && findMonth["amount"];
+
+	if (loan?.status === "DEFAULT") {
+		data = String((Number(loan.principal) * 18) / 100 / 12);
+	}
+	return Number.parseFloat(data || "0");
+};
 
 export const Table: FC<Props> = ({
 	columns = [],
@@ -185,31 +238,42 @@ export const Table: FC<Props> = ({
 	const createFooterNew = (data: Array<FundingBreakdown>) => {
 		const totalRow = data?.length || 0;
 		const totalLoanAmount = data?.map((data: FundingBreakdown) => {
-			return Number.parseFloat(data.loan.totalLoanAmount || "");
+			return Number.parseFloat(data.loan.principal || "");
 		});
 		const totalRegularAmount = data?.map((data: FundingBreakdown) => {
-			let regular = getIsSameMonthYear(
-				data.loan.originationDate as unknown as string
-			)
-				? data.loan.prorated
-				: data.loan.regular;
+			let regular =
+				nextValuePayableInvestor(data.loan as any) || data.loan.regular;
 
 			if (data.loan.status === "DEFAULT") {
 				regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
 			}
 
+			return Number.parseFloat(regular?.toString() as any);
+		});
+		const totalRegularAmountLoan = data?.map((data: FundingBreakdown) => {
+			let regular = data.loan.regular;
+
+			if (data.loan.status === "DEFAULT") {
+				regular = String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12);
+			}
 			return Number.parseFloat(regular || "");
 		});
 
 		const totalPreviousAmount = data?.map((data: FundingBreakdown) => {
-			const dataDate = getIsSamePreviousMonthYear(
-				data.loan.originationDate as unknown as string
-			);
 			let value = "0";
-			if (dataDate === 0) {
-				value = data.loan.prorated || "0";
-			} else if (dataDate === -1) {
-				value = data.loan.regular || "0";
+			value = currentValuePayableInvestor(data.loan as any).toString();
+
+			if (value === "0") {
+				value = data?.loan?.regular || "0";
+			}
+
+			const dateNow = moment();
+			const endDate = moment(data.loan.endDate);
+
+			const diffMonths = endDate.diff(dateNow, "months");
+
+			if (Math.abs(diffMonths) >= 2) {
+				return Number.parseFloat("0");
 			}
 			return Number.parseFloat(value || "");
 		});
@@ -224,6 +288,11 @@ export const Table: FC<Props> = ({
 			0
 		);
 
+		const totalRegularAmountLoanData = totalRegularAmountLoan?.reduce(
+			(accumulator, currentValue) => accumulator + currentValue,
+			0
+		);
+
 		const totalPrevious = totalPreviousAmount?.reduce(
 			(accumulator, currentValue) => accumulator + currentValue,
 			0
@@ -231,33 +300,11 @@ export const Table: FC<Props> = ({
 
 		const footerTabData = {
 			total: total,
+			totalRegularLoan: totalRegularAmountLoanData,
 			totalRegular: totalRegular,
 			totalPrevious: totalPrevious,
 			totalRow: totalRow,
 		};
-		// const footerTabData: Array<{
-		// 	label: string;
-		// 	width: string;
-		// 	justify?: string;
-		// }> = [
-		// 	{ label: `Total: ${totalRow}`, width: "650px", justify: "center" },
-		// 	{ label: moneyFormat(total), width: "170px" },
-		// 	{ label: "", width: "100px" },
-		// 	{
-		// 		label: "" + moneyFormat(totalRegular),
-		// 		width: "200px",
-		// 	},
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "0px" },
-		// 	{ label: "", width: "470px" },
-		// 	{ label: moneyFormat(totalPrevious), width: "170px" },
-		// 	{ label: moneyFormat(totalRegular), width: "170px" },
-		// ];
 
 		return footerTabData;
 	};

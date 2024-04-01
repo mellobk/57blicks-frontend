@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
@@ -11,6 +14,7 @@ import {
 	type LedgersTotals,
 	type LedgerFormValues,
 	type Ledgers,
+	LedgerTypeOfPayment,
 } from "../types";
 import { useFieldArray } from "react-hook-form";
 import { useZodForm } from "../UseZodForm";
@@ -29,7 +33,9 @@ import type {
 } from "@/features/admin/components/servicing/types/api";
 import { toast } from "react-toastify";
 import { validateDataLedger } from "../utils/validate-data";
-import ManageNotificationService from "@/features/admin/components/notifications/api/notification";
+import ManageNotificationService, {
+	type UpdateLedgerProps,
+} from "@/features/admin/components/notifications/api/notification";
 import { getLocalStorage } from "@/utils/local-storage";
 import { userName } from "@/utils/constant";
 import moment from "moment";
@@ -37,6 +43,11 @@ import LedgerFooter1 from "./footer/LedgerFooter1";
 import LedgerFooter2 from "./footer/LedgerFooter2";
 import Header from "./header";
 import ExtendedLoanList from "./ExtendedLoanList";
+import { ApprovalLedgerStateType } from "@/types/api/notifications";
+import userStore from "@/stores/user-store";
+import { RoleType } from "@/types/api/permissions-type";
+import LoansService from "@/api/loans";
+
 interface LedgerComponentProps {
 	loan: Loan;
 	ledgersData?: Array<Ledgers>;
@@ -44,6 +55,7 @@ interface LedgerComponentProps {
 	refetchLedgers?: () => void;
 	orderLedgers?: (orderBy: string) => void;
 	handleDeleteLedger?: (id: string) => void;
+	handleRefreshData?: () => void;
 }
 
 export const LedgerComponent: FC<LedgerComponentProps> = ({
@@ -52,27 +64,55 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	extended,
 	refetchLedgers,
 	handleDeleteLedger,
+	handleRefreshData,
 }) => {
+	const userInfo = userStore((state) => state.loggedUserInfo);
 	const scrollAdd = useRef<null | HTMLElement>(null);
 	const localUserName = getLocalStorage(userName);
+	const [tableData, setTableData] = useState([]);
+	const [tableDataHoldBack, setTableDataHoldBack] = useState([]);
 	const createLedgerQuery = useMutation(async (body: any) => {
 		return ManageNotificationService.createNotifications(body);
+	});
+
+	const updateLoanQuery = useMutation(async (body: any) => {
+		return LoansService.updateLoan(body.id || "", body as any);
+	});
+
+	const updateFundingBreakdownQuery = useMutation(async (body: any) => {
+		return ManageNotificationService.updateFundingBreakdownFunding(body as any);
+	});
+
+	const updateParticipantBreakdownQuery = useMutation(async (body: any) => {
+		return ManageNotificationService.updateParticipantBreakdown(body as any);
+	});
+
+	const updateLedgerQuery = useMutation(async (body: UpdateLedgerProps) => {
+		return ManageNotificationService.putLedger(body);
 	});
 
 	const createNotificationsLedger = (data: LedgerFormValues): void => {
 		data.ledgers.map((value) => {
 			if (value.typeOfPayment === "Principal") {
-				const dataNotification = { id: data.loanId, ledgerId: value.id };
-				createLedgerQuery.mutate({
-					title: "Approve Ledger",
-					timestamp: new Date(),
-					content: `${localUserName} is creating a Principal payment and needs confirmation.`,
-					additionalData: JSON.stringify(dataNotification),
-					userFullName: localUserName,
-					priority: "HIGH",
-					type: "LEDGER",
-					roles: ["super-admin"],
-				});
+				if (userInfo.role?.name === RoleType.SUPER_ADMIN) {
+					updateLedgerQuery.mutate({
+						id: value.id,
+						approvalState: ApprovalLedgerStateType.APPROVED,
+						typeOfPayment: LedgerTypeOfPayment.PRINCIPAL,
+					} as unknown as UpdateLedgerProps);
+				} else {
+					const dataNotification = { id: data.loanId, ledgerId: value.id };
+					createLedgerQuery.mutate({
+						title: "Approve Ledger",
+						timestamp: new Date(),
+						content: `${localUserName} is creating a Principal payment and needs confirmation.`,
+						additionalData: JSON.stringify(dataNotification),
+						userFullName: localUserName,
+						priority: "HIGH",
+						type: "LEDGER",
+						roles: ["super-admin"],
+					});
+				}
 			}
 		});
 	};
@@ -83,15 +123,122 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	const [ledgers] = useState<Array<Ledgers>>(ledgersData || []);
 	const extendedData = useRef([]);
 
+	const handleUpdateParticipantFunding = () => {
+		const newTableData = tableData.map((data: any) => {
+			return { ...data, amountPrevious: data.amount };
+		});
+
+		const amountData = newTableData
+			.filter(
+				(data) => data.type !== "Servicing" && data.type !== "YieldSpread"
+			)
+			.reduce(
+				(accumulator: number, payment) =>
+					accumulator + Number.parseFloat(payment.paymentValue || "0"),
+				0
+			);
+
+		const servicingData = newTableData.map((data: any) => {
+			if (data.type === "Servicing") {
+				return {
+					...data,
+					amount: (Number.parseFloat(data.amount) - amountData).toString(),
+					regular: (
+						(Number.parseFloat(data.amount) *
+							(Number.parseFloat(data.rate) / 100)) /
+						12
+					).toString(),
+				};
+			}
+			return {
+				...data,
+				amount: (
+					Number.parseFloat(data.amount) - Number.parseFloat(data.paymentValue)
+				).toString(),
+				regular: (
+					((Number.parseFloat(data.amount) -
+						Number.parseFloat(data.paymentValue)) *
+						(Number.parseFloat(data.rate) / 100)) /
+					12
+				).toString(),
+			};
+		});
+
+		Promise.all(
+			servicingData.map((data) => {
+				if (data.type === "Servicing" || data.type === "Lender") {
+					updateFundingBreakdownQuery.mutate(data);
+				} else if (data.type === "Investor" || data.type === "YieldSpread") {
+					updateParticipantBreakdownQuery.mutate(data);
+				}
+			})
+		)
+			.then(() => {
+				createNotificationsLedger(openLedgerData);
+			})
+			.catch((error) => {
+				console.log("An error occurred:", error);
+			});
+	};
+
+	const handleUpdateHolBacks = () => {
+		const newTableData = tableDataHoldBack.map((data: any) => {
+			return { ...data, amountPrevious: data.amount };
+		});
+
+		const holdBackData = newTableData.map((data: any) => {
+			return {
+				...data,
+				constructionHoldback: (
+					Number.parseFloat(data.constructionHoldback) -
+					Number.parseFloat(data.holdBackPaymentValue)
+				).toString(),
+			};
+		});
+
+		Promise.all(
+			holdBackData
+				.filter(
+					(data: any) =>
+						data.type !== "Servicing" && data.type !== "YieldSpread"
+				)
+				.map((data) => {
+					if (data.type === "Servicing" || data.type === "Lender") {
+						updateFundingBreakdownQuery.mutate(data);
+					} else if (data.type === "Investor" || data.type === "YieldSpread") {
+						updateParticipantBreakdownQuery.mutate(data);
+					}
+				})
+		).catch((error) => {
+			console.log("An error occurred:", error);
+		});
+	};
+
+	useEffect(() => {
+		if (updateLedgerQuery.isSuccess) {
+			refetchLedgers && refetchLedgers();
+			handleRefreshData && handleRefreshData();
+		}
+		updateLedgerQuery.reset();
+	}, [updateLedgerQuery.isSuccess]);
+
 	const createLedger = useMutation(
 		(data: LedgerFormValues) => {
 			return ManageLedgerService.createLedger(data);
 		},
 		{
-			onSuccess: (data) => {
+			onSuccess: async (data) => {
 				if (data) {
 					refetchLedgers && refetchLedgers();
-					createNotificationsLedger(openLedgerData);
+					if (
+						loan.fundingBreakdowns?.some(
+							(data) => data?.lender?.name === "DKC Lending LLC"
+						)
+					) {
+						handleUpdateParticipantFunding();
+					} else {
+						createNotificationsLedger(openLedgerData);
+					}
 				}
 			},
 		}
@@ -224,7 +371,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 		);
 
 		const newDate = new Date(value);
-		newDate.setMonth(newDate.getMonth() - 1);
+		newDate.setMonth(newDate.getMonth());
 
 		setValue(
 			`ledgers.${index}.month` as never,
@@ -259,6 +406,49 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	useEffect(() => {}, [allFields]);
 
 	useEffect(() => {}, [extended]);
+
+	useEffect(() => {
+		if (createLedger.isSuccess && ledgersData) {
+			const dataLedger = ledgersData || [];
+
+			const findConstructionHoldBack = dataLedger?.some(
+				(data) => data.typeOfPayment === "Construction Holdback"
+			);
+
+			const successCreateLedger = ledgersData || [];
+
+			if (findConstructionHoldBack && createLedger.data) {
+				const constructionHoldBacks = successCreateLedger?.filter(
+					(value) => value.typeOfPayment === "Construction Holdback"
+				);
+
+				const debits = constructionHoldBacks.reduce(
+					(accumulator: number, data) =>
+						accumulator + Number.parseFloat(data.debit?.toString() || "0"),
+					0
+				);
+
+				const credits = constructionHoldBacks.reduce(
+					(accumulator: number, data) =>
+						accumulator + Number.parseFloat(data.credit?.toString() || "0"),
+					0
+				);
+
+				if (
+					loan.fundingBreakdowns?.some(
+						(data) => data?.lender?.name === "DKC Lending LLC"
+					)
+				) {
+					handleUpdateHolBacks();
+				} else {
+					updateLoanQuery.mutate({
+						id: loan?.id || " ",
+						constructionHoldback: (debits - credits).toString(),
+					});
+				}
+			}
+		}
+	}, [createLedger.isLoading, ledgersData]);
 
 	return (
 		<div className="h-full w-full">
@@ -342,6 +532,8 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 									handleRemove={handleRemove}
 									data={allFields as unknown as LedgerFormValues}
 									loan={loan}
+									setLlcPayment={setTableData}
+									setLlcHoldbackPayment={setTableDataHoldBack}
 									handleOpenModal={handleOpenModal}
 									handleSetValue={handleSetValue}
 									handleSetDate={handleSetDate}

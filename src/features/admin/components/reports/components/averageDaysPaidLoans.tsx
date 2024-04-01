@@ -153,7 +153,6 @@ export const AverageDaysPaidLoans: FC = () => {
 				};
 			});
 
-			console.log(data);
 			setAssetChartData(data as any);
 		}
 	}, [consultantQuery.data]);

@@ -92,7 +92,6 @@ export const BorrowerInformation: FC<InvestorBankInfoProps> = ({
 	const onSubmit: SubmitHandler<FieldValues> = (
 		data: IBorrowerInformation
 	): void => {
-		console.log(data);
 		void updateServicingData(data);
 	};
 

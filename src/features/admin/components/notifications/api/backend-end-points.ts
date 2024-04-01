@@ -18,7 +18,9 @@ export const updateInvestmentStatus = (
 };
 
 export const userNotification = (type: string): string => {
-	return `/user-notifications?page=1&take=40&type=${type}`;
+	return `/user-notifications?page=1&take=${
+		type === "Pending" ? "0" : "60"
+	}&type=${type}`;
 };
 
 export const readAllNotification = (): string => {
@@ -27,4 +29,12 @@ export const readAllNotification = (): string => {
 
 export const updateFundingBreakDown = (id: string): string => {
 	return `/loans/update-funding-breakdown/${id}`;
+};
+
+export const updateFundingBreakDownFundingUrl = (id: string): string => {
+	return `/funding-breakdowns/${id}`;
+};
+
+export const updateParticipantBreakdownUrl = (id: string): string => {
+	return `/participation-breakdowns/${id}`;
 };

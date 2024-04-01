@@ -1,10 +1,12 @@
 import type { FC } from "react";
 import { Icon } from "@/components/ui/Icon";
-import {
-	LedgerTypeOfPayment,
-	type Ledger,
-	ApprovalStateType,
+import type {
+	/* 	LedgerTypeOfPayment, */
+	Ledger,
+	/* 	ApprovalStateType, */
 } from "../../types";
+import userStore from "@/stores/user-store";
+import { RoleType } from "@/types/api/permissions-type";
 
 interface DeleteLedgerProps {
 	dataLedgers?: Ledger;
@@ -22,14 +24,19 @@ const DeleteLedger: FC<DeleteLedgerProps> = ({
 	handleRemove,
 	setOpenConfirmation,
 }) => {
-	if (
+	const userInfo = userStore((state) => state.loggedUserInfo);
+	/* if (
 		((dataLedgers?.typeOfPayment === LedgerTypeOfPayment.INTEREST &&
 			dataLedgers?.credit > 0) ||
 			dataLedgers?.typeOfPayment === LedgerTypeOfPayment.PRINCIPAL) &&
-		/*|| dataLedgers?.typeOfPayment === LedgerTypeOfPayment.LATE_FEE*/ dataLedgers?.editable ===
+		/*|| dataLedgers?.typeOfPayment === LedgerTypeOfPayment.LATE_FEE dataLedgers?.editable ===
 			false &&
 		dataLedgers.approvalState === ApprovalStateType.APPROVED
 	) {
+		return <></>;
+	} */
+
+	if (userInfo?.role?.name !== RoleType.SUPER_ADMIN) {
 		return <></>;
 	}
 

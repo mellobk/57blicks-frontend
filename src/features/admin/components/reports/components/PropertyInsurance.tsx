@@ -203,6 +203,22 @@ const PropertyInsurance = () => {
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
 		},
+		{
+			name: "Lender",
+			maxWidth: "200px",
+			selector: (row: Loan) => row?.fundingBreakDowns[1]?.lender.name || "",
+			omit: false,
+		},
+		{
+			name: "Expiration Date",
+			maxWidth: "200px",
+			selector: (row: Loan) =>
+				row?.collaterals[0]?.insuranceExpirationDate &&
+				formatDate(
+					row?.collaterals[0]?.insuranceExpirationDate.toString() || ""
+				),
+			omit: false,
+		},
 	];
 
 	const columnsModal = [

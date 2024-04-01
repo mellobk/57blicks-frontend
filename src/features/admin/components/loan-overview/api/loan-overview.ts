@@ -13,5 +13,5 @@ export const updateTrustUnallocated = async (
 	id: string,
 	body: UpdateParticipationBreakdownDto
 ): Promise<void> => {
-	await authApiClient.put(`/participation-breakdowns/${id}`, body);
+	await authApiClient.put(`/investors/investor-data/${id}`, body);
 };

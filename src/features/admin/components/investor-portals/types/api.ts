@@ -55,6 +55,7 @@ export interface Collateral {
 }
 
 export interface Loan {
+	principal: string;
 	id?: string;
 	createdAt?: Date;
 	updatedAt: Date;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { FC } from "react";
@@ -81,26 +82,43 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 			scrollable
 			scrollHeight="400px"
 		>
-			<Column field="name" header="Participant" filter></Column>
+			<Column
+				field="name"
+				header="Participant"
+				filter
+				className="w-[250px]"
+			></Column>
 			<Column
 				sortable
 				field="totalLoans"
 				header="Total Loans"
-				body={(rowData) =>
-					monetaryBodyTemplate(rowData as IParticipantOverview, "totalLoans")
-				}
+				body={(rowData) => (
+					<div className=" w-full">{moneyFormat(rowData.totalLoans)}</div>
+				)}
 			/>
 			<Column
 				sortable
 				field="totalDrawnToDate"
 				header="Total Drawn to Date"
-				body={(rowData) =>
-					monetaryBodyTemplate(
+				body={(rowData) => {
+					const trustUnallocatedData = monetaryBodyTemplate(
 						rowData as IParticipantOverview,
-						"totalDrawnToDate"
-					)
-				}
+						"trustUnallocated"
+					);
+
+					return (
+						<div className=" w-full">
+							{moneyFormat(
+								Number.parseFloat(rowData.totalDrawnToDate) -
+									Number.parseFloat(
+										trustUnallocatedData.replace("$", "").replace(",", "")
+									)
+							)}
+						</div>
+					);
+				}}
 			/>
+
 			<Column
 				sortable
 				field="trustUnallocated"
@@ -119,28 +137,36 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				sortable
 				field="trustAllocated"
 				header="Trust Allocated"
-				body={(rowData) =>
-					monetaryBodyTemplate(
-						rowData as IParticipantOverview,
-						"trustAllocated"
-					)
-				}
+				body={(rowData) => (
+					<div className="ml-14 w-full">
+						{moneyFormat(rowData.trustAllocated)}
+					</div>
+				)}
 			/>
 			<Column
 				sortable
 				field="dueToDraws"
 				header="Construction Holdback"
-				body={(rowData) =>
-					monetaryBodyTemplate(rowData as IParticipantOverview, "dueToDraws")
-				}
+				body={(rowData) => (
+					<div className="ml-14 w-full">
+						{moneyFormat(rowData.trustAllocated)}
+					</div>
+				)}
 			/>
 			<Column
 				sortable
 				field="totalFunds"
 				header="Total Funds"
-				body={(rowData) =>
-					monetaryBodyTemplate(rowData as IParticipantOverview, "totalFunds")
-				}
+				body={(rowData) => {
+					return (
+						<div className=" w-full">
+							{moneyFormat(
+								Number.parseFloat(rowData.totalDrawnToDate) +
+									Number.parseFloat(rowData.trustAllocated)
+							)}
+						</div>
+					);
+				}}
 			/>
 		</DataTable>
 	);

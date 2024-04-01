@@ -111,6 +111,8 @@ export const FundingBreakdown: FC<Props> = ({
 		setValue("participationBreakdown", newParticipationBreakdown);
 	};
 
+	console.log(error);
+
 	const columns: Array<TableColumn<FundingBreakdownType>> = [
 		{
 			cell: (row, rowIndex): React.ReactNode => {
