@@ -53,8 +53,8 @@ interface ServicingTable {
 	insuranceExpirationDate?: string;
 	taxesPaid?: string;
 	status?: string;
-	currentValue?: number;
-	nextValue?: number;
+	currentValue?: any;
+	nextValue?: any;
 	data: any;
 }
 
