@@ -146,6 +146,8 @@ const templateCurrentValue = (rowData: any) => {
 	value =
 		currentValuePayableInvestor(rowData.data.loan) || rowData.data.loan.regular;
 
+	if (rowData.data?.loan?.status === "DEFAULT") return "Default";
+
 	return moneyFormat(value);
 };
 
@@ -160,6 +162,7 @@ const templateNextValue = (rowData: any) => {
 			? rowData.data.loan.prorated
 			: rowData.data.loan.regular;
 	}
+	if (rowData?.data.loan?.status === "DEFAULT") return "Default";
 	return moneyFormat(Number.parseFloat(value.toString()));
 };
 
@@ -182,6 +185,7 @@ const getCurrentValue = (rowData: any) => {
 	if (Math.abs(diffMonths) >= 2) {
 		return Number.parseFloat("0");
 	}
+	if (rowData?.loan?.status === "DEFAULT") return "Default";
 
 	return Number.parseFloat(value);
 };
@@ -198,6 +202,7 @@ const getNextValue = (rowData: any) => {
 	}
 
 	if (rowData.loan.endDate) data = "0";
+
 	return Number.parseFloat(data || "0");
 };
 
@@ -441,7 +446,7 @@ const CustomTableComponent: FC<CustomTableComponentProps> = ({
 						field="nextValue"
 						header={`${currentMonthName}`}
 						sortable
-						body={templateNextValue || templateCurrentValue}
+						body={templateNextValue}
 						style={{
 							minWidth: "150px",
 							color: "#C79E63",

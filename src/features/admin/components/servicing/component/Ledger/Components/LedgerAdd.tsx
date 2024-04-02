@@ -202,7 +202,9 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						row.type === "YieldSpread"
 							? `Y/S ${
 									row.investor?.user?.entityName ||
-									`${row.investor?.user?.firstName} ${row.investor?.user?.lastName}`
+									`${row.investor?.user?.firstName || ""} ${
+										row.investor?.user?.lastName || ""
+									}`
 							  }`
 							: `${
 									row.investor?.user?.entityName ||
@@ -221,16 +223,26 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 		},
 
 		{
-			cell: (row) => (
-				<InputNumber
-					customValue={row.paymentValue || 0}
-					disabled={row.type === "YieldSpread" ? true : false}
-					defaultValue={row.paymentValue || 0}
-					handleChange={(value): void => {
-						handlePayments(row.id, value.toString(), row?.investor?.id);
-					}}
-				/>
-			),
+			cell: (row) =>
+				row?.type === "YieldSpread" && row?.investor?.id ? (
+					<InputNumber
+						customValue={row.paymentValue || 0}
+						disabled={true}
+						defaultValue={row.paymentValue || 0}
+						handleChange={(value): void => {
+							handlePayments(row.id, value.toString(), row?.investor?.id);
+						}}
+					/>
+				) : (
+					<InputNumber
+						customValue={row.paymentValue || 0}
+						disabled={false}
+						defaultValue={row.paymentValue || 0}
+						handleChange={(value): void => {
+							handlePayments(row.id, value.toString(), row?.investor?.id);
+						}}
+					/>
+				),
 			name: "Payment",
 			style: { padding: 0 },
 		},
