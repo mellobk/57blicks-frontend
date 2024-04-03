@@ -114,6 +114,11 @@ export const Table: FC<Props> = ({
 	handleTax,
 	handleDefault,
 }) => {
+	const nextLoanDate = new Date();
+	nextLoanDate.setMonth(nextLoanDate.getMonth() - 1);
+
+	const currentLoanDate = new Date();
+	currentLoanDate.setMonth(currentLoanDate.getMonth() - 2);
 	const [visible, setVisible] = useState(false);
 	const [stateColumns, setStateColumns] = useState<Array<Column>>(columns);
 	const [searchVisible, setSearchVisible] = useState<boolean>(false);
@@ -241,12 +246,17 @@ export const Table: FC<Props> = ({
 			return Number.parseFloat(data.loan.principal || "");
 		});
 		const totalRegularAmount = data?.map((data: FundingBreakdown) => {
+			const loanEndDateObject = new Date(data.loan.endDate);
 			let regular =
 				nextValuePayableInvestor(data.loan as any) || data.loan.regular;
 
 			if (data.loan.status === "DEFAULT") {
 				regular =
 					/* String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12) */ "0";
+			}
+
+			if (loanEndDateObject > nextLoanDate) {
+				regular = "0";
 			}
 
 			return Number.parseFloat(regular?.toString() as any);
@@ -262,6 +272,7 @@ export const Table: FC<Props> = ({
 		});
 
 		const totalPreviousAmount = data?.map((data: FundingBreakdown) => {
+			const loanEndDateObject = new Date(data.loan.endDate);
 			let value = "0";
 			value = currentValuePayableInvestor(data.loan as any).toString();
 
@@ -269,12 +280,11 @@ export const Table: FC<Props> = ({
 				value = data?.loan?.regular || "0";
 			}
 
-			const dateNow = moment();
-			const endDate = moment(data.loan.endDate);
+			if (data.loan.status === "DEFAULT") {
+				return Number.parseFloat("0");
+			}
 
-			const diffMonths = endDate.diff(dateNow, "months");
-
-			if (Math.abs(diffMonths) >= 2) {
+			if (loanEndDateObject > currentLoanDate) {
 				return Number.parseFloat("0");
 			}
 			return Number.parseFloat(value || "");
