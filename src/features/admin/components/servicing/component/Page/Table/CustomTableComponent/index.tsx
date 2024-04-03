@@ -120,6 +120,12 @@ const templateMaturityDate = (rowData: any) => {
 	);
 };
 
+const nextLoanDate = new Date();
+nextLoanDate.setMonth(nextLoanDate.getMonth() - 1);
+
+const currentLoanDate = new Date();
+currentLoanDate.setMonth(currentLoanDate.getMonth() - 2);
+
 const templateInsuranceExpirationDate = (rowData: any) => {
 	const dateInt = rowData.insuranceExpirationDate;
 	const year = dateInt.slice(0, 4);
@@ -142,16 +148,22 @@ const templateInsuranceExpirationDate = (rowData: any) => {
 };
 
 const templateCurrentValue = (rowData: any) => {
+	const loanEndDateObject = new Date(rowData.data.loan.endDate);
 	let value = 0;
 	value =
 		currentValuePayableInvestor(rowData.data.loan) || rowData.data.loan.regular;
 
 	if (rowData.data?.loan?.status === "DEFAULT") return "Default";
 
+	if (rowData.data.loan.endDate && loanEndDateObject > currentLoanDate) {
+		return Number.parseFloat("0");
+	}
+
 	return moneyFormat(value);
 };
 
 const templateNextValue = (rowData: any) => {
+	const loanEndDateObject = new Date(rowData.data.loan.endDate);
 	let value =
 		nextValuePayableInvestor(rowData.data.loan) || rowData.data.loan.regular;
 
@@ -163,6 +175,11 @@ const templateNextValue = (rowData: any) => {
 			: rowData.data.loan.regular;
 	}
 	if (rowData?.data.loan?.status === "DEFAULT") return "Default";
+
+	if (rowData.data.loan.endDate && loanEndDateObject > nextLoanDate) {
+		return Number.parseFloat("0");
+	}
+
 	return moneyFormat(Number.parseFloat(value.toString()));
 };
 

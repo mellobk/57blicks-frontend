@@ -255,7 +255,7 @@ export const Table: FC<Props> = ({
 					/* String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12) */ "0";
 			}
 
-			if (loanEndDateObject > nextLoanDate) {
+			if (data.loan.endDate && loanEndDateObject > nextLoanDate) {
 				regular = "0";
 			}
 
@@ -284,7 +284,7 @@ export const Table: FC<Props> = ({
 				return Number.parseFloat("0");
 			}
 
-			if (loanEndDateObject > currentLoanDate) {
+			if (data.loan.endDate && loanEndDateObject > currentLoanDate) {
 				return Number.parseFloat("0");
 			}
 			return Number.parseFloat(value || "");
