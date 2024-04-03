@@ -241,12 +241,15 @@ export const Table: FC<Props> = ({
 	// };
 
 	const createFooterNew = (data: Array<FundingBreakdown>) => {
+		const loanCurrentMonth = moment().month();
+		const loanNextCurrentMonth = moment().subtract(1, "months").month();
+
 		const totalRow = data?.length || 0;
 		const totalLoanAmount = data?.map((data: FundingBreakdown) => {
 			return Number.parseFloat(data.loan.principal || "");
 		});
 		const totalRegularAmount = data?.map((data: FundingBreakdown) => {
-			const loanEndDateObject = new Date(data.loan.endDate);
+			const loanEndDateMoment = moment(data.loan.endDate).month();
 			let regular =
 				nextValuePayableInvestor(data.loan as any) || data.loan.regular;
 
@@ -255,7 +258,7 @@ export const Table: FC<Props> = ({
 					/* String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12) */ "0";
 			}
 
-			if (data.loan.endDate && loanEndDateObject > nextLoanDate) {
+			if (data.loan.endDate && loanEndDateMoment < loanCurrentMonth) {
 				regular = "0";
 			}
 
@@ -272,7 +275,7 @@ export const Table: FC<Props> = ({
 		});
 
 		const totalPreviousAmount = data?.map((data: FundingBreakdown) => {
-			const loanEndDateObject = new Date(data.loan.endDate);
+			const loanEndDateMoment = moment(data.loan.endDate).month();
 			let value = "0";
 			value = currentValuePayableInvestor(data.loan as any).toString();
 
@@ -284,7 +287,7 @@ export const Table: FC<Props> = ({
 				return Number.parseFloat("0");
 			}
 
-			if (data.loan.endDate && loanEndDateObject > currentLoanDate) {
+			if (data.loan.endDate && loanEndDateMoment < loanNextCurrentMonth) {
 				return Number.parseFloat("0");
 			}
 			return Number.parseFloat(value || "");

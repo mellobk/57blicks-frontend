@@ -120,12 +120,6 @@ const templateMaturityDate = (rowData: any) => {
 	);
 };
 
-const nextLoanDate = new Date();
-nextLoanDate.setMonth(nextLoanDate.getMonth() - 1);
-
-const currentLoanDate = new Date();
-currentLoanDate.setMonth(currentLoanDate.getMonth() - 2);
-
 const templateInsuranceExpirationDate = (rowData: any) => {
 	const dateInt = rowData.insuranceExpirationDate;
 	const year = dateInt.slice(0, 4);
@@ -148,14 +142,16 @@ const templateInsuranceExpirationDate = (rowData: any) => {
 };
 
 const templateCurrentValue = (rowData: any) => {
-	const loanEndDateObject = new Date(rowData.data.loan.endDate);
+	const loanEndDateMoment = moment(rowData.data.loan.endDate).month();
+	const loanCurrentMonth = moment().subtract(1, "months").month();
+
 	let value = 0;
 	value =
 		currentValuePayableInvestor(rowData.data.loan) || rowData.data.loan.regular;
 
 	if (rowData.data?.loan?.status === "DEFAULT") return "Default";
 
-	if (rowData.data.loan.endDate && loanEndDateObject > currentLoanDate) {
+	if (rowData.data.loan.endDate && loanEndDateMoment < loanCurrentMonth) {
 		return Number.parseFloat("0");
 	}
 
@@ -163,7 +159,9 @@ const templateCurrentValue = (rowData: any) => {
 };
 
 const templateNextValue = (rowData: any) => {
-	const loanEndDateObject = new Date(rowData.data.loan.endDate);
+	const loanEndDateMoment = moment(rowData.data.loan.endDate).month();
+	const loanCurrentMonth = moment().month();
+
 	let value =
 		nextValuePayableInvestor(rowData.data.loan) || rowData.data.loan.regular;
 
@@ -176,7 +174,7 @@ const templateNextValue = (rowData: any) => {
 	}
 	if (rowData?.data.loan?.status === "DEFAULT") return "Default";
 
-	if (rowData.data.loan.endDate && loanEndDateObject > nextLoanDate) {
+	if (rowData.data.loan.endDate && loanEndDateMoment < loanCurrentMonth) {
 		return Number.parseFloat("0");
 	}
 
@@ -194,14 +192,6 @@ const getCurrentValue = (rowData: any) => {
 		value = rowData.loan.regular || "0";
 	}
 
-	const dateNow = moment();
-	const endDate = moment(rowData.loan.endDate);
-
-	const diffMonths = endDate.diff(dateNow, "months");
-
-	if (Math.abs(diffMonths) >= 2) {
-		return Number.parseFloat("0");
-	}
 	if (rowData?.loan?.status === "DEFAULT") return "Default";
 
 	return Number.parseFloat(value);
