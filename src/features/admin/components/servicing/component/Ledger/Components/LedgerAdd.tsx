@@ -460,7 +460,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				{dataLedgers?.editable ? (
 					<div className="relative">
 						<InputNumber
-							disabled={PrincipalFlag || constructionHoldBackFlag}
+							disabled={PrincipalFlag}
 							{...register(`ledger.${index}.debit` as never)}
 							placeholder="Debit"
 							defaultValue={dataLedgers ? dataLedgers.debit : 0}
@@ -484,16 +484,6 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 								<Icon name="debit" color="black" width="20" />
 							</div>
 						)}
-						{constructionHoldBackFlag && (
-							<div
-								className="absolute right-[-22px] top-3 cursor-pointer"
-								onClick={() => {
-									setOpenHoldBackPayments(!openHoldBackPayments);
-								}}
-							>
-								<Icon name="debit" color="black" width="20" />
-							</div>
-						)}
 					</div>
 				) : (
 					dataLedgers &&
@@ -506,20 +496,33 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				className={`${columnWidth.credit} text-primary-200  pl-4 text-right `}
 			>
 				{dataLedgers?.editable ? (
-					<InputNumber
-						{...register(`ledger.${index}.credit` as never)}
-						placeholder="Credit"
-						error={
-							errors?.ledgers?.[index]?.credit
-								? errors?.ledgers?.[index]?.credit?.message
-								: ""
-						}
-						defaultValue={dataLedgers ? dataLedgers.credit : 0}
-						customValue={dataLedgers ? dataLedgers.credit : 0}
-						handleChange={(value): void => {
-							handleSetValue(`credit`, value.toString(), index);
-						}}
-					/>
+					<div className="relative">
+						<InputNumber
+							disabled={constructionHoldBackFlag}
+							{...register(`ledger.${index}.credit` as never)}
+							placeholder="Credit"
+							error={
+								errors?.ledgers?.[index]?.credit
+									? errors?.ledgers?.[index]?.credit?.message
+									: ""
+							}
+							defaultValue={dataLedgers ? dataLedgers.credit : 0}
+							customValue={dataLedgers ? dataLedgers.credit : 0}
+							handleChange={(value): void => {
+								handleSetValue(`credit`, value.toString(), index);
+							}}
+						/>
+						{constructionHoldBackFlag && (
+							<div
+								className="absolute right-[-22px] top-3 cursor-pointer"
+								onClick={() => {
+									setOpenHoldBackPayments(!openHoldBackPayments);
+								}}
+							>
+								<Icon name="debit" color="black" width="20" />
+							</div>
+						)}
+					</div>
 				) : (
 					dataLedgers &&
 					dataLedgers.credit &&

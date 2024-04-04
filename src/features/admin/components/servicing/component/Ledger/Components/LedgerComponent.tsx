@@ -440,6 +440,10 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					)
 				) {
 					handleUpdateHolBacks();
+					updateLoanQuery.mutate({
+						id: loan?.id || " ",
+						constructionHoldback: (debits - credits).toString(),
+					});
 				} else {
 					updateLoanQuery.mutate({
 						id: loan?.id || " ",
