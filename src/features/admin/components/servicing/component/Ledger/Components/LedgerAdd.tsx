@@ -161,7 +161,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 				0
 			);
 
-		handleSetValue(`debit`, amountData.toString(), index);
+		handleSetValue(`credit`, amountData.toString(), index);
 
 		setTableDataHoldBack(newTableData as any);
 		if (setLlcHoldbackPayment) {
