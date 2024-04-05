@@ -623,7 +623,7 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 							buttonText="save"
 							className="w-[30%] mt-5"
 							onClick={() => {
-								setOpenInvestorsPayments(!openInvestorsPayments);
+								setOpenHoldBackPayments(!openHoldBackPayments);
 							}}
 						/>
 					</div>

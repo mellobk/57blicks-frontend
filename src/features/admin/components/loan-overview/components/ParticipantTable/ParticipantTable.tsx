@@ -75,7 +75,15 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 
 	return (
 		<DataTable
-			value={participants}
+			value={participants.sort((a, b) => {
+				if (a.name < b.name) {
+					return -1;
+				}
+				if (a.name > b.name) {
+					return 1;
+				}
+				return 0;
+			})}
 			editMode="cell"
 			className="p-3"
 			stripedRows
@@ -101,18 +109,11 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				field="totalDrawnToDate"
 				header="Total Drawn to Date"
 				body={(rowData) => {
-					const trustUnallocatedData = monetaryBodyTemplate(
-						rowData as IParticipantOverview,
-						"trustUnallocated"
-					);
-
 					return (
 						<div className=" w-full">
 							{moneyFormat(
-								Number.parseFloat(rowData.totalDrawnToDate) -
-									Number.parseFloat(
-										trustUnallocatedData.replace("$", "").replace(",", "")
-									)
+								Number.parseFloat(rowData.totalLoans) -
+									Number.parseFloat(rowData.trustAllocated)
 							)}
 						</div>
 					);
@@ -159,12 +160,7 @@ export const ParticipantTable: FC<Props> = ({ participants }) => {
 				header="Total Funds"
 				body={(rowData) => {
 					return (
-						<div className=" w-full">
-							{moneyFormat(
-								Number.parseFloat(rowData.totalDrawnToDate) +
-									Number.parseFloat(rowData.trustAllocated)
-							)}
-						</div>
+						<div className=" w-full">{moneyFormat(rowData.totalLoans)}</div>
 					);
 				}}
 			/>
