@@ -156,7 +156,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 					Number.parseFloat(data.amount) - Number.parseFloat(data.paymentValue)
 				).toString(),
 				regular: (
-					((Number.parseFloat(data.amount) -
+					((Number.parseFloat(data.amountPrevious) -
 						Number.parseFloat(data.paymentValue)) *
 						(Number.parseFloat(data.rate) / 100)) /
 					12

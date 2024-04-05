@@ -35,6 +35,7 @@ import type { TableColumn } from "react-data-table-component";
 import type { FundingBreakdown as FundingBreakdownType } from "@/types/api/funding-breakdown";
 import type { ParticipationBreakdown } from "@/types/api/participation-breakdown";
 import { Cell } from "@/components/table/Cell";
+import { Button } from "@/components/ui/Button";
 interface LedgerAddProps {
 	field: FieldArrayWithId<Ledger>;
 	index: number;
@@ -586,11 +587,18 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						setOpenInvestorsPayments(!openInvestorsPayments);
 					}}
 				>
-					<div className="rounded-xl bg-white flex flex-col justify-between overflow-y-auto">
+					<div className="rounded-xl bg-white flex flex-col justify-center items-center overflow-y-auto">
 						<Table
-							className="rounded-t-xl h-[100%]"
+							className="rounded-t-xl h-[100%] w-full"
 							columns={columns}
 							data={tableData.filter((data: any) => data.type !== "Servicing")}
+						/>
+						<Button
+							buttonText="save"
+							className="w-[30%] mt-5"
+							onClick={() => {
+								setOpenInvestorsPayments(!openInvestorsPayments);
+							}}
 						/>
 					</div>
 				</Modal>
@@ -602,14 +610,21 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 						setOpenHoldBackPayments(!openHoldBackPayments);
 					}}
 				>
-					<div className="rounded-xl bg-white flex flex-col justify-between overflow-y-auto">
+					<div className="rounded-xl bg-white flex flex-col justify-center items-center overflow-y-auto">
 						<Table
-							className="rounded-t-xl h-[100%]"
+							className="rounded-t-xl h-[100%] w-full"
 							columns={columnsConstructionHoldBack}
 							data={tableDataHoldBack.filter(
 								(data: any) =>
 									data.type !== "Servicing" && data.type !== "YieldSpread"
 							)}
+						/>
+						<Button
+							buttonText="save"
+							className="w-[30%] mt-5"
+							onClick={() => {
+								setOpenInvestorsPayments(!openInvestorsPayments);
+							}}
 						/>
 					</div>
 				</Modal>
