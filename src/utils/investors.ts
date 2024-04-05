@@ -231,6 +231,8 @@ export const getFooterDataLender = (data: Array<FooterDataInvestor>) => {
 	const currentDate = moment(); // Current date
 	const beforeCurrentMonth = moment().subtract(1, "month").month();
 	const currentValuePayableInvestor = (loan: Loan) => {
+		const loanEndDateMoment = moment(loan.endDate).month();
+		const loanCurrentMonth = moment().subtract(1, "months").month();
 		let data = "0";
 		const findMonth = loan?.payables?.find(
 			(data: { [x: string]: moment.MomentInput }) => {
@@ -254,10 +256,17 @@ export const getFooterDataLender = (data: Array<FooterDataInvestor>) => {
 		if (loan.status === "DEFAULT") {
 			data = /* String((Number(loan.principal) * 18) / 100 / 12) */ "0";
 		}
+
+		if (loan.endDate && loanEndDateMoment < loanCurrentMonth) {
+			data =
+				/* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0.000001";
+		}
 		return Number.parseFloat(data);
 	};
 
 	const nextValuePayableInvestor = (loan: Loan) => {
+		const loanEndDateMoment = moment(loan.endDate).month();
+		const loanCurrentMonth = moment().month();
 		let data = "0";
 		const findMonth = loan?.payables?.find(
 			(data: { [x: string]: moment.MomentInput }) => {
@@ -280,6 +289,11 @@ export const getFooterDataLender = (data: Array<FooterDataInvestor>) => {
 
 		if (loan.status === "DEFAULT") {
 			data = /* String((Number(loan.principal) * 18) / 100 / 12) */ "0";
+		}
+
+		if (loan.endDate && loanEndDateMoment < loanCurrentMonth) {
+			data =
+				/* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0.000001";
 		}
 
 		return Number.parseFloat(data);

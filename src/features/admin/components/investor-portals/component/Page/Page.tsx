@@ -51,9 +51,11 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 	const beforeCurrentMonth = moment().subtract(1, "month").month();
 
 	const currentValuePayableInvestor = (value: any) => {
+		const loanEndDateMoment = moment(value.loan.endDate).month();
+		const loanCurrentMonth = moment().subtract(1, "months").month();
 		let data = "0";
 
-		const findMonth = value.loan?.payables?.find(
+		const findMonth = value.loan.payables?.find(
 			(data: { [x: string]: moment.MomentInput }) => {
 				// Extract the month and year from the date string
 				const dataMonth = moment(data["month"], dateFormat);
@@ -68,20 +70,24 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		data =
 			findMonth?.payableDetails?.find(
 				(payableData: { investor: any; type: string }) => {
-					return (
-						payableData.type === "Lender" &&
-						payableData?.investor?.id === value.id
-					);
+					return payableData.type === "Lender";
 				}
 			)?.credit || value?.regular;
 
 		if (value.loan.status === "DEFAULT") {
 			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 		}
+
+		if (value.loan.endDate && loanEndDateMoment < loanCurrentMonth) {
+			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
+		}
+
 		return Number.parseFloat(data || "0");
 	};
 
 	const nextValuePayableInvestor = (value: any) => {
+		const loanEndDateMoment = moment(value.loan.endDate).month();
+		const loanCurrentMonth = moment().month();
 		let data = "0";
 		const findMonth = value.loan?.payables?.find(
 			(data: { [x: string]: moment.MomentInput }) => {
@@ -103,6 +109,9 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 			)?.credit || value?.regular;
 
 		if (value.loan.status === "DEFAULT") {
+			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
+		}
+		if (value.loan.endDate && loanEndDateMoment < loanCurrentMonth) {
 			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 		}
 		return Number.parseFloat(data || "0");
