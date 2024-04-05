@@ -11,10 +11,23 @@ const Participant: FC<ParticipantProps> = ({ type, payableDetail }) => {
 		<>
 			{type === PayableType.LENDER && <>{payableDetail.lender?.name}</>}
 			{type === PayableType.INVESTOR && (
-				<>{payableDetail.investor?.user?.firstName}</>
+				<>{`${
+					payableDetail.investor?.user?.entityName ||
+					`${payableDetail.investor?.user?.firstName} ${payableDetail.investor?.user?.lastName}`
+				}`}</>
 			)}
 			{type === PayableType.SERVICING && <>Servicing</>}
-			{type === PayableType.YIELD_SPREAD && <>Yield Spread</>}
+			{type === PayableType.YIELD_SPREAD && (
+				<>
+					{`Y/S ${
+						payableDetail.investor?.user?.entityName ||
+						`${payableDetail.investor?.user?.firstName || ""} ${
+							payableDetail.investor?.user?.lastName || ""
+						}`
+					}
+					`}
+				</>
+			)}
 		</>
 	);
 };
