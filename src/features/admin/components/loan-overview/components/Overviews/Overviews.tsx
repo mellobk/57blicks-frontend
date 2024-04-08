@@ -5,6 +5,8 @@ import { Subtitle } from "@/features/admin/components/loan-overview/components/S
 import { Value } from "@/features/admin/components/loan-overview/components/Value/Value";
 import type { ILoanOverview } from "../../types/fields";
 import { round } from "@/utils/common-functions";
+import { ServicingModal } from "../servicingModal/ServicingModal";
+import { YieldSpreadModal } from "../yieldSpreadModal/YieldSpreadModal";
 
 type Props = {
 	data: ILoanOverview;
@@ -12,6 +14,9 @@ type Props = {
 
 export const Overviews: FC<Props> = ({ data }) => {
 	const [openDueToDrawsModal, setOpenDueToDrawsModal] =
+		useState<boolean>(false);
+	const [openServicingModal, setOpenServicingModal] = useState<boolean>(false);
+	const [openYieldSpreadModal, setOpenYieldSpreadModal] =
 		useState<boolean>(false);
 
 	const [overviewInvestorData, setOverviewInvestorData] = useState(0);
@@ -67,19 +72,37 @@ export const Overviews: FC<Props> = ({ data }) => {
 				<Value
 					label="Servicing Fee"
 					value={data.interestOverview.servicingFee}
+					action={() => {
+						setOpenServicingModal(true);
+					}}
 				/>
-				<Value label="Yield Spread" value={data.interestOverview.yieldSpread} />
+				<Value
+					label="Yield Spread"
+					value={data.interestOverview.yieldSpread}
+					action={() => {
+						setOpenYieldSpreadModal(true);
+					}}
+				/>
 				<Value
 					label="Check and Balance"
 					value={Math.abs(round(data.interestOverview.checkAndBalance, 0))}
 					checkAndBalance
 				/>
 			</div>
-
 			<DueToDraws
 				data={data}
 				openModal={openDueToDrawsModal}
 				setOpenModal={setOpenDueToDrawsModal}
+			/>
+			<ServicingModal
+				data={data}
+				openModal={openServicingModal}
+				setOpenModal={setOpenServicingModal}
+			/>
+			<YieldSpreadModal
+				data={data}
+				openModal={openYieldSpreadModal}
+				setOpenModal={setOpenYieldSpreadModal}
 			/>
 		</>
 	);

@@ -5,6 +5,8 @@ export type DueToDrawDetails = {
 	lender: LenderNameType;
 	loanName: string;
 	loanAddress: string;
+	servicing: number;
+	yieldSpread: number;
 };
 
 export interface IPrincipleOverview {
@@ -42,6 +44,7 @@ export interface IConstructionHoldbackOverview {
 }
 
 export interface ILoanOverview {
+	loanServicingOverview: Array<DueToDrawDetails>;
 	principleOverview: IPrincipleOverview;
 	trustAccountBalance: number;
 	interestOverview: IInterestOverview;
