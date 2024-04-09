@@ -130,8 +130,27 @@ export const ServicingModal: FC<Props> = ({
 				<Column field="loanAddress" header="Loan Address" sortable />
 				<Column field="lender" header="Lender" sortable />
 				<Column
-					field="servicing"
-					header="servicing"
+					field="Total Amount"
+					header="Total Amount"
+					body={(rowData: any) => moneyFormat(rowData.loan.principal)}
+					sortable
+				/>
+				<Column
+					field="rate"
+					header="Rate"
+					body={(rowData: any) =>
+						moneyFormat(
+							rowData?.loan?.fundingBreakDowns?.find(
+								(data: { type: string }) => data.type === "Servicing"
+							).rate
+						)
+					}
+					sortable
+				/>
+
+				<Column
+					field=""
+					header="Servicing"
 					body={(rowData: any) => monetaryBodyTemplate(rowData, "servicing")}
 					sortable
 				/>

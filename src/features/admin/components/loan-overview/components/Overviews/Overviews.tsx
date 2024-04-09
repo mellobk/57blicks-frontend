@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
 import { type FC, useState, useEffect } from "react";
 import { DueToDraws } from "@/features/admin/components/loan-overview/components/DueToDraws/DueToDraws";
@@ -78,7 +80,7 @@ export const Overviews: FC<Props> = ({ data }) => {
 				/>
 				<Value
 					label="Yield Spread"
-					value={data.interestOverview.yieldSpread}
+					value={data.interestOverview.yieldSpread as any}
 					action={() => {
 						setOpenYieldSpreadModal(true);
 					}}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { LenderNameType } from "@/types/api/lender";
 
 export type DueToDrawDetails = {
@@ -6,7 +7,12 @@ export type DueToDrawDetails = {
 	loanName: string;
 	loanAddress: string;
 	servicing: number;
-	yieldSpread: number;
+	yieldSpread: any;
+	yieldSpreadInfo: Array<{
+		yieldSpreadInfo: any;
+		ys: string;
+		total: string;
+	}>;
 };
 
 export interface IPrincipleOverview {
@@ -20,7 +26,7 @@ export interface IInterestOverview {
 	totalCollectibles: number;
 	totalParticipantsPayable: number;
 	servicingFee: number;
-	yieldSpread: number;
+	yieldSpread: any;
 	checkAndBalance: number;
 }
 
