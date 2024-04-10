@@ -478,7 +478,9 @@ export const sortLLCRegular = (rowA: any, rowB: any) => {
 	return 0;
 };
 
-export const getPreviousThreeMonths = (): Array<{
+export const getPreviousThreeMonths = (
+	year: string
+): Array<{
 	label: string;
 	value: string;
 }> => {
@@ -499,11 +501,11 @@ export const getPreviousThreeMonths = (): Array<{
 	const currentDate = new Date();
 	const results: Array<{ label: string; value: string }> = [];
 
-	for (let index = 1; index <= 3; index++) {
+	for (let index = 1; index <= 11; index++) {
 		currentDate.setMonth(currentDate.getMonth() - 1);
 		const monthIndex = currentDate.getMonth();
 		const month = months[monthIndex];
-		const year = currentDate.getFullYear();
+
 		const value = `${year}-${
 			monthIndex + 1 < 10 ? `0${monthIndex + 1}` : monthIndex + 1
 		}`;
@@ -511,4 +513,57 @@ export const getPreviousThreeMonths = (): Array<{
 	}
 
 	return results.reverse();
+};
+
+export const getMonthsOfQuarter = (
+	quarter: number
+): Array<{
+	label: string;
+	value: string;
+}> => {
+	const months = [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec",
+	];
+
+	if (quarter < 1 || quarter > 4) {
+		throw new Error("Quarter must be between 1 and 4.");
+	}
+
+	const results: Array<{ label: string; value: string }> = [];
+	const year = new Date().getFullYear();
+
+	const firstMonthIndex = (quarter - 1) * 3;
+
+	for (let index = 0; index < 3; index++) {
+		const monthIndex = firstMonthIndex + index;
+		const month = months[monthIndex];
+		const value = `${year}-${
+			monthIndex + 1 < 10 ? `0${monthIndex + 1}` : monthIndex + 1
+		}`;
+		results.push({ label: month || "", value });
+	}
+
+	return results;
+};
+
+export const getPreviousMonthQuarter = () => {
+	const currentDate = new Date();
+
+	currentDate.setMonth(currentDate.getMonth() - 1);
+	const monthIndex = currentDate.getMonth();
+
+	const quarter = Math.floor(monthIndex / 3) + 1;
+
+	return quarter;
 };

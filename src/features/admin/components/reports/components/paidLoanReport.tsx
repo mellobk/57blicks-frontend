@@ -23,7 +23,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
 import { Tabs } from "../../servicing/component/Tabs";
 /* import { paidLoansTabs } from "../../servicing/utils/tabs"; */
-import { getPreviousThreeMonths } from "@/utils/common-functions";
+import {
+	getMonthsOfQuarter,
+	getPreviousMonthQuarter,
+	getPreviousThreeMonths,
+} from "@/utils/common-functions";
+import YearPicker from "@/components/ui/YearPicker";
+import { Icon } from "@/components/ui/Icon";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -32,10 +38,12 @@ import { getPreviousThreeMonths } from "@/utils/common-functions";
 // you'll often use just a few of them.
 
 export const PaidLoanReport: FC = () => {
-	const reportsMonths = getPreviousThreeMonths();
+	const [actualYear, setActualYear] = useState(new Date().getFullYear());
+	const reportsMonths = getPreviousThreeMonths(actualYear.toString());
 	const [actualTabData, setActualTabData] = useState<string>(
 		reportsMonths[2]?.label.toLowerCase() || ""
 	);
+	const [actualQuarter, setActualQuarter] = useState(getPreviousMonthQuarter());
 	const findDate = reportsMonths.find(
 		(data) => data?.label?.toLowerCase() === actualTabData
 	);
@@ -200,7 +208,7 @@ export const PaidLoanReport: FC = () => {
 
 	useEffect(() => {
 		void propertyInsuranceQuery.refetch();
-	}, [actualTabData]);
+	}, [actualTabData, actualYear]);
 
 	const columnsModal = [
 		{
@@ -246,7 +254,7 @@ export const PaidLoanReport: FC = () => {
 					(data: { lender: { name: string } }) =>
 						data.lender.name !== "DKC Servicing Fee Income"
 				);
-				return lender.lender.name || "";
+				return lender?.lender?.name || "";
 			},
 
 			omit: false,
@@ -270,13 +278,45 @@ export const PaidLoanReport: FC = () => {
 				>
 					Loans Paid off
 				</div>
-				<Tabs
-					tabs={[...getPreviousThreeMonths(), { label: "YTD", value: "YTD" }]}
-					actualTab={actualTabData}
-					onClick={(value): void => {
-						setActualTabData(value);
-					}}
-				/>
+				<div className="flex  justify-center items-center gap-2">
+					{actualQuarter != 1 && (
+						<div
+							className="cursor-pointer"
+							onClick={() => {
+								setActualQuarter(actualQuarter - 1);
+							}}
+						>
+							<Icon name="arrowLeft" width="15" color="black" />
+						</div>
+					)}
+					<Tabs
+						tabs={getMonthsOfQuarter(actualQuarter)}
+						actualTab={actualTabData}
+						onClick={(value): void => {
+							setActualTabData(value);
+						}}
+					/>
+					{actualQuarter != 4 && (
+						<div
+							className="cursor-pointer"
+							onClick={() => {
+								setActualQuarter(actualQuarter + 1);
+							}}
+						>
+							<Icon name="arrowRight" width="8" color="black" />
+						</div>
+					)}
+
+					<YearPicker
+						arrowColors="black"
+						backgroundColor="transparent"
+						year={new Date().getFullYear()}
+						onChange={(year: number) => {
+							setActualYear(year);
+						}}
+						textColor="text-black"
+					/>
+				</div>
 				<div className="flex gap-2 ml-2" onClick={downloadReport}>
 					<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 						<img src={Csv} alt="DKC Csv" />
