@@ -10,7 +10,7 @@ import type { Loan } from "@/types/api/loan";
 import type { Payable } from "@/features/admin/components/servicing/component/Payable/types";
 /* import { getIsSamePreviousMonthYear } from "./common-functions"; */
 import moment from "moment/moment";
-import { moneyFormat } from "@/utils/formats";
+import { compareFormatOriginationDate, moneyFormat } from "@/utils/formats";
 /* import { ParticipationBreakdown } from "@/types/api/participation-breakdown"; */
 export interface ColumInvestorPayable {
 	borrower: string;
@@ -261,6 +261,12 @@ export const getFooterDataLender = (data: Array<FooterDataInvestor>) => {
 			data =
 				/* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0.000001";
 		}
+
+		if (compareFormatOriginationDate(loan?.originationDate)) {
+			data =
+				/* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0.000001";
+		}
+
 		return Number.parseFloat(data);
 	};
 

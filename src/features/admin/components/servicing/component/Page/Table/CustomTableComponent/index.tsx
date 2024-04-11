@@ -11,7 +11,7 @@ import { ColumnGroup } from "primereact/columngroup";
 import { DataTable } from "primereact/datatable";
 import { useState, type FC, useEffect } from "react";
 import { Row } from "primereact/row";
-import { moneyFormat } from "@/utils/formats";
+import { compareFormatOriginationDate, moneyFormat } from "@/utils/formats";
 import {
 	getIsSameMonthYear,
 	getIsSamePreviousMonthYear,
@@ -155,6 +155,9 @@ const templateCurrentValue = (rowData: any) => {
 		return Number.parseFloat("0");
 	}
 
+	if (compareFormatOriginationDate(rowData.data.loan.originationDate)) {
+		return Number.parseFloat("0");
+	}
 	return moneyFormat(value);
 };
 

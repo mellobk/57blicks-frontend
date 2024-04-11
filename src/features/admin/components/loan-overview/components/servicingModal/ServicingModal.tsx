@@ -139,11 +139,11 @@ export const ServicingModal: FC<Props> = ({
 					field="rate"
 					header="Rate"
 					body={(rowData: any) =>
-						moneyFormat(
+						`${Number(
 							rowData?.loan?.fundingBreakDowns?.find(
 								(data: { type: string }) => data.type === "Servicing"
 							).rate
-						)
+						).toFixed(0)}%`
 					}
 					sortable
 				/>

@@ -501,7 +501,7 @@ export const getPreviousThreeMonths = (
 	const currentDate = new Date();
 	const results: Array<{ label: string; value: string }> = [];
 
-	for (let index = 1; index <= 11; index++) {
+	for (let index = 1; index <= 12; index++) {
 		currentDate.setMonth(currentDate.getMonth() - 1);
 		const monthIndex = currentDate.getMonth();
 		const month = months[monthIndex];

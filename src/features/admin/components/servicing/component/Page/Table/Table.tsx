@@ -22,6 +22,7 @@ import { Toggle } from "@/components/ui/Toggle/Toggle";
 import { useDebounce } from "@/hooks/debounce";
 import moment from "moment";
 import type { Loan } from "@/types/api/loan";
+import { compareFormatOriginationDate } from "@/utils/formats";
 
 interface Column {
 	name?: string;
@@ -71,6 +72,7 @@ export const currentValuePayableInvestor = (loan: Loan) => {
 	if (loan?.status === "DEFAULT") {
 		data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 	}
+
 	return Number.parseFloat(data || "0");
 };
 
@@ -288,6 +290,10 @@ export const Table: FC<Props> = ({
 			}
 
 			if (data.loan.endDate && loanEndDateMoment < loanNextCurrentMonth) {
+				return Number.parseFloat("0");
+			}
+
+			if (compareFormatOriginationDate(data?.loan?.originationDate)) {
 				return Number.parseFloat("0");
 			}
 			return Number.parseFloat(value || "");

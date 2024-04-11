@@ -16,7 +16,12 @@ import { Footer } from "@/features/admin/components/investor-portals/component/P
 import investorPortalsStore from "@/features/admin/components/investor-portals/stores/investor-portals-store";
 import { investorPortalsTabs } from "@/features/admin/components/investor-portals/utils/tabs";
 import type { FundingBreakdown } from "@/types/api/funding-breakdown";
-import { formatDate, moneyFormat, percentageFormat } from "@/utils/formats";
+import {
+	compareFormatOriginationDate,
+	formatDate,
+	moneyFormat,
+	percentageFormat,
+} from "@/utils/formats";
 
 import PayablesAdmin from "../PayablesAdmin";
 import type { DkcLenders } from "../../../servicing/types/api";
@@ -79,6 +84,10 @@ export const Page: FC<Props> = ({ actualTab, id }) => {
 		}
 
 		if (value.loan.endDate && loanEndDateMoment < loanCurrentMonth) {
+			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
+		}
+
+		if (compareFormatOriginationDate(value?.loan?.originationDate)) {
 			data = /* String((Number(value.loan.principal) * 18) / 100 / 12) */ "0";
 		}
 

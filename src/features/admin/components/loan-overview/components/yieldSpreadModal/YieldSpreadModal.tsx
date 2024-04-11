@@ -200,16 +200,30 @@ export const YieldSpreadModal: FC<Props> = ({
 					rowGroupFooterTemplate={footerTemplateYs}
 				>
 					<Column
+						className="w-[600px]"
 						field="YSName"
 						header="YS"
 						body={(rowData: any) => rowData.ys}
+						sortable
+					/>
+					<Column
+						field="amount"
+						header="Amount"
+						body={(rowData: any) => moneyFormat(rowData.amount)}
+						sortable
+					/>
+
+					<Column
+						field="rate"
+						header="Rate "
+						body={(rowData: any) => `${rowData.rate}%`}
 						sortable
 					/>
 
 					<Column
 						field="total"
 						header="Total"
-						body={(rowData: any) => rowData.total}
+						body={(rowData: any) => moneyFormat(rowData.total)}
 						sortable
 					/>
 				</DataTable>

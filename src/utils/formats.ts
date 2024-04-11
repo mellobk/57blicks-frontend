@@ -151,3 +151,16 @@ export const formatDateTimeAccordingToTimeZone = (
 	});
 	return formatter.format(date);
 };
+
+export const compareFormatOriginationDate = (date: any) => {
+	const loanOriginationDateMonth = moment(date).month();
+	const loanOriginationDateYear = moment(date).year();
+	const loanOriginationDateCurrentMonth = moment().month();
+	const loanOriginationDateCurrentYear = moment().year();
+
+	const dateData =
+		loanOriginationDateYear >= loanOriginationDateCurrentYear &&
+		loanOriginationDateMonth >= loanOriginationDateCurrentMonth;
+
+	return dateData;
+};
