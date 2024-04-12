@@ -53,7 +53,9 @@ export const PaidLoanReport: FC = () => {
 	const propertyInsuranceQuery = useQuery(
 		["all-paid-loans"],
 		() => {
-			return ManageReportsService.getPaidOffLoans(findDate?.value || "YTD");
+			return ManageReportsService.getPaidOffLoans(
+				findDate?.value || actualYear.toString()
+			);
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -279,6 +281,14 @@ export const PaidLoanReport: FC = () => {
 					Loans Paid off
 				</div>
 				<div className="flex  justify-center items-center gap-2">
+					<Tabs
+						tabs={[{ label: "Ytd", value: "ytd" }]}
+						actualTab={actualTabData}
+						onClick={(value): void => {
+							console.log(value);
+							setActualTabData(value);
+						}}
+					/>
 					{actualQuarter != 1 && (
 						<div
 							className="cursor-pointer"

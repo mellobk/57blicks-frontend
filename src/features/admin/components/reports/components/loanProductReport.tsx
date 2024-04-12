@@ -22,9 +22,16 @@ import { ResponsivePieCanvas } from "@nivo/pie";
 import type { Loan } from "@/types/api/loan";
 import { Modal } from "@/components/ui/Modal";
 import DataTable from "react-data-table-component";
-import { consultantsTabs } from "../../servicing/utils/tabs";
+
 import { Tabs } from "../../servicing/component/Tabs";
 import { Select } from "@/components/forms/Select";
+import {
+	getMonthsOfQuarter,
+	getPreviousMonthQuarter,
+	getPreviousThreeMonths,
+} from "@/utils/common-functions";
+import YearPicker from "@/components/ui/YearPicker";
+import { Icon } from "@/components/ui/Icon";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -33,8 +40,11 @@ import { Select } from "@/components/forms/Select";
 // you'll often use just a few of them.
 
 export const LoanProductReport: FC = () => {
-	const [actualTabData, setActualTabData] = useState<string>("all");
+	const [actualYear, setActualYear] = useState(new Date().getFullYear());
+	const reportsMonths = getPreviousThreeMonths(actualYear.toString());
+	const [actualTabData, setActualTabData] = useState<string>("ytd");
 	const [openInsurance, setOpenInsurance] = useState(false);
+	const [actualQuarter, setActualQuarter] = useState(getPreviousMonthQuarter());
 	const [chartData, setChartData] = useState([]);
 	const [keys, setKey] = useState<Array<string>>([]);
 	const [accountData, setAccountData] = useState<string>("all");
@@ -43,13 +53,14 @@ export const LoanProductReport: FC = () => {
 	const [modalColumnsData, setModalColumnsData] = useState<Array<any>>([]);
 	const [userData, setUserData] = useState<Array<any>>([]);
 	const [optionsConsultants, setOptionsConsultants] = useState<Array<any>>([]);
+	const findDate = reportsMonths.find(
+		(data) => data?.label?.toLowerCase() === actualTabData
+	);
 	const consultantQuery = useQuery(
 		["all-products-loans"],
 		() => {
 			return ManageReportsService.getLoanProduct(
-				consultantsTabs.find(
-					(data) => data.label.toLocaleLowerCase() === actualTabData
-				)?.value || ""
+				findDate?.value || actualYear.toString()
 			);
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
@@ -57,7 +68,7 @@ export const LoanProductReport: FC = () => {
 
 	useEffect(() => {
 		void consultantQuery.refetch();
-	}, [actualTabData]);
+	}, [actualTabData, actualYear]);
 
 	useEffect(() => {
 		if (consultantQuery.data && consultantQuery.data?.loans) {
@@ -325,14 +336,54 @@ export const LoanProductReport: FC = () => {
 		<div className="h-[60%] w-full">
 			<div className="flex items-center justify-between w-full px-10 bg-gray-200 p-3 g-3 ">
 				<div className="font-bold text-[13px]">Loans By Product</div>
-				<Tabs
-					tabs={consultantsTabs}
-					actualTab={actualTabData}
-					onClick={(value: any): any => {
-						setActualTabData(value);
-						setAccountData("all");
-					}}
-				/>
+				<div className="flex  justify-center items-center gap-2">
+					<Tabs
+						tabs={[{ label: "Ytd", value: "ytd" }]}
+						actualTab={actualTabData}
+						onClick={(value): void => {
+							console.log(value);
+							setActualTabData(value);
+						}}
+					/>
+					{actualQuarter != 1 && (
+						<div
+							className="cursor-pointer"
+							onClick={() => {
+								setActualQuarter(actualQuarter - 1);
+							}}
+						>
+							<Icon name="arrowLeft" width="15" color="black" />
+						</div>
+					)}
+
+					<Tabs
+						tabs={getMonthsOfQuarter(actualQuarter)}
+						actualTab={actualTabData}
+						onClick={(value): void => {
+							setActualTabData(value);
+						}}
+					/>
+					{actualQuarter != 4 && (
+						<div
+							className="cursor-pointer"
+							onClick={() => {
+								setActualQuarter(actualQuarter + 1);
+							}}
+						>
+							<Icon name="arrowRight" width="8" color="black" />
+						</div>
+					)}
+
+					<YearPicker
+						arrowColors="black"
+						backgroundColor="transparent"
+						year={new Date().getFullYear()}
+						onChange={(year: number) => {
+							setActualYear(year);
+						}}
+						textColor="text-black"
+					/>
+				</div>
 				<div className="flex gap-2 ml-2" onClick={downloadReport}>
 					<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 						<img src={Csv} alt="DKC Csv" />

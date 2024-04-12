@@ -21,9 +21,15 @@ import Xlsx from "@/assets/images/png/Xlsx.png";
 import { useQuery } from "@tanstack/react-query";
 import { Modal } from "@/components/ui/Modal";
 import { Tabs } from "../../servicing/component/Tabs";
-import { paidLoansTabs } from "../../servicing/utils/tabs";
+
 import { Icon } from "@/components/ui/Icon";
 import { LedgerList } from "../../notifications/components/Ledger";
+import {
+	getMonthsOfQuarter,
+	getPreviousMonthQuarter,
+	getPreviousThreeMonths,
+} from "@/utils/common-functions";
+import YearPicker from "@/components/ui/YearPicker";
 
 // make sure parent container have a defined height when using
 // responsive component, otherwise height will be 0 and
@@ -32,16 +38,28 @@ import { LedgerList } from "../../notifications/components/Ledger";
 // you'll often use just a few of them.
 
 export const ExtendedLoanReport: FC = () => {
-	const [actualTabData, setActualTabData] = useState<string>("30");
+	const [actualYear, setActualYear] = useState(new Date().getFullYear());
+	const reportsMonths = getPreviousThreeMonths(actualYear.toString());
+	const [actualTabData, setActualTabData] = useState<string>(
+		reportsMonths[2]?.label.toLowerCase() || ""
+	);
 	const [openInsurance, setOpenInsurance] = useState(false);
+	const [actualQuarter, setActualQuarter] = useState(getPreviousMonthQuarter());
+
 	const [transaction, setTransaction] = useState(false);
 	const [transactionId, setTransactionId] = useState();
 	const [lastRowModal, setLastRowModal] = useState<Array<any>>([]);
 
+	const findDate = reportsMonths.find(
+		(data) => data?.label?.toLowerCase() === actualTabData
+	);
+
 	const propertyInsuranceQuery = useQuery(
 		["all-extended-loans"],
 		() => {
-			return ManageReportsService.getExtendedFounded(actualTabData);
+			return ManageReportsService.getExtendedFounded(
+				findDate?.value || actualYear.toString()
+			);
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -143,7 +161,7 @@ export const ExtendedLoanReport: FC = () => {
 
 	useEffect(() => {
 		void propertyInsuranceQuery.refetch();
-	}, [actualTabData]);
+	}, [actualTabData, actualYear]);
 
 	const columnsModal = [
 		{
@@ -182,7 +200,7 @@ export const ExtendedLoanReport: FC = () => {
 		},
 		{
 			name: "Maturity Date",
-			selector: (row: Loan) => row?.maturityDate,
+			selector: (row: Loan) => formatDate(row?.maturityDate?.toString() || ""),
 			omit: false,
 		},
 
@@ -220,13 +238,53 @@ export const ExtendedLoanReport: FC = () => {
 				>
 					Extended Loans
 				</div>
-				<Tabs
-					tabs={paidLoansTabs}
-					actualTab={actualTabData}
-					onClick={(value): void => {
-						setActualTabData(value);
-					}}
-				/>
+				<div className="flex  justify-center items-center gap-2">
+					<Tabs
+						tabs={[{ label: "Ytd", value: "ytd" }]}
+						actualTab={actualTabData}
+						onClick={(value): void => {
+							console.log(value);
+							setActualTabData(value);
+						}}
+					/>
+					{actualQuarter != 1 && (
+						<div
+							className="cursor-pointer"
+							onClick={() => {
+								setActualQuarter(actualQuarter - 1);
+							}}
+						>
+							<Icon name="arrowLeft" width="15" color="black" />
+						</div>
+					)}
+					<Tabs
+						tabs={getMonthsOfQuarter(actualQuarter)}
+						actualTab={actualTabData}
+						onClick={(value): void => {
+							setActualTabData(value);
+						}}
+					/>
+					{actualQuarter != 4 && (
+						<div
+							className="cursor-pointer"
+							onClick={() => {
+								setActualQuarter(actualQuarter + 1);
+							}}
+						>
+							<Icon name="arrowRight" width="8" color="black" />
+						</div>
+					)}
+
+					<YearPicker
+						arrowColors="black"
+						backgroundColor="transparent"
+						year={new Date().getFullYear()}
+						onChange={(year: number) => {
+							setActualYear(year);
+						}}
+						textColor="text-black"
+					/>
+				</div>
 				<div className="flex gap-2 ml-2" onClick={downloadReport}>
 					<div className="w-[35px] h-[35px] bg-white flex items-center justify-center rounded-xl">
 						<img src={Csv} alt="DKC Csv" />

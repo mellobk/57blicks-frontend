@@ -53,7 +53,9 @@ export const NewFoundedLoanReport: FC = () => {
 	const propertyInsuranceQuery = useQuery(
 		["all-new-loans-founded"],
 		() => {
-			return ManageReportsService.getNewLoansFounded(findDate?.value || "");
+			return ManageReportsService.getNewLoansFounded(
+				findDate?.value || actualYear.toString()
+			);
 		},
 		{ enabled: true, staleTime: 1000 * 60 * 60 * 24 }
 	);
@@ -291,6 +293,14 @@ export const NewFoundedLoanReport: FC = () => {
 					New Loans Funded
 				</div>
 				<div className="flex  justify-center items-center gap-2">
+					<Tabs
+						tabs={[{ label: "Ytd", value: "ytd" }]}
+						actualTab={actualTabData}
+						onClick={(value): void => {
+							console.log(value);
+							setActualTabData(value);
+						}}
+					/>
 					{actualQuarter != 1 && (
 						<div
 							className="cursor-pointer"
@@ -301,6 +311,7 @@ export const NewFoundedLoanReport: FC = () => {
 							<Icon name="arrowLeft" width="15" color="black" />
 						</div>
 					)}
+
 					<Tabs
 						tabs={getMonthsOfQuarter(actualQuarter)}
 						actualTab={actualTabData}
