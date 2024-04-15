@@ -28,6 +28,8 @@ import {
 	getMonthsOfQuarter,
 	getPreviousMonthQuarter,
 	getPreviousThreeMonths,
+	sortReportMaturityDate,
+	statusReportTotalLoan,
 } from "@/utils/common-functions";
 import YearPicker from "@/components/ui/YearPicker";
 
@@ -133,8 +135,8 @@ export const ExtendedLoanReport: FC = () => {
 		const headerCsv = [
 			"Borrower Entity",
 			"Property Address",
-			"Lender",
 			"Loan Amount",
+			"Lender",
 			"Maturity Date",
 			"Paid/Unpaid",
 		];
@@ -169,6 +171,7 @@ export const ExtendedLoanReport: FC = () => {
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Property Address",
@@ -178,6 +181,7 @@ export const ExtendedLoanReport: FC = () => {
 				</div>
 			),
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Lender",
@@ -191,17 +195,20 @@ export const ExtendedLoanReport: FC = () => {
 			},
 
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Loan Amount",
 			selector: (row: Loan) =>
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
+			sortFunction: statusReportTotalLoan,
 		},
 		{
 			name: "Maturity Date",
 			selector: (row: Loan) => formatDate(row?.maturityDate?.toString() || ""),
 			omit: false,
+			sortFunction: sortReportMaturityDate,
 		},
 
 		{
@@ -209,6 +216,7 @@ export const ExtendedLoanReport: FC = () => {
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => (row?.status === "PAID" ? "YES" : "NO"),
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Transactions",
@@ -224,6 +232,7 @@ export const ExtendedLoanReport: FC = () => {
 				</div>
 			),
 			omit: false,
+			sortable: true,
 		},
 	];
 

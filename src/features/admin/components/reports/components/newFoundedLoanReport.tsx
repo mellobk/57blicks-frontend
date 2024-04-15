@@ -25,6 +25,8 @@ import {
 	getMonthsOfQuarter,
 	getPreviousMonthQuarter,
 	getPreviousThreeMonths,
+	sortReportOriginateDate,
+	statusReportTotalLoan,
 } from "@/utils/common-functions";
 import { Icon } from "@/components/ui/Icon";
 import YearPicker from "@/components/ui/YearPicker";
@@ -216,6 +218,7 @@ export const NewFoundedLoanReport: FC = () => {
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Property Address",
@@ -225,12 +228,14 @@ export const NewFoundedLoanReport: FC = () => {
 				</div>
 			),
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Loan Amount",
 			selector: (row: Loan) =>
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
+			sortFunction: statusReportTotalLoan,
 		},
 		{
 			name: "Origination Date",
@@ -238,18 +243,21 @@ export const NewFoundedLoanReport: FC = () => {
 				row?.originationDate &&
 				formatDate(row?.originationDate?.toString() || ""),
 			omit: false,
+			sortFunction: sortReportOriginateDate,
 		},
 		{
 			name: "Asset Type",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.collaterals[0]?.assetType || "",
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Loan Product",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.type || "",
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "LTV",
@@ -257,6 +265,7 @@ export const NewFoundedLoanReport: FC = () => {
 			selector: (row: Loan) =>
 				row?.ltv && `${Number.parseFloat(row?.ltv).toFixed(0) || "0"}%`,
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Lender",
@@ -270,6 +279,7 @@ export const NewFoundedLoanReport: FC = () => {
 			},
 
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Rate",
@@ -278,6 +288,7 @@ export const NewFoundedLoanReport: FC = () => {
 				row?.interestRate &&
 				`${Number.parseFloat(row?.interestRate).toFixed(0)}%`,
 			omit: false,
+			sortable: true,
 		},
 	];
 

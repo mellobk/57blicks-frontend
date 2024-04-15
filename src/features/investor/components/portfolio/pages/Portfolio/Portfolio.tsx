@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/array-type */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -8,7 +10,12 @@
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 import { type FC, useEffect, useState } from "react";
 import moment from "moment";
-import { formatDate, moneyFormat, percentageFormat } from "@/utils/formats";
+import {
+	compareFormatOriginationDate,
+	formatDate,
+	moneyFormat,
+	percentageFormat,
+} from "@/utils/formats";
 import { BreadCrumb } from "@/components/ui/BreadCrumb";
 import { Footer } from "@/features/investor/components/portfolio/components/Footer/Footer";
 import InvestorsService from "@/api/investors";
@@ -19,11 +26,15 @@ import { Table } from "@/components/ui/Table";
 import YearPicker from "@/components/ui/YearPicker";
 
 import { useQuery } from "@tanstack/react-query";
+import userStore from "@/stores/user-store";
 
 export const Portfolio: FC = () => {
+	const userInfo = userStore((state) => state.loggedUserInfo);
 	const [year, setYear] = useState<number>(new Date().getFullYear());
 	const currentMonthName = moment().format("MMMM");
-
+	const dateFormat = "YYYY-MM-DD"; // This is the format of your date strings
+	const currentDate = moment(); // Current date
+	const beforeCurrentMonth = moment().subtract(1, "month").month();
 	const investorsQuery = useQuery(
 		["loans-by-investors"],
 		() => InvestorsService.getLoansByInvestor(),
@@ -31,6 +42,53 @@ export const Portfolio: FC = () => {
 			enabled: false,
 		}
 	);
+
+	const findFundingData = (data: any[]) => {
+		const findData = data.find(
+			(data) => data.investor.id === userInfo?.investor?.id
+		);
+
+		return findData;
+	};
+
+	const currentValuePayableInvestor = (loan: any) => {
+		const loanEndDateMoment = moment(loan.endDate).month();
+		const loanCurrentMonth = moment().subtract(1, "months").month();
+		let data = "0";
+
+		const findMonth = loan.payables?.find(
+			(data: { [x: string]: moment.MomentInput }) => {
+				// Extract the month and year from the date string
+				const dataMonth = moment(data["month"], dateFormat);
+				// Check if year and month are the same as the current date
+				return (
+					dataMonth.year() === currentDate.year() &&
+					dataMonth.month() === beforeCurrentMonth
+				);
+			}
+		);
+
+		data = findMonth?.payableDetails?.find(
+			(payableData: { investor: any; type: string }) => {
+				return (
+					payableData.type === "Investor" &&
+					payableData?.investor?.id === userInfo?.investor?.id
+				);
+			}
+		)?.credit;
+
+		if (loan.endDate && loanEndDateMoment < loanCurrentMonth) {
+			data =
+				/* String((Number(value.loan.principal) * 18) / 100 / 12) */ "000000.1";
+		}
+
+		if (compareFormatOriginationDate(loan?.originationDate)) {
+			data =
+				/* String((Number(value.loan.principal) * 18) / 100 / 12) */ "000000.1";
+		}
+
+		return Number.parseFloat(data || "0");
+	};
 
 	const columns = [
 		{
@@ -50,7 +108,7 @@ export const Portfolio: FC = () => {
 		},
 		{
 			name: "Total Loan Amount",
-			selector: (row: Loan) => moneyFormat(Number(row.totalLoanAmount)),
+			selector: (row: Loan) => moneyFormat(Number(row.principal)),
 			sortable: true,
 		},
 		{
@@ -59,7 +117,7 @@ export const Portfolio: FC = () => {
 				return moneyFormat(
 					Number(
 						row.participationBreakdowns
-							? row.participationBreakdowns[0]?.amount || 0
+							? findFundingData(row.participationBreakdowns).amount || 0
 							: row.fundingBreakDowns[0]?.amount || 0
 					)
 				);
@@ -72,7 +130,7 @@ export const Portfolio: FC = () => {
 				percentageFormat(
 					Number(
 						row.participationBreakdowns
-							? row.participationBreakdowns[0]?.rate || 0
+							? findFundingData(row.participationBreakdowns).rate || 0
 							: row.fundingBreakDowns[0]?.rate || 0
 					)
 				),
@@ -84,7 +142,7 @@ export const Portfolio: FC = () => {
 				moneyFormat(
 					Number(
 						row.participationBreakdowns
-							? row.participationBreakdowns[0]?.regular || 0
+							? findFundingData(row.participationBreakdowns).regular || 0
 							: row.fundingBreakDowns[0]?.regular || 0
 					)
 				),
@@ -104,20 +162,10 @@ export const Portfolio: FC = () => {
 		{
 			name: `${currentMonthName} (Current)`,
 			selector: (row: Loan) => {
-				return moneyFormat(
-					moment(row.originationDate).toDate().getMonth() ===
-						new Date().getMonth()
-						? Number(
-								row.participationBreakdowns
-									? row.participationBreakdowns[0]?.prorated
-									: row.fundingBreakDowns[0]?.prorated || 0
-						  )
-						: Number(
-								row.participationBreakdowns
-									? row.participationBreakdowns[0]?.regular || 0
-									: row.fundingBreakDowns[0]?.regular || 0
-						  )
-				);
+				const totalAmount =
+					currentValuePayableInvestor(row) ||
+					findFundingData(row.participationBreakdowns).regular;
+				return <div>{moneyFormat(totalAmount)}</div>;
 			},
 			sortable: true,
 			conditionalCellStyles: [

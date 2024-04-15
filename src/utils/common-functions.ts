@@ -15,6 +15,7 @@ import type { FundingBreakdown } from "./../types/fields/funding-breakdown";
 import type { Permissions } from "../features/admin/components/manage-user/types/api";
 import { RoleType } from "@/types/api/permissions-type";
 import moment from "moment";
+import { Loan } from "@/types/fields/loan";
 
 export const statusSort = (rowA: Investor, rowB: Investor) => {
 	const a = rowA.user?.isActive || "";
@@ -49,6 +50,20 @@ export const statusTotalLoan = (
 	return 0;
 };
 
+export const statusReportTotalLoan = (rowA: Loan, rowB: Loan) => {
+	const a = Number.parseFloat(rowA.totalLoanAmount || "0");
+	const b = Number.parseFloat(rowB.totalLoanAmount || "0");
+
+	if (a > b) {
+		return 1;
+	}
+
+	if (b > a) {
+		return -1;
+	}
+
+	return 0;
+};
 export const sortInterestRateLoan = (
 	rowA: FundingBreakdown,
 	rowB: FundingBreakdown
@@ -149,12 +164,45 @@ export function sortMaturityDate(
 	return aDate.getTime() - bDate.getTime();
 }
 
+export function sortReportMaturityDate(rowA: Loan, rowB: Loan): any {
+	const aDateString = rowA.maturityDate || "";
+	const bDateString = rowB.maturityDate || "";
+
+	// Convert the date strings to Date objects
+	const aDate = aDateString ? new Date(aDateString) : new Date(0); // Default to epoch if empty
+	const bDate = bDateString ? new Date(bDateString) : new Date(0); // Default to epoch if empty
+
+	return aDate.getTime() - bDate.getTime();
+}
+
+export function sortReportEndDate(rowA: Loan, rowB: Loan): any {
+	const aDateString = rowA.endDate || "";
+	const bDateString = rowB.endDate || "";
+
+	// Convert the date strings to Date objects
+	const aDate = aDateString ? new Date(aDateString) : new Date(0); // Default to epoch if empty
+	const bDate = bDateString ? new Date(bDateString) : new Date(0); // Default to epoch if empty
+
+	return aDate.getTime() - bDate.getTime();
+}
+
 export function sortOriginateDate(
 	rowA: FundingBreakdown,
 	rowB: FundingBreakdown
 ): any {
 	const aDateString = rowA.loan.originationDate || "";
 	const bDateString = rowB.loan.originationDate || "";
+
+	// Convert the date strings to Date objects
+	const aDate = aDateString ? new Date(aDateString) : new Date(0); // Default to epoch if empty
+	const bDate = bDateString ? new Date(bDateString) : new Date(0); // Default to epoch if empty
+
+	return aDate.getTime() - bDate.getTime();
+}
+
+export function sortReportOriginateDate(rowA: Loan, rowB: Loan): any {
+	const aDateString = rowA.originationDate || "";
+	const bDateString = rowB.originationDate || "";
 
 	// Convert the date strings to Date objects
 	const aDate = aDateString ? new Date(aDateString) : new Date(0); // Default to epoch if empty

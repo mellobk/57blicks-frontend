@@ -3,6 +3,7 @@ import type { Collateral } from "@/types/fields/collateral";
 import type { FundingBreakdown } from "@/types/fields/funding-breakdown";
 
 export type Loan = {
+	endDate?: string;
 	id?: string;
 	name?: string;
 	amountDrawn?: string;

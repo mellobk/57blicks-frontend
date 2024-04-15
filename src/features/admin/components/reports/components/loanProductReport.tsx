@@ -29,6 +29,8 @@ import {
 	getMonthsOfQuarter,
 	getPreviousMonthQuarter,
 	getPreviousThreeMonths,
+	sortReportOriginateDate,
+	statusReportTotalLoan,
 } from "@/utils/common-functions";
 import YearPicker from "@/components/ui/YearPicker";
 import { Icon } from "@/components/ui/Icon";
@@ -220,6 +222,7 @@ export const LoanProductReport: FC = () => {
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.borrower?.llc || "",
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Property Address",
@@ -229,12 +232,14 @@ export const LoanProductReport: FC = () => {
 				</div>
 			),
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Loan Amount",
 			selector: (row: Loan) =>
 				moneyFormat(Number.parseInt(row?.totalLoanAmount)),
 			omit: false,
+			sortFunction: statusReportTotalLoan,
 		},
 		{
 			name: "Origination Date",
@@ -242,12 +247,14 @@ export const LoanProductReport: FC = () => {
 				row?.originationDate &&
 				formatDate(row?.originationDate?.toString() || ""),
 			omit: false,
+			sortFunction: sortReportOriginateDate,
 		},
 		{
 			name: "Loan Product",
 			//	cell: row => <CustomTitle row={row} />,
 			selector: (row: Loan): string => row?.type || "",
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "Rate",
@@ -256,6 +263,7 @@ export const LoanProductReport: FC = () => {
 				row?.interestRate &&
 				`${Number.parseFloat(row?.interestRate).toFixed(0)}%`,
 			omit: false,
+			sortable: true,
 		},
 		{
 			name: "LTV",
@@ -264,6 +272,7 @@ export const LoanProductReport: FC = () => {
 				row?.ltv &&
 				`  ${Number.parseFloat(row?.ltv.toString() || "").toFixed(0)}%`,
 			omit: false,
+			sortable: true,
 		},
 	];
 
