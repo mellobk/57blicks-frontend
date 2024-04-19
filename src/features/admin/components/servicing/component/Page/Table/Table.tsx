@@ -300,22 +300,26 @@ export const Table: FC<Props> = ({
 		});
 
 		const total = totalLoanAmount?.reduce(
-			(accumulator, currentValue) => accumulator + currentValue,
+			(accumulator, currentValue) =>
+				accumulator + Number(currentValue.toFixed(2)),
 			0
 		);
 
 		const totalRegular = totalRegularAmount?.reduce(
-			(accumulator, currentValue) => accumulator + currentValue,
+			(accumulator, currentValue) =>
+				accumulator + Number(currentValue.toFixed(2)),
 			0
 		);
 
 		const totalRegularAmountLoanData = totalRegularAmountLoan?.reduce(
-			(accumulator, currentValue) => accumulator + currentValue,
+			(accumulator, currentValue) =>
+				accumulator + Number(currentValue.toFixed(2)),
 			0
 		);
 
 		const totalPrevious = totalPreviousAmount?.reduce(
-			(accumulator, currentValue) => accumulator + currentValue,
+			(accumulator, currentValue) =>
+				accumulator + Number(currentValue.toFixed(2)),
 			0
 		);
 

@@ -141,7 +141,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 			const totals = {
 				debits,
 				credits,
-				balance: ledgersData.at(-1)?.balance || 0,
+				balance: Number(ledgersData.at(-1)?.balance?.toFixed(2)) || 0,
 			};
 
 			setTotals(totals);
@@ -156,12 +156,15 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 	const handleTotals = (): void => {
 		const { debits, credits, balance } = calculateBalance(allFields.ledgers);
 
+		const balanceFixed = Number(balance.toFixed(2));
+
 		const totals = {
 			debits,
 			credits,
-			balance,
+			balance: balanceFixed === 0 ? Math.abs(balanceFixed) : balanceFixed,
 		};
-		if (balance < 0) {
+
+		if (Number(balance.toFixed(2)) < 0) {
 			toast.warn("Balance error!", {
 				position: "top-right",
 				autoClose: 1000,
@@ -234,6 +237,7 @@ export const LedgerComponent: FC<LedgerComponentProps> = ({
 				onSubmit={handleSubmit((data) => {
 					//convert  ledgerDate to date
 					const validation = validateDataLedger(data.ledgers);
+
 					if (validation !== "") {
 						toast.warning("Error: " + validation, {
 							position: "top-right",

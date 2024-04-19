@@ -245,7 +245,11 @@ export const LedgerAdd: FC<LedgerAddProps> = ({
 					}`}
 				>
 					{dataLedgers && dataLedgers.balance
-						? moneyFormat(dataLedgers?.balance)
+						? moneyFormat(
+								Number(dataLedgers?.balance.toFixed(2)) === 0
+									? 0
+									: Number(dataLedgers?.balance.toFixed(2))
+						  )
 						: "0.00"}
 				</div>
 			</div>

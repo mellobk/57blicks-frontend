@@ -55,7 +55,11 @@ const LedgerFooter1: FC<LedgerFooter1Props> = ({ ledgers }) => {
 							{moneyFormat(totals.credits) || "$ 0"}
 						</div>
 						<div className="w-[15%] text-right">
-							{moneyFormat(totals.balance) || "$ 0"}
+							{moneyFormat(
+								Number(totals.balance.toFixed(2)) === 0
+									? 0
+									: Number(totals.balance.toFixed(2))
+							) || "$ 0"}
 						</div>
 						<div className="w-[15%] text-right"></div>
 					</li>

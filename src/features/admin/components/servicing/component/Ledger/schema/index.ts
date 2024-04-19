@@ -16,7 +16,7 @@ export const validationSchema = z.object({
 			memo: z.string(),
 			debit: z.coerce.number().min(0, { message: errorMessages.required }),
 			credit: z.coerce.number().min(0, { message: errorMessages.required }),
-			balance: z.number().min(0, { message: errorMessages.required }),
+			balance: z.coerce.number().min(-0.1, { message: errorMessages.required }),
 			approvalState: z.nativeEnum(ApprovalStateType),
 			editable: z.boolean(),
 			order: z.number(),
