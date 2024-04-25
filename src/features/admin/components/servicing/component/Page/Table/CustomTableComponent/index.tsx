@@ -87,7 +87,9 @@ const templateRate = (rowData: any) => {
 };
 
 const templateRegularPayment = (rowData: any) => {
-	return moneyFormat(Number.parseFloat(rowData.regular || "0"));
+	return moneyFormat(
+		rowData.data.loan.endDate ? 0 : Number.parseFloat(rowData.regular || "0")
+	);
 };
 
 const templateOriginationDate = (rowData: any) => {
