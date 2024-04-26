@@ -273,6 +273,11 @@ export const Table: FC<Props> = ({
 				regular =
 					/* String((Number(data.loan.totalLoanAmount) * 18) / 100 / 12) */ "0";
 			}
+
+			if (data.loan.endDate) {
+				regular = "0";
+			}
+
 			return Number.parseFloat(regular || "");
 		});
 
