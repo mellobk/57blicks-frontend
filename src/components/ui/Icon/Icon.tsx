@@ -60,6 +60,9 @@ import List from "@/assets/icons/list";
 import Attach from "@/assets/icons/attach";
 import Notes from "@/assets/icons/notes";
 import Lock from "@/assets/icons/lock";
+import Favorite from "@/assets/icons/Favorite";
+import Like from "@/assets/icons/like";
+import DisLike from "@/assets/icons/dis-like";
 
 export const ICONS = {
 	arrowDown: ArrowDown,
@@ -123,10 +126,14 @@ export const ICONS = {
 	attach: Attach,
 	notes: Notes,
 	lock: Lock,
+	favorite: Favorite,
+	like: Like,
+	disLike: DisLike,
 };
 
 export interface IconProps {
 	color?: string;
+	fillColor?: string;
 	height?: string;
 	name: keyof typeof ICONS;
 	width?: string;

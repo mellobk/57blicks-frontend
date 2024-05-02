@@ -18,7 +18,7 @@ export const validPasswordRules = (
 
 	if (newRules[2]) {
 		newRules[2].complete = !!(
-			new RegExp(`.*[!@#$%^&*()\\-_=+[\\]{}|;:'",.<>/?].*`).test(text) &&
+			new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!#?@\]]).{10,}$/).test(text) &&
 			newRules[2]
 		);
 	}

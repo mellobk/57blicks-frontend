@@ -1,10 +1,10 @@
-import { ForbiddenPage } from "@/features/auth/pages/forbidden/ForbiddenPage";
 import UnauthenticatedRoute from "./routes";
+import { Home } from "@/features/auth/pages/Home/Home";
 
 const AppRoutes = [
 	{
 		path: "/403",
-		page: ForbiddenPage,
+		page: Home,
 		layout: null,
 	},
 ];

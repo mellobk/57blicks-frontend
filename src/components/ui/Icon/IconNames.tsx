@@ -41,6 +41,9 @@ const IconNames: Array<string> = [
 	"csv",
 	"xlsx",
 	"lock",
+	"favorite",
+	"like",
+	"disLike",
 ];
 
 export default IconNames;

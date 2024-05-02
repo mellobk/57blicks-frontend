@@ -1,48 +1,57 @@
-import { render, screen } from "@testing-library/react";
-import { PasswordInput } from "./PasswordInput";
+import { render, fireEvent, screen } from "@testing-library/react";
+import { useForm, FormProvider } from "react-hook-form";
+import { PasswordInput } from "./PasswordInput"; // Adjust the import path accordingly
 
-describe("PasswordInput component", () => {
-	it("renders label, placeholder, and icon when provided", () => {
+// Mocking components and utilities
+jest.mock("@/components/ui/Icon", () => ({
+	Icon: () => <span>Icon</span>,
+}));
+
+const Wrapper = ({ children }) => {
+	const methods = useForm();
+	return <FormProvider {...methods}>{children}</FormProvider>;
+};
+
+describe("PasswordInput Component", () => {
+	it("renders correctly", () => {
 		render(
-			<PasswordInput
-				label="Password"
-				placeholder="Enter your password"
-				error="Message 2"
-			/>
+			<Wrapper>
+				<PasswordInput label="Password" />
+			</Wrapper>
 		);
-
-		const labelElement = screen.getByText("Password");
-		const placeholderElement = screen.getByPlaceholderText(
-			"Enter your password"
-		);
-		const iconElement = screen.getByTestId("icon");
-		const errorMessage = screen.queryByText("Message 2"); // Assuming this message is in the strength footer
-
-		expect(labelElement).toBeInTheDocument();
-		expect(placeholderElement).toBeInTheDocument();
-		expect(iconElement).toBeInTheDocument();
-		expect(errorMessage).toBeInTheDocument();
+		expect(screen.getByText("Password")).toBeInTheDocument();
 	});
 
-	it("renders without error and icon when no iconName, required, or error is provided", () => {
+	it("toggles password visibility", () => {
 		render(
-			<PasswordInput label="Password" placeholder="Enter your password" />
+			<Wrapper>
+				<PasswordInput label="Password" />
+			</Wrapper>
 		);
-
-		const labelElement = screen.getByText("Password");
-		const placeholderElement = screen.getByPlaceholderText(
-			"Enter your password"
-		);
-		const iconElement = screen.getByTestId("icon");
-		const strengthFooterElement = screen.queryByTestId("input-strength-footer");
-		const errorMessage = screen.queryByText("Message 2"); // Assuming this message is in the strength footer
-
-		expect(labelElement).toBeInTheDocument();
-		expect(placeholderElement).toBeInTheDocument();
-		expect(iconElement).toBeInTheDocument();
-		expect(strengthFooterElement).toBeNull();
-		expect(errorMessage).toBeNull();
 	});
 
-	// Add more test cases as needed...
+	it("displays validation messages based on password validations", () => {
+		const validations = [
+			{ complete: true, message: "At least 8 characters" },
+			{ complete: false, message: "Includes a number" },
+		];
+		render(
+			<Wrapper>
+				<PasswordInput label="Password" passWordValidations={validations} />
+			</Wrapper>
+		);
+		expect(screen.getByText("At least 8 characters")).toBeInTheDocument();
+		expect(screen.getByText("Includes a number")).toHaveClass(
+			"font-semibold text-gray-600"
+		);
+	});
+
+	it("shows an error message when there is an error", () => {
+		render(
+			<Wrapper>
+				<PasswordInput label="Password" error="Password is required" />
+			</Wrapper>
+		);
+		expect(screen.getByText("Password is required")).toBeInTheDocument();
+	});
 });

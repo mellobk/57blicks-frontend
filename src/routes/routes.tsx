@@ -41,49 +41,14 @@ export const AuthenticatedRoute = (routes: Array<Props>) => {
 			path,
 			getParentRoute: (): typeof RootRoute => RootRoute,
 			component: (): ReactElement => {
-				const cognitoGroup = getLocalStorage(group)
-					? JSON?.parse(getLocalStorage(group))
-					: "";
 				if (!getLocalStorage(accessToken)) {
 					signOut();
 					removeLocalStorage(accessToken);
 					window.location.href = "/login";
 				}
-
-				awsRouterPermission(cognitoGroup as string);
 
 				return Layout ? (
 					<Layout hScreen={className}>
-						<Page />
-					</Layout>
-				) : (
-					<Page />
-				);
-			},
-		});
-	});
-};
-
-export const InvestorRoute = (routes: Array<Props>) => {
-	return routes.map(({ page: Page, layout: Layout, path }) => {
-		return new Route({
-			path,
-			getParentRoute: (): typeof RootRoute => RootRoute,
-			component: (): ReactElement => {
-				if (!getLocalStorage(accessToken)) {
-					signOut();
-					removeLocalStorage(accessToken);
-					window.location.href = "/login";
-				}
-
-				const cognitoGroup = getLocalStorage(group)
-					? JSON?.parse(getLocalStorage(group))
-					: "";
-
-				investorRouterPermission(cognitoGroup as string);
-
-				return Layout ? (
-					<Layout>
 						<Page />
 					</Layout>
 				) : (

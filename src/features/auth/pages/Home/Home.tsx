@@ -7,7 +7,7 @@ const Home: FC = () => {
 
 	return (
 		<div className="flex flex-col items-center h-full w-full bg-white text-primary ">
-			Home
+			Homess
 		</div>
 	);
 };

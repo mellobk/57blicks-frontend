@@ -123,6 +123,18 @@ export default {
 					DEFAULT: "white",
 				},
 			},
+			transitionProperty: {
+				height: "height",
+				opacity: "opacity",
+				transform: "transform",
+			},
+			transitionDuration: {
+				300: "300ms",
+				500: "500ms",
+			},
+			transitionTimingFunction: {
+				"in-out": "cubic-bezier(0.4, 0, 0.2, 1)",
+			},
 		},
 	},
 	plugins: [],

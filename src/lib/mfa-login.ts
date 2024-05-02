@@ -19,6 +19,21 @@ export async function signInWithEmailMfa(
 	return authApiClient.post<any>("/auth/login", body);
 }
 
+export async function registerAccount(
+	firstName: string,
+	lastName: string,
+	email: string,
+	password: string
+): Promise<any> {
+	const body = {
+		firstName,
+		lastName,
+		email,
+		password,
+	};
+	return authApiClient.post<any>("/auth/register", body);
+}
+
 export async function sendMfaCode(email: string, code: string): Promise<any> {
 	const body = {
 		email,

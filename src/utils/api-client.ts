@@ -1,4 +1,8 @@
-import type { IErrorResponse } from "@/features/admin/components/manage-user/types/api";
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 import { accessToken } from "./constant";
 import axios from "axios";
 import { getLocalStorage } from "./local-storage";
@@ -33,18 +37,26 @@ authApiClient.interceptors.response.use(
 			localStorage.clear();
 			window.location.href = "/login";
 		}
-		if (error?.response?.status === 403) {
-			window.location.href = "/403";
+
+		if (error.config.url === "/auth/login") {
+			return null;
 		}
 
 		const clearErrorMessage = store.clearErrorMessage;
 		const setErrorMessage = store.setErrorMessage;
 
-		const errorResponse = error as IErrorResponse;
+		if (error.config.url === "/auth/register") {
+			setErrorMessage(error.response.data.message);
+			setTimeout(clearErrorMessage, 2000);
+			return null;
+		}
+
+		console.log(error.config.url);
+		const errorResponse = error;
 
 		setErrorMessage(
 			`${errorResponse.response.data.message}  ${
-				errorResponse.response.data.description ?? ""
+				errorResponse?.response?.data?.description ?? ""
 			} `
 		);
 		setTimeout(clearErrorMessage, 2000);

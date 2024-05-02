@@ -1,1 +1,0 @@
-export { SuccessDecline } from "./Success";

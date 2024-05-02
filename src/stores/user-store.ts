@@ -1,28 +1,31 @@
-import type { User } from "@/features/admin/components/manage-user/types/api.ts";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+import type { UserMovieResponse } from "@/features/home/types/movies.type";
 import type { Loan } from "@/types/fields/loan";
 import { create, type SetState } from "zustand";
 
 interface IState {
-	userInfo: User;
+	selectOption: string;
+	userInfo: UserMovieResponse;
 	editLoan: Loan;
-	loggedUserInfo: User;
-	setUserInfo: (userData: User | null) => void;
-	setLoggedUserInfo: (userData: User | null) => void;
+	setUserInfo: (userData: UserMovieResponse | null) => void;
 	setEditLoan: (loanData: Loan | null) => void;
+	setSelectedOption: (option: string | null) => void;
 }
 
 const userStore = create<IState>((set: SetState<IState>) => ({
+	selectOption: "1",
 	userInfo: {},
 	editLoan: {},
 	loggedUserInfo: {},
 	setUserInfo: (userData): void => {
 		set({ userInfo: userData || {} });
 	},
-	setLoggedUserInfo: (userData): void => {
-		set({ loggedUserInfo: userData || {} });
-	},
 	setEditLoan: (loanData): void => {
 		set({ editLoan: loanData || {} });
+	},
+	setSelectedOption: (option): void => {
+		set({ selectOption: option || "1" });
 	},
 }));
 

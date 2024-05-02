@@ -1,22 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { type FC, useEffect, useRef, useState } from "react";
 import { type FieldValues, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
 import createPassWordFields from "@/features/auth/utils/input-fields";
-import { createPasswordSchema } from "@/features/auth/utils/Schemas/validations-schemas";
-import {
-	mfaCode as localMfa,
-	passwordInitialsValidations,
-	userEmail,
-} from "@/features/auth/utils/constants";
+import { registerSchema } from "@/features/auth/utils/Schemas/validations-schemas";
+import { passwordInitialsValidations } from "@/features/auth/utils/constants";
 import { validPasswordRules } from "@/features/auth/utils/functions";
 import type { PasswordValidations } from "@/features/auth/types/validations";
 import { LoginTitle } from "../LoginTitle";
-import { forgotPassword } from "@/lib/cognito";
 import { useNavigate } from "@tanstack/router";
 import { Message } from "primereact/message";
-import { removeLocalStorage } from "@/utils/local-storage";
+import { Input } from "@/components/forms/Input";
+import { registerAccount } from "@/lib/mfa-login";
+import useStore from "@/stores/app-store";
 
 interface MfaProps {
 	title?: string;
@@ -28,13 +27,11 @@ interface MfaProps {
 	backTo?: string;
 }
 
-export const CreatePassword: FC<MfaProps> = ({
+export const Register: FC<MfaProps> = ({
 	title,
 	subTitle,
 	buttonText,
 	navigateTo,
-	receptor,
-	mfaCode,
 	backTo,
 }) => {
 	const navigate = useNavigate();
@@ -52,24 +49,31 @@ export const CreatePassword: FC<MfaProps> = ({
 		trigger,
 		formState: { errors },
 	} = useForm({
-		resolver: zodResolver(createPasswordSchema),
+		resolver: zodResolver(registerSchema),
 	});
 
 	const passwordText = watch(createPassWordFields.password) as string;
 	const errorPassword = errors[createPassWordFields?.password]?.message;
 
+	const setSuccessMessage = useStore((state) => state.setSuccessMessage);
+	const clearSuccessMessage = useStore((state) => state.clearSuccessMessage);
+
 	const onSubmit: SubmitHandler<FieldValues> = async (data): Promise<any> => {
 		try {
-			const respondCreatePassword = await forgotPassword(
-				receptor || "",
-				mfaCode || "",
+			const createAccount = await registerAccount(
+				data[createPassWordFields?.firstName],
+				data[createPassWordFields?.lastName],
+				data[createPassWordFields?.email],
 				data[createPassWordFields?.password]
 			);
 
-			if (respondCreatePassword === "password updated") {
+			if (createAccount) {
+				setSuccessMessage("User register successfully");
+				setTimeout(() => {
+					clearSuccessMessage();
+				}, 500);
+
 				void navigate({ to: `/${navigateTo}` });
-				removeLocalStorage(userEmail);
-				removeLocalStorage(localMfa);
 			}
 		} catch (error) {
 			setCreatePasswordError(error);
@@ -107,8 +111,31 @@ export const CreatePassword: FC<MfaProps> = ({
 									className="w-full h-full flex flex-col justify-between"
 								>
 									<div className="flex gap-2 flex-col">
+										<Input
+											label="First Name"
+											placeholder="Enter First Name"
+											required
+											register={register(createPassWordFields?.firstName)}
+											error={errors[createPassWordFields?.firstName]?.message}
+										/>
+
+										<Input
+											label="Last Name"
+											placeholder="Enter Last Name"
+											required
+											register={register(createPassWordFields?.lastName)}
+											error={errors[createPassWordFields?.lastName]?.message}
+										/>
+										<Input
+											label="Email"
+											placeholder="Enter Email"
+											required
+											register={register(createPassWordFields?.email)}
+											error={errors[createPassWordFields?.email]?.message}
+										/>
+
 										<PasswordInput
-											label="Create Password"
+											label="Password"
 											placeholder="Enter Password"
 											required
 											register={register(createPassWordFields?.password)}

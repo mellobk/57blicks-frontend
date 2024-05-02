@@ -1,4 +1,7 @@
-export type CreatePassWordFields = {
+export type RegisterFields = {
+	firstName: string;
+	lastName: string;
+	email: string;
 	password: string;
 };
 

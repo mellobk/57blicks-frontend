@@ -1,10 +1,13 @@
 import type {
 	ChangePassWordFields,
-	CreatePassWordFields,
+	RegisterFields,
 	LoginFields,
 } from "../types/validations";
 
-const createPassWordFields: CreatePassWordFields = {
+const registerFields: RegisterFields = {
+	firstName: "firstName",
+	lastName: "lastName",
+	email: "email",
 	password: "password",
 };
 
@@ -18,4 +21,4 @@ export const changePassWordFields: ChangePassWordFields = {
 	newPassword: "newPassword",
 };
 
-export default createPassWordFields;
+export default registerFields;
